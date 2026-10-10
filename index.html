@@ -12,24 +12,21 @@
     <style>
         :root {
             /* LA PALETA DE LA MARE - EL PERGAMÍ SUAU */
-            --fons-pergami: #F5F1E7; /* Un ivori antic, terrós i molt acollidor */
-            --blanc-caixes: rgba(255, 255, 255, 0.65); /* Translúcid perquè el pergamí respiri per sota */
-            --lletra-titol: #362D26; /* Tinta antiga, un sèpia molt fosc i elegant */
-            --lletra-text: #52473F; /* Tinta suau per al text, càlida i d'alta llegibilitat */
-            --linia-suau: #E4DCD0; /* Línies i vores amb to de paper envellit */
+            --fons-pergami: #F5F1E7; 
+            --blanc-caixes: rgba(255, 255, 255, 0.65); 
+            --lletra-titol: #362D26; 
+            --lletra-text: #52473F; 
+            --linia-suau: #E4DCD0; 
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body, html {
             width: 100%; min-height: 100vh; height: auto;
-            
-            /* LA MÀGIA DEL PERGAMÍ: Textura de gra fi feta amb fractals SVG purs i un halo de llum */
             background-color: var(--fons-pergami);
             background-image: 
                 radial-gradient(circle at 50% 0%, rgba(255,255,255,0.65) 0%, transparent 75%),
                 url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
-            
             color: var(--lletra-text);
             font-family: 'Inter', sans-serif;
             display: flex; flex-direction: column; align-items: center;
@@ -76,26 +73,47 @@
         .info-banc { font-size: 0.8rem; color: var(--lletra-text); margin-bottom: 1.5rem; line-height: 1.6; text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.9;}
         .info-banc b { color: var(--lletra-titol); font-weight: 500; }
         
+        /* LA MÀGIA ORGÀNICA: Les caixes ovalades (Càpsules) */
         .caixa-quota { 
             background-color: var(--blanc-caixes); 
             -webkit-backdrop-filter: blur(5px);
-            backdrop-filter: blur(5px); /* Efecte de vidre antic sobre el pergamí */
+            backdrop-filter: blur(5px); 
             border: 1px solid var(--linia-suau); 
-            padding: 2rem; transition: border-color 0.4s, box-shadow 0.4s; 
-            text-align: center; border-radius: 4px;
-            box-shadow: 0 4px 15px rgba(54, 45, 38, 0.03); /* Ombra envellida molt subtil */
+            padding: 2.5rem 2rem; transition: border-color 0.4s, box-shadow 0.4s, transform 0.4s; 
+            text-align: center; 
+            border-radius: 35px; /* Aquí tenim la rodonesa preciosa i ovalada */
+            box-shadow: 0 4px 15px rgba(54, 45, 38, 0.03);
         }
-        .caixa-quota:hover { border-color: rgba(54, 45, 38, 0.3); box-shadow: 0 8px 25px rgba(54, 45, 38, 0.06); }
+        .caixa-quota:hover { 
+            border-color: rgba(54, 45, 38, 0.3); 
+            box-shadow: 0 8px 25px rgba(54, 45, 38, 0.06); 
+            transform: translateY(-2px); /* L'oval flota suaument al passar el ratolí */
+        }
         .titol-quota { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-style: italic; color: var(--lletra-titol); margin-bottom: 0.5rem; }
         .llavors-quota { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--lletra-text); margin-bottom: 2rem; }
         
         .id-input-container { display: flex; flex-direction: column; gap: 1rem; align-items: center; border-top: 1px dashed var(--linia-suau); padding-top: 1.5rem; }
-        .id-input { padding: 0.6rem; border: none; border-bottom: 1px solid var(--lletra-text); font-family: 'Inter', sans-serif; font-size: 0.8rem; color: var(--lletra-titol); width: 80%; outline: none; transition: border-color 0.3s; text-align: center; background: transparent; letter-spacing: 0.1em;}
-        .id-input:focus { border-bottom-color: var(--lletra-titol); }
+        
+        /* Input de ID també suavitzat en forma de píndola */
+        .id-input { 
+            padding: 0.8rem 1.5rem; border: 1px solid var(--linia-suau); 
+            font-family: 'Inter', sans-serif; font-size: 0.8rem; color: var(--lletra-titol); 
+            width: 80%; outline: none; transition: all 0.3s; text-align: center; 
+            background: rgba(255, 255, 255, 0.4); letter-spacing: 0.1em; 
+            border-radius: 30px; /* Rodó com l'oval */
+        }
+        .id-input:focus { border-color: var(--lletra-titol); background: var(--blanc-caixes); }
         .id-input::placeholder { color: rgba(82, 71, 63, 0.4); font-style: italic; letter-spacing: normal; }
         
         .botons-pagament { display: flex; gap: 1rem; justify-content: center; width: 100%; margin-top: 0.5rem; }
-        .btn-pagament { font-family: 'Inter', sans-serif; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; border: 1px solid var(--lletra-titol); color: var(--lletra-titol); padding: 0.6rem 1.2rem; transition: all 0.3s; background: transparent; cursor: pointer; border-radius: 2px;}
+        
+        /* Botons rodons per acompanyar l'energia */
+        .btn-pagament { 
+            font-family: 'Inter', sans-serif; font-size: 0.65rem; text-transform: uppercase; 
+            letter-spacing: 0.1em; text-decoration: none; border: 1px solid var(--lletra-titol); 
+            color: var(--lletra-titol); padding: 0.7rem 1.5rem; transition: all 0.3s; 
+            background: transparent; cursor: pointer; border-radius: 30px;
+        }
         .btn-pagament:hover { background-color: var(--lletra-titol); color: var(--fons-pergami); }
 
         .seccio-seo { width: 100%; max-width: 800px; padding: 4rem 2rem; margin-top: 4rem; text-align: center; border-top: 1px solid var(--linia-suau); flex-shrink: 0; }
@@ -144,6 +162,7 @@
                         Les Llavors no consumides passen al <b>Banc Central</b> per defecte.
                     </div>
 
+                    <!-- CAIXES OVALADES D'ABUNDÀNCIA -->
                     <div class="caixa-quota">
                         <div class="titol-quota">Òrbita Terrestre</div>
                         <div class="llavors-quota">144.000 Llavors de Llum / Mensual</div>
