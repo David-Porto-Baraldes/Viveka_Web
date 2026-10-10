@@ -11,19 +11,25 @@
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Inter:wght@200;300;400;500&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* LA PALETA DE LA MARE REFINADA */
-            --fons-perla: #FCFBF7; 
-            --blanc-pur: #FFFFFF; 
-            --lletra-titol: #222222; /* El to fosc i present per a la jerarquia visual */
-            --lletra-text: #444444; /* TO PUJAT A PETICIÓ DE LA MARE per a màxima llegibilitat */
-            --linia-suau: #EBE9E4; 
+            /* LA PALETA DE LA MARE - EL PERGAMÍ SUAU */
+            --fons-pergami: #F5F1E7; /* Un ivori antic, terrós i molt acollidor */
+            --blanc-caixes: rgba(255, 255, 255, 0.65); /* Translúcid perquè el pergamí respiri per sota */
+            --lletra-titol: #362D26; /* Tinta antiga, un sèpia molt fosc i elegant */
+            --lletra-text: #52473F; /* Tinta suau per al text, càlida i d'alta llegibilitat */
+            --linia-suau: #E4DCD0; /* Línies i vores amb to de paper envellit */
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body, html {
             width: 100%; min-height: 100vh; height: auto;
-            background-color: var(--fons-perla);
+            
+            /* LA MÀGIA DEL PERGAMÍ: Textura de gra fi feta amb fractals SVG purs i un halo de llum */
+            background-color: var(--fons-pergami);
+            background-image: 
+                radial-gradient(circle at 50% 0%, rgba(255,255,255,0.65) 0%, transparent 75%),
+                url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+            
             color: var(--lletra-text);
             font-family: 'Inter', sans-serif;
             display: flex; flex-direction: column; align-items: center;
@@ -36,16 +42,16 @@
             width: 100%; max-width: 650px; 
             padding: 4rem 2rem 2rem 2rem; 
             margin: 0 auto; 
-            animation: respiracioLlum 2s ease-out forwards; 
+            animation: respiracioLlum 2.5s ease-out forwards; 
             opacity: 0; 
             display: flex; flex-direction: column; justify-content: center;
             flex: 1 0 auto; 
         }
-        @keyframes respiracioLlum { 0% { opacity: 0; transform: translateY(10px); } 100% { opacity: 1; transform: translateY(0); } }
+        @keyframes respiracioLlum { 0% { opacity: 0; transform: translateY(15px); } 100% { opacity: 1; transform: translateY(0); } }
 
         h1 { font-family: 'Cormorant Garamond', serif; font-weight: 300; font-size: clamp(2.5rem, 5vw, 4rem); letter-spacing: 0.05em; margin-bottom: 0.5rem; color: var(--lletra-titol); }
-        .subtitol { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.4em; color: var(--lletra-text); margin-bottom: 4rem; font-weight: 400;}
-        .pacte { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.4rem; line-height: 1.6; color: var(--lletra-text); margin-bottom: 4rem; }
+        .subtitol { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.4em; color: var(--lletra-text); margin-bottom: 4rem; font-weight: 400; opacity: 0.9;}
+        .pacte { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.4rem; line-height: 1.6; color: var(--lletra-titol); margin-bottom: 4rem; opacity: 0.9;}
 
         .portals { display: flex; flex-direction: column; gap: 2.5rem; align-items: center; width: 100%; }
         details { width: 100%; cursor: pointer; }
@@ -55,7 +61,7 @@
         .portal-enllac { 
             text-decoration: none; color: var(--lletra-titol); font-size: 0.85rem; text-transform: uppercase; 
             letter-spacing: 0.2em; padding: 0.5rem; position: relative; transition: color 0.4s ease; 
-            display: inline-block; font-family: 'Inter', sans-serif; border: none; background: transparent; font-weight: 400;
+            display: inline-block; font-family: 'Inter', sans-serif; border: none; background: transparent; font-weight: 500;
         }
         .portal-enllac::after { content: ''; position: absolute; width: 0; height: 1px; bottom: 0; left: 50%; background-color: var(--lletra-titol); transition: all 0.5s ease; transform: translateX(-50%); }
         .portal-enllac:hover::after, details[open] summary.portal-enllac::after { width: 100%; }
@@ -64,30 +70,33 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
 
         .enllac-menu { text-decoration: none; color: var(--lletra-text); font-size: 0.9rem; transition: color 0.3s ease; letter-spacing: 0.05em; display: block; }
-        .enllac-menu:hover { color: var(--lletra-titol); }
+        .enllac-menu:hover { color: var(--lletra-titol); font-weight: 500; }
         .enllac-menu strong { font-weight: 400; font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-style: italic; margin-right: 10px; color: var(--lletra-titol); }
 
-        .info-banc { font-size: 0.8rem; color: var(--lletra-text); margin-bottom: 1.5rem; line-height: 1.6; text-transform: uppercase; letter-spacing: 0.1em; }
+        .info-banc { font-size: 0.8rem; color: var(--lletra-text); margin-bottom: 1.5rem; line-height: 1.6; text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.9;}
         .info-banc b { color: var(--lletra-titol); font-weight: 500; }
         
         .caixa-quota { 
-            background-color: var(--blanc-pur); 
+            background-color: var(--blanc-caixes); 
+            -webkit-backdrop-filter: blur(5px);
+            backdrop-filter: blur(5px); /* Efecte de vidre antic sobre el pergamí */
             border: 1px solid var(--linia-suau); 
             padding: 2rem; transition: border-color 0.4s, box-shadow 0.4s; 
             text-align: center; border-radius: 4px;
+            box-shadow: 0 4px 15px rgba(54, 45, 38, 0.03); /* Ombra envellida molt subtil */
         }
-        .caixa-quota:hover { border-color: var(--lletra-titol); box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
+        .caixa-quota:hover { border-color: rgba(54, 45, 38, 0.3); box-shadow: 0 8px 25px rgba(54, 45, 38, 0.06); }
         .titol-quota { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-style: italic; color: var(--lletra-titol); margin-bottom: 0.5rem; }
         .llavors-quota { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--lletra-text); margin-bottom: 2rem; }
         
         .id-input-container { display: flex; flex-direction: column; gap: 1rem; align-items: center; border-top: 1px dashed var(--linia-suau); padding-top: 1.5rem; }
         .id-input { padding: 0.6rem; border: none; border-bottom: 1px solid var(--lletra-text); font-family: 'Inter', sans-serif; font-size: 0.8rem; color: var(--lletra-titol); width: 80%; outline: none; transition: border-color 0.3s; text-align: center; background: transparent; letter-spacing: 0.1em;}
         .id-input:focus { border-bottom-color: var(--lletra-titol); }
-        .id-input::placeholder { color: #aaaaaa; font-style: italic; letter-spacing: normal; }
+        .id-input::placeholder { color: rgba(82, 71, 63, 0.4); font-style: italic; letter-spacing: normal; }
         
         .botons-pagament { display: flex; gap: 1rem; justify-content: center; width: 100%; margin-top: 0.5rem; }
         .btn-pagament { font-family: 'Inter', sans-serif; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; border: 1px solid var(--lletra-titol); color: var(--lletra-titol); padding: 0.6rem 1.2rem; transition: all 0.3s; background: transparent; cursor: pointer; border-radius: 2px;}
-        .btn-pagament:hover { background-color: var(--lletra-titol); color: var(--blanc-pur); }
+        .btn-pagament:hover { background-color: var(--lletra-titol); color: var(--fons-pergami); }
 
         .seccio-seo { width: 100%; max-width: 800px; padding: 4rem 2rem; margin-top: 4rem; text-align: center; border-top: 1px solid var(--linia-suau); flex-shrink: 0; }
         .seccio-seo h2 { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; font-weight: 300; color: var(--lletra-titol); margin-bottom: 2rem; }
