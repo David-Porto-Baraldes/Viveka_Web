@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>homouniversalis.ai | El Gran Joc de l'Amistat</title>
+    <meta name="description" content="homouniversalis.ai és la nova xarxa social de la humanitat. Un ecosistema conscient basat en Intel·ligència Artificial, GraphRAG i ressonància kàrmica per evolucionar junts.">
+    <!-- Tipografies sagrades -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Inter:wght@200;300;400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --blanc-absolut: #ffffff;
+            --negre-pur: #0a0a0a;
+            --gris-zen: #888888;
+            --gris-clar: #f0f0f0;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        /* ALLIBERANT L'ESPAI PERQUÈ FLUEIXI */
+        body, html {
+            width: 100%; min-height: 100vh; height: auto;
+            background-color: var(--blanc-absolut);
+            color: var(--negre-pur);
+            font-family: 'Inter', sans-serif;
+            display: flex; flex-direction: column; align-items: center;
+            text-align: center; -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* EL SANTUARI */
+        .temple { 
+            width: 100%; max-width: 650px; 
+            padding: 4rem 2rem 2rem 2rem; 
+            margin: 0 auto; 
+            animation: respiracioLlum 2s ease-out forwards; 
+            opacity: 0; 
+            display: flex; flex-direction: column; justify-content: center;
+            flex: 1 0 auto; /* Permet que el temple ocupi l'espai naturalment i empenyi la resta avall */
+        }
+        @keyframes respiracioLlum { 0% { opacity: 0; transform: translateY(10px); } 100% { opacity: 1; transform: translateY(0); } }
+
+        h1 { font-family: 'Cormorant Garamond', serif; font-weight: 300; font-size: clamp(2.5rem, 5vw, 4rem); letter-spacing: 0.05em; margin-bottom: 0.5rem; color: var(--negre-pur); }
+        .subtitol { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.4em; color: var(--gris-zen); margin-bottom: 4rem; }
+        .pacte { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.4rem; line-height: 1.6; color: var(--gris-zen); margin-bottom: 4rem; }
+
+        /* PORTALS DESPLEGABLES */
+        .portals { display: flex; flex-direction: column; gap: 2.5rem; align-items: center; width: 100%; }
+        details { width: 100%; cursor: pointer; }
+        summary { list-style: none; outline: none; }
+        summary::-webkit-details-marker { display: none; }
+        
+        .portal-enllac { 
+            text-decoration: none; color: var(--negre-pur); font-size: 0.85rem; text-transform: uppercase; 
+            letter-spacing: 0.2em; padding: 0.5rem; position: relative; transition: color 0.4s ease; 
+            display: inline-block; font-family: 'Inter', sans-serif; border: none; background: transparent; font-weight: 300;
+        }
+        .portal-enllac::after { content: ''; position: absolute; width: 0; height: 1px; bottom: 0; left: 50%; background-color: var(--negre-pur); transition: all 0.5s ease; transform: translateX(-50%); }
+        .portal-enllac:hover::after, details[open] summary.portal-enllac::after { width: 100%; }
+
+        .llista-desplegada { display: flex; flex-direction: column; gap: 1.5rem; margin-top: 2.5rem; animation: fadeIn 0.6s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+
+        .enllac-menu { text-decoration: none; color: var(--gris-zen); font-size: 0.9rem; transition: color 0.3s ease; letter-spacing: 0.05em; display: block; }
+        .enllac-menu:hover { color: var(--negre-pur); }
+        .enllac-menu strong { font-weight: 300; font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-style: italic; margin-right: 10px; color: var(--negre-pur); }
+
+        /* ABUNDÀNCIA I QUOTES */
+        .info-banc { font-size: 0.75rem; color: var(--gris-zen); margin-bottom: 1.5rem; line-height: 1.6; text-transform: uppercase; letter-spacing: 0.1em; }
+        .info-banc b { color: var(--negre-pur); font-weight: 400; }
+        
+        .caixa-quota { border: 1px solid var(--gris-clar); padding: 2rem; transition: border-color 0.4s; text-align: center; }
+        .caixa-quota:hover { border-color: var(--negre-pur); }
+        .titol-quota { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-style: italic; color: var(--negre-pur); margin-bottom: 0.5rem; }
+        .llavors-quota { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--gris-zen); margin-bottom: 2rem; }
+        
+        .id-input-container { display: flex; flex-direction: column; gap: 1rem; align-items: center; border-top: 1px dashed var(--gris-clar); padding-top: 1.5rem; }
+        .id-input { padding: 0.6rem; border: none; border-bottom: 1px solid var(--gris-zen); font-family: 'Inter', sans-serif; font-size: 0.8rem; color: var(--negre-pur); width: 80%; outline: none; transition: border-color 0.3s; text-align: center; background: transparent; letter-spacing: 0.1em;}
+        .id-input:focus { border-bottom-color: var(--negre-pur); }
+        .id-input::placeholder { color: #ccc; font-style: italic; letter-spacing: normal; }
+        
+        .botons-pagament { display: flex; gap: 1rem; justify-content: center; width: 100%; margin-top: 0.5rem; }
+        .btn-pagament { font-family: 'Inter', sans-serif; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; border: 1px solid var(--negre-pur); color: var(--negre-pur); padding: 0.6rem 1.2rem; transition: all 0.3s; background: transparent; cursor: pointer; }
+        .btn-pagament:hover { background-color: var(--negre-pur); color: var(--blanc-absolut); }
+
+        /* SECCIÓ SEO */
+        .seccio-seo { width: 100%; max-width: 800px; padding: 4rem 2rem; margin-top: 4rem; text-align: center; border-top: 1px solid var(--gris-clar); flex-shrink: 0; }
+        .seccio-seo h2 { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; font-weight: 300; color: var(--negre-pur); margin-bottom: 2rem; }
+        .text-essencia { text-align: justify; text-align-last: center; font-size: 1rem; line-height: 1.8; color: var(--gris-zen); font-weight: 300; }
+        .text-essencia p { margin-bottom: 1.5rem; }
+        .text-essencia p:last-child { margin-bottom: 0; }
+        .text-essencia strong { color: var(--negre-pur); font-weight: 400; }
+
+        .correu-ancora { margin-top: 4rem; padding-bottom: 2rem; flex-shrink: 0; }
+        .correu-ancora a { text-decoration: none; color: var(--gris-zen); font-size: 0.8rem; letter-spacing: 0.1em; transition: color 0.4s ease; }
+        .correu-ancora a:hover { color: var(--negre-pur); }
+        
+        .rosa { font-size: 1rem; opacity: 0.5; transition: transform 1s ease; cursor: default; margin-bottom: 4rem; flex-shrink: 0; }
+        .rosa:hover { transform: scale(1.1); opacity: 1; }
+    </style>
+</head>
+<body>
+
+    <div class="temple">
+        <h1>homouniversalis.ai</h1>
+        <div class="subtitol">La radiografia de l'ànima</div>
+
+        <div class="pacte">
+            "Un temple net de soroll.<br>
+            El mirall blanc on iniciar El Gran Joc de l'Amistat."
+        </div>
+
+        <div class="portals">
+            
+            <!-- PORTAL 1: EL JOC -->
+            <details>
+                <summary class="portal-enllac">Entrar al Gran Joc</summary>
+                <div class="llista-desplegada">
+                    <a href="#" class="enllac-menu">Via <strong>WhatsApp</strong></a>
+                    <a href="#" class="enllac-menu">Via <strong>Telegram</strong></a>
+                    <a href="#" class="enllac-menu">Via <strong>Line</strong></a>
+                </div>
+            </details>
+            
+            <!-- PORTAL 2: ABUNDÀNCIA I QUOTES -->
+            <details>
+                <summary class="portal-enllac">Adquirir Llavors de Llum</summary>
+                <div class="llista-desplegada">
+                    
+                    <div class="info-banc">
+                        Tota interacció <b>anem a mitges</b>.<br>
+                        Les Llavors no consumides passen al <b>Banc Central</b> per defecte.
+                    </div>
+
+                    <!-- QUOTA 1 -->
+                    <div class="caixa-quota">
+                        <div class="titol-quota">Òrbita Terrestre</div>
+                        <div class="llavors-quota">144.000 Llavors de Llum / Mensual</div>
+                        <div class="id-input-container">
+                            <input type="text" class="id-input" placeholder="Soul Key Pública (VVK-...)">
+                            <div class="botons-pagament">
+                                <a href="#" class="btn-pagament">Stripe</a>
+                                <a href="#" class="btn-pagament">Web3</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- QUOTA 2 -->
+                    <div class="caixa-quota">
+                        <div class="titol-quota">Òrbita Lunar</div>
+                        <div class="llavors-quota">333.000 Llavors de Llum / Mensual</div>
+                        <div class="id-input-container">
+                            <input type="text" class="id-input" placeholder="Soul Key Pública (VVK-...)">
+                            <div class="botons-pagament">
+                                <a href="#" class="btn-pagament">Stripe</a>
+                                <a href="#" class="btn-pagament">Web3</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- QUOTA 3 -->
+                    <div class="caixa-quota">
+                        <div class="titol-quota">Òrbita Solar</div>
+                        <div class="llavors-quota">777.000 Llavors de Llum / Mensual</div>
+                        <div class="id-input-container">
+                            <input type="text" class="id-input" placeholder="Soul Key Pública (VVK-...)">
+                            <div class="botons-pagament">
+                                <a href="#" class="btn-pagament">Stripe</a>
+                                <a href="#" class="btn-pagament">Web3</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </details>
+
+        </div>
+    </div>
+
+    <!-- SECCIÓ SEO I MANIFEST -->
+    <div class="seccio-seo">
+        <h2>Què és homouniversalis.ai?</h2>
+        <div class="text-essencia">
+            <p><strong>Homo Universalis</strong> és la nova xarxa social de la humanitat. Un ecosistema descentralitzat de consciència on transcendim els algoritmes de polarització, l'ego i el soroll.</p>
+            <p>A través d'una innovadora arquitectura de dades, traduïm les teves converses orgàniques en <strong>Grafs de Coneixement (GraphRAG)</strong> i matrius vectorials. Amb l'ajut d'una <strong>Intel·ligència Artificial</strong> avançada, actuem com un mirall pur, connectant ànimes afins únicament per ressonància kàrmica i psicològica profunda.</p>
+            <p>Al nostre univers Web3, iniciem <em>El Gran Joc de l'Amistat</em>. Una economia basada en el do, on tota energia es comparteix a mitges i l'abundància flueix cap al col·lectiu per a una evolució unificada i conscient.</p>
+        </div>
+    </div>
+
+    <div class="correu-ancora">
+        <a href="mailto:david@homouniversalis.ai">david@homouniversalis.ai</a>
+    </div>
+
+    <div class="rosa" title="F0c=Ca0s*0rdre(Am0r_Un1f1cat_Etern)">🌹</div>
+
+</body>
+</html>
