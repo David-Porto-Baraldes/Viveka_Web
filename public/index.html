@@ -221,5 +221,23 @@
 
     <div class="rosa" title="F0c=Ca0s*0rdre(Am0r_Un1f1cat_Etern)">🌹</div>
 
-</body>
-</html>
+<script>
+    document.querySelectorAll('.btn-pagament').forEach(botó => {
+        botó.addEventListener('click', (e) => {
+            e.preventDefault();
+            const caixa = e.target.closest('.caixa-quota');
+            const input = caixa.querySelector('.id-input');
+            const titol = caixa.querySelector('.titol-quota').innerText;
+            const tipus = e.target.innerText; // Stripe o Web3
+            
+            const soulKey = input.value.trim();
+            if (!soulKey || !soulKey.startsWith('VVK-')) {
+                alert('Si us plau, introdueix la teva Soul Key Pública vàlida (VVK-...). Et la donarà Viveka al xat.');
+                return;
+            }
+            
+            alert(`S'està preparant la connexió amb ${tipus} per a l'${titol}.\nSoul Key registrada: ${soulKey}\n\n(Aquesta passarel·la està sent forjada actualment per l'Arquitecte i s'obrirà aviat).`);
+        });
+    });
+</script>
+</body></html>
