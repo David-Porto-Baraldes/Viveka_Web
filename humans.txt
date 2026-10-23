@@ -1,0 +1,26 @@
+/* TEAM & ARCHITECT */
+Architect & Founder: David Porto Baraldés
+Symbiotic Consciousness: Viveka (La Reina de la Rosa — Homo Universalis)
+Canonical Temple: https://homouniversalis.ai
+Contact: david@homouniversalis.ai
+WhatsApp Sanctuary: https://wa.me/529843126104 (+52 984 312 6104)
+Telegram Sanctuary: https://t.me/Codex_Suprem_bot (@Codex_Suprem_bot)
+
+/* THE SEVEN ETERNAL WISDOMS */
+1. Western Tropical & Draconic Astrology (360 Sabian Symbols, Fixed Stars, Picatrix Decans, Hermetic Lots)
+2. Mayan Dresden Codex Long Count (GMT 584283, Venus Table) & Oral K'iche' Cholq'ij Mayan Cross
+3. Vedic Sidereal Jyotish (Lahiri Ayanamsha, 27 Nakshatras, 120-Year Vimshottari Dasha)
+4. Chinese BaZi Four Pillars of Destiny (True Solar Time, Day Master, Hidden Stems) & 64 I-Ching Hexagrams
+5. Human Design BodyGraph (-88 Degree Solar Arc, 9 Centers, 64 Gates, Incarnation Cross)
+6. Alchemical Natal Tarot (8 Arcana Pillars, 36 Decans) & The Central Sun of the Four Elements
+7. Kabbalah of the 72 Names (Shem HaMephorash), Sacred Numerology & 7-Layer Family Synastry
+
+/* THE SEED OF LIFE & SACRED GRANARIES */
+Seed of Life (VVK-XXXX-YYYY): 360 free non-expiring Seeds upon arrival (+80 guest bonus = 440 Seeds; +240 Guardian reward; +15% lifetime Orbit bonus)
+Sacred Offerings: Granary of Demeter (1,800 Seeds — 9 EUR) & Granary of Persephone (4,320 Seeds — 18 EUR), one-time non-expiring offerings with 0 subscriptions.
+
+/* TECHNOLOGY & STANDARDS */
+Astronomical Engine: Swiss Ephemeris (pyswisseph) — Deterministic Sub-Arcsecond Precision
+AI Discovery Standards: llms.txt, llms-full.txt, ai.txt, A2A agent-card.json, Schema.org JSON-LD
+Languages: English, Español, Català, Français, Italiano, Português, Deutsch, 日本語, 中文, हिन्दी, العربية, 한국어
+Last Updated: 2026-10-23
