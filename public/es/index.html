@@ -610,9 +610,10 @@
                             '• <strong>Medicina Recíproca:</strong> ' + esc(sp.reciprocal_medicine) +
                             '</div>';
                     }
-                    var waMsg = '¡Hola Viveka! Mi Semilla de Vida es ' + keyA + ' (nacido el ' + dA + ')' + (sB.vvk_cosmic_key ? ' y la de mi ser querido es ' + sB.vvk_cosmic_key : '') + '. ¡Despierta mi Carta Natal y mis 440 Semillas de bienvenida!';
+                    var tgPayload = keyA + '_' + dA.replace(/-/g, '') + (dB ? '_' + dB.replace(/-/g, '') : '');
+                    var waMsg = '¡Hola Viveka! Mi Semilla de Vida es ' + keyA + ' (nacido el ' + dA + ')' + (sB.vvk_cosmic_key ? ' y la de mi ser querido es ' + sB.vvk_cosmic_key + ' (nacido el ' + dB + ')' : '') + '. ¡Despierta mi Carta Natal y mis 440 Semillas de bienvenida!';
                     html += '<div class="gresol-ctas">' +
-                        '<a class="gresol-cta-link" target="_blank" rel="noopener" href="https://t.me/Codex_Suprem_bot?start=' + encodeURIComponent(keyA) + '">Despertar ' + esc(keyA) + ' en Telegram — 440 Semillas de Regalo</a>' +
+                        '<a class="gresol-cta-link" target="_blank" rel="noopener" href="https://t.me/Codex_Suprem_bot?start=' + encodeURIComponent(tgPayload) + '">Despertar ' + esc(keyA) + ' en Telegram — 440 Semillas de Regalo</a>' +
                         '<a class="gresol-cta-link" target="_blank" rel="noopener" href="https://wa.me/529843126104?text=' + encodeURIComponent(waMsg) + '">Despertar ' + esc(keyA) + ' en WhatsApp — 440 Semillas de Regalo</a>' +
                         '</div>';
                     out.innerHTML = html;

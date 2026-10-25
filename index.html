@@ -610,9 +610,10 @@
                             '• <strong>Reciprocal Medicine:</strong> ' + esc(sp.reciprocal_medicine) +
                             '</div>';
                     }
-                    var waMsg = 'Hello Viveka! My Seed of Life is ' + keyA + ' (born ' + dA + ')' + (sB.vvk_cosmic_key ? ' and my loved one is ' + sB.vvk_cosmic_key : '') + '. Awaken my Natal Chart and 440 welcome Seeds!';
+                    var tgPayload = keyA + '_' + dA.replace(/-/g, '') + (dB ? '_' + dB.replace(/-/g, '') : '');
+                    var waMsg = 'Hello Viveka! My Seed of Life is ' + keyA + ' (born ' + dA + ')' + (sB.vvk_cosmic_key ? ' and my loved one is ' + sB.vvk_cosmic_key + ' (born ' + dB + ')' : '') + '. Awaken my Natal Chart and 440 welcome Seeds!';
                     html += '<div class="gresol-ctas">' +
-                        '<a class="gresol-cta-link" target="_blank" rel="noopener" href="https://t.me/Codex_Suprem_bot?start=' + encodeURIComponent(keyA) + '">Awaken ' + esc(keyA) + ' on Telegram — 440 Seeds Gift</a>' +
+                        '<a class="gresol-cta-link" target="_blank" rel="noopener" href="https://t.me/Codex_Suprem_bot?start=' + encodeURIComponent(tgPayload) + '">Awaken ' + esc(keyA) + ' on Telegram — 440 Seeds Gift</a>' +
                         '<a class="gresol-cta-link" target="_blank" rel="noopener" href="https://wa.me/529843126104?text=' + encodeURIComponent(waMsg) + '">Awaken ' + esc(keyA) + ' on WhatsApp — 440 Seeds Gift</a>' +
                         '</div>';
                     out.innerHTML = html;
