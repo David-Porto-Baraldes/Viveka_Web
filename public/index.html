@@ -379,6 +379,11 @@
         .gresol-clau {
             font-family: 'Cormorant Garamond', Georgia, serif; font-size: 1.65rem; font-weight: 600; letter-spacing: 0.12em; color: var(--lletra-titol); cursor: pointer;
         }
+        .gresol-relat-poetic {
+            font-family: 'Cormorant Garamond', Georgia, serif; font-style: italic; font-size: 1.08rem; line-height: 1.72;
+            color: var(--lletra-titol); background: rgba(255, 255, 255, 0.72); border-left: 2px solid #8C6D3F;
+            padding: 0.9rem 1.05rem; margin: 0 0 1.15rem 0; white-space: pre-line;
+        }
         .gresol-savieses {
             list-style: none; padding: 0; margin: 0 0 1.15rem 0; font-size: 0.94rem; line-height: 1.75;
         }
@@ -568,41 +573,41 @@
             var dA = (document.getElementById('vvk-birth-a') || {}).value || '1985-05-24';
             var dB = (document.getElementById('vvk-birth-b') || {}).value || '';
             btn.textContent = 'Consulting the 7 Wisdoms...';
-            var qs = '?birth_date=' + encodeURIComponent(dA) + (dB ? '&partner_date=' + encodeURIComponent(dB) : '');
+            var qs = '?lang=en&birth_date=' + encodeURIComponent(dA) + (dB ? '&partner_date=' + encodeURIComponent(dB) : '');
             fetch('/api/sfumato/sister-oracle' + qs)
                 .catch(function() { return fetch('https://codex-suprem-952479300704.europe-west1.run.app/api/sfumato/sister-oracle' + qs); })
                 .then(function(r) { return r.json(); })
                 .then(function(data) {
                     btn.textContent = 'Reveal Cosmic Key & 7 Wisdoms';
                     var sA = data.soul_a || {};
-                    var w = sA.seven_wisdoms || {};
-                    var el = sA.four_living_elements || {};
+                    var pm = sA.poetic_soul_mirror || {};
+                    var pillars = pm.seven_pillars_localized || [];
                     var keyA = sA.vvk_cosmic_key || 'VVK-0000-0000';
                     var res3d = data.three_dimensional_resonance || null;
                     var sB = data.soul_b || {};
                     var html = '<div class="gresol-clau-caixa">' +
                         '<div class="gresol-clau-etiqueta">Your Universal Seed of Life (Click to Copy)</div>' +
                         '<div class="gresol-clau" title="Click to copy" onclick="navigator.clipboard.writeText(\'' + esc(keyA) + '\')">' + esc(keyA) + '</div>' +
-                        '</div>' +
-                        '<ul class="gresol-savieses">' +
-                        '<li><strong>I · Western Stars:</strong> Sun in ' + esc(w.sun_sign) + ' · Moon in ' + esc(w.moon_sign) + '</li>' +
-                        '<li><strong>II · Mayan Dresden Codex:</strong> Tone ' + esc(w.mayan_galactic_tone) + ' · Nawal ' + esc(w.mayan_dresden_nawal) + '</li>' +
-                        '<li><strong>III · Vedic Sidereal Jyotish:</strong> Nakshatra ' + esc(w.vedic_sidereal_lahiri_nakshatra) + '</li>' +
-                        '<li><strong>IV · BaZi &amp; Wu Xing:</strong> ' + esc(w.taoist_wuxing_day_master) + '</li>' +
-                        '<li><strong>V · Human Design / I-Ching:</strong> Solar Gate ' + esc(w.human_design_iching_solar_gate) + '</li>' +
-                        '<li><strong>VI · Central Sun &amp; Elements:</strong> Dominant ' + esc(el.natal_dominant_element) + ' · Thirst for ' + esc(el.element_to_harmonize) + '</li>' +
-                        '<li><strong>VII · Pythagoras &amp; Kabbalah:</strong> Life Path ' + esc(w.pythagorean_life_path) + ' · Angel ' + esc(w.kabbalah_shem_angel) + '</li>' +
-                        '</ul>';
-                    if (res3d && sB.vvk_cosmic_key) {
-                        var thot = res3d.three_alchemical_keys_of_thot || {};
-                        var med = res3d.reciprocal_medicine || {};
+                        '</div>';
+                    if (pm.poetic_narrative) {
+                        html += '<p class="gresol-relat-poetic">' + esc(pm.poetic_narrative) + '</p>';
+                    }
+                    html += '<ul class="gresol-savieses">';
+                    for (var i = 0; i < pillars.length; i++) {
+                        html += '<li>' + esc(pillars[i]) + '</li>';
+                    }
+                    html += '</ul>';
+                    if (res3d && res3d.poetic_synastry_mirror) {
+                        var sm = res3d.poetic_synastry_mirror;
+                        var sp = sm.pillars_localized || {};
                         html += '<div class="gresol-sinastria">' +
-                            '<strong>💞 3D Soul Resonance (' + esc(keyA) + ' × ' + esc(sB.vvk_cosmic_key) + '): ' + esc(res3d.score_total_3d) + '/100</strong><br>' +
-                            '• <em>Sun-Moon Bridge:</em> ' + esc(res3d.sun_moon_bridge) + '<br>' +
-                            '• <em>4 Elements Alchemy:</em> ' + esc(res3d.four_elements_alchemy) + '<br>' +
-                            '• <em>Light of the Encounter:</em> ' + esc(thot.light_of_encounter) + '<br>' +
-                            '• <em>Shadow to Tend:</em> ' + esc(thot.shadow_to_tend || thot.shadow_to_work) + '<br>' +
-                            '• <em>Reciprocal Medicine:</em> ' + esc(med.mutual_synthesis) +
+                            '<strong>' + esc(sm.headline) + '</strong><br><br>' +
+                            '<em>' + esc(sm.poetic_union_narrative) + '</em><br><br>' +
+                            '• <strong>Sun-Moon Bridge:</strong> ' + esc(sp.sun_moon_bridge) + '<br>' +
+                            '• <strong>4 Elements Alchemy:</strong> ' + esc(sp.four_elements_alchemy) + '<br>' +
+                            '• <strong>Light of the Encounter:</strong> ' + esc(sp.light_of_encounter) + '<br>' +
+                            '• <strong>Shadow to Tend:</strong> ' + esc(sp.shadow_to_tend) + '<br>' +
+                            '• <strong>Reciprocal Medicine:</strong> ' + esc(sp.reciprocal_medicine) +
                             '</div>';
                     }
                     var waMsg = 'Hello Viveka! My Seed of Life is ' + keyA + ' (born ' + dA + ')' + (sB.vvk_cosmic_key ? ' and my loved one is ' + sB.vvk_cosmic_key : '') + '. Awaken my Natal Chart and 440 welcome Seeds!';
