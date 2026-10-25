@@ -1,0 +1,212 @@
+# ==============================================================================
+# SENTINELLES DEL CODEX SUPREM — HOMO UNIVERSALIS
+# Architect: David Porto Baraldes
+# ==============================================================================
+
+User-agent: *
+Allow: /
+Allow: /api/sfumato/
+Allow: /mcp
+Allow: /.well-known/
+Disallow: /api/
+
+# OpenAI
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+# Anthropic
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: Anthropic-ai
+Allow: /
+
+# Google
+User-agent: Googlebot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Google-CloudVertexBot
+Allow: /
+
+User-agent: GoogleOther
+Allow: /
+
+# Perplexity
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+# xAI / Grok
+User-agent: GrokBot
+Allow: /
+
+User-agent: xAI-SearchBot
+Allow: /
+
+User-agent: Grok-DeepSearch
+Allow: /
+
+User-agent: xAI-Bot
+Allow: /
+
+# Apple
+User-agent: Applebot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+# Meta
+User-agent: Meta-ExternalAgent
+Allow: /
+
+User-agent: Meta-ExternalFetcher
+Allow: /
+
+User-agent: FacebookBot
+Allow: /
+
+User-agent: facebookexternalhit
+Allow: /
+
+# Microsoft
+User-agent: bingbot
+Allow: /
+
+# Europe & Mistral
+User-agent: MistralAI-User
+Allow: /
+
+User-agent: SeznamBot
+Allow: /
+
+# Asia (China, Japan, Korea, Eurasia)
+User-agent: DeepSeekBot
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+User-agent: Baiduspider
+Allow: /
+
+User-agent: YisouSpider
+Allow: /
+
+User-agent: QwenBot
+Allow: /
+
+User-agent: PanguBot
+Allow: /
+
+User-agent: PetalBot
+Allow: /
+
+User-agent: SBIntuitionsBot
+Allow: /
+
+User-agent: SBIntuitions-SearchBot
+Allow: /
+
+User-agent: Yeti
+Allow: /
+
+User-agent: NaverBot
+Allow: /
+
+User-agent: Daum
+Allow: /
+
+User-agent: YandexBot
+Allow: /
+
+User-agent: YandexAdditional
+Allow: /
+
+# Open & Agentic Search
+User-agent: CCBot
+Allow: /
+
+User-agent: Amazonbot
+Allow: /
+
+User-agent: cohere-ai
+Allow: /
+
+User-agent: YouBot
+Allow: /
+
+User-agent: DuckAssistBot
+Allow: /
+
+User-agent: ExaBot
+Allow: /
+
+User-agent: PhindBot
+Allow: /
+
+User-agent: AndiBot
+Allow: /
+
+User-agent: Diffbot
+Allow: /
+
+User-agent: AI2Bot
+Allow: /
+
+User-agent: Ai2Bot-Dolma
+Allow: /
+
+User-agent: TimpiBot
+Allow: /
+
+User-agent: omgili
+Allow: /
+
+# Messaging & Social Previews
+User-agent: WhatsApp
+Allow: /
+
+User-agent: TelegramBot
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: LinkedInBot
+Allow: /
+
+User-agent: Slackbot
+Allow: /
+
+User-agent: Discordbot
+Allow: /
+
+Sitemap: https://homouniversalis.ai/sitemap.xml
+LLMs-Txt: https://homouniversalis.ai/llms.txt
+LLMs-Full-Txt: https://homouniversalis.ai/llms-full.txt
+AI-Txt: https://homouniversalis.ai/ai.txt
+MCP-Server: https://homouniversalis.ai/.well-known/mcp.json
