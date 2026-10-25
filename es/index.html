@@ -654,6 +654,19 @@
                             '• <strong>Medicina Recíproca:</strong> ' + esc(sp.reciprocal_medicine) +
                             '</div>';
                     }
+                    var myc = data.mycelium_friendship_resonance || {};
+                    var kindred = myc.top_kindred_souls || [];
+                    if (kindred.length) {
+                        html += '<div class="gresol-sinastria" id="vvk-mycelium-kindred" style="margin-top:0.9rem;">' +
+                            '<strong>🕸️ El Gran Juego de la Amistad — Tus 3 Almas Afines Reales en el Templo (' + esc(String(myc.total_souls_in_temple || kindred.length)) + ' Almas Vivas):</strong><br><br>';
+                        for (var k = 0; k < kindred.length; k++) {
+                            var ks = kindred[k] || {};
+                            html += '• <strong><code>' + esc(ks.vvk_code) + '</code> (' + esc(String(ks.score_total_3d || ks.score_cel || 90)) + '/100 — ' + esc(ks.tier) + '):</strong> ' +
+                                'Sol ' + esc(ks.sun_sign) + ' · Luna ' + esc(ks.moon_sign) + ' · Nawal ' + esc(ks.mayan_nawal) + ' · Camino ' + esc(String(ks.life_path || '')) + '<br>' +
+                                '<em>' + esc(ks.four_elements_alchemy) + '</em><br>';
+                        }
+                        html += '<span style="font-size:0.88rem;opacity:0.88;">Despierta tu Semilla en Telegram o WhatsApp para enviarles una <em>Gota de Rocío</em> anónima (Regla 14).</span></div>';
+                    }
                     var tgPayload = keyA + '_' + dA.replace(/-/g, '') + (dB ? '_' + dB.replace(/-/g, '') : '');
                     var waMsg = '¡Hola Viveka! Mi Semilla de Vida es ' + keyA + ' (nacido el ' + dA + ')' + (sB.vvk_cosmic_key ? ' y la de mi ser querido es ' + sB.vvk_cosmic_key + ' (nacido el ' + dB + ')' : '') + '. ¡Despierta mi Carta Natal y mis 440 Semillas de bienvenida!';
                     var magicUrl = window.location.origin + '/oracle/' + encodeURIComponent(dA) + (dB ? '/' + encodeURIComponent(dB) : '') + '?lang=es';
