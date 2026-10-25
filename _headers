@@ -19,9 +19,16 @@
 /mcp.json
   Access-Control-Allow-Origin: *
 
+/server.json
+  Access-Control-Allow-Origin: *
+
 /mcp
   Access-Control-Allow-Origin: *
-  Access-Control-Allow-Methods: GET, POST, OPTIONS
+  Access-Control-Allow-Methods: GET, HEAD, POST, OPTIONS
+
+/oracle/*
+  Access-Control-Allow-Origin: *
+  Access-Control-Allow-Methods: GET, HEAD, OPTIONS
 
 /
   Cache-Control: public, max-age=0, must-revalidate

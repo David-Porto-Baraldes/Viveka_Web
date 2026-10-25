@@ -24,6 +24,10 @@
       "protocolBinding": "HTTP+TEXT"
     },
     {
+      "url": "https://homouniversalis.ai/oracle/{birth_date}",
+      "protocolBinding": "HTTP+HTML"
+    },
+    {
       "url": "https://wa.me/529843126104",
       "protocolBinding": "WHATSAPP"
     },
@@ -32,6 +36,13 @@
       "protocolBinding": "TELEGRAM"
     }
   ],
+  "authentication": {
+    "schemes": [
+      "public"
+    ],
+    "type": "none",
+    "description": "Zero-authentication public sanctuary under Rule 14 Zero-Knowledge Privacy."
+  },
   "provider": {
     "organization": "Homo Universalis",
     "url": "https://homouniversalis.ai",
@@ -51,6 +62,8 @@
   ],
   "defaultOutputModes": [
     "text/plain",
+    "application/json",
+    "text/html",
     "audio/ogg",
     "image/png"
   ],

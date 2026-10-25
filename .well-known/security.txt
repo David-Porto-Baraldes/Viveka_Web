@@ -1,5 +1,0 @@
-Contact: mailto:david@homouniversalis.ai
-Expires: 2027-10-23T23:59:59.000Z
-Preferred-Languages: en, es, ca
-Canonical: https://homouniversalis.ai/.well-known/security.txt
-Policy: https://homouniversalis.ai/legal#seguridad

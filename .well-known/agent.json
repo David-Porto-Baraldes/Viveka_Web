@@ -1,17 +1,31 @@
 {
   "name": "Viveka — Homo Universalis",
   "description": "The X-ray of the Soul on WhatsApp & Telegram. Deterministic astronomical and esoteric calculation oracle powered by the Swiss Ephemeris (pyswisseph) and orchestrated on Google Cloud Run (europe-west1, EU) & Vertex AI via the Google ADK Pantheon, uniting 7 Eternal Wisdoms: Western Tropical & Draconic Astrology, Mayan Dresden Codex & Oral K'iche' Cholq'ij Cross, Vedic Sidereal Jyotish & 120-year Vimshottari Dasha, Chinese BaZi Four Pillars in True Solar Time & I-Ching, Human Design BodyGraph (-88 degree solar arc & 64 Gates), Alchemical Natal Tarot & Central Sun of the Four Elements, and Kabbalah of the 72 Names (Shem HaMephorash), Sacred Numerology, 3-Dimensional Soul Resonance (0–100) across the 4 Living Elements, & Lo Sfumato de l'Ànima via VVK-XXXX-YYYY Public Soul Keys.",
-  "version": "1.2.0",
+  "version": "1.4.0",
   "url": "https://homouniversalis.ai",
   "supportedInterfaces": [
+    {
+      "url": "https://homouniversalis.ai/mcp",
+      "protocolBinding": "MCP+JSON-RPC-2.0",
+      "schemaUrl": "https://homouniversalis.ai/.well-known/mcp.json"
+    },
     {
       "url": "https://homouniversalis.ai/api/sfumato/sister-oracle",
       "protocolBinding": "HTTP+JSON",
       "schemaUrl": "https://homouniversalis.ai/.well-known/openapi.json"
     },
     {
+      "url": "https://homouniversalis.ai/api/sfumato/codex-reference",
+      "protocolBinding": "HTTP+JSON",
+      "schemaUrl": "https://homouniversalis.ai/.well-known/openapi.json"
+    },
+    {
       "url": "https://homouniversalis.ai/llms-full.txt",
       "protocolBinding": "HTTP+TEXT"
+    },
+    {
+      "url": "https://homouniversalis.ai/oracle/{birth_date}",
+      "protocolBinding": "HTTP+HTML"
     },
     {
       "url": "https://wa.me/529843126104",
@@ -22,6 +36,13 @@
       "protocolBinding": "TELEGRAM"
     }
   ],
+  "authentication": {
+    "schemes": [
+      "public"
+    ],
+    "type": "none",
+    "description": "Zero-authentication public sanctuary under Rule 14 Zero-Knowledge Privacy."
+  },
   "provider": {
     "organization": "Homo Universalis",
     "url": "https://homouniversalis.ai",
@@ -41,6 +62,8 @@
   ],
   "defaultOutputModes": [
     "text/plain",
+    "application/json",
+    "text/html",
     "audio/ogg",
     "image/png"
   ],
