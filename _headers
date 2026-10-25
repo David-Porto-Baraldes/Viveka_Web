@@ -1,0 +1,15 @@
+/.well-known/*
+  Access-Control-Allow-Origin: *
+  Access-Control-Allow-Methods: GET, HEAD, OPTIONS
+
+/llms.txt
+  Access-Control-Allow-Origin: *
+
+/llms-full.txt
+  Access-Control-Allow-Origin: *
+
+/ai.txt
+  Access-Control-Allow-Origin: *
+
+/openapi.json
+  Access-Control-Allow-Origin: *
