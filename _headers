@@ -13,3 +13,16 @@
 
 /openapi.json
   Access-Control-Allow-Origin: *
+
+/
+  Cache-Control: public, max-age=0, must-revalidate
+
+/es/
+  Cache-Control: public, max-age=0, must-revalidate
+
+/es/*
+  Cache-Control: public, max-age=0, must-revalidate
+
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate
+
