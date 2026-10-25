@@ -608,7 +608,7 @@
             btn.textContent = 'Consultando las 7 Sabidurías...';
             var qs = '?lang=es&birth_date=' + encodeURIComponent(dA) + (dB ? '&partner_date=' + encodeURIComponent(dB) : '');
             fetch('/api/sfumato/sister-oracle' + qs)
-                .catch(function() { return fetch('https://codex-suprem-952479300704.europe-west1.run.app/api/sfumato/sister-oracle' + qs); })
+                .catch(function() { return fetch('https://homouniversalis.ai/api/sfumato/sister-oracle' + qs); })
                 .then(function(r) { return r.json(); })
                 .then(function(data) {
                     btn.textContent = 'Revelar Llave Cósmica y 7 Sabidurías';

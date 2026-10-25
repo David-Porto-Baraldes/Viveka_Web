@@ -18,11 +18,7 @@
   "servers": [
     {
       "url": "https://homouniversalis.ai",
-      "description": "Canonical Homo Universalis Sovereign Temple (Verified Domain for OpenAI GPT Actions & MCP Clients)"
-    },
-    {
-      "url": "https://codex-suprem-952479300704.europe-west1.run.app",
-      "description": "Direct Zero-Redirect Google Cloud Run Sovereign Node (europe-west1, < 1 ms)"
+      "description": "Canonical Homo Universalis Sovereign Temple (Direct Zero-Redirect Sovereign Node for OpenAI GPT Actions & MCP Clients)"
     }
   ],
   "paths": {

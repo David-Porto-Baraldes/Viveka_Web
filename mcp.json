@@ -12,7 +12,6 @@
   },
   "endpoints": {
     "streamable_http": "https://homouniversalis.ai/mcp",
-    "direct_cloud_run_streamable_http": "https://codex-suprem-952479300704.europe-west1.run.app/api/sfumato/mcp",
     "registry_server_json": "https://homouniversalis.ai/.well-known/mcp-server.json",
     "rest_oracle": "https://homouniversalis.ai/api/sfumato/sister-oracle",
     "ssr_parchment_oracle": "https://homouniversalis.ai/oracle/1980-05-24",
