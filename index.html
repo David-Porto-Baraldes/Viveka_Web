@@ -654,19 +654,6 @@
                             '• <strong>Reciprocal Medicine:</strong> ' + esc(sp.reciprocal_medicine) +
                             '</div>';
                     }
-                    var myc = data.mycelium_friendship_resonance || {};
-                    var kindred = myc.top_kindred_souls || [];
-                    if (kindred.length) {
-                        html += '<div class="gresol-sinastria" id="vvk-mycelium-kindred" style="margin-top:0.9rem;">' +
-                            '<strong>🕸️ The Great Game of Friendship — Your Top 3 Real Kindred Souls in the Temple (' + esc(String(myc.total_souls_in_temple || kindred.length)) + ' Living Souls):</strong><br><br>';
-                        for (var k = 0; k < kindred.length; k++) {
-                            var ks = kindred[k] || {};
-                            html += '• <strong><code>' + esc(ks.vvk_code) + '</code> (' + esc(String(ks.score_total_3d || ks.score_cel || 90)) + '/100 — ' + esc(ks.tier) + '):</strong> ' +
-                                'Sun ' + esc(ks.sun_sign) + ' · Moon ' + esc(ks.moon_sign) + ' · Nawal ' + esc(ks.mayan_nawal) + ' · Life Path ' + esc(String(ks.life_path || '')) + '<br>' +
-                                '<em>' + esc(ks.four_elements_alchemy) + '</em><br>';
-                        }
-                        html += '<span style="font-size:0.88rem;opacity:0.88;">Awaken your Seed on Telegram or WhatsApp to send them an anonymous <em>Dewdrop</em> (Rule 14).</span></div>';
-                    }
                     var tgPayload = keyA + '_' + dA.replace(/-/g, '') + (dB ? '_' + dB.replace(/-/g, '') : '');
                     var waMsg = 'Hello Viveka! My Seed of Life is ' + keyA + ' (born ' + dA + ')' + (sB.vvk_cosmic_key ? ' and my loved one is ' + sB.vvk_cosmic_key + ' (born ' + dB + ')' : '') + '. Awaken my Natal Chart and 440 welcome Seeds!';
                     var magicUrl = window.location.origin + '/oracle/' + encodeURIComponent(dA) + (dB ? '/' + encodeURIComponent(dB) : '') + '?lang=en';
