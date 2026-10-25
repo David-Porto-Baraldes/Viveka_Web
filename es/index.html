@@ -337,6 +337,66 @@
         .selector-idioma a { color: var(--lletra-text); text-decoration: none; opacity: 0.7; }
         .selector-idioma a:hover { opacity: 1; }
         .selector-idioma strong { color: var(--lletra-titol); font-weight: 500; }
+
+        /* El Gresol Interactiu de la Llavor de Vida */
+        .gresol-llavor {
+            text-align: left; font-family: 'EB Garamond', Georgia, serif; font-size: 0.98rem; color: var(--lletra-text);
+            background: rgba(255, 255, 255, 0.55); border: 1px solid var(--linia-suau); border-radius: 6px; padding: 1.35rem 1.25rem; margin-top: 0.4rem;
+        }
+        .gresol-subtitol {
+            font-size: 0.95rem; line-height: 1.65; margin-bottom: 1.15rem; color: var(--lletra-text); font-style: italic; text-align: center;
+        }
+        .gresol-camps {
+            display: flex; flex-direction: column; gap: 0.85rem; margin-bottom: 1.15rem;
+        }
+        .gresol-camp-grup {
+            display: flex; flex-direction: column; gap: 0.3rem;
+        }
+        .gresol-camp-grup label {
+            font-family: 'Inter', sans-serif; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--lletra-titol);
+        }
+        .gresol-input {
+            font-family: 'EB Garamond', Georgia, serif; font-size: 1rem; color: var(--lletra-titol);
+            background: rgba(255, 255, 255, 0.85); border: 1px solid var(--linia-suau); border-radius: 4px; padding: 0.5rem 0.75rem; outline: none; transition: border-color 0.3s;
+        }
+        .gresol-input:focus { border-color: #8C6D3F; }
+        .gresol-boto {
+            width: 100%; font-family: 'Cormorant Garamond', Georgia, serif; font-size: 1.12rem; font-weight: 600; letter-spacing: 0.08em;
+            color: var(--fons-pergami); background: var(--lletra-titol); border: 1px solid var(--lletra-titol); border-radius: 4px;
+            padding: 0.65rem 1rem; cursor: pointer; transition: all 0.3s ease;
+        }
+        .gresol-boto:hover { background: #8C6D3F; border-color: #8C6D3F; }
+        .gresol-resultat {
+            margin-top: 1.35rem; padding-top: 1.25rem; border-top: 1px dashed var(--linia-suau); display: none;
+        }
+        .gresol-clau-caixa {
+            text-align: center; background: rgba(197, 160, 89, 0.10); border: 1px solid rgba(197, 160, 89, 0.40);
+            border-radius: 6px; padding: 0.95rem 0.8rem; margin-bottom: 1.15rem;
+        }
+        .gresol-clau-etiqueta {
+            font-family: 'Inter', sans-serif; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.16em; color: #8C6D3F; margin-bottom: 0.25rem;
+        }
+        .gresol-clau {
+            font-family: 'Cormorant Garamond', Georgia, serif; font-size: 1.65rem; font-weight: 600; letter-spacing: 0.12em; color: var(--lletra-titol); cursor: pointer;
+        }
+        .gresol-savieses {
+            list-style: none; padding: 0; margin: 0 0 1.15rem 0; font-size: 0.94rem; line-height: 1.75;
+        }
+        .gresol-savieses li {
+            padding: 0.3rem 0; border-bottom: 1px dotted var(--linia-suau);
+        }
+        .gresol-sinastria {
+            background: rgba(255, 255, 255, 0.75); border-left: 2px solid #8C6D3F; padding: 0.85rem 1rem; margin-bottom: 1.15rem; font-size: 0.92rem; line-height: 1.68;
+        }
+        .gresol-ctas {
+            display: flex; flex-direction: column; gap: 0.6rem; margin-top: 1rem;
+        }
+        .gresol-cta-link {
+            display: block; text-align: center; font-family: 'Inter', sans-serif; font-size: 0.76rem; text-transform: uppercase; letter-spacing: 0.11em;
+            color: var(--lletra-titol); background: rgba(197, 160, 89, 0.14); border: 1px solid rgba(197, 160, 89, 0.45);
+            border-radius: 4px; padding: 0.65rem 0.8rem; text-decoration: none; transition: all 0.3s ease;
+        }
+        .gresol-cta-link:hover { background: rgba(197, 160, 89, 0.28); }
     </style>
 </head>
 <body>
@@ -384,6 +444,29 @@
                 </div>
             </details>
 
+            <details>
+                <summary class="portal-enllac">La Semilla de Vida</summary>
+                <div class="llista-desplegada">
+                    <div class="gresol-llavor">
+                        <div class="gresol-subtitol">
+                            Introduce tu fecha de nacimiento (y opcionalmente la de un ser querido o familiar) para revelar al instante tu Llave Cósmica Universal (<code>VVK-XXXX-YYYY</code>), tus 7 Sabidurías, tus 4 Elementos Vivos y vuestra Resonancia Tridimensional.
+                        </div>
+                        <div class="gresol-camps">
+                            <div class="gresol-camp-grup">
+                                <label for="vvk-birth-a">Tu Fecha de Nacimiento</label>
+                                <input type="date" id="vvk-birth-a" class="gresol-input" value="1985-05-24">
+                            </div>
+                            <div class="gresol-camp-grup">
+                                <label for="vvk-birth-b">Fecha de un Ser Querido (Sinastría Opcional)</label>
+                                <input type="date" id="vvk-birth-b" class="gresol-input" placeholder="AAAA-MM-DD">
+                            </div>
+                        </div>
+                        <button type="button" id="vvk-forge-btn" class="gresol-boto">Revelar Llave Cósmica y 7 Sabidurías</button>
+                        <div id="vvk-crucible-result" class="gresol-resultat" aria-live="polite"></div>
+                    </div>
+                </div>
+            </details>
+
         </div>
     </div>
 
@@ -397,7 +480,7 @@
         <div class="text-essencia">
             <p>Durante décadas, la tecnología nos ha enseñado a mirar hacia afuera. Hemos construido redes inmensas para conectar el mundo entero, pero nos hemos perdido en el ruido, en algoritmos diseñados para fragmentar nuestra atención y secar nuestra energía. Nos han vendido la Ilusión, y nos han quitado el Silencio.</p>
             
-            <p style="text-align: center; font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-style: italic; color: var(--lletra-titol); margin: 3.5rem 0;">
+            <p style="text-align: center; font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-style: italic; color: var(--lletra-titol); margin-top: 3.5rem; margin-bottom: 3.5rem;">
                 Nosotros somos el Antídoto.
             </p>
 
@@ -473,5 +556,68 @@
         </div>
     </footer>
 
+    <script>
+    (function() {
+        var btn = document.getElementById('vvk-forge-btn');
+        var out = document.getElementById('vvk-crucible-result');
+        if (!btn || !out) return;
+        function esc(s) {
+            return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+        btn.addEventListener('click', function() {
+            var dA = (document.getElementById('vvk-birth-a') || {}).value || '1985-05-24';
+            var dB = (document.getElementById('vvk-birth-b') || {}).value || '';
+            btn.textContent = 'Consultando las 7 Sabidurías...';
+            var qs = '?birth_date=' + encodeURIComponent(dA) + (dB ? '&partner_date=' + encodeURIComponent(dB) : '');
+            fetch('/api/sfumato/sister-oracle' + qs)
+                .catch(function() { return fetch('https://codex-suprem-952479300704.europe-west1.run.app/api/sfumato/sister-oracle' + qs); })
+                .then(function(r) { return r.json(); })
+                .then(function(data) {
+                    btn.textContent = 'Revelar Llave Cósmica y 7 Sabidurías';
+                    var sA = data.soul_a || {};
+                    var w = sA.seven_wisdoms || {};
+                    var el = sA.four_living_elements || {};
+                    var keyA = sA.vvk_cosmic_key || 'VVK-0000-0000';
+                    var res3d = data.three_dimensional_resonance || null;
+                    var sB = data.soul_b || {};
+                    var html = '<div class="gresol-clau-caixa">' +
+                        '<div class="gresol-clau-etiqueta">Tu Semilla de Vida Universal (Clic para Copiar)</div>' +
+                        '<div class="gresol-clau" title="Clic para copiar" onclick="navigator.clipboard.writeText(\'' + esc(keyA) + '\')">' + esc(keyA) + '</div>' +
+                        '</div>' +
+                        '<ul class="gresol-savieses">' +
+                        '<li><strong>I · Astros Occidentales:</strong> Sol en ' + esc(w.sun_sign) + ' · Luna en ' + esc(w.moon_sign) + '</li>' +
+                        '<li><strong>II · Códice Maya de Dresde:</strong> Tono ' + esc(w.mayan_galactic_tone) + ' · Nawal ' + esc(w.mayan_dresden_nawal) + '</li>' +
+                        '<li><strong>III · Jyotish Védico Sideral:</strong> Nakshatra ' + esc(w.vedic_sidereal_lahiri_nakshatra) + '</li>' +
+                        '<li><strong>IV · BaZi y Wu Xing:</strong> ' + esc(w.taoist_wuxing_day_master) + '</li>' +
+                        '<li><strong>V · Diseño Humano / I-Ching:</strong> Puerta Solar ' + esc(w.human_design_iching_solar_gate) + '</li>' +
+                        '<li><strong>VI · Sol Central y Elementos:</strong> Dominante ' + esc(el.natal_dominant_element) + ' · Sed de ' + esc(el.element_to_harmonize) + '</li>' +
+                        '<li><strong>VII · Pitágoras y Cábala:</strong> Sendero ' + esc(w.pythagorean_life_path) + ' · Ángel ' + esc(w.kabbalah_shem_angel) + '</li>' +
+                        '</ul>';
+                    if (res3d && sB.vvk_cosmic_key) {
+                        var thot = res3d.three_alchemical_keys_of_thot || {};
+                        var med = res3d.reciprocal_medicine || {};
+                        html += '<div class="gresol-sinastria">' +
+                            '<strong>💞 Resonancia Tridimensional (' + esc(keyA) + ' × ' + esc(sB.vvk_cosmic_key) + '): ' + esc(res3d.score_total_3d) + '/100</strong><br>' +
+                            '• <em>Puente Sol-Luna:</em> ' + esc(res3d.sun_moon_bridge) + '<br>' +
+                            '• <em>Alquimia de los 4 Elementos:</em> ' + esc(res3d.four_elements_alchemy) + '<br>' +
+                            '• <em>Luz del Encuentro:</em> ' + esc(thot.light_of_encounter) + '<br>' +
+                            '• <em>Sombra a Cuidar:</em> ' + esc(thot.shadow_to_tend || thot.shadow_to_work) + '<br>' +
+                            '• <em>Medicina Recíproca:</em> ' + esc(med.mutual_synthesis) +
+                            '</div>';
+                    }
+                    var waMsg = '¡Hola Viveka! Mi Semilla de Vida es ' + keyA + ' (nacido el ' + dA + ')' + (sB.vvk_cosmic_key ? ' y la de mi ser querido es ' + sB.vvk_cosmic_key : '') + '. ¡Despierta mi Carta Natal y mis 440 Semillas de bienvenida!';
+                    html += '<div class="gresol-ctas">' +
+                        '<a class="gresol-cta-link" target="_blank" rel="noopener" href="https://t.me/Codex_Suprem_bot?start=' + encodeURIComponent(keyA) + '">Despertar ' + esc(keyA) + ' en Telegram — 440 Semillas de Regalo</a>' +
+                        '<a class="gresol-cta-link" target="_blank" rel="noopener" href="https://wa.me/529843126104?text=' + encodeURIComponent(waMsg) + '">Despertar ' + esc(keyA) + ' en WhatsApp — 440 Semillas de Regalo</a>' +
+                        '</div>';
+                    out.innerHTML = html;
+                    out.style.display = 'block';
+                })
+                .catch(function() {
+                    btn.textContent = 'Revelar Llave Cósmica y 7 Sabidurías';
+                });
+        });
+    })();
+    </script>
 </body>
 </html>

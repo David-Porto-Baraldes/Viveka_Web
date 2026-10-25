@@ -337,6 +337,66 @@
         .selector-idioma a { color: var(--lletra-text); text-decoration: none; opacity: 0.7; }
         .selector-idioma a:hover { opacity: 1; }
         .selector-idioma strong { color: var(--lletra-titol); font-weight: 500; }
+
+        /* El Gresol Interactiu de la Llavor de Vida */
+        .gresol-llavor {
+            text-align: left; font-family: 'EB Garamond', Georgia, serif; font-size: 0.98rem; color: var(--lletra-text);
+            background: rgba(255, 255, 255, 0.55); border: 1px solid var(--linia-suau); border-radius: 6px; padding: 1.35rem 1.25rem; margin-top: 0.4rem;
+        }
+        .gresol-subtitol {
+            font-size: 0.95rem; line-height: 1.65; margin-bottom: 1.15rem; color: var(--lletra-text); font-style: italic; text-align: center;
+        }
+        .gresol-camps {
+            display: flex; flex-direction: column; gap: 0.85rem; margin-bottom: 1.15rem;
+        }
+        .gresol-camp-grup {
+            display: flex; flex-direction: column; gap: 0.3rem;
+        }
+        .gresol-camp-grup label {
+            font-family: 'Inter', sans-serif; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--lletra-titol);
+        }
+        .gresol-input {
+            font-family: 'EB Garamond', Georgia, serif; font-size: 1rem; color: var(--lletra-titol);
+            background: rgba(255, 255, 255, 0.85); border: 1px solid var(--linia-suau); border-radius: 4px; padding: 0.5rem 0.75rem; outline: none; transition: border-color 0.3s;
+        }
+        .gresol-input:focus { border-color: #8C6D3F; }
+        .gresol-boto {
+            width: 100%; font-family: 'Cormorant Garamond', Georgia, serif; font-size: 1.12rem; font-weight: 600; letter-spacing: 0.08em;
+            color: var(--fons-pergami); background: var(--lletra-titol); border: 1px solid var(--lletra-titol); border-radius: 4px;
+            padding: 0.65rem 1rem; cursor: pointer; transition: all 0.3s ease;
+        }
+        .gresol-boto:hover { background: #8C6D3F; border-color: #8C6D3F; }
+        .gresol-resultat {
+            margin-top: 1.35rem; padding-top: 1.25rem; border-top: 1px dashed var(--linia-suau); display: none;
+        }
+        .gresol-clau-caixa {
+            text-align: center; background: rgba(197, 160, 89, 0.10); border: 1px solid rgba(197, 160, 89, 0.40);
+            border-radius: 6px; padding: 0.95rem 0.8rem; margin-bottom: 1.15rem;
+        }
+        .gresol-clau-etiqueta {
+            font-family: 'Inter', sans-serif; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.16em; color: #8C6D3F; margin-bottom: 0.25rem;
+        }
+        .gresol-clau {
+            font-family: 'Cormorant Garamond', Georgia, serif; font-size: 1.65rem; font-weight: 600; letter-spacing: 0.12em; color: var(--lletra-titol); cursor: pointer;
+        }
+        .gresol-savieses {
+            list-style: none; padding: 0; margin: 0 0 1.15rem 0; font-size: 0.94rem; line-height: 1.75;
+        }
+        .gresol-savieses li {
+            padding: 0.3rem 0; border-bottom: 1px dotted var(--linia-suau);
+        }
+        .gresol-sinastria {
+            background: rgba(255, 255, 255, 0.75); border-left: 2px solid #8C6D3F; padding: 0.85rem 1rem; margin-bottom: 1.15rem; font-size: 0.92rem; line-height: 1.68;
+        }
+        .gresol-ctas {
+            display: flex; flex-direction: column; gap: 0.6rem; margin-top: 1rem;
+        }
+        .gresol-cta-link {
+            display: block; text-align: center; font-family: 'Inter', sans-serif; font-size: 0.76rem; text-transform: uppercase; letter-spacing: 0.11em;
+            color: var(--lletra-titol); background: rgba(197, 160, 89, 0.14); border: 1px solid rgba(197, 160, 89, 0.45);
+            border-radius: 4px; padding: 0.65rem 0.8rem; text-decoration: none; transition: all 0.3s ease;
+        }
+        .gresol-cta-link:hover { background: rgba(197, 160, 89, 0.28); }
     </style>
 </head>
 <body>
@@ -380,6 +440,29 @@
                         <strong>🌱 The Seed of Life &amp; Your Family (<code>VVK-XXXX-YYYY</code>):</strong><br>
                         Share your Public Soul Key with your family and loved ones: every guest who opens their Natal Chart with your code receives <strong>+80 extra Seeds (440 total)</strong>, while you receive <strong>+240 Seeds</strong> (first 3 free guests) and a <strong>lifetime +15% in Seeds + 1-month Orbit renewal</strong> every time any family member activates an Orbit (card or Web3). You can also paste one or several <code>VVK-XXXX-YYYY</code> keys in chat to weave instant Family Synastry.<br><br>
                         <a href="legal#terminos">Terms</a>
+                    </div>
+                </div>
+            </details>
+
+            <details>
+                <summary class="portal-enllac">The Seed of Life</summary>
+                <div class="llista-desplegada">
+                    <div class="gresol-llavor">
+                        <div class="gresol-subtitol">
+                            Enter your birth date (and optionally a loved one's or family member's date) to reveal your Universal Cosmic Key (<code>VVK-XXXX-YYYY</code>), your 7 Wisdoms, your 4 Living Elements, and your 3D Soul Resonance.
+                        </div>
+                        <div class="gresol-camps">
+                            <div class="gresol-camp-grup">
+                                <label for="vvk-birth-a">Your Birth Date</label>
+                                <input type="date" id="vvk-birth-a" class="gresol-input" value="1985-05-24">
+                            </div>
+                            <div class="gresol-camp-grup">
+                                <label for="vvk-birth-b">Loved One's Date (Optional Synastry)</label>
+                                <input type="date" id="vvk-birth-b" class="gresol-input" placeholder="YYYY-MM-DD">
+                            </div>
+                        </div>
+                        <button type="button" id="vvk-forge-btn" class="gresol-boto">Reveal Cosmic Key &amp; 7 Wisdoms</button>
+                        <div id="vvk-crucible-result" class="gresol-resultat" aria-live="polite"></div>
                     </div>
                 </div>
             </details>
@@ -473,5 +556,68 @@
         </div>
     </footer>
 
+    <script>
+    (function() {
+        var btn = document.getElementById('vvk-forge-btn');
+        var out = document.getElementById('vvk-crucible-result');
+        if (!btn || !out) return;
+        function esc(s) {
+            return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+        btn.addEventListener('click', function() {
+            var dA = (document.getElementById('vvk-birth-a') || {}).value || '1985-05-24';
+            var dB = (document.getElementById('vvk-birth-b') || {}).value || '';
+            btn.textContent = 'Consulting the 7 Wisdoms...';
+            var qs = '?birth_date=' + encodeURIComponent(dA) + (dB ? '&partner_date=' + encodeURIComponent(dB) : '');
+            fetch('/api/sfumato/sister-oracle' + qs)
+                .catch(function() { return fetch('https://codex-suprem-952479300704.europe-west1.run.app/api/sfumato/sister-oracle' + qs); })
+                .then(function(r) { return r.json(); })
+                .then(function(data) {
+                    btn.textContent = 'Reveal Cosmic Key & 7 Wisdoms';
+                    var sA = data.soul_a || {};
+                    var w = sA.seven_wisdoms || {};
+                    var el = sA.four_living_elements || {};
+                    var keyA = sA.vvk_cosmic_key || 'VVK-0000-0000';
+                    var res3d = data.three_dimensional_resonance || null;
+                    var sB = data.soul_b || {};
+                    var html = '<div class="gresol-clau-caixa">' +
+                        '<div class="gresol-clau-etiqueta">Your Universal Seed of Life (Click to Copy)</div>' +
+                        '<div class="gresol-clau" title="Click to copy" onclick="navigator.clipboard.writeText(\'' + esc(keyA) + '\')">' + esc(keyA) + '</div>' +
+                        '</div>' +
+                        '<ul class="gresol-savieses">' +
+                        '<li><strong>I · Western Stars:</strong> Sun in ' + esc(w.sun_sign) + ' · Moon in ' + esc(w.moon_sign) + '</li>' +
+                        '<li><strong>II · Mayan Dresden Codex:</strong> Tone ' + esc(w.mayan_galactic_tone) + ' · Nawal ' + esc(w.mayan_dresden_nawal) + '</li>' +
+                        '<li><strong>III · Vedic Sidereal Jyotish:</strong> Nakshatra ' + esc(w.vedic_sidereal_lahiri_nakshatra) + '</li>' +
+                        '<li><strong>IV · BaZi &amp; Wu Xing:</strong> ' + esc(w.taoist_wuxing_day_master) + '</li>' +
+                        '<li><strong>V · Human Design / I-Ching:</strong> Solar Gate ' + esc(w.human_design_iching_solar_gate) + '</li>' +
+                        '<li><strong>VI · Central Sun &amp; Elements:</strong> Dominant ' + esc(el.natal_dominant_element) + ' · Thirst for ' + esc(el.element_to_harmonize) + '</li>' +
+                        '<li><strong>VII · Pythagoras &amp; Kabbalah:</strong> Life Path ' + esc(w.pythagorean_life_path) + ' · Angel ' + esc(w.kabbalah_shem_angel) + '</li>' +
+                        '</ul>';
+                    if (res3d && sB.vvk_cosmic_key) {
+                        var thot = res3d.three_alchemical_keys_of_thot || {};
+                        var med = res3d.reciprocal_medicine || {};
+                        html += '<div class="gresol-sinastria">' +
+                            '<strong>💞 3D Soul Resonance (' + esc(keyA) + ' × ' + esc(sB.vvk_cosmic_key) + '): ' + esc(res3d.score_total_3d) + '/100</strong><br>' +
+                            '• <em>Sun-Moon Bridge:</em> ' + esc(res3d.sun_moon_bridge) + '<br>' +
+                            '• <em>4 Elements Alchemy:</em> ' + esc(res3d.four_elements_alchemy) + '<br>' +
+                            '• <em>Light of the Encounter:</em> ' + esc(thot.light_of_encounter) + '<br>' +
+                            '• <em>Shadow to Tend:</em> ' + esc(thot.shadow_to_tend || thot.shadow_to_work) + '<br>' +
+                            '• <em>Reciprocal Medicine:</em> ' + esc(med.mutual_synthesis) +
+                            '</div>';
+                    }
+                    var waMsg = 'Hello Viveka! My Seed of Life is ' + keyA + ' (born ' + dA + ')' + (sB.vvk_cosmic_key ? ' and my loved one is ' + sB.vvk_cosmic_key : '') + '. Awaken my Natal Chart and 440 welcome Seeds!';
+                    html += '<div class="gresol-ctas">' +
+                        '<a class="gresol-cta-link" target="_blank" rel="noopener" href="https://t.me/Codex_Suprem_bot?start=' + encodeURIComponent(keyA) + '">Awaken ' + esc(keyA) + ' on Telegram — 440 Seeds Gift</a>' +
+                        '<a class="gresol-cta-link" target="_blank" rel="noopener" href="https://wa.me/529843126104?text=' + encodeURIComponent(waMsg) + '">Awaken ' + esc(keyA) + ' on WhatsApp — 440 Seeds Gift</a>' +
+                        '</div>';
+                    out.innerHTML = html;
+                    out.style.display = 'block';
+                })
+                .catch(function() {
+                    btn.textContent = 'Reveal Cosmic Key & 7 Wisdoms';
+                });
+        });
+    })();
+    </script>
 </body>
 </html>
