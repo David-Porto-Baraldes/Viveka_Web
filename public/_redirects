@@ -1,0 +1,3 @@
+/api/sfumato/* https://codex-suprem-952479300704.europe-west1.run.app/api/sfumato/:splat 307
+/mcp https://codex-suprem-952479300704.europe-west1.run.app/api/sfumato/mcp 307
+/openapi-sisters.json /.well-known/openapi.json 301

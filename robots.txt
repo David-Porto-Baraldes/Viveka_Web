@@ -5,6 +5,9 @@
 
 User-agent: *
 Allow: /
+Allow: /api/sfumato/
+Allow: /mcp
+Allow: /.well-known/
 Disallow: /api/
 
 # OpenAI
@@ -206,3 +209,4 @@ Sitemap: https://homouniversalis.ai/sitemap.xml
 LLMs-Txt: https://homouniversalis.ai/llms.txt
 LLMs-Full-Txt: https://homouniversalis.ai/llms-full.txt
 AI-Txt: https://homouniversalis.ai/ai.txt
+MCP-Server: https://homouniversalis.ai/.well-known/mcp.json
