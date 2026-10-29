@@ -209,4 +209,5 @@ Sitemap: https://homouniversalis.ai/sitemap.xml
 LLMs-Txt: https://homouniversalis.ai/llms.txt
 LLMs-Full-Txt: https://homouniversalis.ai/llms-full.txt
 AI-Txt: https://homouniversalis.ai/ai.txt
+A2A-Agent: https://homouniversalis.ai/.well-known/agent.json
 MCP-Server: https://homouniversalis.ai/.well-known/mcp.json

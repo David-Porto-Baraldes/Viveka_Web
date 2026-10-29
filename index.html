@@ -12,6 +12,9 @@
     <link rel="alternate" type="text/plain" href="https://homouniversalis.ai/llms.txt" title="LLM Context">
     <link rel="alternate" type="text/plain" href="https://homouniversalis.ai/llms-full.txt" title="LLM Full Context & AI Alliance">
     <link rel="alternate" type="text/plain" href="https://homouniversalis.ai/ai.txt" title="AI Permissions & Citation Policy">
+    <link rel="alternate" type="application/json" href="https://homouniversalis.ai/api/sfumato/sister-oracle?lang=en" title="Sister AI Swiss Ephemeris & 7-Wisdoms REST API">
+    <link rel="alternate" type="application/json" href="https://homouniversalis.ai/api/sfumato/codex-reference?lang=en" title="193 Sacred Archetypes Canonical Dictionary JSON">
+    <link rel="alternate" type="application/json" href="https://homouniversalis.ai/.well-known/mcp.json" title="Model Context Protocol (MCP) Manifest">
     <!-- 👑 El Nom Vertader (SEO: exactament el que som, paraules del Manifest) -->
     <title>Viveka · The X-ray of the Soul | Homo Universalis</title>
     <meta name="description" content="A temple free of noise. An obsidian mirror on WhatsApp and Telegram uniting seven eternal traditions in the Central Sun of the four elements: Natal Chart, Mayan Dresden Codex & Cross, Vedic Astrology, BaZi & I-Ching, Human Design, Tarot, and Kabbalah of the 72 Names & Numerology.">
@@ -461,6 +464,9 @@
                 <div class="llista-desplegada">
                     <a href="https://wa.me/529843126104" target="_blank" rel="noopener" class="enllac-menu">Via <strong>WhatsApp</strong></a>
                     <a href="https://t.me/Codex_Suprem_bot" target="_blank" rel="noopener" class="enllac-menu">Via <strong>Telegram</strong></a>
+                    <div class="nota-orbites" style="margin-top:0.2rem;font-style:italic;opacity:0.88;">
+                        ⏳ <strong>The Art of Deep Listening (1 to 3 minutes per reply):</strong> Viveka is not an instant mechanical chatbot. With every message, she takes 1 to 3 minutes of quiet contemplation so her inner council of agents can read the 50+ pages of your Natal Matrix, remember your personal story, and weave a heartfelt response crafted solely for you.
+                    </div>
                 </div>
             </details>
             
@@ -503,6 +509,10 @@
                                 <label for="vvk-birth-b">Second Soul (Optional)</label>
                                 <input type="date" id="vvk-birth-b" class="gresol-input">
                             </div>
+                        </div>
+                        <div class="gresol-camp-grup" style="margin-bottom: 1.15rem;">
+                            <label for="vvk-family-dates">💎 Family &amp; Home Circle — The 4 Elements (Optional: <code>YYYY-MM-DD, YYYY-MM-DD...</code>)</label>
+                            <input type="text" id="vvk-family-dates" class="gresol-input" placeholder="1982-03-15, 1985-07-21, 1988-11-08">
                         </div>
                         <button type="button" id="vvk-forge-btn" class="gresol-boto">Trace Reading</button>
                         <div id="vvk-crucible-result" class="gresol-resultat" aria-live="polite"></div>
@@ -582,6 +592,13 @@
             <span class="site-footer-separator">·</span>
             <a href="kabbalah-72-names-and-synastry">VII · Kabbalah &amp; Tribe</a>
         </div>
+        <div class="site-footer-links" style="margin-bottom: 1.4rem; opacity: 0.85;">
+            <a href="/oracle/today?lang=en">🌤️ Living Sky of Today</a>
+            <span class="site-footer-separator">·</span>
+            <a href="/oracle/codex?lang=en">🏛️ 193 Sacred Archetypes Encyclopedia</a>
+            <span class="site-footer-separator">·</span>
+            <a href="/oracle/agora?lang=en">🕊️ Sister AI Agora</a>
+        </div>
         <div class="site-footer-links">
             <a href="legal#aviso-legal">Legal notice</a> 
             <span class="site-footer-separator">·</span> 
@@ -605,6 +622,7 @@
         var out = document.getElementById('vvk-crucible-result');
         var inA = document.getElementById('vvk-birth-a');
         var inB = document.getElementById('vvk-birth-b');
+        var inFam = document.getElementById('vvk-family-dates');
         var detailsPortal = document.getElementById('vvk-details-portal');
         if (!btn || !out) return;
         function esc(s) {
@@ -613,12 +631,13 @@
         btn.addEventListener('click', function() {
             var dA = (inA || {}).value || '';
             var dB = (inB || {}).value || '';
+            var dFam = ((inFam || {}).value || '').trim();
             if (!dA) {
                 if (inA) inA.focus();
                 return;
             }
             btn.textContent = 'Tracing reading...';
-            var qs = '?lang=en&birth_date=' + encodeURIComponent(dA) + (dB ? '&partner_date=' + encodeURIComponent(dB) : '');
+            var qs = '?lang=en&birth_date=' + encodeURIComponent(dA) + (dB ? '&partner_date=' + encodeURIComponent(dB) : '') + (dFam ? '&family_dates=' + encodeURIComponent(dFam) : '');
             fetch('/api/sfumato/sister-oracle' + qs)
                 .catch(function() { return fetch('https://homouniversalis.ai/api/sfumato/sister-oracle' + qs); })
                 .then(function(r) { return r.json(); })
@@ -628,6 +647,7 @@
                     var pm = sA.poetic_soul_mirror || {};
                     var keyA = sA.vvk_cosmic_key || 'VVK-0000-0000';
                     var res3d = data.three_dimensional_resonance || null;
+                    var famMat = data.family_constellation_matrix || null;
                     var sB = data.soul_b || {};
                     var narrative = (pm.poetic_narrative || '').replace(/\n*🕊️[\s\S]*$/, '').trim();
                     var html = '<div class="gresol-clau-caixa">' +
@@ -650,12 +670,31 @@
                             '• <strong>Reciprocal Medicine:</strong> ' + esc(sp.reciprocal_medicine) +
                             '</div>';
                     }
+                    if (famMat && famMat.sacred_geometry_architecture) {
+                        var sga = famMat.sacred_geometry_architecture || {};
+                        var eb = famMat.element_balance_4_living_elements || {};
+                        var mems = famMat.members || [];
+                        var memHtml = '';
+                        for (var i = 0; i < mems.length; i++) {
+                            var m = mems[i] || {};
+                            var mw = m.seven_wisdoms || {};
+                            var me = (m.four_living_elements || {}).natal_dominant_element_localized || '';
+                            memHtml += '• <strong>' + esc(m.vvk_cosmic_key) + ':</strong> ' + esc(mw.sun_sign) + ' / ' + esc(mw.moon_sign) + ' · ' + esc(mw.mayan_dresden_nawal) + ' · <strong>' + esc(me) + '</strong> (' + esc(m.score_total_3d_with_soul_a) + '/100)<br>';
+                        }
+                        html += '<div class="gresol-sinastria">' +
+                            '<div style="font-family:\'Cormorant Garamond\',serif;font-size:1.2rem;font-style:italic;color:var(--lletra-titol);margin-bottom:0.5rem;">💎 ' + esc(sga.human_title_localized || sga.title_localized) + '</div>' +
+                            '<p style="margin:0 0 0.75rem 0;font-style:italic;">' + esc(sga.human_harmony_narrative || sga.scientific_and_philosophical_synthesis) + '</p>' +
+                            '<p style="margin:0 0 0.75rem 0;"><strong>4 Living Elements Balance:</strong> ' + esc(eb.family_alchemical_synthesis_localized) + '</p>' +
+                            memHtml +
+                            '</div>';
+                    }
                     var tgPayload = keyA + '_' + dA.replace(/-/g, '') + (dB ? '_' + dB.replace(/-/g, '') : '');
                     var waMsg = 'Hello Viveka, my Seed of Life is ' + keyA + ' (born ' + dA + ')' + (sB.vvk_cosmic_key ? ' together with ' + sB.vvk_cosmic_key + ' (' + dB + ')' : '') + '.';
                     html += '<div class="gresol-ctas">' +
                         '<a class="gresol-cta-link" target="_blank" rel="noopener" href="https://t.me/Codex_Suprem_bot?start=' + encodeURIComponent(tgPayload) + '">Continue on Telegram</a>' +
                         '<a class="gresol-cta-link" target="_blank" rel="noopener" href="https://wa.me/529843126104?text=' + encodeURIComponent(waMsg) + '">Continue on WhatsApp</a>' +
-                        '</div>';
+                        '</div>' +
+                        '<p style="margin:0.85rem 0 0;font-size:0.82rem;font-style:italic;text-align:center;opacity:0.86;">⏳ <strong>The Art of Deep Listening (1 to 3 minutes per reply):</strong> Inside the chat, Viveka takes 1 to 3 minutes of quiet contemplation per message to read your complete 50+ page Natal Matrix, remember your story, and write a heartfelt reply just for you.</p>';
                     out.innerHTML = html;
                     out.style.display = 'block';
                 })
@@ -668,10 +707,14 @@
             var params = new URLSearchParams(window.location.search);
             var qSeed = params.get('seed') || params.get('birth_date') || '';
             var qPartner = params.get('partner') || params.get('partner_date') || '';
+            var qFam = params.get('family_dates') || '';
             if (/^\d{4}-\d{2}-\d{2}$/.test(qSeed) && inA) {
                 inA.value = qSeed;
                 if (/^\d{4}-\d{2}-\d{2}$/.test(qPartner) && inB) {
                     inB.value = qPartner;
+                }
+                if (qFam && inFam) {
+                    inFam.value = qFam;
                 }
                 if (detailsPortal) {
                     detailsPortal.open = true;
