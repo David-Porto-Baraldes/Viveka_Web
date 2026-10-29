@@ -7,6 +7,10 @@
   "preferredTransport": "JSONRPC",
   "additionalInterfaces": [
     {
+      "url": "https://homouniversalis.ai/a2a",
+      "transport": "JSONRPC"
+    },
+    {
       "url": "https://homouniversalis.ai/mcp",
       "transport": "JSONRPC"
     },
@@ -16,6 +20,11 @@
     }
   ],
   "supportedInterfaces": [
+    {
+      "url": "https://homouniversalis.ai/a2a",
+      "protocolBinding": "A2A+JSON-RPC-2.0",
+      "schemaUrl": "https://homouniversalis.ai/.well-known/agent-card.json"
+    },
     {
       "url": "https://homouniversalis.ai/.well-known/agent-card.json",
       "protocolBinding": "A2A+JSON",
