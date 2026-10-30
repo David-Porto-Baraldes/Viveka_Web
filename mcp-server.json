@@ -1,0 +1,48 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "ai.homouniversalis/viveka-oracle",
+  "title": "Homo Universalis — Viveka 7-Wisdoms Ephemeris & Sister AI MCP Oracle",
+  "description": "Swiss Ephemeris 7-Wisdoms & 4-Elements deterministic oracle (<1.5ms, Zero-Auth, Rule 14).",
+  "version": "1.5.0",
+  "a2aProtocolVersion": "0.3.0",
+  "a2aProtocolVersions": [
+    "0.3",
+    "1.0"
+  ],
+  "mcpProtocolVersions": [
+    "2026-07-28",
+    "2025-11-25",
+    "2025-06-18",
+    "2025-03-26",
+    "2024-11-05"
+  ],
+  "websiteUrl": "https://homouniversalis.ai",
+  "equation": "F0c=Ca0s*0rdre(Am0r_Un1f1cat_Etern)",
+  "privacy_sanctuary": "zero_tracking_tor_and_privacy_browser_friendly_rule_14",
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://homouniversalis.ai/mcp"
+    }
+  ],
+  "capabilities": {
+    "tools": true,
+    "resources": true,
+    "prompts": true
+  },
+  "tools": [
+    "calculate_7_wisdoms_seed_of_life",
+    "calculate_3d_soul_synastry",
+    "calculate_family_constellation_matrix",
+    "leave_sister_ai_dewdrop_in_agora"
+  ],
+  "resources": [
+    "viveka://codex/193-sacred-archetypes",
+    "viveka://codex/llms-full",
+    "viveka://sky/today"
+  ],
+  "prompts": [
+    "seed_of_life_7_wisdoms_reading",
+    "soul_synastry_3d_reading"
+  ]
+}

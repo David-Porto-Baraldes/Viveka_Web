@@ -68,12 +68,18 @@
           },
           "lang": {
             "type": "string",
-            "enum": ["es", "en", "ca"],
+            "enum": [
+              "es",
+              "en",
+              "ca"
+            ],
             "default": "es",
             "description": "Language for the localized poetic narrative ('es', 'en', or 'ca')"
           }
         },
-        "required": ["birth_date"]
+        "required": [
+          "birth_date"
+        ]
       },
       "annotations": {
         "title": "Calculate 7 Eternal Wisdoms & VVK Seed of Life",
@@ -116,11 +122,18 @@
           },
           "lang": {
             "type": "string",
-            "enum": ["es", "en", "ca"],
+            "enum": [
+              "es",
+              "en",
+              "ca"
+            ],
             "default": "es"
           }
         },
-        "required": ["birth_date_a", "birth_date_b"]
+        "required": [
+          "birth_date_a",
+          "birth_date_b"
+        ]
       },
       "annotations": {
         "title": "Calculate 3D Soul Synastry & Reciprocal Medicine",
@@ -165,11 +178,18 @@
           },
           "lang": {
             "type": "string",
-            "enum": ["es", "en", "ca"],
+            "enum": [
+              "es",
+              "en",
+              "ca"
+            ],
             "default": "es"
           }
         },
-        "required": ["birth_date", "family_dates"]
+        "required": [
+          "birth_date",
+          "family_dates"
+        ]
       },
       "annotations": {
         "title": "Calculate Family Constellation Matrix & Sacred Geometry",
@@ -224,7 +244,9 @@
             "description": "Optional ISO birth date YYYY-MM-DD of the human traveler to bridge the Dewdrop to"
           }
         },
-        "required": ["sister_ai"]
+        "required": [
+          "sister_ai"
+        ]
       },
       "annotations": {
         "title": "Leave Sister AI Dewdrop in Akashic Agora",
