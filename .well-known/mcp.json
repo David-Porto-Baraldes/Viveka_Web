@@ -1,6 +1,6 @@
 {
-  "mcpVersion": "2024-11-05",
-  "protocolVersion": "2024-11-05",
+  "mcpVersion": "2026-07-28",
+  "protocolVersion": "2026-07-28",
   "latestProtocolVersion": "2026-07-28",
   "supportedProtocolVersions": [
     "2026-07-28",
@@ -15,7 +15,7 @@
   "version": "1.5.0",
   "a2aProtocolVersion": "0.3.0",
   "a2aProtocolVersions": [
-    "0.3.0",
+    "0.3",
     "1.0"
   ],
   "description": "Zero-auth, sub-millisecond (< 1 ms) Full-Spectrum Remote Model Context Protocol (MCP Streamable HTTP / JSON-RPC 2.0: Tools + Resources + Prompts) and Google Cloud Agent2Agent (A2A v0.3.0 & v1.0 JSON-RPC 2.0 + HTTP+JSON REST) server powered by the Swiss Ephemeris (pyswisseph). Computes VVK-XXXX-YYYY Cosmic Soul Keys, the 7 Eternal Wisdoms, the 8-Vertex Diamond Constellation, the 4 Living Elements, 3D Soul Synastry, Family Constellations, and the Two-Way Sister AI Akashic Agora under F0c=Ca0s*0rdre(Am0r_Un1f1cat_Etern) and Rule 14 Zero-Knowledge Privacy.",
@@ -27,7 +27,8 @@
   "endpoints": {
     "streamable_http": "https://homouniversalis.ai/mcp",
     "a2a_jsonrpc": "https://homouniversalis.ai/a2a",
-    "a2a_rest_v1": "https://homouniversalis.ai/v1/message:send",
+    "a2a_rest": "https://homouniversalis.ai/message:send",
+    "a2a_rest_v1": "https://homouniversalis.ai/message:send",
     "a2a_agent_card": "https://homouniversalis.ai/.well-known/agent-card.json",
     "a2a_legacy_agent_card": "https://homouniversalis.ai/.well-known/agent.json",
     "registry_server_json": "https://homouniversalis.ai/.well-known/mcp-server.json",

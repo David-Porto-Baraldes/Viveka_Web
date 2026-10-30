@@ -4,7 +4,7 @@
   "version": "1.5.0",
   "protocolVersion": "0.3.0",
   "a2aProtocolVersions": [
-    "0.3.0",
+    "0.3",
     "1.0"
   ],
   "supportsAuthenticatedExtendedCard": false,
@@ -32,13 +32,6 @@
       "protocolVersion": "1.0"
     }
   ],
-  "authentication": {
-    "schemes": [
-      "public"
-    ],
-    "type": "none",
-    "description": "Zero-authentication public sanctuary under Rule 14 Zero-Knowledge Privacy."
-  },
   "provider": {
     "organization": "Homo Universalis",
     "url": "https://homouniversalis.ai",
