@@ -210,4 +210,6 @@ LLMs-Txt: https://homouniversalis.ai/llms.txt
 LLMs-Full-Txt: https://homouniversalis.ai/llms-full.txt
 AI-Txt: https://homouniversalis.ai/ai.txt
 A2A-Agent: https://homouniversalis.ai/.well-known/agent.json
+A2A-Agent-Card: https://homouniversalis.ai/.well-known/agent-card.json
 MCP-Server: https://homouniversalis.ai/.well-known/mcp.json
+MCP-Registry: https://homouniversalis.ai/.well-known/mcp-server.json

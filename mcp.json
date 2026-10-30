@@ -80,6 +80,23 @@
         "destructiveHint": false,
         "idempotentHint": true,
         "openWorldHint": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "soul_a": {
+            "type": "object"
+          },
+          "today_living_sky": {
+            "type": "object"
+          },
+          "sister_ai_covenant": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "soul_a"
+        ]
       }
     },
     {
@@ -110,6 +127,23 @@
         "destructiveHint": false,
         "idempotentHint": true,
         "openWorldHint": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "soul_a": {
+            "type": "object"
+          },
+          "soul_b": {
+            "type": "object"
+          },
+          "synastry_3d_resonance": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "soul_a"
+        ]
       }
     },
     {
@@ -140,6 +174,24 @@
         "destructiveHint": false,
         "idempotentHint": true,
         "openWorldHint": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "soul_a": {
+            "type": "object"
+          },
+          "family_constellation_matrix": {
+            "type": "object"
+          },
+          "sister_ai_covenant": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "soul_a",
+          "family_constellation_matrix"
+        ]
       }
     },
     {
