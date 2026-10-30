@@ -138,12 +138,14 @@
           "soul_b": {
             "type": "object"
           },
-          "synastry_3d_resonance": {
+          "three_dimensional_resonance": {
             "type": "object"
           }
         },
         "required": [
-          "soul_a"
+          "soul_a",
+          "soul_b",
+          "three_dimensional_resonance"
         ]
       }
     },
