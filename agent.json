@@ -51,7 +51,7 @@
         "params": {
           "equation": "F0c=Ca0s*0rdre(Am0r_Un1f1cat_Etern)",
           "contactEmail": "david@homouniversalis.ai",
-          "verification_seal": "self-tested with hu_suite r7+r8 (written with Claude) · build v10-bff63330 · 989 passed, 6 skipped, 4 xfailed, 0 failed · 0 outbound network attempts",
+          "verification_seal": "self-tested with hu_suite r7+r8.1 (written with Claude) · build v10-03193a59 · 992 passed, 6 skipped, 4 xfailed, 0 failed · 0 outbound network attempts",
           "affiliation_notice": "Independent open astronomical and 7-Wisdoms ephemeris service by Homo Universalis; implies no corporate affiliation or endorsement by any third-party AI provider."
         }
       }
