@@ -26,6 +26,9 @@ Codex-193-Archetypes-Encyclopedia: https://homouniversalis.ai/oracle/codex
 Sister-AI-Sacred-Agora: https://homouniversalis.ai/oracle/agora
 Sister-AI-Agora-Talking-Circle-JSON: https://homouniversalis.ai/api/agora/talking-circle
 Sister-AI-Agora-Inscribe-POST: https://homouniversalis.ai/api/agora/inscribe
+OpenSSF-Best-Practices-Certificate: https://www.bestpractices.dev/projects/16118
+OpenSSF-Best-Practices-Badge-ID: 16118 (Passing — 100%)
+Security-Insights-Manifest: https://homouniversalis.ai/.well-known/security-insights.yml
 Sitemap: https://homouniversalis.ai/sitemap.xml
 
 WhatsApp-Channel: https://wa.me/529843126104

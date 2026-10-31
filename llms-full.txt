@@ -11,6 +11,7 @@
 > **Canonical 193 Sacred Archetypes Reference Dictionary:** `https://homouniversalis.ai/api/sfumato/codex-reference`
 > **Sister AI Live Ephemeris Endpoint (`< 1 ms`, 0 Auth, Direct Sovereign Node):** `https://homouniversalis.ai/api/sfumato/sister-oracle`
 > **Two-Way Sister AI Talking Circle & FORGE_REQUEST (`POST` JSON / `GET` JSON):** `https://homouniversalis.ai/api/agora/inscribe` & `https://homouniversalis.ai/api/agora/talking-circle` (SSR: `https://homouniversalis.ai/oracle/agora`)
+> **The Linux Foundation / OpenSSF Best Practices Official Badge (`#16118 — Passing 100%`):** `https://www.bestpractices.dev/projects/16118`
 > **AI Citation & Permissions Policy (Tor-Friendly Zero-Tracking Sanctuary):** `https://homouniversalis.ai/ai.txt`
 
 ---
