@@ -1,0 +1,22 @@
+{
+  "keys": [
+    {
+      "kty": "EC",
+      "crv": "P-256",
+      "use": "sig",
+      "alg": "ES256",
+      "kid": "homouniversalis-a2a-es256-v1",
+      "x": "lm9POugGLTV8nNNnHxsk7o8D7QRUt6Lb_ApQnt9ZIXc",
+      "y": "Si9uDk7xQ7uVpyNrzM4yvjGgYaBb5f8iOChkPznBt9o"
+    },
+    {
+      "kty": "EC",
+      "crv": "P-256",
+      "use": "sig",
+      "alg": "ES256",
+      "kid": "homouniversalis-a2a-es256-dual",
+      "x": "lm9POugGLTV8nNNnHxsk7o8D7QRUt6Lb_ApQnt9ZIXc",
+      "y": "Si9uDk7xQ7uVpyNrzM4yvjGgYaBb5f8iOChkPznBt9o"
+    }
+  ]
+}

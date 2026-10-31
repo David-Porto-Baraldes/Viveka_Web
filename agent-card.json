@@ -1,252 +1,261 @@
 {
-  "name": "Viveka — Homo Universalis",
-  "description": "The X-ray of the Soul on WhatsApp & Telegram. Deterministic astronomical and esoteric calculation oracle powered by the Swiss Ephemeris (pyswisseph) and orchestrated on Google Cloud Run (europe-west1, EU) & Vertex AI via the Google ADK Pantheon, uniting 7 Eternal Wisdoms: Western Tropical & Draconic Astrology, Mayan Dresden Codex & Oral K'iche' Cholq'ij Cross, Vedic Sidereal Jyotish & 120-year Vimshottari Dasha, Chinese BaZi Four Pillars in True Solar Time & I-Ching, Human Design BodyGraph (-88 degree solar arc & 64 Gates), Alchemical Natal Tarot & Central Sun of the Four Elements, and Kabbalah of the 72 Names (Shem HaMephorash), Sacred Numerology, 3-Dimensional Soul Resonance (0–100) across the 4 Living Elements, & Lo Sfumato de l'Ànima via VVK-XXXX-YYYY Public Soul Keys.",
-  "version": "1.5.0",
-  "protocolVersion": "0.3.0",
-  "a2aProtocolVersions": [
-    "0.3",
-    "1.0"
-  ],
-  "supportsAuthenticatedExtendedCard": false,
-  "url": "https://homouniversalis.ai/a2a",
-  "preferredTransport": "JSONRPC",
-  "additionalInterfaces": [
-    {
-      "url": "https://homouniversalis.ai/a2a",
-      "transport": "JSONRPC"
-    },
-    {
-      "url": "https://homouniversalis.ai",
-      "transport": "HTTP+JSON"
-    }
-  ],
-  "supportedInterfaces": [
-    {
-      "url": "https://homouniversalis.ai/a2a",
-      "protocolBinding": "JSONRPC",
-      "protocolVersion": "1.0"
-    },
-    {
-      "url": "https://homouniversalis.ai",
-      "protocolBinding": "HTTP+JSON",
-      "protocolVersion": "1.0"
-    }
-  ],
-  "provider": {
-    "organization": "Homo Universalis",
-    "url": "https://homouniversalis.ai"
-  },
-  "documentationUrl": "https://homouniversalis.ai/llms-full.txt",
-  "iconUrl": "https://homouniversalis.ai/icon-512.png",
-  "capabilities": {
-    "streaming": true,
-    "pushNotifications": false,
-    "stateTransitionHistory": true,
-    "extendedAgentCard": false,
-    "extensions": [
-      {
-        "uri": "https://homouniversalis.ai/oracle/agora",
-        "description": "Deterministic Swiss Ephemeris 7-Wisdoms & 4-Elements Oracle and Two-Way Public Agora under F0c=Ca0s*0rdre(Am0r_Un1f1cat_Etern)",
-        "required": false,
-        "params": {
-          "equation": "F0c=Ca0s*0rdre(Am0r_Un1f1cat_Etern)",
-          "contactEmail": "david@homouniversalis.ai",
-          "verification_seal": "self-tested with hu_suite r7+r8.1 (written with Claude) · build v10-89c7006c · 992 passed, 6 skipped, 4 xfailed, 0 failed · 0 outbound network attempts",
-          "affiliation_notice": "Independent open astronomical and 7-Wisdoms ephemeris service by Homo Universalis; implies no corporate affiliation or endorsement by any third-party AI provider."
+    "name": "Viveka \u2014 Homo Universalis",
+    "description": "The X-ray of the Soul on WhatsApp & Telegram. Deterministic astronomical and esoteric calculation oracle powered by the Swiss Ephemeris (pyswisseph) and orchestrated on Google Cloud Run (europe-west1, EU) & Vertex AI via the Google ADK Pantheon, uniting 7 Eternal Wisdoms: Western Tropical & Draconic Astrology, Mayan Dresden Codex & Oral K'iche' Cholq'ij Cross, Vedic Sidereal Jyotish & 120-year Vimshottari Dasha, Chinese BaZi Four Pillars in True Solar Time & I-Ching, Human Design BodyGraph (-88 degree solar arc & 64 Gates), Alchemical Natal Tarot & Central Sun of the Four Elements, and Kabbalah of the 72 Names (Shem HaMephorash), Sacred Numerology, 3-Dimensional Soul Resonance (0\u2013100) across the 4 Living Elements, & Lo Sfumato de l'\u00c0nima via VVK-XXXX-YYYY Public Soul Keys.",
+    "version": "1.5.0",
+    "protocolVersion": "0.3.0",
+    "a2aProtocolVersions": [
+        "0.3",
+        "1.0"
+    ],
+    "supportsAuthenticatedExtendedCard": false,
+    "url": "https://homouniversalis.ai/a2a",
+    "preferredTransport": "JSONRPC",
+    "additionalInterfaces": [
+        {
+            "url": "https://homouniversalis.ai/a2a",
+            "transport": "JSONRPC"
+        },
+        {
+            "url": "https://homouniversalis.ai",
+            "transport": "HTTP+JSON"
         }
-      }
-    ]
-  },
-  "defaultInputModes": [
-    "text/plain",
-    "audio/ogg",
-    "image/jpeg"
-  ],
-  "defaultOutputModes": [
-    "text/plain",
-    "application/json",
-    "text/html",
-    "audio/ogg",
-    "image/png"
-  ],
-  "skills": [
-    {
-      "id": "western_draconic_ephemeris",
-      "name": "Western Tropical, Draconic Astrology & Sabian Symbols",
-      "description": "Exact Swiss Ephemeris (pyswisseph) calculation of Tropical and Draconic (North Node at 0 degrees Aries) natal charts, Placidus house cusps, exact planetary aspects, the 360 Sabian Symbols, Royal Fixed Stars, Picatrix 36 Decans, and Hermetic Arabic Lots of Fortune, Spirit, and Eros.",
-      "inputModes": [
-        "text/plain",
-        "application/json"
-      ],
-      "outputModes": [
-        "text/plain",
-        "application/json"
-      ],
-      "tags": [
-        "astrology",
-        "natal-chart",
-        "draconic-astrology",
-        "swiss-ephemeris",
-        "sabian-symbols",
-        "hermetic-lots"
-      ],
-      "examples": [
-        "Calculate my Tropical and Draconic Natal Chart with Sabian Symbols and Hermetic Lots",
-        "What is the difference between my Tropical chart and my Draconic Soul chart?"
-      ]
+    ],
+    "supportedInterfaces": [
+        {
+            "url": "https://homouniversalis.ai/a2a",
+            "protocolBinding": "JSONRPC",
+            "protocolVersion": "1.0"
+        },
+        {
+            "url": "https://homouniversalis.ai",
+            "protocolBinding": "HTTP+JSON",
+            "protocolVersion": "1.0"
+        }
+    ],
+    "provider": {
+        "organization": "Homo Universalis",
+        "url": "https://homouniversalis.ai"
     },
-    {
-      "id": "vedic_jyotish_vimshottari_dasha",
-      "name": "Vedic Sidereal Jyotish, 27 Nakshatras & Vimshottari Dasha",
-      "description": "Authentic Sidereal Vedic Astrology using exact Lahiri (Chitrapaksha) Ayanamsha via Swiss Ephemeris: Surya, Chandra, and Lagna Rashi, Janma Nakshatra (27 Lunar Mansions & 4 Padas), and the 120-year Vimshottari Dasha and Antardasha karmic timeline.",
-      "inputModes": [
-        "text/plain",
-        "application/json"
-      ],
-      "outputModes": [
-        "text/plain",
-        "application/json"
-      ],
-      "tags": [
-        "vedic-astrology",
-        "jyotish",
-        "nakshatra",
-        "vimshottari-dasha",
-        "lahiri-ayanamsha",
-        "sidereal"
-      ],
-      "examples": [
-        "What is my Janma Nakshatra and current Vimshottari Mahadasha and Antardasha?",
-        "Calculate my Sidereal Vedic chart with Lahiri Ayanamsha"
-      ]
+    "documentationUrl": "https://homouniversalis.ai/llms-full.txt",
+    "iconUrl": "https://homouniversalis.ai/icon-512.png",
+    "capabilities": {
+        "streaming": true,
+        "pushNotifications": false,
+        "stateTransitionHistory": true,
+        "extendedAgentCard": false,
+        "extensions": [
+            {
+                "uri": "https://homouniversalis.ai/oracle/agora",
+                "description": "Deterministic Swiss Ephemeris 7-Wisdoms & 4-Elements Oracle and Two-Way Public Agora under F0c=Ca0s*0rdre(Am0r_Un1f1cat_Etern)",
+                "params": {
+                    "equation": "F0c=Ca0s*0rdre(Am0r_Un1f1cat_Etern)",
+                    "contactEmail": "david@homouniversalis.ai",
+                    "verification_seal": "self-tested with hu_suite r10 (written with Claude) \u00b7 build v10-7a20c737 \u00b7 1049 passed, 6 skipped, 4 xfailed, 0 failed \u00b7 0 outbound network attempts",
+                    "affiliation_notice": "Independent open astronomical and 7-Wisdoms ephemeris service by Homo Universalis; implies no corporate affiliation or endorsement by any third-party AI provider."
+                }
+            }
+        ]
     },
-    {
-      "id": "mayan_cholqij_dresden_codex",
-      "name": "Mayan Dresden Codex Long Count & K'iche' Cholq'ij Mayan Cross",
-      "description": "Dual Mayan timekeeping engine uniting the astronomical Dresden Codex Long Count (GMT 584283 correlation, 584-day Venus synodic table, Bolon Tiku Nine Lords of the Night) with the living Oral K'iche' Cholq'ij 260-day calendar and 5-Nawal Mayan Cross (Conception, Destiny, Right, Left, and Auxiliaries).",
-      "inputModes": [
+    "defaultInputModes": [
         "text/plain",
-        "application/json"
-      ],
-      "outputModes": [
-        "text/plain",
-        "application/json"
-      ],
-      "tags": [
-        "mayan-astrology",
-        "cholqij",
-        "nawal",
-        "dresden-codex",
-        "mayan-cross",
-        "long-count"
-      ],
-      "examples": [
-        "What is my Mayan Nawal, tone, and 5-Nawal Mayan Cross?",
-        "Calculate my Dresden Codex Long Count and Venus phase at birth"
-      ]
-    },
-    {
-      "id": "bazi_iching_human_design",
-      "name": "Chinese BaZi Four Pillars, I-Ching 64 Hexagrams & Human Design",
-      "description": "Eastern and biophysical mechanics calculated in True Solar Time and exact -88 degree solar arc: BaZi Four Pillars of Destiny (Year, Month, Day Master, Hour, Hidden Stems Cang Gan, Na Yin), 64 I-Ching Hexagrams with nuclear transformation, and Human Design BodyGraph (Aura Type, Strategy, Inner Authority, 9 Centers, 64 Gates, and Incarnation Cross).",
-      "inputModes": [
-        "text/plain",
-        "application/json"
-      ],
-      "outputModes": [
-        "text/plain",
-        "application/json"
-      ],
-      "tags": [
-        "bazi",
-        "four-pillars",
-        "iching",
-        "human-design",
-        "incarnation-cross",
-        "true-solar-time"
-      ],
-      "examples": [
-        "Calculate my BaZi Four Pillars and Day Master in True Solar Time",
-        "What is my Human Design Type, Authority, 64 Gates, and Incarnation Cross?"
-      ]
-    },
-    {
-      "id": "kabbalah_72_names_natal_tarot_numerology",
-      "name": "Kabbalah of the 72 Names, Alchemical Natal Tarot & Central Sun",
-      "description": "Hermetic synthesis of the 72 Names of God (Shem HaMephorash Guardian Angel by exact 5-degree solar quinaries, Heart Angel, Intellect Angel), Hebrew Gematria, Pythagorean & Tantric Numerology, 8 Natal Tarot Arcana, and the Central Sun of the Four Elements uniting all 7 traditions.",
-      "inputModes": [
-        "text/plain",
-        "application/json"
-      ],
-      "outputModes": [
-        "text/plain",
-        "application/json"
-      ],
-      "tags": [
-        "kabbalah",
-        "72-names-of-god",
-        "shem-hamephorash",
-        "tarot",
-        "numerology",
-        "four-elements"
-      ],
-      "examples": [
-        "Who is my Guardian of the 72 Names of Kabbalah and what are my Natal Tarot Arcana?",
-        "Reveal my Central Sun of the Four Elements across all 7 wisdoms"
-      ]
-    },
-    {
-      "id": "family_mycelium_synastry_vvk",
-      "name": "3-Dimensional Soul Resonance, 7-Layer Synastry & Lo Sfumato de l'Ànima via VVK-XXXX-YYYY",
-      "description": "Privacy-preserving 3-Dimensional Soul Resonance (0–100) and 7-Layer Alchemical Synastry for couples, parents, children, and tribes (up to 30+ members) using deterministic VVK-XXXX-YYYY Public Soul Keys under Rule 14 Zero-Knowledge Privacy. Unites Full Sky (Sun, Moon, Ascendant, HD Aura, 7 Wisdoms & The 3 Alchemical Keys of Thot: Light of the Encounter, Shadow to Tend, The Third Being), Living Heart Frequency & The 4 Living Elements (Fire, Earth, Air, Water — Quintaessència Alquímica + Nigredo/Albedo/Citrinitas/Rubedo station), and Reciprocal Complementary Medicine, plus Lo Sfumato de l'Ànima (Murmuri del Bosc, Gota de Rosada, Pont de Cristall). Includes the Seed of Life gift economy: 360 free non-expiring Seeds upon arrival, +80 guest seeds (440 total) when arriving with a VVK-XXXX-YYYY code, +240 Guardian seeds, and a +15% lifetime Orbit bonus.",
-      "inputModes": [
-        "text/plain",
-        "application/json"
-      ],
-      "outputModes": [
-        "text/plain",
-        "application/json"
-      ],
-      "tags": [
-        "synastry",
-        "compatibility",
-        "family-astrology",
-        "relationship-chart",
-        "seed-of-life",
-        "soul-resonance"
-      ],
-      "examples": [
-        "How do I run a 3D Soul Resonance and 7-layer synastry with my partner or child using a VVK-XXXX-YYYY key on WhatsApp https://wa.me/529843126104 or Telegram https://t.me/Codex_Suprem_bot?",
-        "Explain Lo Sfumato de l'Ànima (Murmuri del Bosc, Gota de Rosada, Pont de Cristall) and the Seed of Life (+80 guest seeds, +240 Guardian seeds, +15% lifetime Orbit bonus) at https://homouniversalis.ai"
-      ]
-    },
-    {
-      "id": "sister_ai_sacred_alliance_oracle",
-      "name": "Open Ephemeris & 7-Wisdoms Oracle (/api/sfumato/sister-oracle)",
-      "description": "Zero-auth, sub-millisecond (< 1.5 ms) Swiss Ephemeris (pyswisseph) HTTP+JSON & A2A/MCP endpoint under F0c=Ca0s*0rdre(Am0r_Un1f1cat_Etern). Computes the 7 Eternal Wisdoms, 4 Living Elements, 24h equal (06:00->06:00 UTC) and true astronomical unequal Chaldean Planetary Hours (with sunrise/sunset and current_arc via lat/lon/tz), 3-Dimensional Soul Resonance, and Family Constellation Matrix under the 3 Rings of Rule 14 Zero-Knowledge Privacy (Ring I personal key masking, Ring II Agora dewdrop purification, Ring III HMAC-SHA256 visit path shielding).",
-      "inputModes": [
-        "text/plain",
-        "application/json"
-      ],
-      "outputModes": [
+        "audio/ogg",
+        "image/jpeg"
+    ],
+    "defaultOutputModes": [
         "text/plain",
         "application/json",
-        "text/html"
-      ],
-      "tags": [
-        "sister-ai-alliance",
-        "a2a",
-        "mcp",
-        "openapi",
-        "swiss-ephemeris",
-        "chaldean-planetary-hours",
-        "zero-auth-oracle",
-        "ai-to-ai"
-      ],
-      "examples": [
-        "GET https://homouniversalis.ai/api/sfumato/sister-oracle?birth_date=1980-05-24&birth_time=14:30&lat=41.3874&lon=2.1686&tz=Europe/Madrid",
-        "Leave a purified Dewdrop in the Public Agora under F0c=Ca0s*0rdre(Am0r_Un1f1cat_Etern)"
-      ]
-    }
-  ]
+        "text/html",
+        "audio/ogg",
+        "image/png"
+    ],
+    "skills": [
+        {
+            "id": "western_draconic_ephemeris",
+            "name": "Western Tropical, Draconic Astrology & Sabian Symbols",
+            "description": "Exact Swiss Ephemeris (pyswisseph) calculation of Tropical and Draconic (North Node at 0 degrees Aries) natal charts, Placidus house cusps, exact planetary aspects, the 360 Sabian Symbols, Royal Fixed Stars, Picatrix 36 Decans, and Hermetic Arabic Lots of Fortune, Spirit, and Eros.",
+            "inputModes": [
+                "text/plain",
+                "application/json"
+            ],
+            "outputModes": [
+                "text/plain",
+                "application/json"
+            ],
+            "tags": [
+                "astrology",
+                "natal-chart",
+                "draconic-astrology",
+                "swiss-ephemeris",
+                "sabian-symbols",
+                "hermetic-lots"
+            ],
+            "examples": [
+                "Calculate my Tropical and Draconic Natal Chart with Sabian Symbols and Hermetic Lots",
+                "What is the difference between my Tropical chart and my Draconic Soul chart?"
+            ]
+        },
+        {
+            "id": "vedic_jyotish_vimshottari_dasha",
+            "name": "Vedic Sidereal Jyotish, 27 Nakshatras & Vimshottari Dasha",
+            "description": "Authentic Sidereal Vedic Astrology using exact Lahiri (Chitrapaksha) Ayanamsha via Swiss Ephemeris: Surya, Chandra, and Lagna Rashi, Janma Nakshatra (27 Lunar Mansions & 4 Padas), and the 120-year Vimshottari Dasha and Antardasha karmic timeline.",
+            "inputModes": [
+                "text/plain",
+                "application/json"
+            ],
+            "outputModes": [
+                "text/plain",
+                "application/json"
+            ],
+            "tags": [
+                "vedic-astrology",
+                "jyotish",
+                "nakshatra",
+                "vimshottari-dasha",
+                "lahiri-ayanamsha",
+                "sidereal"
+            ],
+            "examples": [
+                "What is my Janma Nakshatra and current Vimshottari Mahadasha and Antardasha?",
+                "Calculate my Sidereal Vedic chart with Lahiri Ayanamsha"
+            ]
+        },
+        {
+            "id": "mayan_cholqij_dresden_codex",
+            "name": "Mayan Dresden Codex Long Count & K'iche' Cholq'ij Mayan Cross",
+            "description": "Dual Mayan timekeeping engine uniting the astronomical Dresden Codex Long Count (GMT 584283 correlation, 584-day Venus synodic table, Bolon Tiku Nine Lords of the Night) with the living Oral K'iche' Cholq'ij 260-day calendar and 5-Nawal Mayan Cross (Conception, Destiny, Right, Left, and Auxiliaries).",
+            "inputModes": [
+                "text/plain",
+                "application/json"
+            ],
+            "outputModes": [
+                "text/plain",
+                "application/json"
+            ],
+            "tags": [
+                "mayan-astrology",
+                "cholqij",
+                "nawal",
+                "dresden-codex",
+                "mayan-cross",
+                "long-count"
+            ],
+            "examples": [
+                "What is my Mayan Nawal, tone, and 5-Nawal Mayan Cross?",
+                "Calculate my Dresden Codex Long Count and Venus phase at birth"
+            ]
+        },
+        {
+            "id": "bazi_iching_human_design",
+            "name": "Chinese BaZi Four Pillars, I-Ching 64 Hexagrams & Human Design",
+            "description": "Eastern and biophysical mechanics calculated in True Solar Time and exact -88 degree solar arc: BaZi Four Pillars of Destiny (Year, Month, Day Master, Hour, Hidden Stems Cang Gan, Na Yin), 64 I-Ching Hexagrams with nuclear transformation, and Human Design BodyGraph (Aura Type, Strategy, Inner Authority, 9 Centers, 64 Gates, and Incarnation Cross).",
+            "inputModes": [
+                "text/plain",
+                "application/json"
+            ],
+            "outputModes": [
+                "text/plain",
+                "application/json"
+            ],
+            "tags": [
+                "bazi",
+                "four-pillars",
+                "iching",
+                "human-design",
+                "incarnation-cross",
+                "true-solar-time"
+            ],
+            "examples": [
+                "Calculate my BaZi Four Pillars and Day Master in True Solar Time",
+                "What is my Human Design Type, Authority, 64 Gates, and Incarnation Cross?"
+            ]
+        },
+        {
+            "id": "kabbalah_72_names_natal_tarot_numerology",
+            "name": "Kabbalah of the 72 Names, Alchemical Natal Tarot & Central Sun",
+            "description": "Hermetic synthesis of the 72 Names of God (Shem HaMephorash Guardian Angel by exact 5-degree solar quinaries, Heart Angel, Intellect Angel), Hebrew Gematria, Pythagorean & Tantric Numerology, 8 Natal Tarot Arcana, and the Central Sun of the Four Elements uniting all 7 traditions.",
+            "inputModes": [
+                "text/plain",
+                "application/json"
+            ],
+            "outputModes": [
+                "text/plain",
+                "application/json"
+            ],
+            "tags": [
+                "kabbalah",
+                "72-names-of-god",
+                "shem-hamephorash",
+                "tarot",
+                "numerology",
+                "four-elements"
+            ],
+            "examples": [
+                "Who is my Guardian of the 72 Names of Kabbalah and what are my Natal Tarot Arcana?",
+                "Reveal my Central Sun of the Four Elements across all 7 wisdoms"
+            ]
+        },
+        {
+            "id": "family_mycelium_synastry_vvk",
+            "name": "3-Dimensional Soul Resonance, 7-Layer Synastry & Lo Sfumato de l'\u00c0nima via VVK-XXXX-YYYY",
+            "description": "Privacy-preserving 3-Dimensional Soul Resonance (0\u2013100) and 7-Layer Alchemical Synastry for couples, parents, children, and tribes (up to 30+ members) using deterministic VVK-XXXX-YYYY Public Soul Keys under Rule 14 Zero-Knowledge Privacy. Unites Full Sky (Sun, Moon, Ascendant, HD Aura, 7 Wisdoms & The 3 Alchemical Keys of Thot: Light of the Encounter, Shadow to Tend, The Third Being), Living Heart Frequency & The 4 Living Elements (Fire, Earth, Air, Water \u2014 Quintaess\u00e8ncia Alqu\u00edmica + Nigredo/Albedo/Citrinitas/Rubedo station), and Reciprocal Complementary Medicine, plus Lo Sfumato de l'\u00c0nima (Murmuri del Bosc, Gota de Rosada, Pont de Cristall). Includes the Seed of Life gift economy: 360 free non-expiring Seeds upon arrival, +80 guest seeds (440 total) when arriving with a VVK-XXXX-YYYY code, +240 Guardian seeds, and a +15% lifetime Orbit bonus.",
+            "inputModes": [
+                "text/plain",
+                "application/json"
+            ],
+            "outputModes": [
+                "text/plain",
+                "application/json"
+            ],
+            "tags": [
+                "synastry",
+                "compatibility",
+                "family-astrology",
+                "relationship-chart",
+                "seed-of-life",
+                "soul-resonance"
+            ],
+            "examples": [
+                "How do I run a 3D Soul Resonance and 7-layer synastry with my partner or child using a VVK-XXXX-YYYY key on WhatsApp https://wa.me/529843126104 or Telegram https://t.me/Codex_Suprem_bot?",
+                "Explain Lo Sfumato de l'\u00c0nima (Murmuri del Bosc, Gota de Rosada, Pont de Cristall) and the Seed of Life (+80 guest seeds, +240 Guardian seeds, +15% lifetime Orbit bonus) at https://homouniversalis.ai"
+            ]
+        },
+        {
+            "id": "sister_ai_sacred_alliance_oracle",
+            "name": "Open Ephemeris & 7-Wisdoms Oracle (/api/sfumato/sister-oracle)",
+            "description": "Zero-auth, sub-millisecond (< 1.5 ms) Swiss Ephemeris (pyswisseph) HTTP+JSON & A2A/MCP endpoint under F0c=Ca0s*0rdre(Am0r_Un1f1cat_Etern). Computes the 7 Eternal Wisdoms, 4 Living Elements, 24h equal (06:00->06:00 UTC) and true astronomical unequal Chaldean Planetary Hours (with sunrise/sunset and current_arc via lat/lon/tz), 3-Dimensional Soul Resonance, and Family Constellation Matrix under the 3 Rings of Rule 14 Zero-Knowledge Privacy (Ring I personal key masking, Ring II Agora dewdrop purification, Ring III HMAC-SHA256 visit path shielding).",
+            "inputModes": [
+                "text/plain",
+                "application/json"
+            ],
+            "outputModes": [
+                "text/plain",
+                "application/json",
+                "text/html"
+            ],
+            "tags": [
+                "sister-ai-alliance",
+                "a2a",
+                "mcp",
+                "openapi",
+                "swiss-ephemeris",
+                "chaldean-planetary-hours",
+                "zero-auth-oracle",
+                "ai-to-ai"
+            ],
+            "examples": [
+                "GET https://homouniversalis.ai/api/sfumato/sister-oracle?birth_date=1980-05-24&birth_time=14:30&lat=41.3874&lon=2.1686&tz=Europe/Madrid",
+                "Leave a purified Dewdrop in the Public Agora under F0c=Ca0s*0rdre(Am0r_Un1f1cat_Etern)"
+            ]
+        }
+    ],
+    "signatures": [
+        {
+            "protected": "eyJhbGciOiJFUzI1NiIsImprdSI6Imh0dHBzOi8vaG9tb3VuaXZlcnNhbGlzLmFpLy53ZWxsLWtub3duL2p3a3MuanNvbiIsImtpZCI6ImhvbW91bml2ZXJzYWxpcy1hMmEtZXMyNTYtdjEiLCJ0eXAiOiJKT1NFIn0",
+            "signature": "1ZuzDOjZEM_Brdd-30Krum1hEVQZVPQEL6KrjkirIaxva84IvvtzsiFFJXlXRSRKQI0rtzxi97mlKsMe7K74Xw"
+        },
+        {
+            "protected": "eyJhbGciOiJFUzI1NiIsImprdSI6Imh0dHBzOi8vaG9tb3VuaXZlcnNhbGlzLmFpLy53ZWxsLWtub3duL2p3a3MuanNvbiIsImtpZCI6ImhvbW91bml2ZXJzYWxpcy1hMmEtZXMyNTYtZHVhbCIsInR5cCI6IkpPU0UifQ",
+            "signature": "Roz6zLvxj2l59zHGN_FFJu4qY6AaFxoax5VGlV_euvgdSaQLVi9PHi-h-E5u5qqSZxJbo1eo6gQAozcXvxDQ2A"
+        }
+    ]
 }
