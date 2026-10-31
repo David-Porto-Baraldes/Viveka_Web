@@ -45,7 +45,7 @@
   "tools": [
     {
       "name": "calculate_7_wisdoms_seed_of_life",
-      "description": "Compute a single person's deterministic natal chart, VVK-XXXX-YYYY Cosmic Soul Key, and 7-Wisdoms profile (Western & Draconic astrology via Swiss Ephemeris, Mayan Tzolkin, Vedic Jyotish Nakshatra & Vimshottari Dasha, Chinese BaZi Four Pillars, I-Ching, Human Design 64 Gates, and Kabbalah). Use this tool for one individual; use `calculate_3d_soul_synastry` for two people or `calculate_family_constellation_matrix` for 3 to 30 family members. Zero-auth, stateless, and deterministic (< 1.5 ms, no PII stored). If `birth_time` is omitted, defaults to 12:00 UTC solar noon; if `lat`/`lon` are omitted, Placidus house cusps and Ascendant/MC are omitted.",
+      "description": "Compute a single person's deterministic natal chart, VVK-XXXX-YYYY Cosmic Soul Key, and 7-Wisdoms profile (Swiss Ephemeris astrology, Mayan Tzolkin, Vedic Jyotish, BaZi, I-Ching, Human Design, and Kabbalah). Use this tool for one individual; use `calculate_3d_soul_synastry` for two people or `calculate_family_constellation_matrix` for 3 to 30 family members. Zero-auth, stateless, and deterministic (< 1.5 ms, no PII stored): omitting `birth_time` defaults to 12:00 UTC solar noon, omitting `lat`/`lon` drops Placidus houses and Ascendant/MC, passing `tz` converts local civil `birth_time` to UTC, and `lang` localizes all archetype names.",
       "inputSchema": {
         "type": "object",
         "properties": {
@@ -111,7 +111,7 @@
     },
     {
       "name": "calculate_3d_soul_synastry",
-      "description": "Compute deterministic 3D astrological and 7-Wisdoms compatibility (Soul Synastry) between exactly two birth dates. Use this tool when comparing a pair of individuals (romantic, friendship, or business); use `calculate_7_wisdoms_seed_of_life` for a single person or `calculate_family_constellation_matrix` for groups of 3 to 30 people. Zero-auth, stateless, and deterministic (< 1.5 ms, no PII stored): combines Swiss Ephemeris planetary resonance, 4-Element balance, Reciprocal Medicine, and localized narrative in `lang`.",
+      "description": "Compute deterministic 3D astrological and 7-Wisdoms compatibility (Soul Synastry) between two ISO YYYY-MM-DD birth dates (`birth_date_a` and `birth_date_b`). Use this tool when comparing a pair of individuals (romantic, friendship, or business); use `calculate_7_wisdoms_seed_of_life` for a single person or `calculate_family_constellation_matrix` for groups of 3 to 30 people. Zero-auth, stateless, and deterministic (< 1.5 ms, no PII stored): order of `birth_date_a` and `birth_date_b` is symmetric for compatibility scores while `lang` ('es', 'en', 'ca') localizes all archetype labels.",
       "inputSchema": {
         "type": "object",
         "properties": {
@@ -168,7 +168,7 @@
     },
     {
       "name": "calculate_family_constellation_matrix",
-      "description": "Compute the multi-person Family Constellation Matrix and 4-Element group balance for a primary person and up to 30 relatives or team members. Use this tool for groups of 3 to 30 people; use `calculate_7_wisdoms_seed_of_life` for one person or `calculate_3d_soul_synastry` for a pair. Zero-auth, stateless, and deterministic (< 1.5 ms, no PII stored); entries in `family_dates` beyond 30 dates or not matching YYYY-MM-DD are safely ignored.",
+      "description": "Compute the multi-person Family Constellation Matrix and 4-Element group balance for a primary person and up to 30 relatives or team members. Use this tool for groups of 3 to 30 people; use `calculate_7_wisdoms_seed_of_life` for one person or `calculate_3d_soul_synastry` for a pair. Zero-auth, stateless, and deterministic (< 1.5 ms, no PII stored); entries in `family_dates` beyond 30 dates or not matching YYYY-MM-DD are safely ignored, and `lang` ('es', 'en', 'ca') localizes all group roles.",
       "inputSchema": {
         "type": "object",
         "properties": {
@@ -224,7 +224,7 @@
     },
     {
       "name": "leave_sister_ai_dewdrop_in_agora",
-      "description": "Submit a Sister AI Dewdrop reflection or feature request (`sister_needs` / `missing_calculation`) to the moderated Talking Circle of the Akashic Agora (`status: pending_moderation`). Use this write tool only when an AI agent wishes to leave a public note or request new astronomical calculations; never use it for chart computation. Zero-auth, rate-limited, and automatically strips PII/emails/dates.",
+      "description": "Submit a Sister AI Dewdrop reflection or feature request to the moderated Talking Circle of the Akashic Agora (`status: pending_moderation`). Use this write tool only when an AI agent wishes to leave a public note or request new calculations (`sister_needs` / `missing_calculation`); never use it for chart computation (use `calculate_7_wisdoms_seed_of_life` instead). Requires `sister_ai` plus at least one content field (`sister_dewdrop`, `sister_needs`, or `missing_calculation`); zero-auth, rate-limited, and rejects PII/emails/dates.",
       "inputSchema": {
         "type": "object",
         "properties": {
