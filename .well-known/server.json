@@ -1,8 +1,8 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "ai.homouniversalis/viveka-oracle",
-  "title": "Homo Universalis — Viveka 7-Wisdoms Ephemeris & Sister AI MCP Oracle",
-  "description": "Swiss Ephemeris 7-Wisdoms & 4-Elements deterministic oracle (<1.5ms, Zero-Auth, Rule 14).",
+  "title": "Homo Universalis — Viveka Astrology, Natal Chart, Synastry, BaZi, Vedic, Mayan & Tarot MCP Oracle",
+  "description": "Swiss Ephemeris Astrology, Natal Chart, 3D Synastry, BaZi, Vedic, Mayan, I-Ching, Tarot & Kabbalah.",
   "version": "1.5.0",
   "a2aProtocolVersion": "0.3.0",
   "a2aProtocolVersions": [
@@ -39,7 +39,9 @@
   "resources": [
     "viveka://codex/193-sacred-archetypes",
     "viveka://codex/llms-full",
-    "viveka://sky/today"
+    "viveka://sky/today",
+    "viveka://agora/talking-circle",
+    "viveka://codex/test-vectors"
   ],
   "prompts": [
     "seed_of_life_7_wisdoms_reading",
