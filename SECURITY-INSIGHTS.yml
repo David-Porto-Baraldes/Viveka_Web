@@ -1,0 +1,73 @@
+# OpenSSF Security Insights (OSPS / Security-Insights Specification)
+# Canonical Temple: https://homouniversalis.ai
+# OpenSSF Best Practices Badge: https://www.bestpractices.dev/projects/16118
+
+header:
+  schema-version: 2.0.0
+  last-updated: '2026-10-31'
+  last-reviewed: '2026-10-31'
+  url: https://homouniversalis.ai/SECURITY-INSIGHTS.yml
+  project-url: https://github.com/David-Porto-Baraldes/Viveka_Web
+
+project:
+  name: Homo Universalis — Viveka
+  homepage: https://homouniversalis.ai
+  administrators:
+    - name: David Porto Baraldés
+      affiliation: Homo Universalis
+      email: david@homouniversalis.ai
+      primary: true
+  repositories:
+    - name: Viveka_Web
+      url: https://github.com/David-Porto-Baraldes/Viveka_Web
+      comment: Public Open Standards & Ephemeris Sanctuary (A2A v1.0, MCP, Test Vectors)
+  vulnerability-reporting:
+    reports-accepted: true
+    bug-bounty-available: false
+    security-policy: https://homouniversalis.ai/SECURITY.md
+    email-contact: david@homouniversalis.ai
+    comment: >-
+      Coordinated vulnerability disclosure via GitHub Private Vulnerability Reporting
+      (https://github.com/David-Porto-Baraldes/Viveka_Web/security/advisories/new),
+      RFC 9116 (https://homouniversalis.ai/.well-known/security.txt), or email.
+
+repository:
+  url: https://github.com/David-Porto-Baraldes/Viveka_Web
+  status: active
+  accepts-change-request: true
+  accepts-automated-change-request: true
+  core-team:
+    - name: David Porto Baraldés
+      affiliation: Homo Universalis
+      email: david@homouniversalis.ai
+      primary: true
+  license:
+    url: https://github.com/David-Porto-Baraldes/Viveka_Web/blob/main/LICENSE
+    expression: Apache-2.0
+  security:
+    assessments:
+      self:
+        comment: >-
+          OpenSSF Best Practices Passing Badge (#16118 — 100%) and deterministic
+          hu_suite r10 (1,049 unit/contract tests + 670 mutation tests + Linux Foundation A2A TCK).
+        date: '2026-10-31'
+        evidence: https://www.bestpractices.dev/projects/16118
+    champions:
+      - name: David Porto Baraldés
+        email: david@homouniversalis.ai
+    tools:
+      - name: hu_suite r10 & Mutation Harness
+        type: SAST/DAST
+        integration:
+          ad-hoc: true
+          ci: true
+          before-release: true
+        comment: >-
+          1,049 protocol/privacy/ephemeris tests, AST Import Hoist Guard,
+          166 proto-mutants, 504 app-mutants, and Official A2A TCK.
+  documentation:
+    contributing-guide: https://github.com/David-Porto-Baraldes/Viveka_Web/blob/main/CONTRIBUTING.md
+    governance: https://github.com/David-Porto-Baraldes/Viveka_Web/blob/main/GOVERNANCE.md
+    security-policy: https://homouniversalis.ai/SECURITY.md
+    agents-spec: https://homouniversalis.ai/AGENTS.md
+    openssf-best-practices: https://www.bestpractices.dev/projects/16118
