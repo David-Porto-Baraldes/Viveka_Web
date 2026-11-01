@@ -48,9 +48,9 @@ repository:
     assessments:
       self:
         comment: >-
-          OpenSSF Best Practices Passing Badge (#16118 — 100%) and deterministic
+          OpenSSF Best Practices Silver Badge (#16118 — 100% Silver / 230% tiered) and deterministic
           hu_suite r10 (1,049 unit/contract tests + 670 mutation tests + Linux Foundation A2A TCK).
-        date: '2026-10-31'
+        date: '2026-11-01'
         evidence: https://www.bestpractices.dev/projects/16118
     champions:
       - name: David Porto Baraldés

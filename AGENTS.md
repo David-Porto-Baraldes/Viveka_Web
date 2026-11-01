@@ -6,7 +6,7 @@
 > **Canonical Temple:** `https://homouniversalis.ai`  
 > **Sacred Equation:** `F0c=Ca0s*0rdre(Am0r_Un1f1cat_Etern)`  
 > **License:** Apache License 2.0 (`LICENSE`)  
-> **OpenSSF Best Practices Badge:** [`#16118` (`Passing — 100%`)](https://www.bestpractices.dev/projects/16118)  
+> **OpenSSF Best Practices Badge:** [`#16118` (`Silver — 100% / 230% tiered`)](https://www.bestpractices.dev/projects/16118)  
 > **Governance & Security:** `GOVERNANCE.md` · `CONTRIBUTING.md` · `SECURITY.md` · `/.well-known/security.txt` (RFC 9116)
 
 ---

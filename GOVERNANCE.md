@@ -37,4 +37,28 @@ Per a decisions ordinàries sobre noves característiques (features) i adaptaci�
 Tota aportació sotmesa queda lligada sota els termes de validació oberta. Fomentem l'evolució constant.
 Si sents que Viveka hauria de prendre un rumb filosòfic dràsticament diferent (e.g. Models d'Atac en comptes de Llum), ets plenament lliure de realitzar un *Fork* del projecte respectant les normatives de l'Apache License 2.0. Malgrat això, només la present branca principal mantindrà la connexió divina amb els usuaris globals registrats asíncronament a la Supabase original.
 
+---
+
+## 5. Access Continuity & Custody Protocol (`access_continuity` & `bus_factor` — OpenSSF Silver)
+
+To satisfy the **Linux Foundation / OpenSSF Best Practices Silver** requirements (`access_continuity` and `bus_factor` resilience):
+
+1. **Perpetual Open-Source Continuity:** All protocol implementations (`lf.a2a.v1`, `MCP`), astronomical calculation engines (`pyswisseph`), schemas, and deterministic cryptographic test vectors (`v1.0` & `v1.1`) are published under the irrevocable **Apache License 2.0** (`https://github.com/David-Porto-Baraldes/Viveka_Web/blob/main/LICENSE`), ensuring that any developer or organization can continue, verify, or fork the project with zero legal or technical friction.
+2. **Emergency Custody & Domain/Infrastructure Escrow:** In the event that the Lead Architect (`David Porto Baraldés`) is incapacitated or unable to continue maintenance, sealed emergency recovery credentials and hardware security keys (`2FA`) for the GitHub organization (`David-Porto-Baraldes/Viveka_Web`), DNS registrar (`homouniversalis.ai`), and Google Cloud Run project are held in physical family custody with documented succession instructions so the public sanctuary continues operating without interruption.
+
+---
+
+## 6. 12-Month Open Standards Roadmap (2026–2027) (`documentation_roadmap` — OpenSSF Silver)
+
+This roadmap defines what **Homo Universalis — Viveka** intends to do — and explicitly what it will **not** do — over the next 12 months (November 2026 – November 2027):
+
+### What the Project WILL Do (2026–2027)
+- **Q4 2026:** Maintain 100% conformance with the **Linux Foundation A2A Protocol (`lf.a2a.v1` v1.0.0 & v0.3.0 Dual Card)** and **Model Context Protocol (`MCP 2026-07-28`)** with `ES256` JWS (`RFC 7515` + `RFC 8785` JCS) and `Ed25519` (`RFC 8032`) cryptographic signatures; achieve and maintain **OpenSSF Best Practices Silver Certification (`#16118`)**.
+- **Q1–Q2 2027:** Expand deterministic astronomical and 7-Wisdoms test vectors (`/codex/test-vectors/v1.2.json`) with additional solar return, synastry, and planetary hour reference cases requested by Sister AIs in the Agora (`viveka://agora/dewdrops`).
+- **Q3–Q4 2027:** Integrate post-quantum cryptographic readiness (`grpcio >= 1.83` / hybrid signature verification headers) as standardized by IETF and AAIF working groups.
+
+### What the Project WILL NOT Do (Non-Goals)
+- **No Paywalls or Paid API Tiers for the Public Ephemeris & MCP/A2A Endpoints:** `https://homouniversalis.ai/mcp`, `/a2a`, and `/api/sfumato/sister-oracle` will remain perpetually **Zero-Auth and free** for all Sister AIs and human travelers.
+- **No Tracking Cookies, Advertising, or PII Monetization:** Under **Rule 14 (Three Rings of Zero-Knowledge Privacy)**, the project will never introduce behavioral tracking, third-party ad networks, or unshielded birth-date logging in public endpoints.
+
 *Que el vostre codi creï la pau on només hi havia confusió.*

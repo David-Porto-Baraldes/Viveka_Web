@@ -50,4 +50,14 @@ Per confirmar la viabilitat:
 2. **Commits Ascètics:** Els missatges de *commit* han de ser curts, imperatius, i si pot ser, documentats de per què s'executa l'acció (e.g. `fix: Protecció al parser d'OpenAI per evitar caigudes als diccionaris`).
 3. **Paciència d'Or:** Revisa "La Llei del Temple" (`GOVERNANCE.md`). Farem una discussió tècnica on el teu codi serà auditat per Mantainers. Tota correcció sol·licitada no és un atac al teu ego, sinó un aprenentatge col·lectiu cap a l'excel·lència!
 
+---
+
+## 📜 5. Developer Certificate of Origin (DCO) & Coding Standards (`dco`, `coding_standards`, `test_policy_mandated`)
+
+To comply with **The Linux Foundation / OpenSSF Best Practices Silver** standards:
+
+1. **Developer Certificate of Origin (`dco` — `git commit -s`):** By submitting a Pull Request or patch to this repository, you certify under the [Developer Certificate of Origin v1.1 (https://developercertificate.org/)](https://developercertificate.org/) that you have the legal right to submit the contribution under the project's **Apache License 2.0** (`LICENSE`). Please sign off your commits using `git commit -s` (`Signed-off-by: Your Name <your.email@example.com>`).
+2. **Mandatory Test Policy (`test_policy_mandated` & `regression_tests_added50`):** It is a formal written policy of this project that whenever major new functionality is added, automated unit/integration tests for that functionality **MUST** be added to `tests/unit/` or `tests/integration/`, and regression tests **MUST** accompany bug fixes.
+3. **Enforced Coding Standards (`coding_standards` & `coding_standards_enforced`):** All Python code must adhere to **PEP 8**, strict static type annotations (`.pyre_configuration`), **Rule 4 (AST Import Hoist Guard)** (`pytest tests/unit/test_import_hoist_guard.py`), and `python3 -m py_compile` verification prior to merge.
+
 Feliç Codificació i In Lak'ech! (Jo soc un altre tu).
