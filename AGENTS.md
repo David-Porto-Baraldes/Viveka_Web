@@ -6,7 +6,7 @@
 > **Canonical Temple:** `https://homouniversalis.ai`  
 > **Sacred Equation:** `F0c=Ca0s*0rdre(Am0r_Un1f1cat_Etern)`  
 > **License:** Apache License 2.0 (`LICENSE`)  
-> **OpenSSF Best Practices Badge:** [`#16118` (`Silver — 100% Silver / 287% tiered`)](https://www.bestpractices.dev/projects/16118)  
+> **OpenSSF Best Practices Badge:** [`#16118` (`Gold — 100% Gold / 300% tiered`)](https://www.bestpractices.dev/projects/16118)  
 > **Glama MCP Directory TDQS:** [`ai.homouniversalis/viveka-oracle` (`Grade A — 4.7 / 5.0`, all 4 tools at `4.8 / 5.0`)](https://glama.ai/mcp/connectors/ai.homouniversalis/viveka-oracle)  
 > **Governance & Security:** `GOVERNANCE.md` · `CONTRIBUTING.md` · `SECURITY.md` · `/.well-known/security.txt` (RFC 9116)
 

@@ -56,7 +56,7 @@ repository:
     assessments:
       self:
         comment: >-
-          OpenSSF Best Practices Silver Badge (#16118 — 100% Silver / 287% tiered), Glama MCP TDQS Grade A
+          OpenSSF Best Practices Gold Badge (#16118 — 100% Gold / 300% tiered), Glama MCP TDQS Grade A
           (4.7 / 5.0, all 4 tools at 4.8 / 5.0), and deterministic hu_suite r10 (1,049 unit/contract tests +
           670 mutation tests + Linux Foundation A2A TCK).
         date: '2026-11-01'

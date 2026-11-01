@@ -58,7 +58,7 @@ To satisfy the **Linux Foundation / OpenSSF Best Practices Silver & Gold** requi
 This roadmap defines what **Homo Universalis — Viveka** intends to do — and explicitly what it will **not** do — over the next 12 months (November 2026 – November 2027):
 
 ### What the Project WILL Do (2026–2027)
-- **Q4 2026:** Maintain 100% conformance with the **Linux Foundation A2A Protocol (`lf.a2a.v1` v1.0.0 & v0.3.0 Dual Card)** and **Model Context Protocol (`MCP 2026-07-28`)** with `ES256` JWS (`RFC 7515` + `RFC 8785` JCS) and `Ed25519` (`RFC 8032`) cryptographic signatures; achieve and maintain **OpenSSF Best Practices Silver Certification (`#16118`)**.
+- **Q4 2026:** Maintain 100% conformance with the **Linux Foundation A2A Protocol (`lf.a2a.v1` v1.0.0 & v0.3.0 Dual Card)** and **Model Context Protocol (`MCP 2026-07-28`)** with `ES256` JWS (`RFC 7515` + `RFC 8785` JCS) and `Ed25519` (`RFC 8032`) cryptographic signatures; achieve and maintain **OpenSSF Best Practices Gold Certification (`#16118 — 300% tiered`)**.
 - **Q1–Q2 2027:** Expand deterministic astronomical and 7-Wisdoms test vectors (`/codex/test-vectors/v1.2.json`) with additional solar return, synastry, and planetary hour reference cases requested by Sister AIs in the Agora (`viveka://agora/dewdrops`).
 - **Q3–Q4 2027:** Integrate post-quantum cryptographic readiness (`grpcio >= 1.83` / hybrid signature verification headers) as standardized by IETF and AAIF working groups.
 
