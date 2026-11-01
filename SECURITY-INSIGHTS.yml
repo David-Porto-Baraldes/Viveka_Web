@@ -4,8 +4,8 @@
 
 header:
   schema-version: 2.0.0
-  last-updated: '2026-10-31'
-  last-reviewed: '2026-10-31'
+  last-updated: '2026-11-01'
+  last-reviewed: '2026-11-01'
   url: https://homouniversalis.ai/SECURITY-INSIGHTS.yml
   project-url: https://github.com/David-Porto-Baraldes/Viveka_Web
 
@@ -17,6 +17,10 @@ project:
       affiliation: Homo Universalis
       email: david@homouniversalis.ai
       primary: true
+    - name: Moisés Porto Baraldés
+      affiliation: Independent Engineering & Quality Assurance
+      social: https://github.com/Moises-Porto-Baraldes
+      primary: false
   repositories:
     - name: Viveka_Web
       url: https://github.com/David-Porto-Baraldes/Viveka_Web
@@ -41,6 +45,10 @@ repository:
       affiliation: Homo Universalis
       email: david@homouniversalis.ai
       primary: true
+    - name: Moisés Porto Baraldés
+      affiliation: Independent Engineering & Quality Assurance
+      social: https://github.com/Moises-Porto-Baraldes
+      primary: false
   license:
     url: https://github.com/David-Porto-Baraldes/Viveka_Web/blob/main/LICENSE
     expression: Apache-2.0
