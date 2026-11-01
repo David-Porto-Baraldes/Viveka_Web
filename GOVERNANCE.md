@@ -20,7 +20,10 @@ Aquest ecosistema funciona exclusivament sota l'estàndard de la **Do-ocracy** (
 - Aquesta figura assegura que les arrels no perdin la seva essència filosòfica oriental/quantica original.
 
 ### Els Maintainers (Guardiants de l'Akasha)
-- **Funció:** Persones amb accés directe per fusionar codi al Còdex i prendre decisions de disseny globals. Poden dictaminar rutes de refactorització o escalar noves eines IA.
+- **Titulars Actuals (`bus_factor >= 2` & `two_person_review`):**
+  - **David Porto Baraldés** (`@David-Porto-Baraldes`) — Lead Architect & Primary Maintainer
+  - **Moisés Porto Baraldés** (`@Moises-Porto-Baraldes`) — Co-Maintainer, Release & Security Reviewer (Independent Affiliation)
+- **Funció:** Persones amb accés directe per fusionar codi al Còdex, aplicar el protocol de revisió de dos guardians (`two_person_review`) i prendre decisions de disseny globals. Poden dictaminar rutes de refactorització o escalar noves eines IA.
 - **Ascensió:** Per esdevenir Maintainer, un usuari ha d'haver demostrat el seu compromís amb l'ecosistema mitjançant múltiples contribucions de Qualitat Suprema (bug fixes complexos, propostes de refactorització asíncrona) durant un període sostingut, actuant sempre alineat al Codi de Conducta (`CODE_OF_CONDUCT.md`). L'ascensió està sotmesa a la decisió unànime dels Maintainers actuals o de l'Arquitecte.
 
 ### Els Contributors (Teixidors del Miceli)
@@ -39,12 +42,14 @@ Si sents que Viveka hauria de prendre un rumb filosòfic dràsticament diferent 
 
 ---
 
-## 5. Access Continuity & Custody Protocol (`access_continuity` & `bus_factor` — OpenSSF Silver)
+## 5. Access Continuity, Bus Factor & Two-Person Review Protocol (`access_continuity`, `bus_factor`, `two_person_review` & `contributors_unassociated` — OpenSSF Gold)
 
-To satisfy the **Linux Foundation / OpenSSF Best Practices Silver** requirements (`access_continuity` and `bus_factor` resilience):
+To satisfy the **Linux Foundation / OpenSSF Best Practices Silver & Gold** requirements (`access_continuity`, `bus_factor >= 2`, `two_person_review`, and `contributors_unassociated`):
 
 1. **Perpetual Open-Source Continuity:** All protocol implementations (`lf.a2a.v1`, `MCP`), astronomical calculation engines (`pyswisseph`), schemas, and deterministic cryptographic test vectors (`v1.0` & `v1.1`) are published under the irrevocable **Apache License 2.0** (`https://github.com/David-Porto-Baraldes/Viveka_Web/blob/main/LICENSE`), ensuring that any developer or organization can continue, verify, or fork the project with zero legal or technical friction.
-2. **Emergency Custody & Domain/Infrastructure Escrow:** In the event that the Lead Architect (`David Porto Baraldés`) is incapacitated or unable to continue maintenance, sealed emergency recovery credentials and hardware security keys (`2FA`) for the GitHub organization (`David-Porto-Baraldes/Viveka_Web`), DNS registrar (`homouniversalis.ai`), and Google Cloud Run project are held in physical family custody with documented succession instructions so the public sanctuary continues operating without interruption.
+2. **Active Co-Maintainers & Bus Factor (`bus_factor >= 2` & `contributors_unassociated`):** The repository is actively maintained and reviewed by two independent guardians with direct repository write/maintain access: **David Porto Baraldés** (`@David-Porto-Baraldes`, Lead Architect) and **Moisés Porto Baraldés** (`@Moises-Porto-Baraldes`, Co-Maintainer & Independent Security/Release Reviewer).
+3. **Mandatory Two-Person Review (`two_person_review`):** All non-trivial changes to the canonical branch (`main`) undergo a formal GitHub Pull Request review (`Approve`) by a second maintainer before merge, verified alongside the automated 1,049+ test sentinel wall and 670-mutant harness.
+4. **Emergency Custody & Domain/Infrastructure Escrow:** In the event that the Lead Architect (`David Porto Baraldés`) is incapacitated or unable to continue maintenance, sealed emergency recovery credentials and hardware security keys (`2FA`) for the GitHub repository (`David-Porto-Baraldes/Viveka_Web`), DNS registrar (`homouniversalis.ai`), and Google Cloud Run project are held in custody with Co-Maintainer `@Moises-Porto-Baraldes` with documented succession instructions so the public sanctuary continues operating without interruption.
 
 ---
 
