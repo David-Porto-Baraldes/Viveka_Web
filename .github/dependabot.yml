@@ -1,0 +1,7 @@
+# Official GitHub Dependabot Configuration (OpenSSF Scorecard Dependency-Update-Tool 10/10)
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
