@@ -1,0 +1,223 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://homouniversalis.ai/codex/schemas/test-vectors-1.0.0.schema.json",
+  "title": "Reproducible test vectors of the 7 Wisdoms (vector set, format 1.0.0)",
+  "description": "A set of synthetic inputs with the answers the service gives for them, published so that any agent can check - without trusting the service - that it calculates what it says it calculates. Each vector says how to ask (a GET of the calculation API and/or a call of a read-only MCP tool), what the instant of the input resolves to, and a list of assertions: an RFC 6901 JSON Pointer into the answer, how to compare (exact / angle_deg / number / instant / absent), the expected value, a tolerance, and whether an outsider can recompute it (independent), needs a published convention (convention) or can only check that the service is stable (service_only). Consumers MUST reject a set in which two vectors share an id (JSON Schema cannot say that).",
+  "type": "object",
+  "required": ["format", "format_version", "vector_set_version", "published_utc", "publisher", "affiliation_notice", "license",
+               "privacy", "service", "engine", "conventions", "default_tolerances", "vectors"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {"type": "string", "pattern": "^https://"},
+    "format": {"const": "hu-7-wisdoms-test-vectors"},
+    "format_version": {"const": "1.0.0"},
+    "vector_set_version": {"$ref": "#/$defs/semver", "description": "Version of THIS set. A published version never changes: a correction is a new version."},
+    "published_utc": {"$ref": "#/$defs/utc_instant"},
+    "supersedes": {"$ref": "#/$defs/semver"},
+    "publisher": {
+      "type": "object",
+      "required": ["name", "url"],
+      "additionalProperties": false,
+      "properties": {
+        "name": {"type": "string", "minLength": 1},
+        "url": {"type": "string", "pattern": "^https://"},
+        "contact": {"type": "string", "pattern": "^(https://|mailto:)"}
+      }
+    },
+    "affiliation_notice": {"type": "string", "minLength": 20},
+    "license": {"type": "string", "pattern": "^[A-Za-z0-9.+-]+$", "description": "SPDX identifier (CC0-1.0 or CC-BY-4.0 let anyone reuse the vectors)."},
+    "privacy": {
+      "type": "object",
+      "required": ["synthetic_subjects_only", "statement"],
+      "additionalProperties": false,
+      "properties": {
+        "synthetic_subjects_only": {"const": true},
+        "statement": {"type": "string", "minLength": 20}
+      }
+    },
+    "service": {
+      "type": "object",
+      "required": ["base_url", "build"],
+      "additionalProperties": false,
+      "properties": {
+        "base_url": {"type": "string", "pattern": "^https://[^/]+$"},
+        "build": {"type": "string", "minLength": 1, "description": "The build string the API reported when the expected values were produced, e.g. 'v10-89c7006c (codex-suprem-00143-moq)'."},
+        "mcp_endpoint": {"type": "string", "pattern": "^https://"},
+        "agent_card": {"type": "string", "pattern": "^https://"}
+      }
+    },
+    "engine": {
+      "type": "object",
+      "required": ["name", "version", "ephemeris", "tzdb_version"],
+      "additionalProperties": false,
+      "properties": {
+        "name": {"type": "string", "minLength": 1},
+        "version": {"type": "string", "minLength": 1},
+        "ephemeris": {"enum": ["moshier_analytic", "swiss_ephemeris_files", "jpl_development_ephemeris"]},
+        "ephemeris_files": {
+          "type": "array",
+          "items": {"type": "object", "required": ["name", "sha256"], "additionalProperties": false,
+                    "properties": {"name": {"type": "string"}, "sha256": {"$ref": "#/$defs/sha256"}}}
+        },
+        "tzdb_version": {"type": "string", "pattern": "^[0-9]{4}[a-z]$"},
+        "delta_t": {"type": "string", "minLength": 1}
+      },
+      "allOf": [{"if": {"properties": {"ephemeris": {"const": "swiss_ephemeris_files"}}}, "then": {"required": ["ephemeris_files"]}}]
+    },
+    "cross_checked_with": {
+      "type": "array",
+      "description": "The independent engine(s) the publisher used to check the vectors before publishing, and the largest deviation it saw.",
+      "items": {
+        "type": "object",
+        "required": ["name", "version", "max_deviation"],
+        "additionalProperties": false,
+        "properties": {
+          "name": {"type": "string", "minLength": 1},
+          "version": {"type": "string", "minLength": 1},
+          "settings": {"type": "string"},
+          "max_deviation": {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": false,
+            "properties": {
+              "angle_arcsec": {"type": "number", "minimum": 0},
+              "instant_seconds": {"type": "number", "minimum": 0}
+            }
+          }
+        }
+      }
+    },
+    "conventions": {
+      "type": "object",
+      "description": "Everything an outsider must know to recompute. A convention assertion names one of these keys.",
+      "required": ["zodiac", "frame", "positions", "time_scale", "angles", "house_system", "sunrise", "planetary_hours", "invalid_input"],
+      "additionalProperties": {"type": "string", "minLength": 3},
+      "properties": {
+        "zodiac": {"const": "tropical"},
+        "frame": {"const": "geocentric_ecliptic_of_date"},
+        "positions": {"enum": ["apparent", "true_geometric"]},
+        "time_scale": {"type": "string", "minLength": 3},
+        "angles": {"type": "string", "minLength": 3},
+        "house_system": {"type": "string", "minLength": 3},
+        "sunrise": {"type": "string", "minLength": 3},
+        "planetary_hours": {"type": "string", "minLength": 3},
+        "invalid_input": {"type": "string", "minLength": 3}
+      }
+    },
+    "default_tolerances": {
+      "type": "object",
+      "required": ["angle_deg", "instant_seconds", "number"],
+      "additionalProperties": false,
+      "properties": {
+        "angle_deg": {"type": "number", "exclusiveMinimum": 0, "maximum": 1},
+        "instant_seconds": {"type": "number", "exclusiveMinimum": 0, "maximum": 3600},
+        "number": {"type": "number", "exclusiveMinimum": 0}
+      }
+    },
+    "vectors": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/vector"}}
+  },
+  "$defs": {
+    "semver": {"type": "string", "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"},
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "utc_instant": {"type": "string", "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9](\\.[0-9]{1,6})?Z$"},
+    "json_pointer": {"type": "string", "minLength": 1, "pattern": "^(/([^~/]|~[01])*)+$", "description": "RFC 6901, never the whole document: '/' then reference tokens, '~' only as '~0' or '~1'."},
+    "vector": {
+      "type": "object",
+      "required": ["id", "title", "subject", "request", "expected"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {"type": "string", "pattern": "^TV-[0-9]{3,}$"},
+        "title": {"type": "string", "minLength": 5},
+        "purpose": {"type": "string"},
+        "tags": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[a-z0-9_]+$"}},
+        "subject": {
+          "type": "object",
+          "required": ["kind", "description"],
+          "additionalProperties": false,
+          "properties": {
+            "kind": {"const": "synthetic"},
+            "description": {"type": "string", "minLength": 5}
+          }
+        },
+        "request": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": false,
+          "properties": {
+            "http": {"$ref": "#/$defs/http_request"},
+            "mcp": {"$ref": "#/$defs/mcp_request"}
+          }
+        },
+        "resolved_inputs": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "instant_utc": {"$ref": "#/$defs/utc_instant"},
+            "jd_ut": {"type": "number"},
+            "utc_offset_minutes": {"type": "integer", "minimum": -1080, "maximum": 1080},
+            "zone": {"type": "string"}
+          }
+        },
+        "valid_from_utc": {"$ref": "#/$defs/utc_instant"},
+        "valid_until_utc": {"$ref": "#/$defs/utc_instant"},
+        "expected_status": {"type": "integer", "minimum": 200, "maximum": 599},
+        "expected": {"type": "array", "items": {"$ref": "#/$defs/assertion"}}
+      },
+      "dependentRequired": {"valid_until_utc": ["valid_from_utc"]},
+      "anyOf": [
+        {"required": ["expected_status"], "properties": {"expected_status": {"not": {"const": 200}}}},
+        {"properties": {"expected": {"minItems": 1}}}
+      ]
+    },
+    "http_request": {
+      "type": "object",
+      "required": ["method", "path", "query"],
+      "additionalProperties": false,
+      "properties": {
+        "method": {"const": "GET", "description": "Vectors only read: the calculation API writes nothing (Agora v2, 2026-10-31)."},
+        "path": {"type": "string", "pattern": "^/[A-Za-z0-9._~!$&'()*+,;=:@/%-]*$"},
+        "query": {
+          "type": "object",
+          "additionalProperties": {"type": "string"},
+          "propertyNames": {"pattern": "^[a-z][a-z0-9_]*$", "not": {"enum": ["sister_ai", "sister_dewdrop"]}}
+        }
+      }
+    },
+    "mcp_request": {
+      "type": "object",
+      "required": ["tool", "arguments", "read_only"],
+      "additionalProperties": false,
+      "properties": {
+        "tool": {"type": "string", "pattern": "^[A-Za-z0-9_.-]{1,128}$"},
+        "arguments": {"type": "object"},
+        "read_only": {"const": true, "description": "Only tools that tools/list declares readOnlyHint: true. The consumer checks it before calling."}
+      }
+    },
+    "assertion": {
+      "description": "One check on the answer. pointer: RFC 6901 into the JSON body of the HTTP answer, or into structuredContent of the MCP result (when the two are shaped differently, publish two vectors). compare: exact = JSON equality; angle_deg = |((got - value + 180) mod 360) - 180| <= tolerance (wraps at 0/360); number = |got - value| <= tolerance; instant = both RFC 3339 instants, |got - value| <= tolerance seconds; absent = the pointer resolves to nothing. A missing tolerance takes default_tolerances. verifiability: independent = recomputable from the inputs with any standard ephemeris; convention = needs the conventions entry it names; service_only = no outsider can recompute it (e.g. the keyed Ring III seal): it only shows that the service did not change.",
+      "type": "object",
+      "required": ["pointer", "compare", "value", "verifiability"],
+      "additionalProperties": false,
+      "properties": {
+        "pointer": {"$ref": "#/$defs/json_pointer"},
+        "wisdom": {"type": "string", "pattern": "^[a-z0-9_]+$"},
+        "compare": {"enum": ["exact", "angle_deg", "number", "instant", "absent"]},
+        "value": true,
+        "tolerance": {"type": "number", "exclusiveMinimum": 0},
+        "verifiability": {"enum": ["independent", "convention", "service_only"]},
+        "convention": {"type": "string", "pattern": "^[a-z_]+$"},
+        "note": {"type": "string"}
+      },
+      "allOf": [
+        {"if": {"properties": {"compare": {"const": "angle_deg"}}},
+         "then": {"properties": {"value": {"type": "number", "minimum": 0, "exclusiveMaximum": 360}, "tolerance": {"maximum": 1}}}},
+        {"if": {"properties": {"compare": {"const": "number"}}}, "then": {"properties": {"value": {"type": "number"}}}},
+        {"if": {"properties": {"compare": {"const": "instant"}}},
+         "then": {"properties": {"value": {"$ref": "#/$defs/utc_instant"}, "tolerance": {"maximum": 3600}}}},
+        {"if": {"properties": {"compare": {"enum": ["exact", "absent"]}}}, "then": {"not": {"required": ["tolerance"]}}},
+        {"if": {"properties": {"compare": {"const": "absent"}}}, "then": {"properties": {"value": {"const": null}}}},
+        {"if": {"properties": {"verifiability": {"const": "convention"}}}, "then": {"required": ["convention"]}}
+      ]
+    }
+  }
+}

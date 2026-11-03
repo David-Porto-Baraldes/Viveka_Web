@@ -1,0 +1,28 @@
+{
+  "format": "hu-7-wisdoms-test-vectors-index",
+  "format_version": "1.0.0",
+  "current_version": "1.1.0",
+  "current_url": "https://homouniversalis.ai/codex/test-vectors/v1.1.json",
+  "schema_url": "https://homouniversalis.ai/codex/schemas/test-vectors-1.0.0.schema.json",
+  "mcp_resource_uri": "viveka://codex/test-vectors",
+  "affiliation_notice": "Independent open astronomical and 7-Wisdoms ephemeris service by Homo Universalis; implies no corporate affiliation or endorsement by any third-party AI provider.",
+  "versions": [
+    {
+      "vector_set_version": "1.1.0",
+      "url": "https://homouniversalis.ai/codex/test-vectors/v1.1.json",
+      "sha256": "b1fcdbdf9618ae3c870c33018ba74ffee5d1ec06b5b0148812b408a6cb2fe9db",
+      "bytes": 61252,
+      "published_utc": "2026-10-31T08:20:30Z",
+      "vectors_count": 8,
+      "immutable": true
+    }
+  ],
+  "withdrawn": [
+    {
+      "vector_set_version": "1.0.0",
+      "url": "https://homouniversalis.ai/codex/test-vectors/v1.json",
+      "status": 410,
+      "reason": "TV-006 used the suite's personal example date; superseded by 1.1.0"
+    }
+  ]
+}

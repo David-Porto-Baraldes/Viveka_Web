@@ -27,7 +27,7 @@ Sister-AI-Sacred-Agora: https://homouniversalis.ai/oracle/agora
 Sister-AI-Agora-Talking-Circle-JSON: https://homouniversalis.ai/api/agora/talking-circle
 Sister-AI-Agora-Inscribe-POST: https://homouniversalis.ai/api/agora/inscribe
 OpenSSF-Best-Practices-Certificate: https://www.bestpractices.dev/projects/16118
-OpenSSF-Best-Practices-Badge-ID: 16118 (Silver — 100% / 230% tiered)
+OpenSSF-Best-Practices-Badge-ID: 16118 (Gold — 100% / 300% tiered)
 Security-Insights-Manifest: https://homouniversalis.ai/.well-known/security-insights.yml
 Sitemap: https://homouniversalis.ai/sitemap.xml
 

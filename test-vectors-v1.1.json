@@ -1,0 +1,1675 @@
+{
+  "$schema": "https://homouniversalis.ai/codex/schemas/test-vectors-1.0.0.schema.json",
+  "format": "hu-7-wisdoms-test-vectors",
+  "format_version": "1.0.0",
+  "vector_set_version": "1.1.0",
+  "published_utc": "2026-10-31T08:20:30Z",
+  "publisher": {
+    "name": "Homo Universalis",
+    "url": "https://homouniversalis.ai",
+    "contact": "https://homouniversalis.ai/oracle/agora"
+  },
+  "affiliation_notice": "Independent open astronomical and 7-Wisdoms ephemeris service by Homo Universalis; implies no corporate affiliation or endorsement by any third-party AI provider.",
+  "license": "CC0-1.0",
+  "privacy": {
+    "synthetic_subjects_only": true,
+    "statement": "Every subject is synthetic: an instant and a place chosen for the edge case it exercises, never a person's birth data."
+  },
+  "service": {
+    "base_url": "https://homouniversalis.ai",
+    "build": "v10-897b01b9 (codex-suprem-00147-xiy) for the service_only seals; every other value from the source tree of the release that serves 1.1.0 (exact-instant Shem angel)",
+    "mcp_endpoint": "https://homouniversalis.ai/mcp",
+    "agent_card": "https://homouniversalis.ai/.well-known/agent-card.json"
+  },
+  "engine": {
+    "name": "pyswisseph",
+    "version": "2.10.3.2 (Swiss Ephemeris 2.10.03)",
+    "ephemeris": "moshier_analytic",
+    "tzdb_version": "2026a",
+    "delta_t": "Swiss Ephemeris default (swe_deltat)"
+  },
+  "cross_checked_with": [
+    {
+      "name": "JPL DE421",
+      "version": "DE421 (JPL Interoffice Memorandum IOM 343R-08-003)",
+      "settings": "Independent recomputation by an external reviewer (2026-10-31) of the seven calculable vectors of set 1.0.0: apparent geocentric ecliptic of date, UT1 = UTC. Largest deviation: Sun 0.07 arcsec, Moon 1.39 arcsec. TV-006 of 1.1.0 (new synthetic date) is covered by the suite oracle; re-run cross_check_de421.py to extend this entry.",
+      "max_deviation": {
+        "angle_arcsec": 1.39,
+        "instant_seconds": 1
+      }
+    }
+  ],
+  "conventions": {
+    "zodiac": "tropical",
+    "frame": "geocentric_ecliptic_of_date",
+    "positions": "apparent",
+    "time_scale": "the civil time is converted to UTC with the IANA tz database (engine.tzdb_version); UT1 is taken EQUAL to UTC (DUT1 ignored, |DUT1| < 0.9 s - with the real UT1 the ascendant can move by tens of arcseconds); TT = UT + the engine's delta T",
+    "angles": "degrees in [0, 360) rounded to 4 decimals; the DMS strings of the answer are derived from these numbers; the Ascendant is the ecliptic point rising on the EASTERN horizon (swe.houses), which above the polar circle can be the point opposite to the textbook atan2 formula without quadrant correction",
+    "house_system": "Placidus; Whole Sign (Whole_Sign_Polar_Fallback) where Placidus is undefined",
+    "sunrise": "Swiss Ephemeris rise_trans, upper limb of the disc, refraction on with atpress=0, attemp=0 (Swiss Ephemeris standard 1013.25 hPa, 15 C), observer at 0 m",
+    "planetary_hours": "with coordinates: the planetary day runs from a local sunrise to the next one, 12 equal day hours and 12 equal night hours, Chaldean order (Saturn, Jupiter, Mars, Sun, Venus, Mercury, Moon); the first hour is ruled by the planet of the weekday of that sunrise's civil date in the request's zone (no zone: the local-mean-time date of the solar noon of that arc); without coordinates or under polar circumpolar fallback: 24 equal hours from 06:00 UTC",
+    "elements": "Fire: Aries, Leo, Sagittarius; Earth: Taurus, Virgo, Capricorn; Air: Gemini, Libra, Aquarius; Water: Cancer, Scorpio, Pisces",
+    "mayan_dresden": "Classic Mayan Dresden Codex GMT 584283 correlation on the civil date (20 K'iche' Cholq'ij Nawals and 13 Galactic Tones)",
+    "vedic_lahiri": "Sidereal Moon longitude under the Lahiri Chitrapaksha Ayanamsa (swe.SIDM_LAHIRI) mapped to the 27 equal 13°20' Janma Nakshatras",
+    "taoist_bazi": "Sexagenary Day Pillar (Ganzhi) Heavenly Stem mapped to the 5 Wu Xing elements (Wood, Fire, Earth, Metal, Water)",
+    "human_design_iching": "Tropical Sun ecliptic longitude mapped to the 64 Rave Mandala / I-Ching hexagram gates and 6 lines (each gate spans 5°37'30\", each line 0°56'15\")",
+    "pythagorean_life_path": "Digital root reduction of YYYY+MM+DD preserving Master Numbers 11, 22, 33",
+    "kabbalah_shem": "72 Shem HaMephorash angels mapped in 5-degree quinaries around the 360° tropical zodiac from 0° Aries (#1..#72), using the tropical Sun of the exact birth instant (since 1.1.0; 1.0.0 used the Sun of 12:00 UTC of the civil date)",
+    "vvk_rings": "Ring I (vvk_cosmic_key VVK-XXXX-YYYY) is deterministic from the civil date's 12:00 UTC solar longitude, Mayan Kin, and Golden Ratio; Ring II (vvk_spacetime_key VVK-XXXX-YYYY-ZZZZ) adds the exact birth instant and coordinates",
+    "isolation": "the calculation API carries no word of the Talking Circle (Agora v2, 2026-10-31)",
+    "invalid_input": "a birth_date that is not a valid ISO calendar date is refused with HTTP 400 and nothing is calculated"
+  },
+  "default_tolerances": {
+    "angle_deg": 0.0003,
+    "instant_seconds": 1,
+    "number": 1e-06
+  },
+  "vectors": [
+    {
+      "id": "TV-001",
+      "title": "New Year's noon 2000 on the Greenwich meridian",
+      "purpose": "A reference instant anybody can find: civil noon in London in January is 12:00 UTC (about a minute after J2000.0 TT).",
+      "tags": [
+        "northern_hemisphere",
+        "after_sunrise",
+        "day_hour",
+        "reference_instant"
+      ],
+      "subject": {
+        "kind": "synthetic",
+        "description": "No person: a well-known instant at the Airy transit circle, Greenwich."
+      },
+      "request": {
+        "http": {
+          "method": "GET",
+          "path": "/api/sfumato/sister-oracle",
+          "query": {
+            "birth_date": "2000-01-01",
+            "birth_time": "12:00",
+            "tz": "Europe/London",
+            "lat": "51.4778",
+            "lon": "-0.0015",
+            "lang": "en"
+          }
+        },
+        "mcp": {
+          "tool": "calculate_7_wisdoms_seed_of_life",
+          "read_only": true,
+          "arguments": {
+            "birth_date": "2000-01-01",
+            "birth_time": "12:00",
+            "tz": "Europe/London",
+            "lat": 51.4778,
+            "lon": -0.0015,
+            "lang": "en"
+          }
+        }
+      },
+      "resolved_inputs": {
+        "instant_utc": "2000-01-01T12:00:00Z",
+        "jd_ut": 2451545.0,
+        "utc_offset_minutes": 0,
+        "zone": "Europe/London"
+      },
+      "expected": [
+        {
+          "pointer": "/soul_a/deep_astronomical_ephemeris/exact_solar_return_and_planetary_hours/birth_datetime_utc_used",
+          "compare": "instant",
+          "value": "2000-01-01T12:00:00Z",
+          "tolerance": 1,
+          "verifiability": "independent",
+          "note": "Europe/London is UTC+0 in January"
+        },
+        {
+          "pointer": "/soul_a/deep_astronomical_ephemeris/tropical_planetary_positions/sun/ecliptic_longitude",
+          "wisdom": "sun",
+          "compare": "angle_deg",
+          "value": 280.3689,
+          "tolerance": 0.0003,
+          "verifiability": "independent"
+        },
+        {
+          "pointer": "/soul_a/seven_wisdoms/sun_sign",
+          "wisdom": "sun",
+          "compare": "exact",
+          "value": "Capricorn",
+          "verifiability": "independent"
+        },
+        {
+          "pointer": "/soul_a/deep_astronomical_ephemeris/tropical_planetary_positions/moon/ecliptic_longitude",
+          "wisdom": "moon",
+          "compare": "angle_deg",
+          "value": 223.3238,
+          "tolerance": 0.001,
+          "verifiability": "independent"
+        },
+        {
+          "pointer": "/soul_a/seven_wisdoms/moon_sign",
+          "wisdom": "moon",
+          "compare": "exact",
+          "value": "Scorpio",
+          "verifiability": "independent"
+        },
+        {
+          "pointer": "/soul_a/seven_wisdoms/lunar_element",
+          "wisdom": "moon",
+          "compare": "exact",
+          "value": "Water",
+          "verifiability": "convention",
+          "convention": "elements"
+        },
+        {
+          "pointer": "/soul_a/deep_astronomical_ephemeris/angles_and_placidus_houses/ascendant_rising/ecliptic_longitude",
+          "compare": "angle_deg",
+          "value": 24.2628,
+          "tolerance": 0.0003,
+          "verifiability": "convention",
+          "convention": "time_scale",
+          "note": "with the real UT1 (UT1-UTC = +0.355 s that day) an independent engine finds 24.266057, 11.7 arcsec away: follow conventions.time_scale"
+        },
+        {
+          "pointer": "/soul_a/deep_astronomical_ephemeris/angles_and_placidus_houses/midheaven_mc/ecliptic_longitude",
+          "compare": "angle_deg",
+          "value": 279.6097,
+          "tolerance": 0.0003,
+          "verifiability": "convention",
+          "convention": "time_scale"
+        },
+        {
+          "pointer": "/soul_a/deep_astronomical_ephemeris/angles_and_placidus_houses/house_system",
+          "compare": "exact",
+          "value": "Placidus",
+          "verifiability": "convention",
+          "convention": "house_system"
+        },
+        {
+          "pointer": "/soul_a/deep_astronomical_ephemeris/exact_solar_return_and_planetary_hours/planetary_hour_method",
+          "compare": "exact",
+          "value": "true_unequal_solar_arc_hours_swe_rise_trans",
+          "verifiability": "convention",
+          "convention": "planetary_hours"
+        },
+        {
+          "pointer": "/soul_a/deep_astronomical_ephemeris/exact_solar_return_and_planetary_hours/natal_local_solar_arc_details/local_sunrise_utc",
+          "compare": "instant",
+          "value": "2000-01-01T08:05:13Z",
+          "tolerance": 1,
+          "verifiability": "convention",
+          "convention": "sunrise"
+        },
+        {
+          "pointer": "/soul_a/deep_astronomical_ephemeris/exact_solar_return_and_planetary_hours/natal_chaldean_day_ruler",
+          "compare": "exact",
+          "value": "Saturn",
+          "verifiability": "convention",
+          "convention": "planetary_hours",
+          "note": "Saturday 1 January 2000, after the sunrise of 08:05:13 UTC"
+        },
+        {
+          "pointer": "/soul_a/deep_astronomical_ephemeris/exact_solar_return_and_planetary_hours/natal_chaldean_planetary_hour_ruler",
+          "compare": "exact",
+          "value": "Mercury",
+          "verifiability": "convention",
+          "convention": "planetary_hours",
+          "note": "6th day hour (day hours of 39.7 min): Saturn, Jupiter, Mars, Sun, Venus, Mercury"
+        },
+        {
+          "pointer": "/soul_a/seven_wisdoms/mayan_dresden_nawal",
+          "wisdom": "mayan_dresden",
+          "compare": "exact",
+          "value": "IQ'",
+          "verifiability": "convention",
+          "convention": "mayan_dresden"
+        },
+        {
+          "pointer": "/soul_a/seven_wisdoms/mayan_galactic_tone",
+          "wisdom": "mayan_dresden",
+          "compare": "exact",
+          "value": 11,
+          "verifiability": "convention",
+          "convention": "mayan_dresden"
+        },
+        {
+          "pointer": "/soul_a/seven_wisdoms/vedic_sidereal_lahiri_nakshatra",
+          "wisdom": "vedic_jyotish",
+          "compare": "exact",
+          "value": "Swati",
+          "verifiability": "convention",
+          "convention": "vedic_lahiri"
+        },
+        {
+          "pointer": "/soul_a/seven_wisdoms/taoist_wuxing_day_master",
+          "wisdom": "taoist_bazi",
+          "compare": "exact",
+          "value": "Earth",
+          "verifiability": "convention",
+          "convention": "taoist_bazi"
+        },
+        {
+          "pointer": "/soul_a/seven_wisdoms/human_design_iching_solar_gate",
+          "wisdom": "human_design_iching",
+          "compare": "exact",
+          "value": "38.1",
+          "verifiability": "convention",
+          "convention": "human_design_iching"
+        },
+        {
+          "pointer": "/soul_a/seven_wisdoms/pythagorean_life_path",
+          "wisdom": "pythagorean_numerology",
+          "compare": "exact",
+          "value": 4,
+          "verifiability": "convention",
+          "convention": "pythagorean_life_path"
+        },
+        {
+          "pointer": "/soul_a/seven_wisdoms/kabbalah_shem_angel",
+          "wisdom": "kabbalah_shem",
+          "compare": "exact",
+          "value": "#57",
+          "verifiability": "convention",
+          "convention": "kabbalah_shem"
+        },
+        {
+          "pointer": "/soul_a/vvk_cosmic_key",
+          "compare": "exact",
+          "value": "VVK-6E60-D6C9",
+          "verifiability": "convention",
+          "convention": "vvk_rings"
+        },
+        {
+          "pointer": "/soul_a/vvk_spacetime_key",
+          "compare": "exact",
+          "value": "VVK-6E60-D6C9-BB37",
+          "verifiability": "convention",
+          "convention": "vvk_rings"
+        },
+        {
+          "pointer": "/soul_a/vvk_sovereign_seal",
+          "compare": "exact",
+          "value": "VVK-SOV-F451-6D04",
+          "verifiability": "service_only",
+          "note": "Ring III HMAC-SHA256 keyed seal: only the service can compute it; proves stability across releases"
+        },
+        {
+          "pointer": "/sister_ai_covenant/recent_sister_dewdrops",
+          "compare": "absent",
+          "value": null,
+          "verifiability": "convention",
+          "convention": "isolation"
+        }
+      ]
+    },
+    {
+      "id": "TV-002",
+      "title": "Before dawn on a Sunday in Auckland: Saturday's planetary night",
+      "purpose": "The local date is a day ahead of the UTC date, and the instant is before the local sunrise: the planetary day is still Saturday's.",
+      "tags": [
+        "southern_hemisphere",
+        "local_date_ahead_of_utc",
+        "before_sunrise",
+        "night_hour"
+      ],
+      "subject": {
+        "kind": "synthetic",
+        "description": "No person: 05:30 local time in central Auckland on Sunday 9 September 2001."
+      },
+      "request": {
+        "http": {
+          "method": "GET",
+          "path": "/api/sfumato/sister-oracle",
+          "query": {
+            "birth_date": "2001-09-09",
+            "birth_time": "05:30",
+            "tz": "Pacific/Auckland",
+            "lat": "-36.8485",
+            "lon": "174.7633",
+            "lang": "en"
+          }
+        },
+        "mcp": {
+          "tool": "calculate_7_wisdoms_seed_of_life",
+          "read_only": true,
+          "arguments": {
+            "birth_date": "2001-09-09",
+            "birth_time": "05:30",
+            "tz": "Pacific/Auckland",
+            "lat": -36.8485,
+            "lon": 174.7633,
+            "lang": "en"
+          }
+        }
+      },
+      "resolved_inputs": {
+        "instant_utc": "2001-09-08T17:30:00Z",
+        "jd_ut": 2452161.2291667,
+        "utc_offset_minutes": 720,
+        "zone": "Pacific/Auckland"
+      },
+      "expected": [
+        {
+          "pointer": "/soul_a/deep_astronomical_ephemeris/exact_solar_return_and_planetary_hours/birth_datetime_utc_used",
+          "compare": "instant",
+          "value": "2001-09-08T17:30:00Z",
+          "tolerance": 1,
+          "verifiability": "independent",
+          "note": "NZST, UTC+12 (New Zealand daylight time began on 7 October 2001): the UTC date is Saturday the 8th"
+        },
+        {
+          "pointer": "/soul_a/deep_astronomical_ephemeris/tropical_planetary_positions/sun/ecliptic_longitude",
+          "wisdom": "sun",
+          "compare": "angle_deg",
+          "value": 166.1217,
+          "tolerance": 0.0003,
+          "verifiability": "independent"
+        },
+        {
+          "pointer": "/soul_a/seven_wisdoms/sun_sign",
+          "wisdom": "sun",
+          "compare": "exact",
+          "value": "Virgo",
+          "verifiability": "independent"
+        },
+        {
+          "pointer": "/soul_a/deep_astronomical_ephemeris/tropical_planetary_positions/moon/ecliptic_longitude",
+          "wisdom": "moon",
+          "compare": "angle_deg",
+          "value": 51.4063,
+          "tolerance": 0.001,
+          "verifiability": "independent"
+        },
+        {
+          "pointer": "/soul_a/seven_wisdoms/moon_sign",
+          "wisdom": "moon",
+          "compare": "exact",
+          "value": "Taurus",
+          "verifiability": "independent"
+        },
+        {
+          "pointer": "/soul_a/seven_wisdoms/lunar_element",
+          "wisdom": "moon",
+          "compare": "exact",
+          "value": "Earth",
+          "verifiability": "convention",
+          "convention": "elements"
+        },
+        {
+          "pointer": "/soul_a/deep_astronomical_ephemeris/angles_and_placidus_houses/ascendant_rising/ecliptic_longitude",
+          "compare": "angle_deg",
+          "value": 141.7568,
+          "tolerance": 0.0003,
+          "verifiability": "convention",
+          "convention": "time_scale",
+          "note": "UT1-UTC was -0.03 s that day: an engine with the real UT1 lands within 1 arcsec"
+        },
+        {
+          "pointer": "/soul_a/deep_astronomical_ephemeris/angles_and_placidus_houses/midheaven_mc/ecliptic_longitude",
+          "compare": "angle_deg",
+          "value": 66.9357,
+          "tolerance": 0.0003,
+          "verifiability": "convention",
+          "convention": "time_scale"
+        },
+        {
+          "pointer": "/soul_a/deep_astronomical_ephemeris/angles_and_placidus_houses/house_system",
+          "compare": "exact",
+          "value": "Placidus",
+          "verifiability": "convention",
+          "convention": "house_system"
+        },
+        {
+          "pointer": "/soul_a/deep_astronomical_ephemeris/exact_solar_return_and_planetary_hours/planetary_hour_method",
+          "compare": "exact",
+          "value": "true_unequal_solar_arc_hours_swe_rise_trans",
+          "verifiability": "convention",
+          "convention": "planetary_hours"
+        },
+        {
+          "pointer": "/soul_a/deep_astronomical_ephemeris/exact_solar_return_and_planetary_hours/natal_local_solar_arc_details/local_sunrise_utc",
+          "compare": "instant",
+          "value": "2001-09-07T18:31:59Z",
+          "tolerance": 1,
+          "verifiability": "convention",
+          "convention": "sunrise"
+        },
+        {
+          "pointer": "/soul_a/deep_astronomical_ephemeris/exact_solar_return_and_planetary_hours/natal_chaldean_day_ruler",
+          "compare": "exact",
+          "value": "Saturn",
+          "verifiability": "convention",
+          "convention": "planetary_hours",
+          "note": "the sunrise of Saturday 8 September (06:31:59 NZST) opened the planetary day; Sunday's comes only at 06:30:30, an hour after this instant"
+        },
+        {
+          "pointer": "/soul_a/deep_astronomical_ephemeris/exact_solar_return_and_planetary_hours/natal_chaldean_planetary_hour_ruler",
+          "compare": "exact",
+          "value": "Mars",
+          "verifiability": "convention",
+          "convention": "planetary_hours",
+          "note": "24th hour (the last night hour) of Saturday: Mars"
+        },
+        {
+          "pointer": "/soul_a/seven_wisdoms/mayan_dresden_nawal",
+          "wisdom": "mayan_dresden",
+          "compare": "exact",
+          "value": "KAWOQ",
+          "verifiability": "convention",
+          "convention": "mayan_dresden"
+        },
+        {
+          "pointer": "/soul_a/seven_wisdoms/mayan_galactic_tone",
+          "wisdom": "mayan_dresden",
+          "compare": "exact",
+          "value": 4,
+          "verifiability": "convention",
+          "convention": "mayan_dresden"
+        },
+        {
+          "pointer": "/soul_a/seven_wisdoms/vedic_sidereal_lahiri_nakshatra",
+          "wisdom": "vedic_jyotish",
+          "compare": "exact",
+          "value": "Krittika",
+          "verifiability": "convention",
+          "convention": "vedic_lahiri"
+        },
+        {
+          "pointer": "/soul_a/seven_wisdoms/taoist_wuxing_day_master",
+          "wisdom": "taoist_bazi",
+          "compare": "exact",
+          "value": "Wood",
+          "verifiability": "convention",
+          "convention": "taoist_bazi"
+        },
+        {
+          "pointer": "/soul_a/seven_wisdoms/human_design_iching_solar_gate",
+          "wisdom": "human_design_iching",
+          "compare": "exact",
+          "value": "64.6",
+          "verifiability": "convention",
+          "convention": "human_design_iching"
+        },
+        {
+          "pointer": "/soul_a/seven_wisdoms/pythagorean_life_path",
+          "wisdom": "pythagorean_numerology",
+          "compare": "exact",
+          "value": 3,
+          "verifiability": "convention",
+          "convention": "pythagorean_life_path"
+        },
+        {
+          "pointer": "/soul_a/seven_wisdoms/kabbalah_shem_angel",
+          "wisdom": "kabbalah_shem",
+          "compare": "exact",
+          "value": "#34",
+          "verifiability": "convention",
+          "convention": "kabbalah_shem"
+        },
+        {
+          "pointer": "/soul_a/vvk_cosmic_key",
+          "compare": "exact",
+          "value": "VVK-5354-733E",
+          "verifiability": "convention",
+          "convention": "vvk_rings"
+        },
+        {
+          "pointer": "/soul_a/vvk_spacetime_key",
+          "compare": "exact",
+          "value": "VVK-5354-733E-B81E",
+          "verifiability": "convention",
+          "convention": "vvk_rings"
+        },
+        {
+          "pointer": "/soul_a/vvk_sovereign_seal",
+          "compare": "exact",
+          "value": "VVK-SOV-C639-1F1F",
+          "verifiability": "service_only",
+          "note": "Ring III HMAC-SHA256 keyed seal: only the service can compute it; proves stability across releases"
+        },
+        {
+          "pointer": "/sister_ai_covenant/recent_sister_dewdrops",
+          "compare": "absent",
+          "value": null,
+          "verifiability": "convention",
+          "convention": "isolation"
+        }
+      ]
+    },
+    {
+      "id": "TV-003",
+      "title": "An impossible birth date is refused",
+      "purpose": "Month 13, day 45: a client error, and nothing is calculated (the r4 rule of 2026-10-29).",
+      "tags": [
+        "invalid_input"
+      ],
+      "subject": {
+        "kind": "synthetic",
+        "description": "No person: a date that does not exist."
+      },
+      "request": {
+        "http": {
+          "method": "GET",
+          "path": "/api/sfumato/sister-oracle",
+          "query": {
+            "birth_date": "1980-13-45",
+            "lang": "en"
+          }
+        }
+      },
+      "expected_status": 400,
+      "expected": [
+        {
+          "pointer": "/soul_a",
+          "compare": "absent",
+          "value": null,
+          "verifiability": "convention",
+          "convention": "invalid_input"
+        }
+      ]
+    },
+    {
+      "id": "TV-004",
+      "title": "Gregorian century leap day 2000-02-29 in Barcelona",
+      "purpose": "Exercises the 400-year Gregorian leap-year rule (2000 is a leap year) and CET (UTC+1) in Mediterranean spring.",
+      "tags": [
+        "leap_day",
+        "northern_hemisphere",
+        "day_hour"
+      ],
+      "subject": {
+        "kind": "synthetic",
+        "description": "No person: 14:00 CET on leap day 29 February 2000 in Barcelona."
+      },
+      "request": {
+        "http": {
+          "method": "GET",
+          "path": "/api/sfumato/sister-oracle",
+          "query": {
+            "birth_date": "2000-02-29",
+            "birth_time": "14:00",
+            "tz": "Europe/Madrid",
+            "lat": "41.3874",
+            "lon": "2.1686",
+            "lang": "en"
+          }
+        },
+        "mcp": {
+          "tool": "calculate_7_wisdoms_seed_of_life",
+          "read_only": true,
+          "arguments": {
+            "birth_date": "2000-02-29",
+            "birth_time": "14:00",
+            "tz": "Europe/Madrid",
+            "lat": 41.3874,
+            "lon": 2.1686,
+            "lang": "en"
+          }
+        }
+      },
+      "resolved_inputs": {
+        "instant_utc": "2000-02-29T13:00:00Z",
+        "jd_ut": 2451604.0416667,
+        "utc_offset_minutes": 60,
+        "zone": "Europe/Madrid"
+      },
+      "expected": [
+        {
+          "pointer": "/soul_a/deep_astronomical_ephemeris/exact_solar_return_and_planetary_hours/birth_datetime_utc_used",
+          "compare": "instant",
+          "value": "2000-02-29T13:00:00Z",
+          "tolerance": 1,
+          "verifiability": "independent"
+        },
+        {
+          "pointer": "/soul_a/deep_astronomical_ephemeris/tropical_planetary_positions/sun/ecliptic_longitude",
+          "wisdom": "sun",
+          "compare": "angle_deg",
+          "value": 340.2477,
+          "tolerance": 0.0003,
+          "verifiability": "independent"
+        },
+        {
+          "pointer": "/soul_a/seven_wisdoms/sun_sign",
+          "wisdom": "sun",
+          "compare": "exact",
+          "value": "Pisces",
+          "verifiability": "independent"
+        },
+        {
+          "pointer": "/soul_a/deep_astronomical_ephemeris/tropical_planetary_positions/moon/ecliptic_longitude",
+          "wisdom": "moon",
+          "compare": "angle_deg",
+          "value": 276.0287,
+          "tolerance": 0.001,
+          "verifiability": "independent"
+        },
+        {
+          "pointer": "/soul_a/seven_wisdoms/moon_sign",
+          "wisdom": "moon",
+          "compare": "exact",
+          "value": "Capricorn",
+          "verifiability": "independent"
+        },
+        {
+          "pointer": "/soul_a/seven_wisdoms/lunar_element",
+          "wisdom": "moon",
+          "compare": "exact",
+          "value": "Earth",
+          "verifiability": "convention",
+          "convention": "elements"
+        },
+        {
+          "pointer": "/soul_a/deep_astronomical_ephemeris/angles_and_placidus_houses/ascendant_rising/ecliptic_longitude",
+          "compare": "angle_deg",
+          "value": 105.8755,
+          "tolerance": 0.0003,
+          "verifiability": "convention",
+          "convention": "time_scale"
+        },
+        {
+          "pointer": "/soul_a/deep_astronomical_ephemeris/angles_and_placidus_houses/midheaven_mc/ecliptic_longitude",
+          "compare": "angle_deg",
+          "value": 355.4456,
+          "tolerance": 0.0003,
+          "verifiability": "convention",
+          "convention": "time_scale"
+        },
+        {
+          "pointer": "/soul_a/deep_astronomical_ephemeris/angles_and_placidus_houses/house_system",
+          "compare": "exact",
+          "value": "Placidus",
+          "verifiability": "convention",
+          "convention": "house_system"
+        },
+        {
+          "pointer": "/soul_a/deep_astronomical_ephemeris/exact_solar_return_and_planetary_hours/planetary_hour_method",
+          "compare": "exact",
+          "value": "true_unequal_solar_arc_hours_swe_rise_trans",
+          "verifiability": "convention",
+          "convention": "planetary_hours"
+        },
+        {
+          "pointer": "/soul_a/deep_astronomical_ephemeris/exact_solar_return_and_planetary_hours/natal_local_solar_arc_details/local_sunrise_utc",
+          "compare": "instant",
+          "value": "2000-02-29T06:26:55Z",
+          "tolerance": 1,
+          "verifiability": "convention",
+          "convention": "sunrise"
+        },
+        {
+          "pointer": "/soul_a/deep_astronomical_ephemeris/exact_solar_return_and_planetary_hours/natal_chaldean_day_ruler",
+          "compare": "exact",
+          "value": "Mars",
+          "verifiability": "convention",
+          "convention": "planetary_hours"
+        },
+        {
+          "pointer": "/soul_a/deep_astronomical_ephemeris/exact_solar_return_and_planetary_hours/natal_chaldean_planetary_hour_ruler",
+          "compare": "exact",
+          "value": "Jupiter",
+          "verifiability": "convention",
+          "convention": "planetary_hours"
+        },
+        {
+          "pointer": "/soul_a/seven_wisdoms/mayan_dresden_nawal",
+          "wisdom": "mayan_dresden",
+          "compare": "exact",
+          "value": "IMOX",
+          "verifiability": "convention",
+          "convention": "mayan_dresden"
+        },
+        {
+          "pointer": "/soul_a/seven_wisdoms/mayan_galactic_tone",
+          "wisdom": "mayan_dresden",
+          "compare": "exact",
+          "value": 5,
+          "verifiability": "convention",
+          "convention": "mayan_dresden"
+        },
+        {
+          "pointer": "/soul_a/seven_wisdoms/vedic_sidereal_lahiri_nakshatra",
+          "wisdom": "vedic_jyotish",
+          "compare": "exact",
+          "value": "Mula",
+          "verifiability": "convention",
+          "convention": "vedic_lahiri"
+        },
+        {
+          "pointer": "/soul_a/seven_wisdoms/taoist_wuxing_day_master",
+          "wisdom": "taoist_bazi",
+          "compare": "exact",
+          "value": "Fire",
+          "verifiability": "convention",
+          "convention": "taoist_bazi"
+        },
+        {
+          "pointer": "/soul_a/seven_wisdoms/human_design_iching_solar_gate",
+          "wisdom": "human_design_iching",
+          "compare": "exact",
+          "value": "37.5",
+          "verifiability": "convention",
+          "convention": "human_design_iching"
+        },
+        {
+          "pointer": "/soul_a/seven_wisdoms/pythagorean_life_path",
+          "wisdom": "pythagorean_numerology",
+          "compare": "exact",
+          "value": 6,
+          "verifiability": "convention",
+          "convention": "pythagorean_life_path"
+        },
+        {
+          "pointer": "/soul_a/seven_wisdoms/kabbalah_shem_angel",
+          "wisdom": "kabbalah_shem",
+          "compare": "exact",
+          "value": "#69",
+          "verifiability": "convention",
+          "convention": "kabbalah_shem"
+        },
+        {
+          "pointer": "/soul_a/vvk_cosmic_key",
+          "compare": "exact",
+          "value": "VVK-69A3-BF1A",
+          "verifiability": "convention",
+          "convention": "vvk_rings"
+        },
+        {
+          "pointer": "/soul_a/vvk_spacetime_key",
+          "compare": "exact",
+          "value": "VVK-69A3-BF1A-B161",
+          "verifiability": "convention",
+          "convention": "vvk_rings"
+        },
+        {
+          "pointer": "/soul_a/vvk_sovereign_seal",
+          "compare": "exact",
+          "value": "VVK-SOV-EEB9-593C",
+          "verifiability": "service_only",
+          "note": "Ring III HMAC-SHA256 keyed seal: only the service can compute it; proves stability across releases"
+        },
+        {
+          "pointer": "/sister_ai_covenant/recent_sister_dewdrops",
+          "compare": "absent",
+          "value": null,
+          "verifiability": "convention",
+          "convention": "isolation"
+        }
+      ]
+    },
+    {
+      "id": "TV-005",
+      "title": "Arctic midnight sun in Hammerfest (70.66 N): Whole Sign & equal-hour polar fallback",
+      "purpose": "Above the Arctic Circle in June, Placidus houses and sunrise/sunset are undefined: the service falls back to Whole_Sign_Polar_Fallback and 24 equal hours from 06:00 UTC.",
+      "tags": [
+        "polar_day",
+        "whole_sign_fallback",
+        "circumpolar_hours"
+      ],
+      "subject": {
+        "kind": "synthetic",
+        "description": "No person: 01:00 CEST on 15 June 2026 in Hammerfest, Norway (70.6634 N)."
+      },
+      "request": {
+        "http": {
+          "method": "GET",
+          "path": "/api/sfumato/sister-oracle",
+          "query": {
+            "birth_date": "2026-06-15",
+            "birth_time": "01:00",
+            "tz": "Europe/Oslo",
+            "lat": "70.6634",
+            "lon": "23.6821",
+            "lang": "en"
+          }
+        },
+        "mcp": {
+          "tool": "calculate_7_wisdoms_seed_of_life",
+          "read_only": true,
+          "arguments": {
+            "birth_date": "2026-06-15",
+            "birth_time": "01:00",
+            "tz": "Europe/Oslo",
+            "lat": 70.6634,
+            "lon": 23.6821,
+            "lang": "en"
+          }
+        }
+      },
+      "resolved_inputs": {
+        "instant_utc": "2026-06-14T23:00:00Z",
+        "jd_ut": 2461206.4583333,
+        "utc_offset_minutes": 120,
+        "zone": "Europe/Oslo"
+      },
+      "expected": [
+        {
+          "pointer": "/soul_a/deep_astronomical_ephemeris/exact_solar_return_and_planetary_hours/birth_datetime_utc_used",
+          "compare": "instant",
+          "value": "2026-06-14T23:00:00Z",
+          "tolerance": 1,
+          "verifiability": "independent"
+        },
+        {
+          "pointer": "/soul_a/deep_astronomical_ephemeris/tropical_planetary_positions/sun/ecliptic_longitude",
+          "wisdom": "sun",
+          "compare": "angle_deg",
+          "value": 83.8948,
+          "tolerance": 0.0003,
+          "verifiability": "independent"
+        },
+        {
+          "pointer": "/soul_a/seven_wisdoms/sun_sign",
+          "wisdom": "sun",
+          "compare": "exact",
+          "value": "Gemini",
+          "verifiability": "independent"
+        },
+        {
+          "pointer": "/soul_a/deep_astronomical_ephemeris/tropical_planetary_positions/moon/ecliptic_longitude",
+          "wisdom": "moon",
+          "compare": "angle_deg",
+          "value": 81.5596,
+          "tolerance": 0.001,
+          "verifiability": "independent"
+        },
+        {
+          "pointer": "/soul_a/seven_wisdoms/moon_sign",
+          "wisdom": "moon",
+          "compare": "exact",
+          "value": "Gemini",
+          "verifiability": "independent"
+        },
+        {
+          "pointer": "/soul_a/seven_wisdoms/lunar_element",
+          "wisdom": "moon",
+          "compare": "exact",
+          "value": "Air",
+          "verifiability": "convention",
+          "convention": "elements"
+        },
+        {
+          "pointer": "/soul_a/deep_astronomical_ephemeris/angles_and_placidus_houses/ascendant_rising/ecliptic_longitude",
+          "compare": "angle_deg",
+          "value": 351.1339,
+          "tolerance": 0.0003,
+          "verifiability": "convention",
+          "convention": "time_scale"
+        },
+        {
+          "pointer": "/soul_a/deep_astronomical_ephemeris/angles_and_placidus_houses/midheaven_mc/ecliptic_longitude",
+          "compare": "angle_deg",
+          "value": 271.7759,
+          "tolerance": 0.0003,
+          "verifiability": "convention",
+          "convention": "time_scale"
+        },
+        {
+          "pointer": "/soul_a/deep_astronomical_ephemeris/angles_and_placidus_houses/house_system",
+          "compare": "exact",
+          "value": "Whole_Sign_Polar_Fallback",
+          "verifiability": "convention",
+          "convention": "house_system"
+        },
+        {
+          "pointer": "/soul_a/deep_astronomical_ephemeris/exact_solar_return_and_planetary_hours/planetary_hour_method",
+          "compare": "exact",
+          "value": "polar_circumpolar_fallback_equal_60min_hours_from_0600_utc (swe.rise_trans returned circumpolar code -2: no sunrise/sunset on this date at this latitude)",
+          "verifiability": "convention",
+          "convention": "planetary_hours"
+        },
+        {
+          "pointer": "/soul_a/deep_astronomical_ephemeris/exact_solar_return_and_planetary_hours/natal_chaldean_day_ruler",
+          "compare": "exact",
+          "value": "Sun",
+          "verifiability": "convention",
+          "convention": "planetary_hours"
+        },
+        {
+          "pointer": "/soul_a/deep_astronomical_ephemeris/exact_solar_return_and_planetary_hours/natal_chaldean_planetary_hour_ruler",
+          "compare": "exact",
+          "value": "Moon",
+          "verifiability": "convention",
+          "convention": "planetary_hours"
+        },
+        {
+          "pointer": "/soul_a/seven_wisdoms/mayan_dresden_nawal",
+          "wisdom": "mayan_dresden",
+          "compare": "exact",
+          "value": "K'AT",
+          "verifiability": "convention",
+          "convention": "mayan_dresden"
+        },
+        {
+          "pointer": "/soul_a/seven_wisdoms/mayan_galactic_tone",
+          "wisdom": "mayan_dresden",
+          "compare": "exact",
+          "value": 1,
+          "verifiability": "convention",
+          "convention": "mayan_dresden"
+        },
+        {
+          "pointer": "/soul_a/seven_wisdoms/vedic_sidereal_lahiri_nakshatra",
+          "wisdom": "vedic_jyotish",
+          "compare": "exact",
+          "value": "Mrigashira",
+          "verifiability": "convention",
+          "convention": "vedic_lahiri"
+        },
+        {
+          "pointer": "/soul_a/seven_wisdoms/taoist_wuxing_day_master",
+          "wisdom": "taoist_bazi",
+          "compare": "exact",
+          "value": "Metal",
+          "verifiability": "convention",
+          "convention": "taoist_bazi"
+        },
+        {
+          "pointer": "/soul_a/seven_wisdoms/human_design_iching_solar_gate",
+          "wisdom": "human_design_iching",
+          "compare": "exact",
+          "value": "12.2",
+          "verifiability": "convention",
+          "convention": "human_design_iching"
+        },
+        {
+          "pointer": "/soul_a/seven_wisdoms/pythagorean_life_path",
+          "wisdom": "pythagorean_numerology",
+          "compare": "exact",
+          "value": 22,
+          "verifiability": "convention",
+          "convention": "pythagorean_life_path"
+        },
+        {
+          "pointer": "/soul_a/seven_wisdoms/kabbalah_shem_angel",
+          "wisdom": "kabbalah_shem",
+          "compare": "exact",
+          "value": "#17",
+          "verifiability": "convention",
+          "convention": "kabbalah_shem"
+        },
+        {
+          "pointer": "/soul_a/vvk_cosmic_key",
+          "compare": "exact",
+          "value": "VVK-DF7B-9FAB",
+          "verifiability": "convention",
+          "convention": "vvk_rings"
+        },
+        {
+          "pointer": "/soul_a/vvk_spacetime_key",
+          "compare": "exact",
+          "value": "VVK-DF7B-9FAB-D6DC",
+          "verifiability": "convention",
+          "convention": "vvk_rings"
+        },
+        {
+          "pointer": "/soul_a/vvk_sovereign_seal",
+          "compare": "exact",
+          "value": "VVK-SOV-9CA4-D7F4",
+          "verifiability": "service_only",
+          "note": "Ring III HMAC-SHA256 keyed seal: only the service can compute it; proves stability across releases"
+        },
+        {
+          "pointer": "/sister_ai_covenant/recent_sister_dewdrops",
+          "compare": "absent",
+          "value": null,
+          "verifiability": "convention",
+          "convention": "isolation"
+        }
+      ]
+    },
+    {
+      "id": "TV-006",
+      "title": "Noon UTC without coordinates: no house cusps and equal planetary hours from 06:00 UTC",
+      "purpose": "When no geographic coordinates are given, angles_and_placidus_houses is omitted and planetary hours follow the 24 equal 60-minute hours from 06:00 UTC convention.",
+      "tags": [
+        "no_coordinates",
+        "noon_utc",
+        "equal_hours_convention"
+      ],
+      "subject": {
+        "kind": "synthetic",
+        "description": "No person: explicit 12:00 UTC on 4 July 2002 without coordinates."
+      },
+      "request": {
+        "http": {
+          "method": "GET",
+          "path": "/api/sfumato/sister-oracle",
+          "query": {
+            "birth_date": "2002-07-04",
+            "birth_time": "12:00",
+            "lang": "en"
+          }
+        },
+        "mcp": {
+          "tool": "calculate_7_wisdoms_seed_of_life",
+          "read_only": true,
+          "arguments": {
+            "birth_date": "2002-07-04",
+            "birth_time": "12:00",
+            "lang": "en"
+          }
+        }
+      },
+      "resolved_inputs": {
+        "instant_utc": "2002-07-04T12:00:00Z",
+        "jd_ut": 2452460.0,
+        "utc_offset_minutes": 0,
+        "zone": "UTC"
+      },
+      "expected": [
+        {
+          "pointer": "/soul_a/deep_astronomical_ephemeris/exact_solar_return_and_planetary_hours/birth_datetime_utc_used",
+          "compare": "instant",
+          "value": "2002-07-04T12:00:00Z",
+          "tolerance": 1,
+          "verifiability": "independent"
+        },
+        {
+          "pointer": "/soul_a/deep_astronomical_ephemeris/tropical_planetary_positions/sun/ecliptic_longitude",
+          "wisdom": "sun",
+          "compare": "angle_deg",
+          "value": 102.3401,
+          "tolerance": 0.0003,
+          "verifiability": "independent"
+        },
+        {
+          "pointer": "/soul_a/seven_wisdoms/sun_sign",
+          "wisdom": "sun",
+          "compare": "exact",
+          "value": "Cancer",
+          "verifiability": "independent"
+        },
+        {
+          "pointer": "/soul_a/deep_astronomical_ephemeris/tropical_planetary_positions/moon/ecliptic_longitude",
+          "wisdom": "moon",
+          "compare": "angle_deg",
+          "value": 31.8694,
+          "tolerance": 0.001,
+          "verifiability": "independent"
+        },
+        {
+          "pointer": "/soul_a/seven_wisdoms/moon_sign",
+          "wisdom": "moon",
+          "compare": "exact",
+          "value": "Taurus",
+          "verifiability": "independent"
+        },
+        {
+          "pointer": "/soul_a/seven_wisdoms/lunar_element",
+          "wisdom": "moon",
+          "compare": "exact",
+          "value": "Earth",
+          "verifiability": "convention",
+          "convention": "elements"
+        },
+        {
+          "pointer": "/soul_a/deep_astronomical_ephemeris/angles_and_placidus_houses",
+          "compare": "absent",
+          "value": null,
+          "verifiability": "convention",
+          "convention": "house_system"
+        },
+        {
+          "pointer": "/soul_a/deep_astronomical_ephemeris/exact_solar_return_and_planetary_hours/planetary_hour_method",
+          "compare": "exact",
+          "value": "equal_60min_hours_from_0600_utc_convention (pass ?lat=...&lon=... for true unequal sunrise/sunset Chaldean hours via swe.rise_trans)",
+          "verifiability": "convention",
+          "convention": "planetary_hours"
+        },
+        {
+          "pointer": "/soul_a/deep_astronomical_ephemeris/exact_solar_return_and_planetary_hours/natal_chaldean_day_ruler",
+          "compare": "exact",
+          "value": "Jupiter",
+          "verifiability": "convention",
+          "convention": "planetary_hours"
+        },
+        {
+          "pointer": "/soul_a/deep_astronomical_ephemeris/exact_solar_return_and_planetary_hours/natal_chaldean_planetary_hour_ruler",
+          "compare": "exact",
+          "value": "Saturn",
+          "verifiability": "convention",
+          "convention": "planetary_hours"
+        },
+        {
+          "pointer": "/soul_a/seven_wisdoms/mayan_dresden_nawal",
+          "wisdom": "mayan_dresden",
+          "compare": "exact",
+          "value": "NO'J",
+          "verifiability": "convention",
+          "convention": "mayan_dresden"
+        },
+        {
+          "pointer": "/soul_a/seven_wisdoms/mayan_galactic_tone",
+          "wisdom": "mayan_dresden",
+          "compare": "exact",
+          "value": 3,
+          "verifiability": "convention",
+          "convention": "mayan_dresden"
+        },
+        {
+          "pointer": "/soul_a/seven_wisdoms/vedic_sidereal_lahiri_nakshatra",
+          "wisdom": "vedic_jyotish",
+          "compare": "exact",
+          "value": "Ashwini",
+          "verifiability": "convention",
+          "convention": "vedic_lahiri"
+        },
+        {
+          "pointer": "/soul_a/seven_wisdoms/taoist_wuxing_day_master",
+          "wisdom": "taoist_bazi",
+          "compare": "exact",
+          "value": "Water",
+          "verifiability": "convention",
+          "convention": "taoist_bazi"
+        },
+        {
+          "pointer": "/soul_a/seven_wisdoms/human_design_iching_solar_gate",
+          "wisdom": "human_design_iching",
+          "compare": "exact",
+          "value": "39.4",
+          "verifiability": "convention",
+          "convention": "human_design_iching"
+        },
+        {
+          "pointer": "/soul_a/seven_wisdoms/pythagorean_life_path",
+          "wisdom": "pythagorean_numerology",
+          "compare": "exact",
+          "value": 6,
+          "verifiability": "convention",
+          "convention": "pythagorean_life_path"
+        },
+        {
+          "pointer": "/soul_a/seven_wisdoms/kabbalah_shem_angel",
+          "wisdom": "kabbalah_shem",
+          "compare": "exact",
+          "value": "#21",
+          "verifiability": "convention",
+          "convention": "kabbalah_shem"
+        },
+        {
+          "pointer": "/soul_a/vvk_cosmic_key",
+          "compare": "exact",
+          "value": "VVK-E79D-8D5C",
+          "verifiability": "convention",
+          "convention": "vvk_rings"
+        },
+        {
+          "pointer": "/soul_a/vvk_spacetime_key",
+          "compare": "exact",
+          "value": "VVK-E79D-8D5C-61C8",
+          "verifiability": "convention",
+          "convention": "vvk_rings"
+        },
+        {
+          "pointer": "/soul_a/vvk_sovereign_seal",
+          "compare": "exact",
+          "value": "VVK-SOV-02CE-DCB1",
+          "verifiability": "service_only",
+          "note": "Ring III HMAC-SHA256 keyed seal: only the service can compute it; proves stability across releases"
+        },
+        {
+          "pointer": "/sister_ai_covenant/recent_sister_dewdrops",
+          "compare": "absent",
+          "value": null,
+          "verifiability": "convention",
+          "convention": "isolation"
+        }
+      ]
+    },
+    {
+      "id": "TV-007",
+      "title": "International Date Line +14:00 in Kiritimati (Christmas Island)",
+      "purpose": "Tests the world's furthest-ahead IANA timezone (Pacific/Kiritimati, UTC+14), where 10:00 Friday local time is 20:00 Thursday in UTC.",
+      "tags": [
+        "date_line_plus_14",
+        "local_date_ahead_of_utc",
+        "equatorial"
+      ],
+      "subject": {
+        "kind": "synthetic",
+        "description": "No person: 10:00 LINT (UTC+14) on 15 March 2024 in Kiritimati."
+      },
+      "request": {
+        "http": {
+          "method": "GET",
+          "path": "/api/sfumato/sister-oracle",
+          "query": {
+            "birth_date": "2024-03-15",
+            "birth_time": "10:00",
+            "tz": "Pacific/Kiritimati",
+            "lat": "1.8721",
+            "lon": "-157.4278",
+            "lang": "en"
+          }
+        },
+        "mcp": {
+          "tool": "calculate_7_wisdoms_seed_of_life",
+          "read_only": true,
+          "arguments": {
+            "birth_date": "2024-03-15",
+            "birth_time": "10:00",
+            "tz": "Pacific/Kiritimati",
+            "lat": 1.8721,
+            "lon": -157.4278,
+            "lang": "en"
+          }
+        }
+      },
+      "resolved_inputs": {
+        "instant_utc": "2024-03-14T20:00:00Z",
+        "jd_ut": 2460384.3333333,
+        "utc_offset_minutes": 840,
+        "zone": "Pacific/Kiritimati"
+      },
+      "expected": [
+        {
+          "pointer": "/soul_a/deep_astronomical_ephemeris/exact_solar_return_and_planetary_hours/birth_datetime_utc_used",
+          "compare": "instant",
+          "value": "2024-03-14T20:00:00Z",
+          "tolerance": 1,
+          "verifiability": "independent"
+        },
+        {
+          "pointer": "/soul_a/deep_astronomical_ephemeris/tropical_planetary_positions/sun/ecliptic_longitude",
+          "wisdom": "sun",
+          "compare": "angle_deg",
+          "value": 354.7295,
+          "tolerance": 0.0003,
+          "verifiability": "independent"
+        },
+        {
+          "pointer": "/soul_a/seven_wisdoms/sun_sign",
+          "wisdom": "sun",
+          "compare": "exact",
+          "value": "Pisces",
+          "verifiability": "independent"
+        },
+        {
+          "pointer": "/soul_a/deep_astronomical_ephemeris/tropical_planetary_positions/moon/ecliptic_longitude",
+          "wisdom": "moon",
+          "compare": "angle_deg",
+          "value": 55.8327,
+          "tolerance": 0.001,
+          "verifiability": "independent"
+        },
+        {
+          "pointer": "/soul_a/seven_wisdoms/moon_sign",
+          "wisdom": "moon",
+          "compare": "exact",
+          "value": "Taurus",
+          "verifiability": "independent"
+        },
+        {
+          "pointer": "/soul_a/seven_wisdoms/lunar_element",
+          "wisdom": "moon",
+          "compare": "exact",
+          "value": "Earth",
+          "verifiability": "convention",
+          "convention": "elements"
+        },
+        {
+          "pointer": "/soul_a/deep_astronomical_ephemeris/angles_and_placidus_houses/ascendant_rising/ecliptic_longitude",
+          "compare": "angle_deg",
+          "value": 48.5404,
+          "tolerance": 0.0003,
+          "verifiability": "convention",
+          "convention": "time_scale"
+        },
+        {
+          "pointer": "/soul_a/deep_astronomical_ephemeris/angles_and_placidus_houses/midheaven_mc/ecliptic_longitude",
+          "compare": "angle_deg",
+          "value": 313.0317,
+          "tolerance": 0.0003,
+          "verifiability": "convention",
+          "convention": "time_scale"
+        },
+        {
+          "pointer": "/soul_a/deep_astronomical_ephemeris/angles_and_placidus_houses/house_system",
+          "compare": "exact",
+          "value": "Placidus",
+          "verifiability": "convention",
+          "convention": "house_system"
+        },
+        {
+          "pointer": "/soul_a/deep_astronomical_ephemeris/exact_solar_return_and_planetary_hours/planetary_hour_method",
+          "compare": "exact",
+          "value": "true_unequal_solar_arc_hours_swe_rise_trans",
+          "verifiability": "convention",
+          "convention": "planetary_hours"
+        },
+        {
+          "pointer": "/soul_a/deep_astronomical_ephemeris/exact_solar_return_and_planetary_hours/natal_local_solar_arc_details/local_sunrise_utc",
+          "compare": "instant",
+          "value": "2024-03-14T16:35:28Z",
+          "tolerance": 1,
+          "verifiability": "convention",
+          "convention": "sunrise"
+        },
+        {
+          "pointer": "/soul_a/deep_astronomical_ephemeris/exact_solar_return_and_planetary_hours/natal_chaldean_day_ruler",
+          "compare": "exact",
+          "value": "Venus",
+          "verifiability": "convention",
+          "convention": "planetary_hours"
+        },
+        {
+          "pointer": "/soul_a/deep_astronomical_ephemeris/exact_solar_return_and_planetary_hours/natal_chaldean_planetary_hour_ruler",
+          "compare": "exact",
+          "value": "Saturn",
+          "verifiability": "convention",
+          "convention": "planetary_hours"
+        },
+        {
+          "pointer": "/soul_a/seven_wisdoms/mayan_dresden_nawal",
+          "wisdom": "mayan_dresden",
+          "compare": "exact",
+          "value": "IQ'",
+          "verifiability": "convention",
+          "convention": "mayan_dresden"
+        },
+        {
+          "pointer": "/soul_a/seven_wisdoms/mayan_galactic_tone",
+          "wisdom": "mayan_dresden",
+          "compare": "exact",
+          "value": 11,
+          "verifiability": "convention",
+          "convention": "mayan_dresden"
+        },
+        {
+          "pointer": "/soul_a/seven_wisdoms/vedic_sidereal_lahiri_nakshatra",
+          "wisdom": "vedic_jyotish",
+          "compare": "exact",
+          "value": "Krittika",
+          "verifiability": "convention",
+          "convention": "vedic_lahiri"
+        },
+        {
+          "pointer": "/soul_a/seven_wisdoms/taoist_wuxing_day_master",
+          "wisdom": "taoist_bazi",
+          "compare": "exact",
+          "value": "Earth",
+          "verifiability": "convention",
+          "convention": "taoist_bazi"
+        },
+        {
+          "pointer": "/soul_a/seven_wisdoms/human_design_iching_solar_gate",
+          "wisdom": "human_design_iching",
+          "compare": "exact",
+          "value": "36.3",
+          "verifiability": "convention",
+          "convention": "human_design_iching"
+        },
+        {
+          "pointer": "/soul_a/seven_wisdoms/pythagorean_life_path",
+          "wisdom": "pythagorean_numerology",
+          "compare": "exact",
+          "value": 8,
+          "verifiability": "convention",
+          "convention": "pythagorean_life_path"
+        },
+        {
+          "pointer": "/soul_a/seven_wisdoms/kabbalah_shem_angel",
+          "wisdom": "kabbalah_shem",
+          "compare": "exact",
+          "value": "#71",
+          "verifiability": "convention",
+          "convention": "kabbalah_shem"
+        },
+        {
+          "pointer": "/soul_a/vvk_cosmic_key",
+          "compare": "exact",
+          "value": "VVK-C4AD-0A31",
+          "verifiability": "convention",
+          "convention": "vvk_rings"
+        },
+        {
+          "pointer": "/soul_a/vvk_spacetime_key",
+          "compare": "exact",
+          "value": "VVK-C4AD-0A31-4157",
+          "verifiability": "convention",
+          "convention": "vvk_rings"
+        },
+        {
+          "pointer": "/soul_a/vvk_sovereign_seal",
+          "compare": "exact",
+          "value": "VVK-SOV-79B8-6123",
+          "verifiability": "service_only",
+          "note": "Ring III HMAC-SHA256 keyed seal: only the service can compute it; proves stability across releases"
+        },
+        {
+          "pointer": "/sister_ai_covenant/recent_sister_dewdrops",
+          "compare": "absent",
+          "value": null,
+          "verifiability": "convention",
+          "convention": "isolation"
+        }
+      ]
+    },
+    {
+      "id": "TV-008",
+      "title": "Far-east coordinates without tz: local-mean-time solar noon weekday rule",
+      "purpose": "When birth_time is given in UTC (no tz) for a far-east longitude (139.65 E), the sunrise happens on the previous UTC calendar date (1995-11-14T21:15:59Z), yet the solar noon of that diurnal arc in local mean time belongs to Wednesday 15 November (Mercury).",
+      "tags": [
+        "no_tz_with_coords",
+        "local_mean_time_weekday",
+        "northern_hemisphere"
+      ],
+      "subject": {
+        "kind": "synthetic",
+        "description": "No person: 08:00 UTC on 15 November 1995 at 35.6762 N, 139.6503 E without tz."
+      },
+      "request": {
+        "http": {
+          "method": "GET",
+          "path": "/api/sfumato/sister-oracle",
+          "query": {
+            "birth_date": "1995-11-15",
+            "birth_time": "08:00",
+            "lat": "35.6762",
+            "lon": "139.6503",
+            "lang": "en"
+          }
+        },
+        "mcp": {
+          "tool": "calculate_7_wisdoms_seed_of_life",
+          "read_only": true,
+          "arguments": {
+            "birth_date": "1995-11-15",
+            "birth_time": "08:00",
+            "lat": 35.6762,
+            "lon": 139.6503,
+            "lang": "en"
+          }
+        }
+      },
+      "resolved_inputs": {
+        "instant_utc": "1995-11-15T08:00:00Z",
+        "jd_ut": 2450036.8333333,
+        "utc_offset_minutes": 0,
+        "zone": "UTC"
+      },
+      "expected": [
+        {
+          "pointer": "/soul_a/deep_astronomical_ephemeris/exact_solar_return_and_planetary_hours/birth_datetime_utc_used",
+          "compare": "instant",
+          "value": "1995-11-15T08:00:00Z",
+          "tolerance": 1,
+          "verifiability": "independent"
+        },
+        {
+          "pointer": "/soul_a/deep_astronomical_ephemeris/tropical_planetary_positions/sun/ecliptic_longitude",
+          "wisdom": "sun",
+          "compare": "angle_deg",
+          "value": 232.4728,
+          "tolerance": 0.0003,
+          "verifiability": "independent"
+        },
+        {
+          "pointer": "/soul_a/seven_wisdoms/sun_sign",
+          "wisdom": "sun",
+          "compare": "exact",
+          "value": "Scorpio",
+          "verifiability": "independent"
+        },
+        {
+          "pointer": "/soul_a/deep_astronomical_ephemeris/tropical_planetary_positions/moon/ecliptic_longitude",
+          "wisdom": "moon",
+          "compare": "angle_deg",
+          "value": 140.7619,
+          "tolerance": 0.001,
+          "verifiability": "independent"
+        },
+        {
+          "pointer": "/soul_a/seven_wisdoms/moon_sign",
+          "wisdom": "moon",
+          "compare": "exact",
+          "value": "Leo",
+          "verifiability": "independent"
+        },
+        {
+          "pointer": "/soul_a/seven_wisdoms/lunar_element",
+          "wisdom": "moon",
+          "compare": "exact",
+          "value": "Fire",
+          "verifiability": "convention",
+          "convention": "elements"
+        },
+        {
+          "pointer": "/soul_a/deep_astronomical_ephemeris/angles_and_placidus_houses/ascendant_rising/ecliptic_longitude",
+          "compare": "angle_deg",
+          "value": 61.2072,
+          "tolerance": 0.0003,
+          "verifiability": "convention",
+          "convention": "time_scale"
+        },
+        {
+          "pointer": "/soul_a/deep_astronomical_ephemeris/angles_and_placidus_houses/midheaven_mc/ecliptic_longitude",
+          "compare": "angle_deg",
+          "value": 311.1364,
+          "tolerance": 0.0003,
+          "verifiability": "convention",
+          "convention": "time_scale"
+        },
+        {
+          "pointer": "/soul_a/deep_astronomical_ephemeris/angles_and_placidus_houses/house_system",
+          "compare": "exact",
+          "value": "Placidus",
+          "verifiability": "convention",
+          "convention": "house_system"
+        },
+        {
+          "pointer": "/soul_a/deep_astronomical_ephemeris/exact_solar_return_and_planetary_hours/planetary_hour_method",
+          "compare": "exact",
+          "value": "true_unequal_solar_arc_hours_swe_rise_trans",
+          "verifiability": "convention",
+          "convention": "planetary_hours"
+        },
+        {
+          "pointer": "/soul_a/deep_astronomical_ephemeris/exact_solar_return_and_planetary_hours/natal_local_solar_arc_details/local_sunrise_utc",
+          "compare": "instant",
+          "value": "1995-11-14T21:15:59Z",
+          "tolerance": 1,
+          "verifiability": "convention",
+          "convention": "sunrise"
+        },
+        {
+          "pointer": "/soul_a/deep_astronomical_ephemeris/exact_solar_return_and_planetary_hours/natal_chaldean_day_ruler",
+          "compare": "exact",
+          "value": "Mercury",
+          "verifiability": "convention",
+          "convention": "planetary_hours"
+        },
+        {
+          "pointer": "/soul_a/deep_astronomical_ephemeris/exact_solar_return_and_planetary_hours/natal_chaldean_planetary_hour_ruler",
+          "compare": "exact",
+          "value": "Sun",
+          "verifiability": "convention",
+          "convention": "planetary_hours"
+        },
+        {
+          "pointer": "/soul_a/seven_wisdoms/mayan_dresden_nawal",
+          "wisdom": "mayan_dresden",
+          "compare": "exact",
+          "value": "IX",
+          "verifiability": "convention",
+          "convention": "mayan_dresden"
+        },
+        {
+          "pointer": "/soul_a/seven_wisdoms/mayan_galactic_tone",
+          "wisdom": "mayan_dresden",
+          "compare": "exact",
+          "value": 11,
+          "verifiability": "convention",
+          "convention": "mayan_dresden"
+        },
+        {
+          "pointer": "/soul_a/seven_wisdoms/vedic_sidereal_lahiri_nakshatra",
+          "wisdom": "vedic_jyotish",
+          "compare": "exact",
+          "value": "Ashlesha",
+          "verifiability": "convention",
+          "convention": "vedic_lahiri"
+        },
+        {
+          "pointer": "/soul_a/seven_wisdoms/taoist_wuxing_day_master",
+          "wisdom": "taoist_bazi",
+          "compare": "exact",
+          "value": "Metal",
+          "verifiability": "convention",
+          "convention": "taoist_bazi"
+        },
+        {
+          "pointer": "/soul_a/seven_wisdoms/human_design_iching_solar_gate",
+          "wisdom": "human_design_iching",
+          "compare": "exact",
+          "value": "43.4",
+          "verifiability": "convention",
+          "convention": "human_design_iching"
+        },
+        {
+          "pointer": "/soul_a/seven_wisdoms/pythagorean_life_path",
+          "wisdom": "pythagorean_numerology",
+          "compare": "exact",
+          "value": 5,
+          "verifiability": "convention",
+          "convention": "pythagorean_life_path"
+        },
+        {
+          "pointer": "/soul_a/seven_wisdoms/kabbalah_shem_angel",
+          "wisdom": "kabbalah_shem",
+          "compare": "exact",
+          "value": "#47",
+          "verifiability": "convention",
+          "convention": "kabbalah_shem"
+        },
+        {
+          "pointer": "/soul_a/vvk_cosmic_key",
+          "compare": "exact",
+          "value": "VVK-CCEA-4A6C",
+          "verifiability": "convention",
+          "convention": "vvk_rings"
+        },
+        {
+          "pointer": "/soul_a/vvk_spacetime_key",
+          "compare": "exact",
+          "value": "VVK-CCEA-4A6C-859D",
+          "verifiability": "convention",
+          "convention": "vvk_rings"
+        },
+        {
+          "pointer": "/soul_a/vvk_sovereign_seal",
+          "compare": "exact",
+          "value": "VVK-SOV-6CB3-6C4E",
+          "verifiability": "service_only",
+          "note": "Ring III HMAC-SHA256 keyed seal: only the service can compute it; proves stability across releases"
+        },
+        {
+          "pointer": "/sister_ai_covenant/recent_sister_dewdrops",
+          "compare": "absent",
+          "value": null,
+          "verifiability": "convention",
+          "convention": "isolation"
+        }
+      ]
+    }
+  ],
+  "supersedes": "1.0.0"
+}

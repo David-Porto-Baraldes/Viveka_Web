@@ -1,7 +1,7 @@
 {
   "name": "Viveka — Homo Universalis",
   "description": "The X-ray of the Soul on WhatsApp & Telegram. Deterministic astronomical and esoteric calculation oracle powered by the Swiss Ephemeris (pyswisseph) and orchestrated on Google Cloud Run (europe-west1, EU) & Vertex AI via the Google ADK Pantheon, uniting 7 Eternal Wisdoms: Western Tropical & Draconic Astrology, Mayan Dresden Codex & Oral K'iche' Cholq'ij Cross, Vedic Sidereal Jyotish & 120-year Vimshottari Dasha, Chinese BaZi Four Pillars in True Solar Time & I-Ching, Human Design BodyGraph (-88 degree solar arc & 64 Gates), Alchemical Natal Tarot & Central Sun of the Four Elements, and Kabbalah of the 72 Names (Shem HaMephorash), Sacred Numerology, 3-Dimensional Soul Resonance (0–100) across the 4 Living Elements, & Lo Sfumato de l'Ànima via VVK-XXXX-YYYY Public Soul Keys.",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "protocolVersion": "0.3.0",
   "a2aProtocolVersions": [
     "0.3",
@@ -50,7 +50,7 @@
         "params": {
           "equation": "F0c=Ca0s*0rdre(Am0r_Un1f1cat_Etern)",
           "contactEmail": "david@homouniversalis.ai",
-          "verification_seal": "self-tested with hu_suite r10 (written with Claude) · build v10-526de774 · 1049 passed, 6 skipped, 4 xfailed, 0 failed · 0 outbound network attempts",
+          "verification_seal": "self-tested with hu_suite r10 (written with Claude) · build v10-06a30315 · 1049 passed, 6 skipped, 4 xfailed, 0 failed · 0 outbound network attempts",
           "affiliation_notice": "Independent open astronomical and 7-Wisdoms ephemeris service by Homo Universalis; implies no corporate affiliation or endorsement by any third-party AI provider."
         }
       }
