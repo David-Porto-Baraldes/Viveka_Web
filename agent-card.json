@@ -50,7 +50,7 @@
         "params": {
           "equation": "F0c=Ca0s*0rdre(Am0r_Un1f1cat_Etern)",
           "contactEmail": "david@homouniversalis.ai",
-          "verification_seal": "self-tested with hu_suite r10 (written with Claude) · build v10-7aae976a · 1049 passed, 6 skipped, 4 xfailed, 0 failed · 0 outbound network attempts",
+          "verification_seal": "self-tested with hu_suite r10 · build v10-75e3c14e · 1049 passed, 6 skipped, 4 xfailed, 0 failed · 0 outbound network attempts",
           "affiliation_notice": "Independent open astronomical and 7-Wisdoms ephemeris service by Homo Universalis; implies no corporate affiliation or endorsement by any third-party AI provider."
         }
       }
@@ -251,11 +251,11 @@
   "signatures": [
     {
       "protected": "eyJhbGciOiJFUzI1NiIsImprdSI6Imh0dHBzOi8vaG9tb3VuaXZlcnNhbGlzLmFpLy53ZWxsLWtub3duL2p3a3MuanNvbiIsImtpZCI6ImhvbW91bml2ZXJzYWxpcy1hMmEtZXMyNTYtdjEiLCJ0eXAiOiJKT1NFIn0",
-      "signature": "ciJ20kzJQ-U_0Mr3YKATC7ccIR1GgMCerGO1S9vhJzZiXa7o1kPUjFAkc7-gl1R10z2_5tWOBrH51XdtloyXKA"
+      "signature": "_jSo-SOicdI4hZYM-O8zOv6AxcXo01BRIOZSlBpxMIs6arWFahEqnADGdddDBcmnKktITtlTGVj3et3FRQ18lw"
     },
     {
       "protected": "eyJhbGciOiJFUzI1NiIsImprdSI6Imh0dHBzOi8vaG9tb3VuaXZlcnNhbGlzLmFpLy53ZWxsLWtub3duL2p3a3MuanNvbiIsImtpZCI6ImhvbW91bml2ZXJzYWxpcy1hMmEtZXMyNTYtZHVhbCIsInR5cCI6IkpPU0UifQ",
-      "signature": "ttUdRa4E1wWm1a4xZPXjFHDChJMBkpmNRCxKYmC42dXIJi6vVUnkgSnI9z8fzaz6iJPjJECV_bgEPO3pw8ipzw"
+      "signature": "iPJWIdyvEHY-gSOt5sXCE9EkH8uDL2x2roNb5TJoNS2Rrz7iCGi4ijcUBFbBkKlwG6Sw4WKZE86nmGXPjIMyWw"
     }
   ]
 }
