@@ -32,10 +32,10 @@
             "name": "birth_date",
             "in": "query",
             "required": false,
-            "description": "Primary soul birth date in ISO `YYYY-MM-DD` format (e.g., `1980-05-24`).",
+            "description": "Primary soul birth date in ISO `YYYY-MM-DD` format (e.g., `2000-03-20`).",
             "schema": {
               "type": "string",
-              "example": "1980-05-24"
+              "example": "2000-03-20"
             }
           },
           {
@@ -246,7 +246,7 @@
                   "birth_date": {
                     "type": "string",
                     "description": "Primary soul birth date in ISO `YYYY-MM-DD` format.",
-                    "example": "1980-05-24"
+                    "example": "2000-03-20"
                   },
                   "birth_time": {
                     "type": "string",

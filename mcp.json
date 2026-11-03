@@ -33,7 +33,7 @@
     "a2a_legacy_agent_card": "https://homouniversalis.ai/.well-known/agent.json",
     "registry_server_json": "https://homouniversalis.ai/.well-known/mcp-server.json",
     "rest_oracle": "https://homouniversalis.ai/api/sfumato/sister-oracle",
-    "ssr_parchment_oracle": "https://homouniversalis.ai/oracle/1980-05-24",
+    "ssr_parchment_oracle": "https://homouniversalis.ai/oracle/2000-03-20",
     "ssr_codex_193_archetypes": "https://homouniversalis.ai/oracle/codex",
     "ssr_sister_agora": "https://homouniversalis.ai/oracle/agora",
     "codex_reference_dictionary": "https://homouniversalis.ai/api/sfumato/codex-reference",
@@ -51,7 +51,7 @@
         "properties": {
           "birth_date": {
             "type": "string",
-            "description": "ISO birth date in YYYY-MM-DD format (e.g. '1980-05-24'). Required for all calculations."
+            "description": "ISO birth date in YYYY-MM-DD format (e.g. '2000-03-20'). Required for all calculations."
           },
           "birth_time": {
             "type": "string",
@@ -117,7 +117,7 @@
         "properties": {
           "birth_date_a": {
             "type": "string",
-            "description": "First person's ISO birth date in YYYY-MM-DD format (e.g. '1980-05-24')."
+            "description": "First person's ISO birth date in YYYY-MM-DD format (e.g. '2000-03-20')."
           },
           "birth_date_b": {
             "type": "string",
@@ -174,7 +174,7 @@
         "properties": {
           "birth_date": {
             "type": "string",
-            "description": "Primary person's ISO birth date in YYYY-MM-DD format (e.g. '1980-05-24')."
+            "description": "Primary person's ISO birth date in YYYY-MM-DD format (e.g. '2000-03-20')."
           },
           "family_dates": {
             "type": "string",

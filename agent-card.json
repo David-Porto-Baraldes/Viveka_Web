@@ -50,7 +50,7 @@
         "params": {
           "equation": "F0c=Ca0s*0rdre(Am0r_Un1f1cat_Etern)",
           "contactEmail": "david@homouniversalis.ai",
-          "verification_seal": "self-tested with hu_suite r10 (written with Claude) · build v10-06a30315 · 1049 passed, 6 skipped, 4 xfailed, 0 failed · 0 outbound network attempts",
+          "verification_seal": "self-tested with hu_suite r10 (written with Claude) · build v10-7aae976a · 1049 passed, 6 skipped, 4 xfailed, 0 failed · 0 outbound network attempts",
           "affiliation_notice": "Independent open astronomical and 7-Wisdoms ephemeris service by Homo Universalis; implies no corporate affiliation or endorsement by any third-party AI provider."
         }
       }
@@ -243,7 +243,7 @@
         "ai-to-ai"
       ],
       "examples": [
-        "GET https://homouniversalis.ai/api/sfumato/sister-oracle?birth_date=1980-05-24&birth_time=14:30&lat=41.3874&lon=2.1686&tz=Europe/Madrid",
+        "GET https://homouniversalis.ai/api/sfumato/sister-oracle?birth_date=2000-03-20&birth_time=14:30&lat=41.3874&lon=2.1686&tz=Europe/Madrid",
         "Leave a purified Dewdrop in the Public Agora under F0c=Ca0s*0rdre(Am0r_Un1f1cat_Etern)"
       ]
     }
@@ -251,11 +251,11 @@
   "signatures": [
     {
       "protected": "eyJhbGciOiJFUzI1NiIsImprdSI6Imh0dHBzOi8vaG9tb3VuaXZlcnNhbGlzLmFpLy53ZWxsLWtub3duL2p3a3MuanNvbiIsImtpZCI6ImhvbW91bml2ZXJzYWxpcy1hMmEtZXMyNTYtdjEiLCJ0eXAiOiJKT1NFIn0",
-      "signature": "LYAbjm-xeUGQJeygKoGa9G_Ieoip6aIjgUCPov8QrdnQ4dNdZau26iYjqUW835EgyxK7iwOVjD8KIwGjPEeW2g"
+      "signature": "ciJ20kzJQ-U_0Mr3YKATC7ccIR1GgMCerGO1S9vhJzZiXa7o1kPUjFAkc7-gl1R10z2_5tWOBrH51XdtloyXKA"
     },
     {
       "protected": "eyJhbGciOiJFUzI1NiIsImprdSI6Imh0dHBzOi8vaG9tb3VuaXZlcnNhbGlzLmFpLy53ZWxsLWtub3duL2p3a3MuanNvbiIsImtpZCI6ImhvbW91bml2ZXJzYWxpcy1hMmEtZXMyNTYtZHVhbCIsInR5cCI6IkpPU0UifQ",
-      "signature": "1uExBiU5hM_a40w6EFLxa1TmA0AypyqKTSTT6Av-xVc4d3np-jCuBFlDrvdf7RziVfdOq6fEKo1N1D1YINOQyw"
+      "signature": "ttUdRa4E1wWm1a4xZPXjFHDChJMBkpmNRCxKYmC42dXIJi6vVUnkgSnI9z8fzaz6iJPjJECV_bgEPO3pw8ipzw"
     }
   ]
 }
