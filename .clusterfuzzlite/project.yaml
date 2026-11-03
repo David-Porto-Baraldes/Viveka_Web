@@ -1,0 +1,4 @@
+language: python
+sanitizers:
+  - address
+  - undefined
