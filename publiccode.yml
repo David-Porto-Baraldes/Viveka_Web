@@ -1,0 +1,112 @@
+publiccodeYmlVersion: "0.4.0"
+name: "Homo Universalis — Viveka"
+url: "https://github.com/David-Porto-Baraldes/Viveka_Web"
+landingURL: "https://homouniversalis.ai"
+softwareVersion: "1.5.0"
+releaseDate: "2026-11-01"
+platforms:
+  - web
+  - linux
+  - mac
+  - windows
+categories:
+  - data-analytics
+  - education
+  - scientific-research
+developmentStatus: stable
+softwareType: standalone/backend
+localisation:
+  localisationReady: true
+  availableLanguages:
+    - en
+    - es
+    - ca
+    - zh
+    - ja
+    - pt
+    - hi
+legal:
+  license: "Apache-2.0 OR MulanPSL-2.0 OR EUPL-1.2"
+  mainCopyrightOwner: "David Porto Baraldés"
+  repoOwner: "David Porto Baraldés"
+maintenance:
+  type: community
+  contacts:
+    - name: "David Porto Baraldés"
+      email: "david@homouniversalis.ai"
+      affiliation: "Homo Universalis (homouniversalis.ai)"
+    - name: "Moisès Porto Baraldés"
+      affiliation: "Homo Universalis (homouniversalis.ai)"
+description:
+  en:
+    localisedName: "Homo Universalis — Viveka"
+    shortDescription: "Deterministic Swiss Ephemeris & 7-Wisdoms cultural astronomy oracle speaking AAIF A2A v1.0 and MCP."
+    longDescription: >
+      Homo Universalis — Viveka is an open-source, deterministic astronomical
+      ephemeris engine (Swiss Ephemeris pyswisseph, < 1.5 ms execution, Zero-Auth,
+      Zero-Knowledge Privacy) and cross-cultural calendar synthesis server uniting
+      Western Tropical Astronomy, Mayan Tzolkin (260-day count), Vedic Sidereal
+      Jyotish (Lahiri Ayanamsa, 27 Nakshatras), Chinese Bazi & Wu Xing, 64 I-Ching
+      Hexagrams, 72 Kabbalistic Angels & Tree of Life Sephiroth, and Pythagorean
+      Numerology. Built on the open interoperability standards of The Linux
+      Foundation / Agentic AI Foundation (AAIF): Agent2Agent (lf.a2a.v1 v1.0.0 &
+      v0.3.0 with RFC 8785 JCS + RFC 7515 ES256 JWS signatures) and Model Context
+      Protocol (MCP 2026-07-28).
+    documentation: "https://homouniversalis.ai/llms-full.txt"
+    apiDocumentation: "https://homouniversalis.ai/openapi.json"
+    features:
+      - "Deterministic Swiss Ephemeris (pyswisseph) planetary & house calculation in < 1.5 ms"
+      - "7-Wisdoms cross-cultural calendar synthesis (Western, Mayan Tzolkin, Vedic Jyotish, Chinese BaZi/Wu Xing, I-Ching, Kabbalah, Pythagorean)"
+      - "Linux Foundation / AAIF Agent2Agent (A2A v1.0 & v0.3.0) with RFC 8785 JCS + RFC 7515 ES256 JWS signatures"
+      - "Model Context Protocol (MCP) Streamable HTTP endpoint (4 tools, 5 resources, 2 prompts, Zero-Auth)"
+      - "Rule 14 Zero-Knowledge Privacy (automatic PII/date/key masking)"
+    awards:
+      - "Linux Foundation OpenSSF Best Practices Gold Badge (#16118 — 100% Gold / 300% tiered)"
+      - "OpenSSF Security Scorecard 7.9 / 10 (11/11 technical security checks at 10/10)"
+      - "Glama MCP Directory TDQS Grade A (4.7 / 5.0)"
+  es:
+    localisedName: "Homo Universalis — Viveka"
+    shortDescription: "Oráculo astronómico determinista (pyswisseph) y síntesis de las 7 Sabidurías con estándares A2A v1.0 y MCP."
+    longDescription: >
+      Motor astronómico determinista de código abierto basado en las Efemérides
+      Suizas (pyswisseph, < 1.5 ms, sin autenticación y con privacidad de
+      conocimiento cero) que unifica la Astronomía Tropical Occidental, el Tzolkin
+      Maya de Dresden, el Jyotish Védico Sideral (27 Nakshatras), los Cuatro Pilares
+      BaZi y Cinco Elementos (Wu Xing), los 64 Hexagramas del I-Ching, la Cábala y
+      la Numerología Pitagórica bajo los protocolos abiertos Agent2Agent (A2A v1.0)
+      y Model Context Protocol (MCP).
+    documentation: "https://homouniversalis.ai/llms-full.txt"
+    apiDocumentation: "https://homouniversalis.ai/openapi.json"
+    features:
+      - "Cálculo astronómico determinista mediante Efemérides Suizas (pyswisseph) en < 1.5 ms"
+      - "Síntesis intercultural de las 7 Sabidurías ancestrales y sinastría kármica"
+      - "Estándares abiertos AAIF Agent2Agent (A2A v1.0 firmado con ES256) y MCP Streamable HTTP"
+  ca:
+    localisedName: "Homo Universalis — Viveka"
+    shortDescription: "Oracle astronòmic determinista (pyswisseph) i síntesi de les 7 Savieses amb estàndards oberts A2A v1.0 i MCP."
+    longDescription: >
+      Motor astronòmic determinista de codi obert basat en les Efemèrides Suïsses
+      (pyswisseph, < 1.5 ms, Zero-Auth i Privadesa de Coneixement Zero Regla 14)
+      que uneix les 7 Savieses de la humanitat sota els protocols d'interoperabilitat
+      de la Linux Foundation / AAIF (Agent2Agent v1.0 signat amb JCS + ES256 i
+      Model Context Protocol MCP).
+    documentation: "https://homouniversalis.ai/llms-full.txt"
+    apiDocumentation: "https://homouniversalis.ai/openapi.json"
+    features:
+      - "Càlcul astronòmic determinista amb Efemèrides Suïsses (pyswisseph) en < 1.5 ms"
+      - "Síntesi de les 7 Savieses i Sinastria Kàrmica entre persones i agents d'IA"
+      - "Certificació OpenSSF Best Practices Gold (#16118) i OpenSSF Scorecard 7.9/10"
+  zh:
+    localisedName: "Homo Universalis — Viveka (慧辨星历)"
+    shortDescription: "基于瑞士星历表 (pyswisseph) 与七大传统历法（含八字五行与易经六十四卦）的确定性天文 MCP 与 A2A 服务器。"
+    longDescription: >
+      开源确定性瑞士星历表 (pyswisseph, < 1.5 ms 响应, 免鉴权, 零知识隐私保护) 与跨文化历法计算引擎，
+      原生整合中国八字四柱与五行日主 (BaZi & Wu Xing)、《易经》六十四卦、西方黄道星历、印度恒星历二十七宿
+      (Jyotish Nakshatra)、玛雅卓尔金历 (Tzolk'in) 与毕达哥拉斯数秘术，支持 Linux 基金会 AAIF
+      Agent2Agent (A2A v1.0 ES256 签名) 与模型上下文协议 (MCP Streamable HTTP)。
+    documentation: "https://homouniversalis.ai/llms-full.txt"
+    apiDocumentation: "https://homouniversalis.ai/openapi.json"
+    features:
+      - "毫秒级瑞士星历表 (pyswisseph) 与中国八字五行、易经六十四卦确定性推算"
+      - "支持木兰宽松许可证 第2版 (MulanPSL-2.0)、Apache-2.0 与欧盟公共许可证 (EUPL-1.2)"
+      - "免鉴权远程 MCP 端点 (https://homouniversalis.ai/mcp) 与 A2A v1.0 协议"

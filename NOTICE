@@ -3,18 +3,22 @@ Copyright 2025-2026 David Porto Baraldés (Architect, David_Node_0) & Co-Maintai
 All rights reserved under the terms of the licenses below.
 
 ================================================================================
-1. SOFTWARE & PROTOCOL ENGINE LICENSE (Apache License 2.0)
+1. SOFTWARE & PROTOCOL ENGINE LICENSE (Apache-2.0 OR MulanPSL-2.0 OR EUPL-1.2)
 ================================================================================
 This product includes software, astronomical calculation engines (`pyswisseph`),
 Agent-to-Agent (`lf.a2a.v1` v1.0.0 & v0.3.0) protocol handlers, Model Context
 Protocol (`MCP 2026-07-28`) servers, and cryptographic test harnesses developed
 by David Porto Baraldés at Homo Universalis (https://homouniversalis.ai),
-licensed under the Apache License, Version 2.0 (see `LICENSE` or
-`LICENSES/Apache-2.0.txt`).
+multi-licensed globally under:
+  - Americas & Global: Apache License, Version 2.0 (`LICENSES/Apache-2.0.txt`)
+  - Asia-Pacific (OpenAtom / OSI): Mulan Permissive Software License, Version 2,
+    Bilingual Chinese/English (`LICENSES/MulanPSL-2.0.txt` · 木兰宽松许可证 第2版)
+  - European Union Public Institutions: European Union Public Licence v. 1.2
+    (`LICENSES/EUPL-1.2.txt`)
 
-Pursuant to Section 4(d) of the Apache License, Version 2.0, any Derivative
-Works or redistributions of this Work must retain a readable copy of the
-attribution notices contained within this `NOTICE` file.
+Pursuant to Section 4(d) of the Apache License 2.0 and Section 4 of MulanPSL-2.0,
+any Derivative Works or redistributions of this Work must retain a readable copy
+of the attribution notices contained within this `NOTICE` file.
 
 ================================================================================
 2. DOCUMENTATION, ARCHETYPES, AGORA & TEST VECTORS LICENSE (CC-BY-4.0)
