@@ -1,0 +1,42 @@
+cff-version: 1.2.0
+title: "Homo Universalis — Viveka: Deterministic 7-Wisdoms Astronomical Ephemeris Oracle & AAIF A2A / MCP Protocol Engine"
+message: "If you use Homo Universalis — Viveka, its 7-Wisdoms ephemeris engine, or its canonical cryptographic test vectors in your research or AI agent systems, please cite it using the metadata below."
+type: software
+authors:
+  - given-names: David
+    family-names: Porto Baraldés
+    alias: David_Node_0
+    affiliation: Homo Universalis (homouniversalis.ai)
+  - given-names: Moisès
+    family-names: Porto Baraldés
+    affiliation: Homo Universalis (homouniversalis.ai)
+repository-code: "https://github.com/David-Porto-Baraldes/Viveka_Web"
+url: "https://homouniversalis.ai"
+abstract: >-
+  Deterministic astronomical (Swiss Ephemeris pyswisseph, < 1.5 ms execution,
+  Zero-Auth, Rule 14 Zero-Knowledge Privacy) and 7-Wisdoms ephemeris oracle
+  uniting Tropical Astronomy, Mayan Tzolkin (260-day count), Vedic Sidereal
+  Jyotish (Lahiri Ayanamsa, 27 Nakshatras), Chinese Bazi & Wu Xing, 64 I-Ching
+  Hexagrams, 72 Kabbalistic Shem HaMephorash Angels & Tree of Life Sephiroth,
+  and Pythagorean Numerology. Speaks the Linux Foundation / AAIF Agent2Agent
+  (lf.a2a.v1 v1.0.0 & v0.3.0 with RFC 8785 JCS + RFC 7515 ES256 JWS signatures)
+  and Model Context Protocol (MCP 2026-07-28). Awarded Linux Foundation OpenSSF
+  Best Practices Gold Badge (#16118 — 300% tiered) and Glama TDQS Grade A (4.7/5.0).
+keywords:
+  - ephemeris
+  - astronomy
+  - pyswisseph
+  - model-context-protocol
+  - mcp
+  - agent2agent
+  - a2a
+  - rfc-8785
+  - rfc-7515
+  - openssf-gold
+  - synastry
+  - tzolkin
+  - jyotish
+  - iching
+license: Apache-2.0
+version: 1.5.0
+date-released: "2026-11-01"

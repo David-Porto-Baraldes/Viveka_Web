@@ -1,0 +1,30 @@
+version = 1
+SPDX-PackageName = "Homo Universalis — Viveka"
+SPDX-PackageSupplier = "David Porto Baraldés <david@homouniversalis.ai>"
+SPDX-PackageDownloadLocation = "https://github.com/David-Porto-Baraldes/Viveka_Web"
+
+[[annotations]]
+path = "**"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2025-2026 David Porto Baraldés (Homo Universalis — Viveka)"
+SPDX-License-Identifier = "Apache-2.0"
+
+[[annotations]]
+path = [
+    "docs/**",
+    "*.html",
+    "es/*.html",
+    "llms*.txt",
+    "codex/**",
+    "AGENTS.md",
+    "README.md",
+    "GOVERNANCE.md",
+    "CONTRIBUTING.md",
+    "SECURITY.md",
+    "CODE_OF_CONDUCT.md",
+    "CHANGELOG.md",
+    "CITATION.cff",
+]
+precedence = "override"
+SPDX-FileCopyrightText = "2025-2026 David Porto Baraldés (Homo Universalis — Viveka)"
+SPDX-License-Identifier = "Apache-2.0 AND CC-BY-4.0"
