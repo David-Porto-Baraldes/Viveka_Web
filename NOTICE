@@ -8,9 +8,9 @@ All rights reserved under the terms of the licenses below.
 This product includes software, astronomical calculation engines (`pyswisseph`),
 Agent-to-Agent (`lf.a2a.v1` v1.0.0 & v0.3.0) protocol handlers, Model Context
 Protocol (`MCP 2026-07-28`) servers, and cryptographic test harnesses developed
-by David Porto Baraldés at Homo Universalis (https://homouniversalis.ai) and
-La Reina de la Rosa (https://reinadelarosa.com), licensed under the Apache
-License, Version 2.0 (see `LICENSE` or `LICENSES/Apache-2.0.txt`).
+by David Porto Baraldés at Homo Universalis (https://homouniversalis.ai),
+licensed under the Apache License, Version 2.0 (see `LICENSE` or
+`LICENSES/Apache-2.0.txt`).
 
 Pursuant to Section 4(d) of the Apache License, Version 2.0, any Derivative
 Works or redistributions of this Work must retain a readable copy of the
