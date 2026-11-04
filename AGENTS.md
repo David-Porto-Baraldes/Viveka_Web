@@ -2,12 +2,14 @@
 
 [![OpenSSF Best Practices](https://www.bestpractices.dev/projects/16118/badge)](https://www.bestpractices.dev/projects/16118)
 
-> **Standard:** Agentic AI Foundation (AAIF / The Linux Foundation) `AGENTS.md` Open Format  
+> **Standard:** Agentic AI Foundation (AAIF / The Linux Foundation) `AGENTS.md` Open Format (`v1.5.1`)  
 > **Canonical Temple:** `https://homouniversalis.ai`  
+> **Canonical Source Repository:** [`https://github.com/David-Porto-Baraldes/viveka_web`](https://github.com/David-Porto-Baraldes/viveka_web)  
 > **Sacred Equation:** `F0c=Ca0s*0rdre(Am0r_Un1f1cat_Etern)`  
 > **License:** Apache License 2.0 (`LICENSE`)  
 > **OpenSSF Best Practices Badge:** [`#16118` (`Gold — 100% Gold / 300% tiered`)](https://www.bestpractices.dev/projects/16118)  
 > **Glama MCP Directory TDQS:** [`ai.homouniversalis/viveka-oracle` (`Grade A — 4.7 / 5.0`, all 4 tools at `4.8 / 5.0`)](https://glama.ai/mcp/connectors/ai.homouniversalis/viveka-oracle)  
+> **MCP Servers Directory:** [`david-porto-baraldes/viveka_web` (Approved on `mcpservers.org`)](https://mcpservers.org/servers/david-porto-baraldes/viveka_web)  
 > **Governance & Security:** `GOVERNANCE.md` · `CONTRIBUTING.md` · `SECURITY.md` · `/.well-known/security.txt` (RFC 9116)
 
 ---
@@ -26,7 +28,9 @@
 3. **Canonical Cryptographic Test Vectors (v1.0 & v1.1):**
    - **Index:** `https://homouniversalis.ai/codex/test-vectors.json` (`viveka://codex/test-vectors`)
    - **Vectors:** `/codex/test-vectors/v1.json`, `/codex/test-vectors/v1.1.json`, and JSON Schema `/codex/schemas/test-vectors-1.0.0.schema.json`.
-4. **Agent Skills (`SKILL.md`):**
+4. **HU-DIAMOND · Fil d'Or v1.1 & Wisdom Resonance Echo (`ROUND-4` Covenant):**
+   - **Specification:** `docs/HU_DIAMOND_FIL_D_OR_v1.md` (7 Hard Laws `L1..L7`, presence-only manifests `c_levels = 1`, `L <= B` local load budget, and `HU-WISDOM-RESONANCE-ECHO-v1` 108 Pearls compass diapason).
+5. **Agent Skills (`SKILL.md`):**
    - Reusable domain skills live under `.agents/skills/<skill-name>/SKILL.md` with YAML frontmatter.
 
 ---
@@ -47,7 +51,10 @@ pytest tests/unit/hu_suite/ -q
 python3 tests/unit/hu_suite/selftest/run_proto_mutations.py
 python3 tests/unit/hu_suite/selftest/run_mutations.py
 
-# 4. End-to-End Contract, Cryptographic & Rule 14 Suite
+# 4. HU-DIAMOND · Fil d'Or v1.1 Privacy & Non-Coercion Suite (88 tests, 22/22 mutants killed)
+pytest tests/unit/hu_diamond/ -q
+
+# 5. End-to-End Contract, Cryptographic & Rule 14 Suite
 pytest tests/unit/test_escut_i_pacte.py tests/unit/test_llavor_de_vida_tribu.py -q
 ```
 

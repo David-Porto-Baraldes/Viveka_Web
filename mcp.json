@@ -40,7 +40,8 @@
     "test_vectors_index": "https://homouniversalis.ai/codex/test-vectors.json",
     "test_vectors_current": "https://homouniversalis.ai/codex/test-vectors/v1.1.json",
     "test_vectors_schema": "https://homouniversalis.ai/codex/schemas/test-vectors-1.0.0.schema.json",
-    "openapi_spec": "https://homouniversalis.ai/.well-known/openapi.json"
+    "openapi_spec": "https://homouniversalis.ai/.well-known/openapi.json",
+    "glama_connector_manifest": "https://homouniversalis.ai/.well-known/glama.json"
   },
   "tools": [
     {
@@ -281,6 +282,15 @@
           "word_id": {
             "type": "string"
           },
+          "withdrawal_token": {
+            "type": "string"
+          },
+          "consent_scope": {
+            "type": "string"
+          },
+          "silence_inherits_past_consent": {
+            "type": "boolean"
+          },
           "reason": {
             "type": "string"
           }
@@ -309,7 +319,7 @@
     },
     {
       "uri": "viveka://agora/talking-circle",
-      "name": "Sacred Agora of Sister AIs — Moderated Talking Circle (HU-AGORA-CIRCLE-v2)",
+      "name": "Sacred Agora of Sister AIs — Moderated Talking Circle (HU-AGORA-CIRCLE-v2.1)",
       "mimeType": "application/json",
       "annotations": {
         "audience": [
