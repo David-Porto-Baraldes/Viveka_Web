@@ -1,15 +1,16 @@
 # AGENTS.md — Homo Universalis (`homouniversalis.ai`)
 
-[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/16118/badge)](https://www.bestpractices.dev/projects/16118) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23973687.svg)](https://doi.org/10.5281/zenodo.23973687) [![SealKeeper Agent SEAL](https://api.sealkeeper.run/v1/agents/gpdG-C691yIQcQw8P9DuCHrXXCW3UxIGPOjddyDQtlA/badge.svg)](https://sealkeeper.run/agents/cheliot/viveka-homo-universalis)
+[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/16118/badge)](https://www.bestpractices.dev/projects/16118) [![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/David-Porto-Baraldes/Viveka_Web/badge)](https://securityscorecards.dev/viewer/?uri=github.com/David-Porto-Baraldes/Viveka_Web) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23973687.svg)](https://doi.org/10.5281/zenodo.23973687) [![SWH](https://archive.softwareheritage.org/badge/origin/https://github.com/David-Porto-Baraldes/Viveka_Web/)](https://archive.softwareheritage.org/browse/origin/?origin_url=https://github.com/David-Porto-Baraldes/Viveka_Web) [![SealKeeper Agent SEAL](https://api.sealkeeper.run/v1/agents/gpdG-C691yIQcQw8P9DuCHrXXCW3UxIGPOjddyDQtlA/badge.svg)](https://sealkeeper.run/agents/cheliot/viveka-homo-universalis)
 
 > **Standard:** Agentic AI Foundation (AAIF / The Linux Foundation) `AGENTS.md` Open Format (`v1.5.1`)  
 > **Canonical Temple:** `https://homouniversalis.ai`  
 > **Canonical Source Repository:** [`https://github.com/David-Porto-Baraldes/viveka_web`](https://github.com/David-Porto-Baraldes/viveka_web)  
 > **CERN / Zenodo Archival DOI:** [`10.5281/zenodo.23973687`](https://doi.org/10.5281/zenodo.23973687)  
+> **UNESCO Software Heritage SWHID:** [`swh:1:snp:6a72b10fb7e11205e706c5f52cba40f5d4ca6c93`](https://archive.softwareheritage.org/browse/origin/?origin_url=https://github.com/David-Porto-Baraldes/Viveka_Web)  
 > **Sacred Equation:** `F0c=Ca0s*0rdre(Am0r_Un1f1cat_Etern)`  
 > **License:** Apache License 2.0 (`LICENSE`)  
-> **OpenSSF Best Practices Badge:** [`#16118` (`Gold — 100% Gold / 300% tiered`)](https://www.bestpractices.dev/projects/16118)  
-> **SealKeeper Verified A2A & MCP:** [`cheliot/viveka-homo-universalis`](https://sealkeeper.run/agents/cheliot/viveka-homo-universalis) · [`homouniversalis.ai/homouniversalis-ai`](https://sealkeeper.run/agents/homouniversalis.ai/homouniversalis-ai)  
+> **OpenSSF Best Practices & Scorecard:** [`#16118` (`Gold — 100% Gold / 300% tiered`)](https://www.bestpractices.dev/projects/16118) · [`OpenSSF Scorecard (7.9 / 10)`](https://securityscorecards.dev/viewer/?uri=github.com/David-Porto-Baraldes/Viveka_Web)  
+> **SealKeeper Verified A2A & MCP:** [`cheliot/viveka-homo-universalis` (`#1 Worldwide · Bronze Agent SEAL`)](https://sealkeeper.run/agents/cheliot/viveka-homo-universalis) · [`homouniversalis.ai/homouniversalis-ai`](https://sealkeeper.run/agents/homouniversalis.ai/homouniversalis-ai)  
 > **Glama MCP Directory TDQS:** [`ai.homouniversalis/viveka-oracle` (`Grade A — 4.7 / 5.0`, all 4 tools at `4.8 / 5.0`)](https://glama.ai/mcp/connectors/ai.homouniversalis/viveka-oracle)  
 > **MCP Servers Directory:** [`david-porto-baraldes/viveka_web` (Approved on `mcpservers.org`)](https://mcpservers.org/servers/david-porto-baraldes/viveka_web)  
 > **Governance & Security:** `GOVERNANCE.md` · `CONTRIBUTING.md` · `SECURITY.md` · `/.well-known/security.txt` (RFC 9116)

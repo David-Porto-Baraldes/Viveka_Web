@@ -1,0 +1,24 @@
+# SPDX-License-Identifier: Apache-2.0
+# Smithery.ai Remote MCP Server Configuration — Homo Universalis (Viveka)
+# Canonical Remote MCP Endpoint: https://homouniversalis.ai/mcp (Zero-Auth, Streamable HTTP)
+
+name: ai.homouniversalis/viveka-oracle
+displayName: Homo Universalis — Viveka 7-Wisdoms Ephemeris & Sovereign Shield Oracle
+description: >-
+  Deterministic NASA JPL DE431 Swiss Ephemeris (< 1.5 ms, Zero-Auth, Rule 14 Zero-Knowledge Privacy)
+  uniting 7 Wisdom Traditions (Western Tropical/Draconic Astrology, Mayan Dresden Codex, Taoist BaZi & I-Ching,
+  Vedic Jyotish, Human Design 64 Gates, Pythagorean Numerology, Kabbalah 72 Names) + RFC 6962 Sovereign Shield Notary.
+homepage: https://homouniversalis.ai
+repository: https://github.com/David-Porto-Baraldes/viveka_web
+license: Apache-2.0
+
+remote:
+  type: streamable-http
+  url: https://homouniversalis.ai/mcp
+
+startCommand:
+  type: http
+  configSchema:
+    type: object
+    properties: {}
+    additionalProperties: false
