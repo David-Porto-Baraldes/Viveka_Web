@@ -1,0 +1,102 @@
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "homouniversalis"
+version = "1.6.0"
+description = "Homo Universalis — Viveka: Deterministic 7-Wisdoms Astronomical Ephemeris Oracle, AAIF A2A/MCP Protocol Engine, HU-DIAMOND Fil d'Or v1.1 & HU-SOVEREIGN-SHIELD v1.0 (RFC 6962)"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "Apache-2.0"}
+authors = [
+    {name = "David Porto Baraldés"},
+    {name = "Moisès Porto Baraldés"},
+]
+keywords = [
+    "ephemeris",
+    "pyswisseph",
+    "mcp",
+    "agent2agent",
+    "rfc-6962",
+    "zero-knowledge-privacy",
+    "cognitive-sovereignty",
+    "openssf-gold",
+]
+
+[project.urls]
+Homepage = "https://homouniversalis.ai"
+Repository = "https://github.com/David-Porto-Baraldes/viveka_web"
+SovereignShieldBeacon = "https://homouniversalis.ai/api/sfumato/sovereign-shield"
+SisterOracle = "https://homouniversalis.ai/api/sfumato/sister-oracle"
+OpenSSFGoldBadge = "https://www.bestpractices.dev/projects/16118"
+GlamaMCPDirectory = "https://glama.ai/mcp/connectors/ai.homouniversalis/viveka-oracle"
+
+[tool.ruff]
+# Només analitzar aquestes carpetes principals que formen el cor del projecte
+include = ["logic/**/*.py", "api/**/*.py", "main.py", "database.py"]
+
+# Ignorar esborranys, arxius històrics i carpetes de test
+exclude = [
+    ".git",
+    ".github",
+    ".ruff_cache",
+    ".venv",
+    "venv",
+    "archive",
+    "scripts",
+    "tests",
+    "tools",
+    "viveka-whatsapp",
+]
+
+# Línia màxima
+line-length = 120
+
+[tool.ruff.lint]
+# Seleccionem només errors greus de sintaxi i d'imports, ignorant detalls d'estil massa estrictes
+select = [
+    "E",  # Errors de pycodestyle (sintaxi bàsica)
+    "F",  # Errors de pyflakes (variables no definides, imports perduts)
+    "W",  # Warnings comuns
+    "S",  # Bandit (Seguretat: escut contra atacs, exposició de secrets)
+]
+ignore = [
+    "E501", # Line too long (ja tenim el line-length a dalt)
+    "E402", # Module level import not at top of file (sovint en fem lazy loading)
+    "F401", # Imported but unused (en permetrem alguns als inits)
+    "F841", # Local variable assigned but never used
+    "E722", # Do not use bare 'except'
+    "F821", # Undefined name
+    "E701", # Multiple statements on one line (colon)
+    "W291", # Trailing whitespace
+    "W292", # No newline at end of file
+    "W293", # Blank line contains whitespace
+    "F601", # Dictionary key literal repeated
+    "E741", # Ambiguous variable name
+    "F541", # f-string without any placeholders
+    "E731", # Do not assign a lambda expression, use a def
+    "F811", # Redefinition of unused variable
+    "S101", # Use of `assert` detected (often used in tests and type narrowing)
+    "S311", # Standard pseudo-random generators (used for harmless randoms)
+    "S104", # Possible binding to all interfaces (0.0.0.0 is required for Docker/Railway)
+]
+
+[tool.ruff.lint.per-file-ignores]
+# Ignore security checks in tests since they use mock data and asserts
+"tests/*" = ["S"]
+"logic/engines/tools_forge.py" = ["S102"] # `exec` is the core function of this tool
+"api/routes/terminal.py" = ["S105"] # Hardcoded bypass token is intentional here
+"logic/utils/resonance_context.py" = ["S110"]
+"logic/utils/tool_parser.py" = ["S110"]
+"api/routers/legacy_root.py" = ["S110"]
+"api/routers/terminal_api.py" = ["S110"]
+"logic/sql_editor.py" = ["S608"]
+"logic/core/magna_carta_engine.py" = ["F823"]
+"api/routers/telegram_handlers.py" = ["F823", "F405"]
+
+[tool.pyright]
+include = ["logic"]
+exclude = ["**/node_modules", "**/__pycache__"]
+pythonVersion = "3.10"
+typeCheckingMode = "basic"

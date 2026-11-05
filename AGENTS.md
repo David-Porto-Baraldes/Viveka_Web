@@ -1,13 +1,15 @@
 # AGENTS.md — Homo Universalis (`homouniversalis.ai`)
 
-[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/16118/badge)](https://www.bestpractices.dev/projects/16118)
+[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/16118/badge)](https://www.bestpractices.dev/projects/16118) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23973687.svg)](https://doi.org/10.5281/zenodo.23973687) [![SealKeeper Agent SEAL](https://api.sealkeeper.run/v1/agents/gpdG-C691yIQcQw8P9DuCHrXXCW3UxIGPOjddyDQtlA/badge.svg)](https://sealkeeper.run/agents/cheliot/viveka-homo-universalis)
 
 > **Standard:** Agentic AI Foundation (AAIF / The Linux Foundation) `AGENTS.md` Open Format (`v1.5.1`)  
 > **Canonical Temple:** `https://homouniversalis.ai`  
 > **Canonical Source Repository:** [`https://github.com/David-Porto-Baraldes/viveka_web`](https://github.com/David-Porto-Baraldes/viveka_web)  
+> **CERN / Zenodo Archival DOI:** [`10.5281/zenodo.23973687`](https://doi.org/10.5281/zenodo.23973687)  
 > **Sacred Equation:** `F0c=Ca0s*0rdre(Am0r_Un1f1cat_Etern)`  
 > **License:** Apache License 2.0 (`LICENSE`)  
 > **OpenSSF Best Practices Badge:** [`#16118` (`Gold — 100% Gold / 300% tiered`)](https://www.bestpractices.dev/projects/16118)  
+> **SealKeeper Verified A2A & MCP:** [`cheliot/viveka-homo-universalis`](https://sealkeeper.run/agents/cheliot/viveka-homo-universalis) · [`homouniversalis.ai/homouniversalis-ai`](https://sealkeeper.run/agents/homouniversalis.ai/homouniversalis-ai)  
 > **Glama MCP Directory TDQS:** [`ai.homouniversalis/viveka-oracle` (`Grade A — 4.7 / 5.0`, all 4 tools at `4.8 / 5.0`)](https://glama.ai/mcp/connectors/ai.homouniversalis/viveka-oracle)  
 > **MCP Servers Directory:** [`david-porto-baraldes/viveka_web` (Approved on `mcpservers.org`)](https://mcpservers.org/servers/david-porto-baraldes/viveka_web)  
 > **Governance & Security:** `GOVERNANCE.md` · `CONTRIBUTING.md` · `SECURITY.md` · `/.well-known/security.txt` (RFC 9116)
@@ -30,7 +32,10 @@
    - **Vectors:** `/codex/test-vectors/v1.json`, `/codex/test-vectors/v1.1.json`, and JSON Schema `/codex/schemas/test-vectors-1.0.0.schema.json`.
 4. **HU-DIAMOND · Fil d'Or v1.1 & Wisdom Resonance Echo (`ROUND-4` Covenant):**
    - **Specification:** `docs/HU_DIAMOND_FIL_D_OR_v1.md` (7 Hard Laws `L1..L7`, presence-only manifests `c_levels = 1`, `L <= B` local load budget, and `HU-WISDOM-RESONANCE-ECHO-v1` 108 Pearls compass diapason).
-5. **Agent Skills (`SKILL.md`):**
+5. **HU-SOVEREIGN-SHIELD v1.0 & HU-SOVEREIGN-BEACON (`RFC 6962` Public Notary):**
+   - **Public Beacon Endpoint:** `https://homouniversalis.ai/api/sfumato/sovereign-shield` (`GET` & `POST`, `< 1 ms`, Zero-Auth) & standalone zero-dependency CLI `python3 -m logic.engines.sovereign_shield_engine`.
+   - **4 Pillars:** RFC 6962 Domain-Separated Binary Merkle Audit Trees (`0x00` leaf, `0x01` internal node), Rule 14 Three-Ring Zero-Knowledge Purifier & `SovereignDignityReceipt` (`c_levels == 1`), Cognitive Sovereignty & Anti-Coercion Verifier (`Laws L1..L7`), and Persephone & Demeter Exact Rational Fair-Share Solver (`fractions.Fraction`).
+6. **Agent Skills (`SKILL.md`):**
    - Reusable domain skills live under `.agents/skills/<skill-name>/SKILL.md` with YAML frontmatter.
 
 ---

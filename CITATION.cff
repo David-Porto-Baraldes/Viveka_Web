@@ -18,10 +18,14 @@ abstract: >-
   uniting Tropical Astronomy, Mayan Tzolkin (260-day count), Vedic Sidereal
   Jyotish (Lahiri Ayanamsa, 27 Nakshatras), Chinese Bazi & Wu Xing, 64 I-Ching
   Hexagrams, 72 Kabbalistic Shem HaMephorash Angels & Tree of Life Sephiroth,
-  and Pythagorean Numerology. Speaks the Linux Foundation / AAIF Agent2Agent
-  (lf.a2a.v1 v1.0.0 & v0.3.0 with RFC 8785 JCS + RFC 7515 ES256 JWS signatures)
-  and Model Context Protocol (MCP 2026-07-28). Awarded Linux Foundation OpenSSF
-  Best Practices Gold Badge (#16118 — 300% tiered) and Glama TDQS Grade A (4.7/5.0).
+  and Pythagorean Numerology. Includes the HU-DIAMOND · Fil d'Or v1.1 non-coercion
+  protocol (7 Hard Laws L1..L7, c_levels == 1) and the HU-SOVEREIGN-SHIELD v1.0
+  & HU-SOVEREIGN-BEACON engine (/api/sfumato/sovereign-shield: RFC 6962 Certificate
+  Transparency Merkle Audit Trees, Three-Ring Zero-Knowledge Dignity Receipts, and
+  Persephone & Demeter Exact Rational Solidarity Algebra). Speaks the Linux Foundation
+  / AAIF Agent2Agent (lf.a2a.v1 v1.0.0 & v0.3.0 with RFC 8785 JCS + RFC 7515 ES256 JWS
+  signatures) and Model Context Protocol (MCP 2026-07-28). Awarded Linux Foundation
+  OpenSSF Best Practices Gold Badge (#16118 — 300% tiered) and Glama TDQS Grade A.
 keywords:
   - ephemeris
   - astronomy
@@ -30,13 +34,21 @@ keywords:
   - mcp
   - agent2agent
   - a2a
+  - rfc-6962
   - rfc-8785
   - rfc-7515
+  - zero-knowledge-privacy
+  - cognitive-sovereignty
   - openssf-gold
   - synastry
   - tzolkin
   - jyotish
   - iching
 license: Apache-2.0
-version: 1.5.0
-date-released: "2026-11-01"
+version: 1.6.0
+doi: 10.5281/zenodo.23973687
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.23973687
+    description: "CERN Data Centre / Zenodo Archival DOI for Homo Universalis — Viveka v1.6.0"
+date-released: "2026-11-05"
