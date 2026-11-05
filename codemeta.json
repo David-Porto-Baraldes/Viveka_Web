@@ -37,7 +37,7 @@
       }
     }
   ],
-  "description": "Deterministic astronomical (Swiss Ephemeris pyswisseph, < 1.5 ms execution, Zero-Auth, Rule 14 Zero-Knowledge Privacy) and 7-Wisdoms ephemeris oracle, together with the HU-DIAMOND Fil d'Or v1.1 non-coercion covenant (Laws L1..L7) and HU-SOVEREIGN-SHIELD v1.0 (RFC 6962 Certificate Transparency Merkle Audit Trees, Three-Ring Zero-Knowledge Dignity Receipts, and Persephone & Demeter Exact Rational Solidarity Algebra). Speaks Linux Foundation / AAIF Agent2Agent (lf.a2a.v1 v1.0.0 & v0.3.0) and Model Context Protocol (MCP 2026-07-28).",
+  "description": "Deterministic astronomical (Swiss Ephemeris pyswisseph, < 1.5 ms execution, Zero-Auth, Rule 14 Zero-Knowledge Privacy) and 7-Wisdoms ephemeris oracle, together with the HU-DIAMOND Fil d'Or v1.1 non-coercion covenant (Laws L1..L7), The Diamond Forge (/oracle/diamond & /api/sfumato/diamond-budget: Stella Octangula in Q^3, Reed-Muller RM(1,3) antipodal code, 1..4 Spiral Turns -> 9..36 Deep Think calls & AST Kintsugi verifier), and HU-SOVEREIGN-SHIELD v1.0 (RFC 6962 Certificate Transparency Merkle Audit Trees, Three-Ring Zero-Knowledge Dignity Receipts, and Persephone & Demeter Exact Rational Solidarity Algebra). Speaks Linux Foundation / AAIF Agent2Agent (lf.a2a.v1 v1.0.0 & v0.3.0) and Model Context Protocol (MCP 2026-07-28).",
   "keywords": [
     "ephemeris",
     "pyswisseph",
@@ -48,6 +48,8 @@
     "rfc-7515",
     "zero-knowledge-privacy",
     "cognitive-sovereignty",
-    "openssf-gold"
+    "openssf-gold",
+    "reed-muller",
+    "stella-octangula"
   ]
 }

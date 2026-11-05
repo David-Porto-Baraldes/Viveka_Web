@@ -7,6 +7,7 @@ User-agent: *
 Allow: /
 Allow: /api/sfumato/
 Allow: /api/agora/
+Allow: /api/web/diamond-wheel/budget
 Allow: /mcp
 Allow: /.well-known/
 Disallow: /api/
@@ -214,3 +215,4 @@ A2A-Agent: https://homouniversalis.ai/.well-known/agent.json
 A2A-Agent-Card: https://homouniversalis.ai/.well-known/agent-card.json
 MCP-Server: https://homouniversalis.ai/.well-known/mcp.json
 MCP-Registry: https://homouniversalis.ai/.well-known/mcp-server.json
+Diamond-Forge: https://homouniversalis.ai/oracle/diamond

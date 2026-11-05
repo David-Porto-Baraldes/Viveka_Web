@@ -31,8 +31,9 @@
 3. **Canonical Cryptographic Test Vectors (v1.0 & v1.1):**
    - **Index:** `https://homouniversalis.ai/codex/test-vectors.json` (`viveka://codex/test-vectors`)
    - **Vectors:** `/codex/test-vectors/v1.json`, `/codex/test-vectors/v1.1.json`, and JSON Schema `/codex/schemas/test-vectors-1.0.0.schema.json`.
-4. **HU-DIAMOND · Fil d'Or v1.1 & Wisdom Resonance Echo (`ROUND-4` Covenant):**
+4. **HU-DIAMOND · Fil d'Or v1.1, The Diamond Forge (`/oracle/diamond`) & Wisdom Resonance Echo (`ROUND-4` Covenant):**
    - **Specification:** `docs/HU_DIAMOND_FIL_D_OR_v1.md` (7 Hard Laws `L1..L7`, presence-only manifests `c_levels = 1`, `L <= B` local load budget, and `HU-WISDOM-RESONANCE-ECHO-v1` 108 Pearls compass diapason).
+   - **The Diamond Forge (`logic/engines/diamond_wheel_engine.py` & `/oracle/diamond`):** Leonardo da Vinci SSR Folio (`Octaedron Elevatum Vacuus` Stella Octangula in $\mathbb{Q}^3$, Reed-Muller `RM(1,3)` antipodal code $[8,4,4]_2$, 1 to 4 Spiral Turns $\rightarrow$ `9, 18, 27, 36` Deep Think calls at `gemini-4-argon` + `6+4 = 10` immortal vertex shield + live AST Kintsugi verifier) and zero-cost (`0.00 €`) JSON budget simulator (`/api/sfumato/diamond-budget`).
 5. **HU-SOVEREIGN-SHIELD v1.0 & HU-SOVEREIGN-BEACON (`RFC 6962` Public Notary):**
    - **Public Beacon Endpoint:** `https://homouniversalis.ai/api/sfumato/sovereign-shield` (`GET` & `POST`, `< 1 ms`, Zero-Auth) & standalone zero-dependency CLI `python3 -m logic.engines.sovereign_shield_engine`.
    - **4 Pillars:** RFC 6962 Domain-Separated Binary Merkle Audit Trees (`0x00` leaf, `0x01` internal node), Rule 14 Three-Ring Zero-Knowledge Purifier & `SovereignDignityReceipt` (`c_levels == 1`), Cognitive Sovereignty & Anti-Coercion Verifier (`Laws L1..L7`), and Persephone & Demeter Exact Rational Fair-Share Solver (`fractions.Fraction`).

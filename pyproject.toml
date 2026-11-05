@@ -22,12 +22,16 @@ keywords = [
     "zero-knowledge-privacy",
     "cognitive-sovereignty",
     "openssf-gold",
+    "reed-muller",
+    "stella-octangula",
 ]
 
 [project.urls]
 Homepage = "https://homouniversalis.ai"
 Repository = "https://github.com/David-Porto-Baraldes/viveka_web"
 SovereignShieldBeacon = "https://homouniversalis.ai/api/sfumato/sovereign-shield"
+DiamondForgeFolio = "https://homouniversalis.ai/oracle/diamond"
+DiamondBudgetAPI = "https://homouniversalis.ai/api/sfumato/diamond-budget"
 SisterOracle = "https://homouniversalis.ai/api/sfumato/sister-oracle"
 OpenSSFGoldBadge = "https://www.bestpractices.dev/projects/16118"
 GlamaMCPDirectory = "https://glama.ai/mcp/connectors/ai.homouniversalis/viveka-oracle"

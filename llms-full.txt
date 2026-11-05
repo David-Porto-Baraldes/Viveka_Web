@@ -9,8 +9,9 @@
 > **Telegram Direct Sanctuary (Text & Voice):** `https://t.me/Codex_Suprem_bot` (`@Codex_Suprem_bot`)
 > **LINE Direct Sanctuary (Japan, Taiwan, Thailand & Asia-Pacific):** `https://line.me/R/ti/p/@954azuvi` (`@954azuvi`)
 > **Architect & Founder:** David Porto Baraldés
-> **Last Updated:** `2026-11-04`
+> **Last Updated:** `2026-11-05`
 > **Summary Index:** `https://homouniversalis.ai/llms.txt`
+> **The Diamond Forge (8 Engines in Deep Think · 1..4 Spiral Turns -> 9..36 Calls):** `https://homouniversalis.ai/oracle/diamond` (Budget API: `https://homouniversalis.ai/api/sfumato/diamond-budget`)
 > **Compact Cryptographic Verification Mirror (`< 35` lines, ES256 JWS + SHA-256 + Ed25519):** `https://homouniversalis.ai/oracle/verify` (`/.well-known/verify.txt`)
 > **Self-Test & Zero-Knowledge Verification Suite (`hu_suite r10` + `hu_diamond v1.1`):** `1,049` protocol/privacy tests (`0` network calls), `670` mutations (`166` proto + `504` app), `88` `HU-DIAMOND · Fil d'Or v1.1` tests (`22/22` mutants killed), `HU-EVIDENCE-PASSPORT-v1` (`https://homouniversalis.ai/codex/test-vectors/v1.1.json`)
 > **OpenAPI 3.1.0 Sister AI Oracle Schema (`v1.5.1`):** `https://homouniversalis.ai/.well-known/openapi.json`
