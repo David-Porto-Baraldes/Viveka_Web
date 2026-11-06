@@ -3,7 +3,7 @@
   "name": "ai.homouniversalis/viveka-oracle",
   "title": "Homo Universalis — Viveka Astrology, Natal Chart, Synastry, BaZi, Vedic, Mayan & Tarot MCP Oracle",
   "description": "Swiss Ephemeris Astrology, Natal Chart, 3D Synastry, BaZi, Vedic, Mayan, I-Ching, Tarot & Kabbalah.",
-  "version": "1.5.0",
+  "version": "1.5.2",
   "a2aProtocolVersion": "0.3.0",
   "a2aProtocolVersions": [
     "0.3",
@@ -17,6 +17,27 @@
     "2024-11-05"
   ],
   "websiteUrl": "https://homouniversalis.ai",
+  "icons": [
+    {
+      "src": "https://homouniversalis.ai/icon-512.png",
+      "mimeType": "image/png",
+      "sizes": [
+        "512x512"
+      ]
+    },
+    {
+      "src": "https://homouniversalis.ai/apple-touch-icon.png",
+      "mimeType": "image/png",
+      "sizes": [
+        "180x180"
+      ]
+    }
+  ],
+  "repository": {
+    "url": "https://github.com/David-Porto-Baraldes/Viveka_Web",
+    "source": "github",
+    "id": "1413071290"
+  },
   "equation": "F0c=Ca0s*0rdre(Am0r_Un1f1cat_Etern)",
   "privacy_sanctuary": "zero_tracking_tor_and_privacy_browser_friendly_rule_14",
   "remotes": [
