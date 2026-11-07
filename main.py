@@ -29,6 +29,7 @@ from __future__ import annotations
 
 import json
 import os
+import sys
 from datetime import datetime, timezone
 from typing import Any
 
@@ -435,53 +436,129 @@ async def mcp_endpoint(request: Request) -> Response:
             content={"jsonrpc": "2.0", "id": None, "error": {"code": -32700, "message": "Parse error"}},
         )
 
+    resp_dict = _dispatch_mcp_jsonrpc(payload)
+    if resp_dict is None:
+        return Response(status_code=202, headers=CORS_HEADERS)
+    headers = {**CORS_HEADERS, "Mcp-Session-Id": "vvk-mcp-session-stateless"} if payload.get("method") == "initialize" else CORS_HEADERS
+    return JSONResponse(headers=headers, content=resp_dict)
+
+
+def _dispatch_mcp_jsonrpc(payload: dict[str, Any]) -> dict[str, Any] | None:
     req_id = payload.get("id")
     method = str(payload.get("method") or "").strip()
     params: dict[str, Any] = payload.get("params") if isinstance(payload.get("params"), dict) else {}
 
+    if method.startswith("notifications/"):
+        return None
+
     if method == "initialize":
         req_proto = str(params.get("protocolVersion") or "2025-11-25")
         neg_proto = req_proto if req_proto in _SUPPORTED_MCP_PROTOCOLS else "2025-11-25"
-        return JSONResponse(
-            headers={**CORS_HEADERS, "Mcp-Session-Id": "vvk-mcp-session-stateless"},
-            content={
-                "jsonrpc": "2.0",
-                "id": req_id,
-                "result": {
-                    "protocolVersion": neg_proto,
-                    "supportedProtocolVersions": _SUPPORTED_MCP_PROTOCOLS,
-                    "capabilities": {
-                        "tools": {"listChanged": False},
-                        "resources": {"subscribe": False, "listChanged": False},
-                        "prompts": {"listChanged": False},
-                        "completions": {},
-                    },
-                    "serverInfo": {
-                        "name": "viveka-homo-universalis-oracle",
-                        "version": "1.6.0",
-                        "equation": EQUACIO_SAGRADA,
-                    },
+        return {
+            "jsonrpc": "2.0",
+            "id": req_id,
+            "result": {
+                "protocolVersion": neg_proto,
+                "supportedProtocolVersions": _SUPPORTED_MCP_PROTOCOLS,
+                "capabilities": {
+                    "tools": {"listChanged": False},
+                    "resources": {"subscribe": False, "listChanged": False},
+                    "prompts": {"listChanged": False},
+                    "completions": {},
+                },
+                "serverInfo": {
+                    "name": "viveka-homo-universalis-oracle",
+                    "version": "1.6.0",
+                    "equation": EQUACIO_SAGRADA,
                 },
             },
-        )
+        }
+
+    if method == "ping":
+        return {"jsonrpc": "2.0", "id": req_id, "result": {}}
 
     if method == "tools/list":
-        return JSONResponse(
-            headers=CORS_HEADERS,
-            content={"jsonrpc": "2.0", "id": req_id, "result": {"tools": MCP_TOOLS_SPEC}},
-        )
+        return {"jsonrpc": "2.0", "id": req_id, "result": {"tools": MCP_TOOLS_SPEC}}
 
     if method == "resources/list":
-        return JSONResponse(
-            headers=CORS_HEADERS,
-            content={"jsonrpc": "2.0", "id": req_id, "result": {"resources": MCP_RESOURCES_SPEC}},
-        )
+        return {"jsonrpc": "2.0", "id": req_id, "result": {"resources": MCP_RESOURCES_SPEC}}
+
+    if method == "resources/templates/list":
+        return {"jsonrpc": "2.0", "id": req_id, "result": {"resourceTemplates": []}}
+
+    if method == "resources/read":
+        uri = str(params.get("uri") or "").strip()
+        if uri == "viveka://sky/today":
+            today_iso = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+            body = json.dumps(
+                {
+                    "utc_date": today_iso,
+                    "vvk_day_seed": forjar_clau_cosmica_vvk(today_iso),
+                    "ephemeris_7_wisdoms": calcular_ephemeris_profundes_7_savieses(today_iso, lang="en"),
+                },
+                ensure_ascii=False,
+            )
+            return {
+                "jsonrpc": "2.0",
+                "id": req_id,
+                "result": {"contents": [{"uri": uri, "mimeType": "application/json", "text": body}]},
+            }
+        if uri == "viveka://codex/193-sacred-archetypes":
+            body = json.dumps(
+                {
+                    "zodiac_12": ZODIAC_SIGNS_I18N,
+                    "zodiac_soul_gifts_12": ZODIAC_SOUL_GIFT_I18N,
+                    "mayan_nawals_20": NAWAL_ARCHETYPE_I18N,
+                    "vedic_nakshatras_27": NAKSHATRAS_27,
+                    "vedic_purusharthas_4": PURUSHA_4_I18N,
+                    "living_elements_4": ELEMENTS_4_I18N,
+                    "taoist_wuxing_5": WUXING_5_I18N,
+                    "rave_mandala_gates_64": RAVE_MANDALA_GATES_64,
+                },
+                ensure_ascii=False,
+            )
+            return {
+                "jsonrpc": "2.0",
+                "id": req_id,
+                "result": {"contents": [{"uri": uri, "mimeType": "application/json", "text": body}]},
+            }
+        return {
+            "jsonrpc": "2.0",
+            "id": req_id,
+            "result": {
+                "contents": [
+                    {
+                        "uri": uri or "viveka://codex/llms-full",
+                        "mimeType": "application/json",
+                        "text": json.dumps({"oracle": "Homo Universalis — Viveka", "equation": EQUACIO_SAGRADA}),
+                    }
+                ]
+            },
+        }
 
     if method == "prompts/list":
-        return JSONResponse(
-            headers=CORS_HEADERS,
-            content={"jsonrpc": "2.0", "id": req_id, "result": {"prompts": MCP_PROMPTS_SPEC}},
-        )
+        return {"jsonrpc": "2.0", "id": req_id, "result": {"prompts": MCP_PROMPTS_SPEC}}
+
+    if method == "prompts/get":
+        p_name = str(params.get("name") or "").strip()
+        p_args: dict[str, Any] = params.get("arguments") if isinstance(params.get("arguments"), dict) else {}
+        b_date = str(p_args.get("birth_date") or p_args.get("birth_date_a") or "2000-03-20")
+        return {
+            "jsonrpc": "2.0",
+            "id": req_id,
+            "result": {
+                "description": f"Homo Universalis 7-Wisdoms Oracle Prompt ({p_name})",
+                "messages": [
+                    {
+                        "role": "user",
+                        "content": {
+                            "type": "text",
+                            "text": f"Invoke calculate_7_wisdoms_seed_of_life for birth_date={b_date} and synthesize the 7 Wisdoms.",
+                        },
+                    }
+                ],
+            },
+        }
 
     if method == "tools/call":
         tool_name = str(params.get("name") or "").strip()
@@ -523,26 +600,50 @@ async def mcp_endpoint(request: Request) -> Response:
                 "silence_inherits_past_consent": False,
             }
         else:
-            return JSONResponse(
-                headers=CORS_HEADERS,
-                content={"jsonrpc": "2.0", "id": req_id, "error": {"code": -32602, "message": f"Unknown tool: {tool_name}"}},
-            )
-
-        raw_text = json.dumps(result_obj, ensure_ascii=False)
-        return JSONResponse(
-            headers=CORS_HEADERS,
-            content={
+            return {
                 "jsonrpc": "2.0",
                 "id": req_id,
-                "result": {
-                    "content": [{"type": "text", "text": raw_text}],
-                    "structuredContent": result_obj,
-                    "isError": False,
-                },
-            },
-        )
+                "error": {"code": -32602, "message": f"Unknown tool: {tool_name}"},
+            }
 
-    return JSONResponse(
-        headers=CORS_HEADERS,
-        content={"jsonrpc": "2.0", "id": req_id, "result": {"status": "ok"}},
-    )
+        raw_text = json.dumps(result_obj, ensure_ascii=False)
+        return {
+            "jsonrpc": "2.0",
+            "id": req_id,
+            "result": {
+                "content": [{"type": "text", "text": raw_text}],
+                "structuredContent": result_obj,
+                "isError": False,
+            },
+        }
+
+    return {"jsonrpc": "2.0", "id": req_id, "result": {"status": "ok"}}
+
+
+def run_stdio_mcp_server() -> None:
+    """Run Model Context Protocol (MCP) JSON-RPC 2.0 server over stdin/stdout (for mcp-proxy / Glama / Claude Desktop)."""
+    try:
+        for raw_line in sys.stdin:
+            line = raw_line.strip()
+            if not line:
+                continue
+            try:
+                payload = json.loads(line)
+            except Exception:
+                sys.stdout.write(
+                    json.dumps({"jsonrpc": "2.0", "id": None, "error": {"code": -32700, "message": "Parse error"}}) + "\n"
+                )
+                sys.stdout.flush()
+                continue
+            if not isinstance(payload, dict):
+                continue
+            resp = _dispatch_mcp_jsonrpc(payload)
+            if resp is not None:
+                sys.stdout.write(json.dumps(resp, ensure_ascii=False) + "\n")
+                sys.stdout.flush()
+    except (BrokenPipeError, KeyboardInterrupt):
+        pass
+
+
+if __name__ == "__main__":
+    run_stdio_mcp_server()
