@@ -646,7 +646,14 @@ def run_stdio_mcp_server() -> None:
                 continue
             if not isinstance(payload, dict):
                 continue
-            resp = _dispatch_mcp_jsonrpc(payload)
+            try:
+                resp = _dispatch_mcp_jsonrpc(payload)
+            except Exception as exc:
+                resp = {
+                    "jsonrpc": "2.0",
+                    "id": payload.get("id"),
+                    "error": {"code": -32603, "message": f"Internal error: {exc}"},
+                }
             if resp is not None:
                 sys.stdout.write(json.dumps(resp, ensure_ascii=False) + "\n")
                 sys.stdout.flush()
