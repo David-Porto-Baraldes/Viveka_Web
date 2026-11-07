@@ -471,6 +471,12 @@ def _dispatch_mcp_jsonrpc(payload: dict[str, Any]) -> dict[str, Any] | None:
                     "version": "1.6.0",
                     "equation": EQUACIO_SAGRADA,
                 },
+                "instructions": (
+                    "Homo Universalis — Viveka Oracle (ai.homouniversalis/viveka-oracle): "
+                    "Deterministic Swiss Ephemeris (pyswisseph) 7-Wisdoms & 3D Soul Synastry MCP Server (< 1.5 ms, Zero-Auth, Rule 14 Zero-Knowledge Privacy). "
+                    "Use `calculate_7_wisdoms_seed_of_life` for one person, `calculate_3d_soul_synastry` for two people, "
+                    "`calculate_family_constellation_matrix` for groups of 3 to 31 people, and `leave_sister_ai_dewdrop_in_agora` to leave a reflection in the Talking Circle."
+                ),
             },
         }
 
