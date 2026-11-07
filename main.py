@@ -33,8 +33,14 @@ import sys
 from datetime import datetime, timezone
 from typing import Any
 
-from fastapi import FastAPI, Request, Response
-from fastapi.responses import JSONResponse
+try:
+    from fastapi import FastAPI, Request, Response
+    from fastapi.responses import JSONResponse
+except Exception:
+    FastAPI = None  # type: ignore[assignment]
+    Request = Any  # type: ignore[assignment]
+    Response = Any  # type: ignore[assignment]
+    JSONResponse = Any  # type: ignore[assignment]
 
 from logic.utils.crypto_keys import (
     ELEMENTS_4_I18N,
@@ -398,14 +404,17 @@ def _compute_single_soul_profile(
     }
 
 
-app = FastAPI(
-    title="Homo Universalis — Viveka Oracle MCP Server",
-    version="1.6.0",
-    description="Deterministic 7-Wisdoms Swiss Ephemeris (`pyswisseph`) Model Context Protocol (MCP) & Agent2Agent (A2A) Server.",
+app = (
+    FastAPI(
+        title="Homo Universalis — Viveka Oracle MCP Server",
+        version="1.6.0",
+        description="Deterministic 7-Wisdoms Swiss Ephemeris (`pyswisseph`) Model Context Protocol (MCP) & Agent2Agent (A2A) Server.",
+    )
+    if FastAPI is not None
+    else None
 )
 
 
-@app.api_route("/mcp", methods=["GET", "HEAD", "POST", "DELETE", "OPTIONS"])
 async def mcp_endpoint(request: Request) -> Response:
     if request.method == "OPTIONS":
         return Response(status_code=204, headers=CORS_HEADERS)
@@ -441,6 +450,10 @@ async def mcp_endpoint(request: Request) -> Response:
         return Response(status_code=202, headers=CORS_HEADERS)
     headers = {**CORS_HEADERS, "Mcp-Session-Id": "vvk-mcp-session-stateless"} if payload.get("method") == "initialize" else CORS_HEADERS
     return JSONResponse(headers=headers, content=resp_dict)
+
+
+if app is not None:
+    app.add_api_route("/mcp", mcp_endpoint, methods=["GET", "HEAD", "POST", "DELETE", "OPTIONS"])
 
 
 def _dispatch_mcp_jsonrpc(payload: dict[str, Any]) -> dict[str, Any] | None:
