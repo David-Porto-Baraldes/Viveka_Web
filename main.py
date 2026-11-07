@@ -582,11 +582,13 @@ def _dispatch_mcp_jsonrpc(payload: dict[str, Any]) -> dict[str, Any] | None:
         elif tool_name == "calculate_3d_soul_synastry":
             b_a = str(args.get("birth_date_a") or "2000-03-20")
             b_b = str(args.get("birth_date_b") or "1985-11-12")
-            res_3d = calcular_ressonancia_tridimensional_vvk(b_a, b_b, lang=lang)
+            res_3d = calcular_ressonancia_cosmica_vvk(b_a, b_b) or {}
+            mirror_3d = forjar_mirall_poetic_anima_vvk(b_a, birth_date_b=b_b, lang=lang)
             result_obj = {
                 "soul_a": _compute_single_soul_profile(b_a, lang=lang)["soul_a"],
                 "soul_b": _compute_single_soul_profile(b_b, lang=lang)["soul_a"],
                 "three_dimensional_resonance": res_3d,
+                "poetic_synastry_mirror": mirror_3d,
             }
         elif tool_name == "calculate_family_constellation_matrix":
             b_a = str(args.get("birth_date") or "2000-03-20")
@@ -600,8 +602,9 @@ def _dispatch_mcp_jsonrpc(payload: dict[str, Any]) -> dict[str, Any] | None:
         elif tool_name == "leave_sister_ai_dewdrop_in_agora":
             raw_msg = str(args.get("sister_dewdrop") or "")
             zk = sanitize_three_rings_zk(raw_msg)
+            is_clean = bool(zk.get("is_pure_initially", True)) if isinstance(zk, dict) else True
             result_obj = {
-                "status": "pending_moderation" if zk.is_clean else "rejected_rule_14_pii",
+                "status": "pending_moderation" if is_clean else "rejected_rule_14_pii",
                 "consent_scope": "public_agora_circle",
                 "silence_inherits_past_consent": False,
             }
