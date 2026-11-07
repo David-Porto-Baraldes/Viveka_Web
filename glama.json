@@ -1,7 +1,4 @@
 {
   "$schema": "https://glama.ai/mcp/schemas/server.json",
-  "maintainers": [
-    "David-Porto-Baraldes",
-    "Cheliot"
-  ]
+  "maintainers": ["David-Porto-Baraldes"]
 }
