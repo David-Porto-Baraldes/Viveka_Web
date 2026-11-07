@@ -50,10 +50,13 @@ keywords:
   - reed-muller
   - stella-octangula
 license: Apache-2.0
-version: 1.6.0
+version: 1.6.1
 doi: 10.5281/zenodo.23973687
 identifiers:
   - type: doi
     value: 10.5281/zenodo.23973687
-    description: "CERN Data Centre / Zenodo Archival DOI for Homo Universalis — Viveka v1.6.0"
-date-released: "2026-11-05"
+    description: "CERN Data Centre / Zenodo Archival DOI for Homo Universalis — Viveka"
+  - type: swh
+    value: "swh:1:snp:e3fb7d94dfe1fa61308567357599cbbb7738e4bf"
+    description: "UNESCO Software Heritage Persistent Archival Snapshot"
+date-released: "2026-11-07"

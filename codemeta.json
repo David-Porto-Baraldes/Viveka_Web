@@ -2,13 +2,17 @@
   "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
   "@type": "SoftwareSourceCode",
   "name": "Homo Universalis — Viveka: Deterministic 7-Wisdoms Ephemeris Oracle, HU-DIAMOND Fil d'Or v1.1 & HU-SOVEREIGN-SHIELD v1.0",
-  "identifier": "https://doi.org/10.5281/zenodo.23973687",
+  "identifier": [
+    "https://doi.org/10.5281/zenodo.23973687",
+    "swh:1:snp:e3fb7d94dfe1fa61308567357599cbbb7738e4bf"
+  ],
   "@id": "https://doi.org/10.5281/zenodo.23973687",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "datePublished": "2026-11-05",
+  "dateModified": "2026-11-07",
   "license": "https://spdx.org/licenses/Apache-2.0.html",
   "url": "https://homouniversalis.ai",
-  "codeRepository": "https://github.com/David-Porto-Baraldes/viveka_web",
+  "codeRepository": "https://github.com/David-Porto-Baraldes/Viveka_Web",
   "programmingLanguage": [
     "Python 3"
   ],
