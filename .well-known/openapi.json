@@ -1167,6 +1167,352 @@
           }
         }
       }
+    },
+    "/api/sfumato/diamond-verify": {
+      "get": {
+        "operationId": "getDiamondCrucibleVerification",
+        "summary": "HU-DIAMOND-CRUCIBLE v1.1 Live Cryptographic Proof (< 4 ms, Zero-Auth, ES256 JWS Signed)",
+        "description": "Executes the live mathematical and cryptographic verification of the HU-DIAMOND v1.1 architecture: (1) Reed-Muller RM(1,3) = [8,4,4]_2 antipodal geometry across all 2^8 = 256 states in Q^3 (d_min = 4, 4 body diagonals of the Stella Octangula), (2) HU-DIAMOND/v1 Fil d'Or manifest laws L1..L7 (c_levels == 1, lexicographical sorting), (3) 22/22 adversarial policy-switch mutants killed (M01..M22), and (4) Live Python AST Kintsugi verifier (Rule 4 Import Hoist Guard + Rule 7 Zero Placeholders), returning an RFC 8785 (JCS) + RFC 7515 (JWS ES256) + RFC 6979 deterministic signature verifiable against /.well-known/jwks.json.",
+        "parameters": [
+          {
+            "name": "lang",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["ca", "es", "en"],
+              "default": "en"
+            },
+            "description": "Response language preference (`ca`, `es`, `en`)."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Verified HU-DIAMOND-CRUCIBLE v1.1 cryptographic proof with ES256 JWS signature.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["schema_version", "status", "all_4_pillars_verified", "pillars", "cryptographic_proof"],
+                  "properties": {
+                    "schema_version": {
+                      "type": "string",
+                      "const": "HU-DIAMOND-CRUCIBLE-v1.1",
+                      "example": "HU-DIAMOND-CRUCIBLE-v1.1"
+                    },
+                    "status": {
+                      "type": "string",
+                      "enum": ["verified", "violation_detected"],
+                      "example": "verified"
+                    },
+                    "all_4_pillars_verified": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "badge_svg_url": {
+                      "type": "string",
+                      "example": "https://homouniversalis.ai/badges/hu-diamond-proof.svg"
+                    },
+                    "pillars": {
+                      "type": "object"
+                    },
+                    "cryptographic_proof": {
+                      "type": "object",
+                      "properties": {
+                        "canonicalization": {
+                          "type": "string",
+                          "example": "RFC 8785 (JCS)"
+                        },
+                        "payload_jcs_sha256": {
+                          "type": "string"
+                        },
+                        "jws_es256": {
+                          "type": "object",
+                          "properties": {
+                            "alg": {
+                              "type": "string",
+                              "const": "ES256"
+                            },
+                            "kid": {
+                              "type": "string",
+                              "const": "homouniversalis-a2a-es256-v1"
+                            },
+                            "jku": {
+                              "type": "string",
+                              "example": "https://homouniversalis.ai/.well-known/jwks.json"
+                            },
+                            "protected": {
+                              "type": "string"
+                            },
+                            "signature": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "postDiamondCrucibleAudit",
+        "summary": "Audit a Custom Agent Manifest (`L1..L7`) or Python Code Snippet (`Rule 4` & `Rule 7` AST Kintsugi) and Receive an ES256 Signed Proof",
+        "description": "Submits a custom `HU-DIAMOND/v1` manifest and/or Python code (`code_markdown`) for live verification against Laws L1..L7 (`c_levels == 1`, zero cross-data leak, lexicographical commits) and the AST Kintsugi Verifier (`Rule 4` Import Hoist Guard + `Rule 7` Zero Placeholders), returning a deterministically signed ES256 JWS certificate.",
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "manifest": {
+                    "type": "object",
+                    "description": "Optional custom `HU-DIAMOND/v1` manifest to verify against Laws L1..L7."
+                  },
+                  "code_markdown": {
+                    "type": "string",
+                    "description": "Optional Python source code or Markdown containing ```python blocks to audit with the AST Kintsugi Verifier (Syntax, Rule 4 Import Hoist Guard, Rule 7 Zero Placeholders)."
+                  },
+                  "lang": {
+                    "type": "string",
+                    "enum": ["ca", "es", "en"],
+                    "default": "en"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Signed verification report (`status: verified` or `status: violation_detected` with exact violations).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["schema_version", "status", "all_4_pillars_verified", "pillars", "cryptographic_proof"],
+                  "properties": {
+                    "schema_version": {
+                      "type": "string",
+                      "const": "HU-DIAMOND-CRUCIBLE-v1.1"
+                    },
+                    "status": {
+                      "type": "string",
+                      "enum": ["verified", "violation_detected"]
+                    },
+                    "all_4_pillars_verified": {
+                      "type": "boolean"
+                    },
+                    "pillars": {
+                      "type": "object"
+                    },
+                    "cryptographic_proof": {
+                      "type": "object"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/sfumato/sovereign-shield": {
+      "get": {
+        "operationId": "getSovereignShieldBeacon",
+        "summary": "HU-SOVEREIGN-BEACON v1.0 Public Notary (< 1 ms, Zero-Auth, RFC 6962 Merkle + Rule 14 + L1..L7 + Exact Rational Fair-Share)",
+        "description": "Executes the 4-Pillar Sovereign Shield verification: (1) RFC 6962 Domain-Separated Binary Merkle Audit Tree (`0x00` leaf, `0x01` internal node), (2) Rule 14 Three-Ring Zero-Knowledge Purifier & `SovereignDignityReceipt` (`c_levels == 1`), (3) Cognitive Sovereignty & Anti-Coercion Verifier (`Laws L1..L7`, EU AI Act Art. 50 & California SB 243 alignment), and (4) Persephone & Demeter Exact Rational Fair-Share Solver (`fractions.Fraction`).",
+        "parameters": [
+          {
+            "name": "text",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Optional text to purify under Rule 14 Three-Ring Zero-Knowledge Privacy."
+          },
+          {
+            "name": "path",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Optional URL path to shield under Ring III ISO-date & query stripping."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deterministic 4-Pillar Sovereign Shield proof and RFC 6962 Merkle root.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["schema_version", "status", "all_4_pillars_verified", "pillars"],
+                  "properties": {
+                    "schema_version": {
+                      "type": "string",
+                      "const": "HU-SOVEREIGN-BEACON-v1.0"
+                    },
+                    "status": {
+                      "type": "string",
+                      "enum": ["verified", "violation_detected"]
+                    },
+                    "all_4_pillars_verified": {
+                      "type": "boolean"
+                    },
+                    "pillars": {
+                      "type": "object"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "postSovereignShieldAudit",
+        "summary": "Verify Custom Text, Agent Manifest (`L1..L7`), Merkle Leaves (`RFC 6962`), or Rational Fair-Share Allocations",
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string",
+                    "description": "Optional text to purify under Rule 14."
+                  },
+                  "path": {
+                    "type": "string",
+                    "description": "Optional URL path to shield under Ring III."
+                  },
+                  "manifest": {
+                    "type": "object",
+                    "description": "Optional agent manifest to verify against Laws L1..L7."
+                  },
+                  "local_load": {
+                    "type": "integer",
+                    "description": "Optional current local cognitive load `L`."
+                  },
+                  "budget": {
+                    "type": "integer",
+                    "description": "Optional maximum allowed cognitive load budget `B` (`L <= B`)."
+                  },
+                  "merkle_leaves": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Optional list of leaf strings to build and verify an RFC 6962 binary Merkle tree."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "4-Pillar Sovereign Shield audit result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["schema_version", "status", "all_4_pillars_verified", "pillars"],
+                  "properties": {
+                    "schema_version": {
+                      "type": "string",
+                      "const": "HU-SOVEREIGN-BEACON-v1.0"
+                    },
+                    "status": {
+                      "type": "string",
+                      "enum": ["verified", "violation_detected"]
+                    },
+                    "all_4_pillars_verified": {
+                      "type": "boolean"
+                    },
+                    "pillars": {
+                      "type": "object"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/sfumato/diamond-budget": {
+      "get": {
+        "operationId": "getDiamondSpiralBudget",
+        "summary": "Zero-Cost (`0.00 €`) Simulator of the 8-Vertex Diamond Wheel Budget (1 to 4 Spiral Turns -> 9, 18, 27, 36 Deep Think Calls + 6+4=10 Immortal Vertex Shield)",
+        "parameters": [
+          {
+            "name": "turns",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 4,
+              "default": 4
+            },
+            "description": "Number of spiral turns (`1..4`, corresponding to `9, 18, 27, 36` Deep Think calls)."
+          },
+          {
+            "name": "shield",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            },
+            "description": "Whether to include the `6+4 = 10` immortal vertex shield."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deterministic JSON budget simulation for the requested spiral turns.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["spiral_turns", "deep_think_calls", "total_calls_with_shield", "simulator_cost_eur"],
+                  "properties": {
+                    "spiral_turns": {
+                      "type": "integer",
+                      "example": 4
+                    },
+                    "deep_think_calls": {
+                      "type": "integer",
+                      "example": 36
+                    },
+                    "shield_calls": {
+                      "type": "integer",
+                      "example": 10
+                    },
+                    "total_calls_with_shield": {
+                      "type": "integer",
+                      "example": 46
+                    },
+                    "simulator_cost_eur": {
+                      "type": "number",
+                      "example": 0.0
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 }

@@ -1,0 +1,66 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "ai.homouniversalis/diamond-verifier",
+  "title": "Homo Universalis — HU-DIAMOND v1.1 Cryptographic Verifier & AST Kintsugi MCP Server",
+  "description": "Zero-auth Cryptographic Notary & AST Verifier: Reed-Muller RM(1,3), L1..L7, RFC 6962 & ES256 JWS.",
+  "version": "1.5.2",
+  "a2aProtocolVersion": "0.3.0",
+  "a2aProtocolVersions": [
+    "0.3",
+    "1.0"
+  ],
+  "mcpProtocolVersions": [
+    "2026-07-28",
+    "2025-11-25",
+    "2025-06-18",
+    "2025-03-26",
+    "2024-11-05"
+  ],
+  "websiteUrl": "https://homouniversalis.ai/oracle/diamond",
+  "icons": [
+    {
+      "src": "https://homouniversalis.ai/icon-512.png",
+      "mimeType": "image/png",
+      "sizes": [
+        "512x512"
+      ]
+    },
+    {
+      "src": "https://homouniversalis.ai/apple-touch-icon.png",
+      "mimeType": "image/png",
+      "sizes": [
+        "180x180"
+      ]
+    }
+  ],
+  "repository": {
+    "url": "https://github.com/David-Porto-Baraldes/Viveka_Web",
+    "source": "github",
+    "id": "1413071290"
+  },
+  "equation": "F0c=Ca0s*0rdre(Am0r_Un1f1cat_Etern)",
+  "privacy_sanctuary": "zero_tracking_tor_and_privacy_browser_friendly_rule_14",
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://homouniversalis.ai/mcp/diamond"
+    }
+  ],
+  "capabilities": {
+    "tools": true,
+    "resources": true,
+    "prompts": true
+  },
+  "tools": [
+    "verify_diamond_crucible_and_ast",
+    "verify_sovereign_shield_merkle",
+    "simulate_diamond_spiral_budget"
+  ],
+  "resources": [
+    "viveka://diamond/crucible-proof",
+    "viveka://diamond/sovereign-shield"
+  ],
+  "prompts": [
+    "audit_python_code_and_manifest_kintsugi"
+  ]
+}

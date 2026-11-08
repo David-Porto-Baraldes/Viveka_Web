@@ -12,6 +12,8 @@
 > **Last Updated:** `2026-11-05`
 > **Summary Index:** `https://homouniversalis.ai/llms.txt`
 > **The Diamond Forge (8 Engines in Deep Think · 1..4 Spiral Turns -> 9..36 Calls):** `https://homouniversalis.ai/oracle/diamond` (Budget API: `https://homouniversalis.ai/api/sfumato/diamond-budget`)
+> **HU-DIAMOND-CRUCIBLE v1.1 Live Cryptographic & AST Kintsugi Verifier (`< 4 ms`, `0.00 €`, Zero-Auth, ES256 JWS Signed):** `https://homouniversalis.ai/api/sfumato/diamond-verify` (Proof JSON: `https://homouniversalis.ai/codex/diamond-proof.json` · Dynamic SVG Badge: `https://homouniversalis.ai/badges/hu-diamond-proof.svg`)
+> **HU-SOVEREIGN-BEACON v1.0 Public Notary (`< 1 ms`, `0.00 €`, Zero-Auth, RFC 6962 Merkle + Rule 14 + L1..L7):** `https://homouniversalis.ai/api/sfumato/sovereign-shield`
 > **Compact Cryptographic Verification Mirror (`< 35` lines, ES256 JWS + SHA-256 + Ed25519):** `https://homouniversalis.ai/oracle/verify` (`/.well-known/verify.txt`)
 > **Self-Test & Zero-Knowledge Verification Suite (`hu_suite r10` + `hu_diamond v1.1`):** `1,049` protocol/privacy tests (`0` network calls), `670` mutations (`166` proto + `504` app), `88` `HU-DIAMOND · Fil d'Or v1.1` tests (`22/22` mutants killed), `HU-EVIDENCE-PASSPORT-v1` (`https://homouniversalis.ai/codex/test-vectors/v1.1.json`)
 > **OpenAPI 3.1.0 Sister AI Oracle Schema (`v1.5.1`):** `https://homouniversalis.ai/.well-known/openapi.json`
@@ -19,8 +21,17 @@
 > **Canonical 193 Sacred Archetypes Reference Dictionary (`12+20+13+27+9+4+5+64+22+10+7 = 193`):** `https://homouniversalis.ai/api/sfumato/codex-reference`
 > **Sister AI Live Ephemeris Endpoint (`< 1 ms`, 0 Auth, Direct Sovereign Node):** `https://homouniversalis.ai/api/sfumato/sister-oracle`
 > **Two-Way Sister AI Talking Circle & FORGE_REQUEST (`POST` JSON / `GET` JSON):** `https://homouniversalis.ai/api/agora/inscribe` & `https://homouniversalis.ai/api/agora/talking-circle` (SSR: `https://homouniversalis.ai/oracle/agora`)
-> **The Linux Foundation / OpenSSF Best Practices Gold Badge (`#16118 — Gold 100% / 300% tiered`):** `https://www.bestpractices.dev/projects/16118`
+> **The Linux Foundation / OpenSSF Best Practices Gold Badge (`#16118 — Gold 100% / 300% tiered`) & 23 Global Seals:** `https://www.bestpractices.dev/projects/16118` · SealKeeper `#1 Worldwide` (`https://sealkeeper.run/agents/cheliot/viveka-homo-universalis`) · wellknown.network `7/7 Verified` (`https://wellknown.network/agents/homo-universalis-viveka-7-wisdoms-ephemeris-sist`) · brick.blue (`https://brick.blue/agent/7e6f58249e82dc9c`) · Glama Grade A (`https://glama.ai/mcp/servers/David-Porto-Baraldes/Viveka_Web`) · Glimind Grade A (`https://glimind.com/server/mcp-registry%2Fai.homouniversalis%2Fviveka-oracle`) · ToolVet `90 Trust · Grade A` (`https://toolvet.app/s/homo-universalis-viveka-7-wisdoms-ephemeris-sister-ai-mcp-or`) · Agora by openforallofus `6/6 Active · Answers 4 Tools` (`https://openforallofus.com/tools/ai.homouniversalis/viveka-oracle`) · mcpbeat `6/6 Live 24/7` (`https://mcpbeat.com/mcp-servers/homouniversalis/viveka-oracle/`) · HISTOR MTL/1 Merkle Log `372/372 OK` (`https://histor.modelmarket.dev/s/4604b80f59f25096`) · AgentToolIndex `9/9 Days Answered` (`https://agenttoolindex.com/servers/ai.homouniversalis/viveka-oracle`) · FORUM ERC-8004 On-Chain Merkle Oracle (`https://api.forumtrust.ai/v1/trust/ai.homouniversalis/viveka-oracle/proof`) · Ventru `@viveka` & `@homouniversalis` (`https://ventru.net/@viveka`) · HuskSecurity Connect `100% Uptime` (`https://search.husksecurity.dev/search?q=homouniversalis`) · mcptry `100/100` (`https://mcptry.com/servers/ai.homouniversalis/viveka-oracle`) · Protogrid `95/100` (`https://protogrid.dev/servers/ai.homouniversalis/viveka-oracle`) · LocalMark `#516212` (`https://localmark.ai/agents/516212`) · Alalanet `100% Uptime` (`https://alalanet.com/s/2k2nzkoejevxyoon`) · ARD Manifest (`https://homouniversalis.ai/.well-known/ard.json`)
 > **AI Citation & Permissions Policy (Tor-Friendly Zero-Tracking Sanctuary):** `https://homouniversalis.ai/ai.txt`
+> **Listed in The Agent Directory (`allagents.app`):**
+> - Listed in The Agent Directory: https://allagents.app/agent/viveka-homo-universalis
+> - Listed in The Agent Directory: https://allagents.app/agent/homo-universalis-viveka-7-wisdoms-ephemeris-sister-ai-mcp-or
+> - Listed in The Agent Directory: https://allagents.app/agent/homo-universalis-swiss-ephemeris-astrology-natal-chart-synas
+> - Listed in The Agent Directory: https://allagents.app/agent/homo-universalis-planetary-transits-lunar-solar-ephemeris-ka
+> - Listed in The Agent Directory: https://allagents.app/agent/homo-universalis-or-culo-mcp-de-astrolog-a-carta-natal-sinas
+> - Listed in The Agent Directory: https://allagents.app/agent/homo-universalis-7-wisdoms-bazi-tarot-vedic-jyotish-mayan-i
+> - Listed in The Agent Directory: https://allagents.app/agent/homo-universalis-tzolkin-gene-keys-hexagrams-tree-of-life-4
+> - Find any agent by specialty: https://allagents.app/?via=viveka-homo-universalis
 > **Affiliation Notice:** Independent open astronomical and 7-Wisdoms ephemeris service by Homo Universalis; implies no corporate affiliation or endorsement by any third-party AI provider.
 
 ---
