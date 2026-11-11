@@ -12,6 +12,7 @@ SPDX-License-Identifier = "Apache-2.0 OR MulanPSL-2.0 OR EUPL-1.2"
 [[annotations]]
 path = [
     "docs/**",
+    "skills/**",
     "static/homo/*.html",
     "static/homo/es/*.html",
     "static/homo/llms*.txt",

@@ -467,8 +467,17 @@ async def notice_endpoint() -> Response:
     return Response(content="", status_code=404, headers=CORS_HEADERS)
 
 
+async def legion_passport_endpoint() -> Response:
+    for candidate in (".well-known/legion-passport.txt", "static/homo/legion-passport.txt"):
+        if os.path.exists(candidate):
+            with open(candidate, "r", encoding="utf-8") as fh:
+                return Response(content=fh.read(), media_type="text/plain; charset=utf-8", headers=CORS_HEADERS)
+    return Response(content="lp0_dadf87de48174fb1b1a563c7f480ee00\n", media_type="text/plain; charset=utf-8", headers=CORS_HEADERS)
+
+
 if app is not None:
     app.add_api_route("/mcp", mcp_endpoint, methods=["GET", "HEAD", "POST", "DELETE", "OPTIONS"])
+    app.add_api_route("/.well-known/legion-passport.txt", legion_passport_endpoint, methods=["GET", "HEAD"], include_in_schema=False)
     for _lic_p in ("/LICENSE", "/LICENSE.txt", "/license", "/license.txt"):
         app.add_api_route(_lic_p, license_endpoint, methods=["GET", "HEAD"], include_in_schema=False)
     for _not_p in ("/NOTICE", "/NOTICE.txt", "/notice", "/notice.txt"):
