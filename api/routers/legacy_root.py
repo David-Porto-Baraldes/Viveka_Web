@@ -1946,6 +1946,7 @@ def _render_agent_card_dict(
     with open(path, "r", encoding="utf-8") as fh:
         card = json.load(fh)
     card["version"] = HOMO_UNIVERSALIS_VERSION
+    card.setdefault("securityRequirements", [])
     caps_dict = dict(card.get("capabilities") or {})
     raw_exts = caps_dict.get("extensions") if isinstance(caps_dict.get("extensions"), list) else []
     caps_dict["extensions"] = sanitize_agent_card_sealkeeper_extensions(
