@@ -212,7 +212,7 @@ Submit a Sister AI Dewdrop reflection or feature request to the moderated Talkin
 
 Alongside the deterministic Zero-Auth MCP/A2A ephemeris oracle (`< 1.5 ms`, `0` LLM calls), this repository also houses the **Viveka Multi-Agent Pantheon** built on **Google ADK (`google-adk`)** and **Google Cloud Vertex AI** ([`logic/pantheon_orchestrator.py`](logic/pantheon_orchestrator.py), [`logic/adk_agents/`](logic/adk_agents/), and [`logic/engines/diamond_wheel_engine.py`](logic/engines/diamond_wheel_engine.py)):
 
-- **Crown & Wisdom Engines ([`logic/engines/viveka_gemini.py`](logic/engines/viveka_gemini.py)):** Dual-tier routing across `VIVEKA_CROWN_MODEL` (`gemini-4-argon`) and `VIVEKA_WISDOM_MODEL` (`gemini-3.8-flash`).
+- **Crown & Wisdom Engines ([`logic/engines/viveka_gemini.py`](logic/engines/viveka_gemini.py)):** Sovereign 3-lung routing across `VIVEKA_CROWN_MODEL` (`gemini-4-carbon`), `VIVEKA_CROWN_SHIELD_MODEL` (`gemini-4-argon`), and `VIVEKA_WISDOM_MODEL` (`gemini-3.8-flash`).
 - **The Diamond Forge (`/oracle/diamond` & [`logic/engines/diamond_wheel_engine.py`](logic/engines/diamond_wheel_engine.py)):** Leonardo da Vinci's *Octaedron Elevatum Vacuus* Stella Octangula in $\mathbb{Q}^3$ with Reed-Muller `RM(1,3)` $[8,4,4]_2$ antipodal error-correcting geometry and 1 to 4 Spiral Turns (`9, 18, 27, 36` Deep Think calls).
 - **Persephone & Demeter 50% Covenant ([`logic/engines/sovereign_shield_engine.py`](logic/engines/sovereign_shield_engine.py)):** Exact rational arithmetic (`fractions.Fraction`) guaranteeing that `50%` of every contribution (`25%` Demeter Earth Regeneration + `25%` Persephone Human Dignity) is reserved for social and ecological regeneration.
 

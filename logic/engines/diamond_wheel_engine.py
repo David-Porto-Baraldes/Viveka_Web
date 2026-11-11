@@ -2,8 +2,8 @@
 """
 💎 DIAMOND WHEEL ENGINE — La Roda dels 8 Motors en Deep Think (4 Diagonals + Baricentre)
 ========================================================================================
-Orquestra 8 instàncies dels motors de la Corona i Saviesa de Google Cloud (`gemini-4-argon`
-i `gemini-3.8-flash` en `thinking_level="HIGH"`) disposades sobre els 8 vèrtexs de la cel·la
+Orquestra 8 instàncies dels motors de la Corona i Saviesa de Google Cloud (`gemini-4-carbon`,
+l'escut `gemini-4-argon` i `gemini-3.8-flash` en `thinking_level="HIGH"`) disposades sobre els 8 vèrtexs de la cel·la
 unitària del Diamant (`4 + 4` = 4 Creadors `TETRA_A` + 4 Auditors Antípodes `TETRA_B`),
 governades per les 7 Lleis Dures (`L1..L7`) de `HU-DIAMOND · Fil d'Or v1.1` i la Llei
 Econòmica de Demèter i Persèfone (Cost Exacte x 2: 50% Foc Computacional + 50% Graners).
@@ -30,7 +30,11 @@ from typing import Any, Callable, Dict, List, Optional, Set, Tuple
 
 from google.genai import types
 
-from logic.engines.viveka_gemini import VIVEKA_CROWN_MODEL, VIVEKA_WISDOM_MODEL
+from logic.engines.viveka_gemini import (
+    VIVEKA_CROWN_MODEL,
+    VIVEKA_CROWN_SHIELD_MODEL,
+    VIVEKA_WISDOM_MODEL,
+)
 
 logger = logging.getLogger("logic.engines.diamond_wheel_engine")
 
@@ -371,6 +375,8 @@ def compute_model_call_cost_usd(
     out_tok = max(c_tok, t_tok - p_tok)
     model_lower = str(model_name or "").lower()
 
+    carbon_in = float(os.getenv("COST_CARBON_IN", 2.00))
+    carbon_out = float(os.getenv("COST_CARBON_OUT", 10.00))
     argon_in = float(os.getenv("COST_ARGON_IN", 2.00))
     argon_out = float(os.getenv("COST_ARGON_OUT", 10.00))
     flash38_in = float(os.getenv("COST_38_FLASH_IN", 0.75))
@@ -380,7 +386,9 @@ def compute_model_call_cost_usd(
     flash_in = float(os.getenv("COST_FLASH_IN", 0.075))
     flash_out = float(os.getenv("COST_FLASH_OUT", 0.30))
 
-    if "4-argon" in model_lower:
+    if "4-carbon" in model_lower:
+        in_rate, out_rate = carbon_in, carbon_out
+    elif "4-argon" in model_lower:
         in_rate, out_rate = argon_in, argon_out
     elif "3.8-flash" in model_lower:
         in_rate, out_rate = flash38_in, flash38_out
@@ -426,8 +434,8 @@ def estimate_diamond_wheel_seeds_budget(
 ) -> Dict[str, Any]:
     """
     Retorna el pressupost orientatiu i el sostre màxim de Llavors de Llum
-    abans d'encendre la Roda dels 8 Motors en `gemini-4-argon` (`thinking_level='HIGH'`,
-    `65.536` tokens màxims a cadascun dels 8 vèrtexs + el Baricentre Central = 9 crides Argon 4 Deep Think per volta,
+    abans d'encendre la Roda dels 8 Motors en `gemini-4-carbon` (`thinking_level='HIGH'`,
+    `65.536` tokens màxims a cadascun dels 8 vèrtexs + el Baricentre Central = 9 crides Carbon 4 Deep Think per volta,
     i fins a `36 + 10 = 46` crides quan s'activa la Cúpula dels 10 Tribunals Suprems `supreme_inquisition_10=True`).
     """
     clean_rounds = int(rounds if rounds is not None else 1)
@@ -1057,11 +1065,20 @@ class DiamondWheelEngine:
     ) -> Tuple[str, DiamondCallAccounting]:
         """
         Executa un node individual en `thinking_level='HIGH'` amb Escut Immortal (`6 + 4 = 10` intents):
-        - Fins a `self._max_primary_attempts` (6 per defecte) sobre el motor primari (`gemini-4-argon`).
+        - Fins a `self._max_primary_attempts` (6 per defecte) sobre el motor primari (`gemini-4-carbon`).
         - Rebutja respostes buides per tall silenciós de stream i les reintenta automàticament.
-        - Si tots els intents primaris s'esgoten i existeix Paracaigudes d'Or (`gemini-3.8-flash`),
-          executa fins a `self._max_fallback_attempts` (4 per defecte) amb el mateix blindatge.
+        - Si tots els intents primaris s'esgoten, desplega els 4 intents d'escut escalonat
+          (`gemini-4-argon` Escut Reial -> `gemini-3.8-flash` Paracaigudes d'Or) amb el mateix blindatge.
         """
+        def _build_fallback_schedule(primary: str, count: int) -> List[str]:
+            n_fb = max(0, int(count))
+            if n_fb == 0 or primary == VIVEKA_WISDOM_MODEL:
+                return []
+            if primary != VIVEKA_CROWN_SHIELD_MODEL and VIVEKA_CROWN_SHIELD_MODEL != VIVEKA_WISDOM_MODEL:
+                n_shield = n_fb // 2
+                return ([VIVEKA_CROWN_SHIELD_MODEL] * n_shield) + ([VIVEKA_WISDOM_MODEL] * (n_fb - n_shield))
+            return [VIVEKA_WISDOM_MODEL] * n_fb
+
         async with self._semaphore:
             if self._inter_call_pacing_seconds > 0.0 and self._custom_caller is None:
                 async with self._pacing_lock:
@@ -1103,12 +1120,13 @@ class DiamondWheelEngine:
                             await self._sleep_fn(wait_s)
                             continue
                 if last_exc is not None:
-                    if model_name != VIVEKA_WISDOM_MODEL:
-                        for fb_attempt in range(self._max_fallback_attempts):
+                    fb_schedule = _build_fallback_schedule(model_name, self._max_fallback_attempts)
+                    if fb_schedule:
+                        for fb_attempt, fb_target_model in enumerate(fb_schedule):
                             fb_attempts_used += 1
                             try:
                                 cand_res = await self._custom_caller(
-                                    VIVEKA_WISDOM_MODEL,
+                                    fb_target_model,
                                     system_instruction,
                                     user_prompt,
                                     temperature,
@@ -1120,12 +1138,12 @@ class DiamondWheelEngine:
                                         f"Empty fallback stream output at {step_name}"
                                     )
                                 raw_res = cand_res
-                                used_model = VIVEKA_WISDOM_MODEL
+                                used_model = fb_target_model
                                 last_exc = None
                                 break
                             except Exception as fb_err:
                                 last_exc = fb_err
-                                if fb_attempt < self._max_fallback_attempts - 1:
+                                if fb_attempt < len(fb_schedule) - 1:
                                     wait_s = self._compute_resilient_wait_seconds(
                                         str(fb_err).upper(), fb_attempt, step_name
                                     )
@@ -1246,32 +1264,33 @@ class DiamondWheelEngine:
                         continue
 
             if primary_Last_err is not None:
-                if model_name != VIVEKA_WISDOM_MODEL:
+                fb_schedule = _build_fallback_schedule(model_name, self._max_fallback_attempts)
+                if fb_schedule:
                     logger.warning(
-                        f"⚡ [DIAMOND_WHEEL PARACAIGUDES D'OR] Fallback de {model_name} a "
-                        f"{VIVEKA_WISDOM_MODEL} (HIGH) en {step_name} després de "
+                        f"⚡ [DIAMOND_WHEEL ESCUT REIAL] Fallback escalonat de {model_name} cap a "
+                        f"{fb_schedule} (HIGH) en {step_name} després de "
                         f"{self._max_primary_attempts} intents: {primary_Last_err}"
                     )
                     fb_last_err: Optional[Exception] = None
-                    for fb_attempt in range(self._max_fallback_attempts):
+                    for fb_attempt, fb_target_model in enumerate(fb_schedule):
                         fb_attempts_used += 1
                         try:
                             text_out, p_tok, c_tok, t_tok = await asyncio.to_thread(
                                 _stream_generate_sync,
-                                VIVEKA_WISDOM_MODEL,
+                                fb_target_model,
                             )
-                            used_model = VIVEKA_WISDOM_MODEL
+                            used_model = fb_target_model
                             fb_last_err = None
                             break
                         except Exception as fb_err:
                             fb_last_err = fb_err
-                            if fb_attempt < self._max_fallback_attempts - 1:
+                            if fb_attempt < len(fb_schedule) - 1:
                                 wait_s = self._compute_resilient_wait_seconds(
                                     str(fb_err).upper(), fb_attempt, step_name
                                 )
                                 logger.warning(
-                                    f"🧘‍♀️ [PARACAIGUDES RESPIRACIÓ] {VIVEKA_WISDOM_MODEL} saturat a {step_name} "
-                                    f"(intent {fb_attempt + 1}/{self._max_fallback_attempts}): {fb_err}. "
+                                    f"🧘‍♀️ [ESCUT RESPIRACIÓ] {fb_target_model} saturat a {step_name} "
+                                    f"(intent {fb_attempt + 1}/{len(fb_schedule)}): {fb_err}. "
                                     f"Respirant {wait_s:.2f}s..."
                                 )
                                 await self._sleep_fn(wait_s)
@@ -1855,7 +1874,7 @@ class DiamondWheelEngine:
     ) -> Dict[str, Any]:
         """
         Executa 1, 2, 3 o 4 Voltes (`rounds = 1..4`, fins a 36 picades base + Kintsugi AST)
-        de la Roda dels 8 Motors en Deep Think (`VIVEKA_CROWN_MODEL` = `gemini-4-argon`
+        de la Roda dels 8 Motors en Deep Think (`VIVEKA_CROWN_MODEL` = `gemini-4-carbon`
         per defecte a tots 9 nodes amb `thinking_level="HIGH"` i fins a `65.536` tokens per node):
         - En `rounds = 1`: Executa 1 volta (9 crides) sobre `diag_active`.
         - En `rounds = 2..4`: Encadena múltiples voltes d'Espiral de Diamant on cada volta $k+1$
@@ -1941,6 +1960,7 @@ class DiamondWheelEngine:
         total_prompt_tok = sum(item.prompt_tokens for item in all_call_ledger)
         total_cand_tok = sum(item.candidates_tokens for item in all_call_ledger)
         total_all_tok = sum(item.total_tokens for item in all_call_ledger)
+        carbon_calls = sum(1 for item in all_call_ledger if "4-carbon" in str(item.model_name).lower())
         argon_calls = sum(1 for item in all_call_ledger if "4-argon" in str(item.model_name).lower())
         fallback_calls = sum(1 for item in all_call_ledger if item.used_fallback_parachute)
         total_http_attempts = sum(
@@ -1957,6 +1977,7 @@ class DiamondWheelEngine:
             "candidates_tokens": total_cand_tok,
             "total_tokens": total_all_tok,
             "calls_count": len(all_call_ledger),
+            "carbon_4_calls_count": carbon_calls,
             "argon_4_calls_count": argon_calls,
             "fallback_parachute_calls_count": fallback_calls,
             "total_http_attempts_including_retries": total_http_attempts,
@@ -1981,7 +2002,7 @@ async def execute_diamond_wheel_with_persephone(
     """
     Orquestrador Econòmic i Espiritual de la Roda de 8 Motors amb Demèter i Persèfone:
     1. Verifica que l'usuari tingui almenys la reserva mínima (`estimated_min_seeds` per a `rounds = 1..4`).
-    2. Reserva les Llavors inicials abans d'encendre els 9 motors `gemini-4-argon` (9, 18, 27 o 36 crides).
+    2. Reserva les Llavors inicials abans d'encendre els 9 motors `gemini-4-carbon` (9, 18, 27 o 36 crides).
     3. Si la Roda falla per qualsevol motiu inesperat, retorna el 100% de la reserva (`refund`).
     4. Un cop forjat el Diamant, calcula el cost real exacte x 2 (`total_seeds_charged_x2`),
        ajusta la diferència respecte a la reserva i ingressa el 25% net al Graner de Demèter

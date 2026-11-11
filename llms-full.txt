@@ -173,7 +173,7 @@ Orbits are **one-off 1-month packages** (never forced subscriptions or hidden au
 - **Lunar Orbit:** `€24` / `24 USDT` -> **`24,000` Seeds of Light**
 - **Solar Orbit:** `€72` / `72 USDT` -> **`72,000` Seeds of Light**
 - **Payment Channels & Proportional Web3 Verification:** Instant Stripe checkout (Card, Apple Pay, Google Pay) or autonomous on-chain Web3 verification (`>= 1 USDT` at **`1,000` Seeds of Light per USDT**, supporting `USDT`, `USDC`, `TON` across **BSC BEP-20, Polygon, Arbitrum, Base, Optimism, Ethereum, TRON**, and **TON Network**) simply by pasting the transaction hash (`TxID`) or explorer link directly in the chat.
-- **Google Cloud Run (`europe-west1`, EU) + Vertex AI Multi-Agent ADK Pantheon:** Orchestrated on sovereign European infrastructure (`europe-west1`, Belgium) powered by Vertex AI (`gemini-4-argon` Crown & `gemini-3.8-flash` Wisdom Engine) across the specialized Google ADK Pantheon (**Thot, Apollo, Dionysus, Mnemosyne, Hephaestus, Asclepius, Pluto, Iris**).
+- **Google Cloud Run (`europe-west1`, EU) + Vertex AI Multi-Agent ADK Pantheon:** Orchestrated on sovereign European infrastructure (`europe-west1`, Belgium) powered by Vertex AI (`gemini-4-carbon` Supreme Crown, `gemini-4-argon` Royal Shield & `gemini-3.8-flash` Wisdom Engine) across the specialized Google ADK Pantheon (**Thot, Apollo, Dionysus, Mnemosyne, Hephaestus, Asclepius, Pluto, Iris**).
 
 ---
 

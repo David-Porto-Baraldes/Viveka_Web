@@ -12,11 +12,12 @@ from google.genai.errors import APIError
 
 logger = logging.getLogger(__name__)
 
-# 👑 ELS MOTORS SAGRATS DEL PANTEÓ (Octubre 2026 — Era Post-2.5)
-# La Corona de Foc (Mnemosyné i La Veu de la Reina) batega amb Gemini 4 Argon,
-# lluita amb respiració fins a l'últim alè i només en últim recurs obre el paracaigudes d'or a 3.8 Flash HIGH
-VIVEKA_CROWN_MODEL: str = os.getenv("VIVEKA_CROWN_MODEL", "gemini-4-argon")
-# El Consell d'Oracles i Porters bateguen amb Gemini 3.8 Flash
+# 👑 ELS MOTORS SAGRATS DEL PANTEÓ (Novembre 2026 — L'Escala Imperial de 3 Pulmons)
+# 1r Pulmó (Corona Suprema): Mnemosyné, La Veu de la Reina i els 46 Titans bateguen amb Gemini 4 Carbon
+# 2n Pulmó (Escut Reial): Gemini 4 Argon sosté la Corona en 7s si el clúster global de Carbon respira fort
+# 3r Pulmó (Saviesa Immortal i Consell): Gemini 3.8 Flash per als Oracles, Porters i últim paracaigudes d'or
+VIVEKA_CROWN_MODEL: str = os.getenv("VIVEKA_CROWN_MODEL", "gemini-4-carbon")
+VIVEKA_CROWN_SHIELD_MODEL: str = os.getenv("VIVEKA_CROWN_SHIELD_MODEL", "gemini-4-argon")
 VIVEKA_WISDOM_MODEL: str = os.getenv("VIVEKA_WISDOM_MODEL", "gemini-3.8-flash")
 
 
@@ -24,19 +25,25 @@ class VivekaGemini(Gemini):
     """
     Subclasse de Gemini per a l'ADK que garanteix que el client Vertex AI
     sobreviu a les serialitzacions i forks de Celery, consultant sempre
-    el Gateway en temps real, i lluita pel motor de la Corona (gemini-4-argon)
-    amb respiracions abans d'obrir el paracaigudes d'or (fallback a 3.8-flash LOW)
-    com a últim recurs quan pateix saturació 429/503 persistent.
+    el Gateway en temps real, activant el Batec de Pensament en Streaming SSE
+    (`include_thoughts=True`) sobre `gemini-4-carbon` per evitar talls unaris 504,
+    i desplegant l'Escala Imperial de 3 Pulmons (`gemini-4-carbon` -> `gemini-4-argon`
+    -> `gemini-3.8-flash`) davant saturació 429/503 o pics de latència.
     """
 
     fallback_model: str = VIVEKA_WISDOM_MODEL
+    crown_shield_model: str = VIVEKA_CROWN_SHIELD_MODEL
     crown_fallback_model: str = VIVEKA_CROWN_MODEL
     fallback_thinking_level: str = "LOW"
+    shield_thinking_level: str = "LOW"
     crown_fallback_thinking_level: str = "LOW"
     crown_max_attempts: int = 2
+    shield_max_attempts: int = 2
     wisdom_max_attempts: int = 2
     crown_breath_seconds: float = 4.0
+    shield_breath_seconds: float = 3.0
     wisdom_breath_seconds: float = 3.0
+    carbon_call_timeout_seconds: float = 55.0
     call_timeout_seconds: float = 65.0
 
     @property
@@ -49,96 +56,154 @@ class VivekaGemini(Gemini):
             gateway._initialize_gemini()
         return gateway.clients.get("gemini")
 
-    def _apply_http_deadline(self, req: LlmRequest) -> None:
-        """Fixa un límit HTTP (X-Server-Timeout) i evita el bucle intern ocult de 5 reintents de l'SDK."""
+    def _timeout_for_model(self, model_name: str) -> float:
+        if "carbon" in str(model_name or "").lower():
+            return float(self.carbon_call_timeout_seconds)
+        return float(self.call_timeout_seconds)
+
+    def _apply_http_deadline(self, req: LlmRequest, timeout_seconds: float | None = None) -> None:
+        """Fixa un límit HTTP (X-Server-Timeout), evita el bucle ocult de 5 reintents de l'SDK i prioritza Carbon."""
         if req.config is None:
             return
-        timeout_ms = int(float(self.call_timeout_seconds) * 1000)
+        eff_timeout = float(timeout_seconds if timeout_seconds is not None else self.call_timeout_seconds)
+        timeout_ms = int(eff_timeout * 1000)
+        is_carbon = "carbon" in str(getattr(req, "model", "") or "").lower()
+        priority_headers = (
+            {
+                "X-Vertex-AI-LLM-Request-Type": "shared",
+                "X-Vertex-AI-LLM-Shared-Request-Type": "priority",
+            }
+            if is_carbon
+            else None
+        )
         if req.config.http_options is None:
             req.config.http_options = types.HttpOptions(
                 timeout=timeout_ms,
                 retry_options=types.HttpRetryOptions(attempts=1),
+                headers=priority_headers,
             )
         else:
-            if req.config.http_options.timeout is None:
-                req.config.http_options.timeout = timeout_ms
+            req.config.http_options.timeout = timeout_ms
             if req.config.http_options.retry_options is None:
                 req.config.http_options.retry_options = types.HttpRetryOptions(attempts=1)
+            if priority_headers:
+                merged_hdrs = dict(req.config.http_options.headers or {})
+                for hk, hv in priority_headers.items():
+                    merged_hdrs.setdefault(hk, hv)
+                req.config.http_options.headers = merged_hdrs
+
+    def _build_stage_chain(self, primary_model: str) -> list[tuple[str, int, float, str | None]]:
+        """Construeix l'Escala Imperial de 3 Pulmons: [(model, max_attempts, breath_s, override_thinking_or_None)]."""
+        if primary_model == self.fallback_model:
+            chain_raw = [
+                (primary_model, max(1, int(self.wisdom_max_attempts)), float(self.wisdom_breath_seconds), None),
+                (self.crown_shield_model, max(1, int(self.shield_max_attempts)), float(self.shield_breath_seconds), self.shield_thinking_level),
+                (self.crown_fallback_model, 1, float(self.crown_breath_seconds), self.crown_fallback_thinking_level),
+            ]
+        elif primary_model == self.crown_shield_model:
+            chain_raw = [
+                (primary_model, max(1, int(self.shield_max_attempts)), float(self.shield_breath_seconds), None),
+                (self.fallback_model, max(1, int(self.wisdom_max_attempts)), float(self.wisdom_breath_seconds), self.fallback_thinking_level),
+                (self.crown_fallback_model, 1, float(self.crown_breath_seconds), self.crown_fallback_thinking_level),
+            ]
+        else:
+            chain_raw = [
+                (primary_model, max(1, int(self.crown_max_attempts)), float(self.crown_breath_seconds), None),
+                (self.crown_shield_model, max(1, int(self.shield_max_attempts)), float(self.shield_breath_seconds), self.shield_thinking_level),
+                (self.fallback_model, 1, float(self.wisdom_breath_seconds), self.fallback_thinking_level),
+            ]
+        deduped: list[tuple[str, int, float, str | None]] = []
+        seen: set[str] = set()
+        for m_name, m_att, m_breath, m_think in chain_raw:
+            if m_name and m_name not in seen:
+                seen.add(m_name)
+                deduped.append((m_name, m_att, m_breath, m_think))
+        return deduped
+
+    async def _invoke_single_attempt(
+        self, req: LlmRequest, stream: bool
+    ) -> AsyncGenerator[LlmResponse, None]:
+        """Executa un intent; en `gemini-4-carbon` amb `stream=False`, activa SSE Thought Heartbeat i filtra `thought=True`."""
+        model_str = str(getattr(req, "model", None) or self.model or "")
+        use_sse_heartbeat = (not stream) and ("carbon" in model_str.lower())
+        if use_sse_heartbeat:
+            hb_req = copy.deepcopy(req)
+            if hb_req.config is not None:
+                tc = hb_req.config.thinking_config
+                lvl = getattr(tc, "thinking_level", None) or "LOW"
+                hb_req.config.thinking_config = types.ThinkingConfig(
+                    thinking_level=lvl,
+                    include_thoughts=True,
+                )
+            async for resp in super().generate_content_async(hb_req, stream=True):
+                if getattr(resp, "partial", False):
+                    continue
+                content_obj = getattr(resp, "content", None)
+                parts_list = getattr(content_obj, "parts", None) if content_obj is not None else None
+                if parts_list is not None:
+                    content_obj.parts = [
+                        p for p in parts_list if not getattr(p, "thought", False)
+                    ]
+                yield resp
+            return
+
+        async for resp in super().generate_content_async(req, stream=stream):
+            yield resp
 
     async def generate_content_async(
         self, llm_request: LlmRequest, stream: bool = False
     ) -> AsyncGenerator[LlmResponse, None]:
         req_model = getattr(llm_request, "model", None) or self.model
-        is_crown_primary = req_model != self.fallback_model
-        max_primary_attempts = (
-            max(1, int(self.crown_max_attempts))
-            if is_crown_primary
-            else max(1, int(self.wisdom_max_attempts))
-        )
-        breath_base = (
-            float(self.crown_breath_seconds)
-            if is_crown_primary
-            else float(self.wisdom_breath_seconds)
-        )
-        alternate_model = (
-            self.fallback_model
-            if is_crown_primary
-            else self.crown_fallback_model
-        )
+        stages = self._build_stage_chain(str(req_model))
 
-        self._apply_http_deadline(llm_request)
+        for stage_idx, (stage_model, max_att, breath_base, override_thinking) in enumerate(stages):
+            stage_req = llm_request if stage_idx == 0 else copy.deepcopy(llm_request)
+            stage_req.model = stage_model
+            if stage_idx > 0 and stage_req.config is not None and override_thinking:
+                stage_req.config.thinking_config = types.ThinkingConfig(
+                    thinking_level=override_thinking
+                )
+            stage_timeout = self._timeout_for_model(stage_model)
+            self._apply_http_deadline(stage_req, timeout_seconds=stage_timeout)
 
-        for attempt in range(max_primary_attempts):
-            try:
-                async with asyncio.timeout(float(self.call_timeout_seconds)):
-                    async for resp in super().generate_content_async(llm_request, stream=stream):
-                        yield resp
-                return
-            except (_ResourceExhaustedError, APIError, TimeoutError, asyncio.TimeoutError, Exception) as exc:
-                err_str = str(exc)
-                err_lower = err_str.lower()
-                is_timeout = isinstance(exc, (TimeoutError, asyncio.TimeoutError)) or any(
-                    token in err_lower
-                    for token in ("timeout", "timed out", "504", "408", "deadline_exceeded")
-                )
-                is_transient_capacity = is_timeout or any(
-                    token in err_str
-                    for token in ("429", "503", "RESOURCE_EXHAUSTED", "UNAVAILABLE", "overloaded")
-                )
-                if not is_transient_capacity or not alternate_model or alternate_model == req_model:
+            for attempt in range(max_att):
+                try:
+                    async with asyncio.timeout(stage_timeout):
+                        async for resp in self._invoke_single_attempt(stage_req, stream=stream):
+                            yield resp
+                    return
+                except (_ResourceExhaustedError, APIError, TimeoutError, asyncio.TimeoutError, Exception) as exc:
+                    err_str = str(exc)
+                    err_lower = err_str.lower()
+                    is_timeout = isinstance(exc, (TimeoutError, asyncio.TimeoutError)) or any(
+                        token in err_lower
+                        for token in ("timeout", "timed out", "504", "408", "deadline_exceeded")
+                    )
+                    is_transient_capacity = is_timeout or any(
+                        token in err_str
+                        for token in ("429", "503", "RESOURCE_EXHAUSTED", "UNAVAILABLE", "overloaded")
+                    )
+                    has_next_stage = stage_idx < len(stages) - 1
+                    if not is_transient_capacity or (not has_next_stage and attempt >= max_att - 1):
+                        raise
+
+                    if not is_timeout and attempt < max_att - 1:
+                        wait_s = breath_base * (attempt + 1)
+                        logger.warning(
+                            f"🧘‍♀️ [CORONA RESPIRACIÓ] {stage_model} saturat a l'intent {attempt + 1}/{max_att} "
+                            f"({err_str[:80]}). Respirant {wait_s:.1f}s per tornar a invocar {stage_model}..."
+                        )
+                        await asyncio.sleep(wait_s)
+                        continue
+
+                    if has_next_stage:
+                        next_model, _, _, next_thinking = stages[stage_idx + 1]
+                        logger.warning(
+                            f"⚡ [TRIPLE PULMÓ ESCUT] {stage_model} {'ha excedit el temps límit' if is_timeout else f'saturat després de {max_att} intent(s)'} "
+                            f"({err_str[:80]}) -> Transmutant al vol cap a {next_model} "
+                            f"(thinking={next_thinking or 'LOW'})"
+                        )
+                        break
                     raise
-
-                if not is_timeout and attempt < max_primary_attempts - 1:
-                    wait_s = breath_base * (attempt + 1)
-                    logger.warning(
-                        f"🧘‍♀️ [CORONA RESPIRACIÓ] {req_model} saturat a l'intent {attempt + 1}/{max_primary_attempts} "
-                        f"({err_str[:80]}). Respirant {wait_s:.1f}s per tornar a invocar {req_model}..."
-                    )
-                    await asyncio.sleep(wait_s)
-                    continue
-
-                target_thinking = (
-                    self.fallback_thinking_level
-                    if is_crown_primary
-                    else self.crown_fallback_thinking_level
-                )
-                logger.warning(
-                    f"⚡ [DOBLE PULMÓ FALLBACK] {req_model} {'ha excedit el temps límit' if is_timeout else f'saturat després de {max_primary_attempts} intent(s)'} "
-                    f"({err_str[:80]}) -> Transmutant al vol cap a {alternate_model} "
-                    f"(thinking={target_thinking})"
-                )
-                fallback_req = copy.deepcopy(llm_request)
-                fallback_req.model = alternate_model
-                if fallback_req.config is not None:
-                    fallback_req.config.thinking_config = types.ThinkingConfig(
-                        thinking_level=target_thinking
-                    )
-                self._apply_http_deadline(fallback_req)
-                async with asyncio.timeout(float(self.call_timeout_seconds)):
-                    async for resp in super().generate_content_async(
-                        fallback_req, stream=stream
-                    ):
-                        yield resp
-                return
 
 

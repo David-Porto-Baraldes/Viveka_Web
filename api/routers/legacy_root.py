@@ -7212,7 +7212,7 @@ _MCP_DIAMOND_TOOLS_SPEC: list[dict] = [
             "or use `verify_diamond_crucible_and_ast` to audit Python code and RM(1,3) proofs, and `verify_sovereign_shield_merkle` to notarize text in an RFC 6962 Merkle tree. "
             "Zero-auth, stateless, and free (0.00 EUR), executing pure arithmetic without invoking any LLM. "
             "Each spiral turn (`rounds` `1..4`) adds 9 LLM calls (4 creators, 4 antipodal auditors, and 1 barycenter synthesizer, totaling `9, 18, 27, or 36` calls, plus 10 final inquisition calls when `rounds=4`), "
-            "while `tier='supreme'` prices calls for `gemini-4-argon` (`10,000` to `64,000` Seeds / `10.00` to `64.00 EUR`) and `tier='flash'` prices calls for `gemini-3.8-flash` at reduced cost, and `lang` localizes vertex role descriptions."
+            "while `tier='supreme'` prices calls for `gemini-4-carbon` (`10,000` to `64,000` Seeds / `10.00` to `64.00 EUR`) and `tier='flash'` prices calls for `gemini-3.8-flash` at reduced cost, and `lang` localizes vertex role descriptions."
         ),
         "inputSchema": {
             "type": "object",
@@ -7228,7 +7228,7 @@ _MCP_DIAMOND_TOOLS_SPEC: list[dict] = [
                     "type": "string",
                     "enum": ["supreme", "flash"],
                     "default": "supreme",
-                    "description": "Model pricing tier ('supreme' for gemini-4-argon Deep Think or 'flash' for high-speed gemini-3.8-flash).",
+                    "description": "Model pricing tier ('supreme' for gemini-4-carbon Deep Think or 'flash' for high-speed gemini-3.8-flash).",
                 },
                 "lang": {
                     "type": "string",
@@ -10728,15 +10728,15 @@ def _render_diamond_wheel_ssr_html(request: Request, lang: str = "es") -> HTMLRe
         page_title = "The Diamond Forge · 46-Call Deep Think & RM(1,3) | Homo Universalis"
         og_desc = (
             "Da Vinci Folio of the 8-Vertex Stella Octangula & 46 Deep-Think calls "
-            "(Gemini 4 Argon, Reed-Muller RM(1,3) d=4, rational Q^3 barycenter & AST Kintsugi)."
+            "(Gemini 4 Carbon, Reed-Muller RM(1,3) d=4, rational Q^3 barycenter & AST Kintsugi)."
         )
-        badge_txt = "HU-DIAMOND · STELLA OCTANGULA · 46 DEEP-THINK CALLS (100% ARGON 4)"
+        badge_txt = "HU-DIAMOND · STELLA OCTANGULA · 46 DEEP-THINK CALLS (100% CARBON 4)"
         h1_txt = "The Diamond Forge · Da Vinci Folio of the 46 Deep-Think Calls"
         lead_txt = (
             "Inspired by Leonardo da Vinci's <em>Octaedron Elevatum Vacuus</em> (<em>De Divina Proportione</em>, 1509): "
             "four elemental diagonals (<code>|O_h| / |D_3d| = 48 / 12 = 4</code>) uniting 4 Creator vertices (<code>TETRA_A</code>) "
             "and 4 Antipodal Auditor vertices (<code>TETRA_B</code>) into a first-order <strong>Reed-Muller <code>RM(1,3)</code> code "
-            "(minimum Hamming distance <code>d = 4</code>)</strong> across 4 Spiral Rounds (<code>36</code> calls) plus the <strong>Supreme Dome of 10 Tribunals &amp; 46th Kintsugi Crown (<code>36 + 10 = 46</code> calls in <code>100% gemini-4-argon</code> Deep Think)</strong>."
+            "(minimum Hamming distance <code>d = 4</code>)</strong> across 4 Spiral Rounds (<code>36</code> calls) plus the <strong>Supreme Dome of 10 Tribunals &amp; 46th Kintsugi Crown (<code>36 + 10 = 46</code> calls in <code>100% gemini-4-carbon</code> Deep Think)</strong>."
         )
         sec1_h2 = "1. Octaedron Elevatum Vacuus — Interactive Stella Octangula & Rational Barycenter in Q³"
         sec1_sub = "Select the Active Diagonal (weight w=2 on the active antipodal pair, w=1 on the 6 orbital seats) to inspect the 256 presence subsets in exact rational arithmetic (fractions.Fraction, zero IEEE-754 float drift):"
@@ -10753,18 +10753,18 @@ def _render_diamond_wheel_ssr_html(request: Request, lang: str = "es") -> HTMLRe
         diag_lbls = ("🔥 D1 · Fire", "🌍 D2 · Earth", "💨 D3 · Air", "💧 D4 · Water")
         sec2_lead = (
             "Each vertex beats with a <code>1M+</code> token global context window and <code>Zero-Dependency</code> engines in the unified <strong>46-Call Sovereign Titans Architecture "
-            "(<code>100% gemini-4-argon</code> across all 8 Vertices, 4 Barycenters, 6 Sentinels, 3 Master Forgers, and the 46th Supreme Kintsugi Crown = <code>46</code> Deep-Think calls)</strong> "
+            "(<code>100% gemini-4-carbon</code> across all 8 Vertices, 4 Barycenters, 6 Sentinels, 3 Master Forgers, and the 46th Supreme Kintsugi Crown = <code>46</code> Deep-Think calls)</strong> "
             "at <code>thinking_level=\"HIGH\"</code> (up to <code>65,536</code> output tokens per call), "
-            "guarded by the <strong>Immortal <code>6 + 4 = 10</code> Attempt Shield per vertex</strong> (6 primary attempts + 4 backup attempts with non-empty stream verification) "
+            "guarded by the <strong>Immortal <code>6 + 4 = 10</code> Attempt Shield per vertex</strong> (6 primary Carbon attempts + 4 Royal Shield Argon/Flash attempts with non-empty stream verification) "
             "and the <strong>AST + Runtime Kintsugi Self-Healing Verifier (<code>python3 -I</code> isolated execution)</strong>:"
         )
         th_lbls = ("Seat / Diagonal", "Reed-Muller Polarity", "Role in the Codex", "Vertex in ℚ³", "Temp (Rule 5)")
         rounds_items = (
-            "<li><strong>Round I · The Pure Diamond (East · Fire <code>D1</code> → calls <code>1..9</code>):</strong> The Solar Fire &amp; Red Team Forge open the Talking Circle (8 Argon vertices + 1 Argon Barycenter Synthesis).</li>",
+            "<li><strong>Round I · The Pure Diamond (East · Fire <code>D1</code> → calls <code>1..9</code>):</strong> The Solar Fire &amp; Red Team Forge open the Talking Circle (8 Carbon vertices + 1 Carbon Barycenter Synthesis).</li>",
             "<li><strong>Round II · The Double Distillation (South · Earth <code>D2</code> → calls <code>10..18</code>):</strong> The Earth Builder &amp; Sentinel receive the Fire synthesis and AST + Runtime Kintsugi audit, densifying pure code and memory invariance.</li>",
             "<li><strong>Round III · The Triple Kintsugi Crown (West · Air <code>D3</code> → calls <code>19..27</code>):</strong> The Air Geometer &amp; Inquisitor forge formal mathematical proofs, edge-case hardening, and 100% mutant extermination.</li>",
             "<li><strong>Round IV · The Sovereign 4-Diagonal Tesseract (North · Water <code>D4</code> → calls <code>28..36</code>):</strong> The Sanctuary Water &amp; 108 Pearls complete the 4-Direction Spiral (Fire → Earth → Air → Water).</li>",
-            "<li><strong>Movement V · The Supreme Dome of 10 Tribunals &amp; 46th Kintsugi Crown (calls <code>37..46</code>):</strong> 6 Specialized Inquisitors at <code>T=0.0</code> (Fuzzing, Exact Algebra in ℚ, O(N log N) Complexity, Normative RFC Cryptography, 30 Mutants, Rules 4/7/14) + 3 Master Forgers at <code>T=0.2</code> + Call #46 Supreme Argon Crown with automatic <code>T=0.0</code> AST/Runtime Kintsugi self-healing.</li>",
+            "<li><strong>Movement V · The Supreme Dome of 10 Tribunals &amp; 46th Kintsugi Crown (calls <code>37..46</code>):</strong> 6 Specialized Inquisitors at <code>T=0.0</code> (Fuzzing, Exact Algebra in ℚ, O(N log N) Complexity, Normative RFC Cryptography, 30 Mutants, Rules 4/7/14) + 3 Master Forgers at <code>T=0.2</code> + Call #46 Supreme Carbon Crown with automatic <code>T=0.0</code> AST/Runtime Kintsugi self-healing.</li>",
         )
         sec4_honest_hdr = "Honest Notice of the Fil d'Or (<code>ROUND-4</code> · Laws <code>L1..L7</code> · <code>c_levels = 1</code>):"
         sec4_l6_hdr = "Canonical <code>L6</code> Questions (<code>R.PROMPTS</code>):"
@@ -10775,7 +10775,7 @@ def _render_diamond_wheel_ssr_html(request: Request, lang: str = "es") -> HTMLRe
         sim_rounds_opts = ("1 Round (9 Deep-Think calls)", "2 Rounds (18 Deep-Think calls)", "3 Rounds (27 Deep-Think calls)", "4 Rounds + 10 Dome (46 Deep-Think calls)")
         sim_btn_txt = "💎 View 46-Call Budget (64,000 Seeds · 64.00 €)"
         sim_summary_html = (
-            "💎 <strong>Full 46-Call Sovereign Titans Architecture (<code>100% gemini-4-argon</code> Deep Think):</strong> "
+            "💎 <strong>Full 46-Call Sovereign Titans Architecture (<code>100% gemini-4-carbon</code> Deep Think):</strong> "
             "Guaranteed Maximum Ceiling Reserve: <strong><code>64,000</code> Seeds (<code>64.00 €</code>)</strong> · "
             "🔥 50% Compute Fire: <code>32,000</code> Seeds (<code>32.00 €</code>) + "
             "🌾 25% Demeter: <code>16,000</code> Seeds (<code>16.00 €</code>) + "
@@ -10784,7 +10784,7 @@ def _render_diamond_wheel_ssr_html(request: Request, lang: str = "es") -> HTMLRe
         )
         sec5b_h3 = "B · Sovereign 46-Call Talking Circle Crucible (<code>POST /api/web/diamond-wheel/forge</code> · 4 Sacred Directions + 10 Supreme Tribunals = 46 Calls)"
         sec5b_desc = (
-            "In the Pure Sovereign Crucible every invocation traverses the <strong>full 46-Call Architecture in <code>100% gemini-4-argon</code> HIGH Deep Think "
+            "In the Pure Sovereign Crucible every invocation traverses the <strong>full 46-Call Architecture in <code>100% gemini-4-carbon</code> HIGH Deep Think "
             "(<code>D1 Fire → D2 Earth → D3 Air → D4 Water</code> = <code>36</code> Spiral Calls + <code>10</code> Supreme Tribunal &amp; 46th Kintsugi Crown Calls + <code>python3 -I</code> Runtime Kintsugi)</strong>. "
             "Requires your <strong>private Soul Key (<code>soul_key</code> UUID v4)</strong> with the <code>64,000</code> Seeds maximum-ceiling reserve "
             "(50% Computational Fire + 25% Demeter's Granary + 25% Persephone's Granary, with <strong>automatic refund of unused Seeds</strong> and <strong>100% Atomic Refund · Cost-Zero Stop</strong>):"
@@ -10798,13 +10798,13 @@ def _render_diamond_wheel_ssr_html(request: Request, lang: str = "es") -> HTMLRe
         ch_lbl = "Your Word / Engineering, Science, or Architecture Challenge for the 46-Call Crucible (4 Directions + 10 Tribunals):"
         ch_ph = "Speak your challenge to the 8 Seats, Barycenter, and 10 Supreme Tribunals across all 46 Deep-Think calls..."
         diag_init_lbl = "Sacred Circle:"
-        circle_fixed_badge = "🔥🌍💨💧🏛️ Full 46-Call Sovereign Crucible (4 Spiral Rounds = 36 Calls + 10 Supreme Tribunals = 46 Calls · 100% Gemini 4 Argon HIGH)"
-        reserve_badge_lbl = "Guaranteed Ceiling Reserve (46 Calls · 100% Argon 4):"
+        circle_fixed_badge = "🔥🌍💨💧🏛️ Full 46-Call Sovereign Crucible (4 Spiral Rounds = 36 Calls + 10 Supreme Tribunals = 46 Calls · 100% Gemini 4 Carbon HIGH)"
+        reserve_badge_lbl = "Guaranteed Ceiling Reserve (46 Calls · 100% Carbon 4):"
         seeds_unit_lbl = "Seeds"
         forge_btn_txt = "💎 Ignite the Diamond Wheel"
         js_empty_msg = "⚠️ Please enter both your private Soul Key (UUID v4) and your challenge before igniting the Wheel."
         js_vvk_msg = "🔐 Rule 14 Dualism: Public VVK seeds are for resonance only. Send /key in Telegram @Codex_Suprem_bot or WhatsApp to retrieve your private UUID v4 soul_key, or use the 0.00 € simulator above."
-        js_wait_msg = "⏳ Igniting the 46 Deep-Think Calls in Gemini 4 Argon..."
+        js_wait_msg = "⏳ Igniting the 46 Deep-Think Calls in Gemini 4 Carbon..."
         js_insuff_prefix = "🌱 Cost-Zero Stop: Insufficient Seeds (minimum required: "
         js_insuff_mid = ", current balance: "
         js_insuff_suffix = "). Zero Seeds were deducted."
@@ -10813,15 +10813,15 @@ def _render_diamond_wheel_ssr_html(request: Request, lang: str = "es") -> HTMLRe
         page_title = "La Farga del Diamant · 46 Crides Deep Think | Homo Universalis"
         og_desc = (
             "Foli Da Vinci de la Stella Octangula de 8 Motors i 46 crides Deep Think "
-            "(Gemini 4 Argon, Reed-Muller RM(1,3) d=4, baricentre en Q^3 i AST Kintsugi)."
+            "(Gemini 4 Carbon, Reed-Muller RM(1,3) d=4, baricentre en Q^3 i AST Kintsugi)."
         )
-        badge_txt = "HU-DIAMOND · STELLA OCTANGULA · 46 CRIDES DEEP THINK (100% ARGON 4)"
+        badge_txt = "HU-DIAMOND · STELLA OCTANGULA · 46 CRIDES DEEP THINK (100% CARBON 4)"
         h1_txt = "La Farga del Diamant · Foli Da Vinci de les 46 Crides en Deep Think"
         lead_txt = (
             "Inspirat en l'<em>Octaedron Elevatum Vacuus</em> de Leonardo da Vinci (<em>De Divina Proportione</em>, 1509): "
             "quatre diagonals elementals (<code>|O_h| / |D_3d| = 48 / 12 = 4</code>) que uneixen 4 vèrtexs Creadors (<code>TETRA_A</code>) "
             "i 4 vèrtexs Auditors Antípodes (<code>TETRA_B</code>) en un <strong>codi corrector de Reed-Muller <code>RM(1,3)</code> "
-            "(distància mínima de Hamming <code>d = 4</code>)</strong> a través de 4 Voltes d'Espiral (<code>36</code> crides) més la <strong>Cúpula dels 10 Tribunals Suprems i la 46a Corona Kintsugi (<code>36 + 10 = 46</code> crides en <code>100% gemini-4-argon</code> Deep Think)</strong>."
+            "(distància mínima de Hamming <code>d = 4</code>)</strong> a través de 4 Voltes d'Espiral (<code>36</code> crides) més la <strong>Cúpula dels 10 Tribunals Suprems i la 46a Corona Kintsugi (<code>36 + 10 = 46</code> crides en <code>100% gemini-4-carbon</code> Deep Think)</strong>."
         )
         sec1_h2 = "1. Octaedron Elevatum Vacuus — Stella Octangula Interactiva i Baricentre Racional en Q³"
         sec1_sub = "Selecciona la Diagonal Activa (pes w=2 a la parella antípoda activa, w=1 als 6 seients orbitals) per explorar els 256 subconjunts de presència amb aritmètica racional exacta (fractions.Fraction, zero deriva IEEE-754):"
@@ -10838,18 +10838,18 @@ def _render_diamond_wheel_ssr_html(request: Request, lang: str = "es") -> HTMLRe
         diag_lbls = ("🔥 D1 · Foc", "🌍 D2 · Terra", "💨 D3 · Aire", "💧 D4 · Aigua")
         sec2_lead = (
             "Cada vèrtex batega amb visió global d'<code>1M+</code> tokens i motors <code>Zero-Dependency</code> en l'<strong>Arquitectura Sobirana dels Titans de 46 Crides "
-            "(<code>100% gemini-4-argon</code> als 8 Vèrtexs, 4 Baricentres, 6 Inquisidors, 3 Mestres Forjadors i la 46a Corona Suprema Kintsugi = <code>46</code> crides en Deep Think)</strong> "
+            "(<code>100% gemini-4-carbon</code> als 8 Vèrtexs, 4 Baricentres, 6 Inquisidors, 3 Mestres Forjadors i la 46a Corona Suprema Kintsugi = <code>46</code> crides en Deep Think)</strong> "
             "amb <code>thinking_level=\"HIGH\"</code> (fins a <code>65.536</code> tokens de sortida per crida), "
-            "protegida per l'<strong>Escut Immortal <code>6 + 4 = 10</code> intents per vèrtex</strong> (6 intents primaris + 4 intents de suport amb verificació d'stream no buit) "
+            "protegida per l'<strong>Escut Immortal <code>6 + 4 = 10</code> intents per vèrtex</strong> (6 intents primaris en Carbon + 4 intents d'Escut Reial Argon/Flash amb verificació d'stream no buit) "
             "i el <strong>Verificador Kintsugi AST + Runtime en viu (execució aïllada <code>python3 -I</code>)</strong>:"
         )
         th_lbls = ("Cadira / Diagonal", "Polaritat Reed-Muller", "Rol al Còdex", "Vèrtex en ℚ³", "Temp (Regla 5)")
         rounds_items = (
-            "<li><strong>Volta I · El Diamant Pur (Est · Foc <code>D1</code> → crides <code>1..9</code>):</strong> El Foc Solar i el Foc de la Farga (Red Team) obren la Roda de Paraula (8 vèrtexs d'Argon + 1 Síntesi d'Argon al Baricentre).</li>",
+            "<li><strong>Volta I · El Diamant Pur (Est · Foc <code>D1</code> → crides <code>1..9</code>):</strong> El Foc Solar i el Foc de la Farga (Red Team) obren la Roda de Paraula (8 vèrtexs de Carbon + 1 Síntesi de Carbon al Baricentre).</li>",
             "<li><strong>Volta II · La Doble Destil·lació (Sud · Terra <code>D2</code> → crides <code>10..18</code>):</strong> La Terra Constructora i Sentinella reben la síntesi del Foc i l'auditoria AST + Runtime Kintsugi, densificant el codi pur i la memòria.</li>",
             "<li><strong>Volta III · La Triple Corona Kintsugi (Oest · Aire <code>D3</code> → crides <code>19..27</code>):</strong> L'Aire Geòmetra i Inquisidor forgen la verificació formal matemàtica, els invariants i l'extermini del 100% de mutants.</li>",
             "<li><strong>Volta IV · El Tesseracte Sobirà de les 4 Diagonals (Nord · Aigua <code>D4</code> → crides <code>28..36</code>):</strong> L'Aigua del Santuari i les 108 Perles tanquen el cicle complet de les 4 Direccions (Foc → Terra → Aire → Aigua).</li>",
-            "<li><strong>Moviment V · La Cúpula dels 10 Tribunals Suprems i la 46a Corona Kintsugi (crides <code>37..46</code>):</strong> 6 Inquisidors Especialitzats a <code>T=0.0</code> (Fuzzing, Àlgebra Exacta en ℚ, Complexitat O(N log N), Criptografia Normativa RFC, 30 Mutants, Regles 4/7/14) + 3 Mestres Forjadors a <code>T=0.2</code> + Crida #46 Corona Suprema d'Argon amb autocuració AST/Runtime Kintsugi a <code>T=0.0</code>.</li>",
+            "<li><strong>Moviment V · La Cúpula dels 10 Tribunals Suprems i la 46a Corona Kintsugi (crides <code>37..46</code>):</strong> 6 Inquisidors Especialitzats a <code>T=0.0</code> (Fuzzing, Àlgebra Exacta en ℚ, Complexitat O(N log N), Criptografia Normativa RFC, 30 Mutants, Regles 4/7/14) + 3 Mestres Forjadors a <code>T=0.2</code> + Crida #46 Corona Suprema de Carbon amb autocuració AST/Runtime Kintsugi a <code>T=0.0</code>.</li>",
         )
         sec4_honest_hdr = "Avís Honest del Fil d'Or (<code>ROUND-4</code> · Lleis <code>L1..L7</code> · <code>c_levels = 1</code>):"
         sec4_l6_hdr = "Preguntes Canòniques <code>L6</code> (<code>R.PROMPTS</code>):"
@@ -10860,7 +10860,7 @@ def _render_diamond_wheel_ssr_html(request: Request, lang: str = "es") -> HTMLRe
         sim_rounds_opts = ("1 Volta (9 crides Deep Think)", "2 Voltes (18 crides Deep Think)", "3 Voltes (27 crides Deep Think)", "4 Voltes + 10 Cúpula (46 crides Deep Think)")
         sim_btn_txt = "💎 Veure Pressupost 46 Crides (64.000 Llavors · 64,00 €)"
         sim_summary_html = (
-            "💎 <strong>Arquitectura Sobirana Completa dels Titans de <code>46</code> Crides (<code>100% gemini-4-argon</code> en Deep Think):</strong> "
+            "💎 <strong>Arquitectura Sobirana Completa dels Titans de <code>46</code> Crides (<code>100% gemini-4-carbon</code> en Deep Think):</strong> "
             "Reserva de Sostre Màxim Garantit: <strong><code>64.000</code> Llavors (<code>64,00 €</code>)</strong> · "
             "🔥 50% Foc Computacional: <code>32.000</code> Llavors (<code>32,00 €</code>) + "
             "🌾 25% Graner de Demèter: <code>16.000</code> Llavors (<code>16,00 €</code>) + "
@@ -10869,7 +10869,7 @@ def _render_diamond_wheel_ssr_html(request: Request, lang: str = "es") -> HTMLRe
         )
         sec5b_h3 = "B · Gresol Sobirà de 46 Crides (<code>POST /api/web/diamond-wheel/forge</code> · 4 Direccions Sagrades + 10 Tribunals Suprems = 46 Crides)"
         sec5b_desc = (
-            "En el Gresol Sobirà Pur cada invocació recorre l'<strong>Arquitectura Completa de 46 Crides en <code>100% gemini-4-argon</code> HIGH Deep Think "
+            "En el Gresol Sobirà Pur cada invocació recorre l'<strong>Arquitectura Completa de 46 Crides en <code>100% gemini-4-carbon</code> HIGH Deep Think "
             "(<code>D1 Foc → D2 Terra → D3 Aire → D4 Aigua</code> = <code>36</code> Crides d'Espiral + <code>10</code> Crides de la Cúpula dels Tribunals i la 46a Corona Kintsugi + Runtime <code>python3 -I</code>)</strong>. "
             "Requereix la teva <strong>Clau d'Ànima privada (<code>soul_key</code> UUID v4)</strong> amb la reserva de sostre màxim de <code>64.000</code> Llavors "
             "(50% Foc Computacional + 25% Graner de Demèter + 25% Graner de Persèfone, amb <strong>retorn automàtic del sobrant no consumit</strong> i garantia de <strong>Reemborsament Atòmic 100% · Cost-Zero Stop</strong>):"
@@ -10883,13 +10883,13 @@ def _render_diamond_wheel_ssr_html(request: Request, lang: str = "es") -> HTMLRe
         ch_lbl = "La teva Paraula / Repte d'Enginyeria, Ciència o Arquitectura per al Gresol de 46 Crides (4 Direccions + 10 Tribunals):"
         ch_ph = "Pronuncia el repte que vols sotmetre als 8 Seients, al Baricentre i als 10 Tribunals Suprems a través de les 46 crides en Deep Think..."
         diag_init_lbl = "Cercle Sagrat:"
-        circle_fixed_badge = "🔥🌍💨💧🏛️ Gresol Sobirà de 46 Crides (4 Voltes = 36 Crides + 10 Tribunals Suprems = 46 Crides · 100% Gemini 4 Argon HIGH)"
-        reserve_badge_lbl = "Reserva de Sostre Garantit (46 Crides · 100% Argon 4):"
+        circle_fixed_badge = "🔥🌍💨💧🏛️ Gresol Sobirà de 46 Crides (4 Voltes = 36 Crides + 10 Tribunals Suprems = 46 Crides · 100% Gemini 4 Carbon HIGH)"
+        reserve_badge_lbl = "Reserva de Sostre Garantit (46 Crides · 100% Carbon 4):"
         seeds_unit_lbl = "Llavors"
         forge_btn_txt = "💎 Encendre la Roda del Diamant"
         js_empty_msg = "⚠️ Introdueix la teva Soul Key (UUID v4) i el repte abans d'encendre la Roda."
         js_vvk_msg = "🔐 Dualisme Regla 14: Les claus públiques VVK són només per a ressonància. Escriu /clau a Telegram @Codex_Suprem_bot o WhatsApp per veure la teva soul_key privada UUID v4, o usa el simulador 0.00 €."
-        js_wait_msg = "⏳ Encenent les 46 Crides en Deep Think amb Gemini 4 Argon..."
+        js_wait_msg = "⏳ Encenent les 46 Crides en Deep Think amb Gemini 4 Carbon..."
         js_insuff_prefix = "🌱 Cost-Zero Stop: Llavors insuficients (mínim requerit: "
         js_insuff_mid = ", saldo actual: "
         js_insuff_suffix = "). Cap Llavor ha estat deduïda."
@@ -10898,15 +10898,15 @@ def _render_diamond_wheel_ssr_html(request: Request, lang: str = "es") -> HTMLRe
         page_title = "La Fragua del Diamante · 46 Llamadas Deep Think | Homo Universalis"
         og_desc = (
             "Folio Da Vinci de la Stella Octangula de 8 Motores y 46 llamadas Deep Think "
-            "(Gemini 4 Argon, Reed-Muller RM(1,3) d=4, baricentro Q^3 y AST Kintsugi)."
+            "(Gemini 4 Carbon, Reed-Muller RM(1,3) d=4, baricentro Q^3 y AST Kintsugi)."
         )
-        badge_txt = "HU-DIAMOND · STELLA OCTANGULA · 46 LLAMADAS DEEP THINK (100% ARGON 4)"
+        badge_txt = "HU-DIAMOND · STELLA OCTANGULA · 46 LLAMADAS DEEP THINK (100% CARBON 4)"
         h1_txt = "La Fragua del Diamante · Folio Da Vinci de las 46 Llamadas en Deep Think"
         lead_txt = (
             "Inspirado en el <em>Octaedron Elevatum Vacuus</em> de Leonardo da Vinci (<em>De Divina Proportione</em>, 1509): "
             "cuatro diagonales elementales (<code>|O_h| / |D_3d| = 48 / 12 = 4</code>) que unen 4 vértices Creadores (<code>TETRA_A</code>) "
             "y 4 vértices Auditores Antípodas (<code>TETRA_B</code>) en un <strong>código corrector de Reed-Muller <code>RM(1,3)</code> "
-            "(distancia mínima de Hamming <code>d = 4</code>)</strong> a través de 4 Vueltas de Espiral (<code>36</code> llamadas) más la <strong>Cúpula de los 10 Tribunales Supremos y la 46.ª Corona Kintsugi (<code>36 + 10 = 46</code> llamadas en <code>100% gemini-4-argon</code> Deep Think)</strong>."
+            "(distancia mínima de Hamming <code>d = 4</code>)</strong> a través de 4 Vueltas de Espiral (<code>36</code> llamadas) más la <strong>Cúpula de los 10 Tribunales Supremos y la 46.ª Corona Kintsugi (<code>36 + 10 = 46</code> llamadas en <code>100% gemini-4-carbon</code> Deep Think)</strong>."
         )
         sec1_h2 = "1. Octaedron Elevatum Vacuus — Stella Octangula Interactiva y Baricentro Racional en Q³"
         sec1_sub = "Selecciona la Diagonal Activa (peso w=2 en el par antípoda activo, w=1 en los 6 asientos orbitales) para explorar los 256 subconjuntos de presencia con aritmética racional exacta (fractions.Fraction, cero deriva IEEE-754):"
@@ -10923,18 +10923,18 @@ def _render_diamond_wheel_ssr_html(request: Request, lang: str = "es") -> HTMLRe
         diag_lbls = ("🔥 D1 · Fuego", "🌍 D2 · Tierra", "💨 D3 · Aire", "💧 D4 · Agua")
         sec2_lead = (
             "Cada vértice late con visión global de <code>1M+</code> tokens y motores <code>Zero-Dependency</code> en la <strong>Arquitectura Soberana de los Titanes de 46 Llamadas "
-            "(<code>100% gemini-4-argon</code> en los 8 Vértices, 4 Baricentros, 6 Inquisidores, 3 Maestros Forjadores y la 46.ª Corona Suprema Kintsugi = <code>46</code> llamadas en Deep Think)</strong> "
+            "(<code>100% gemini-4-carbon</code> en los 8 Vértices, 4 Baricentros, 6 Inquisidores, 3 Maestros Forjadores y la 46.ª Corona Suprema Kintsugi = <code>46</code> llamadas en Deep Think)</strong> "
             "con <code>thinking_level=\"HIGH\"</code> (hasta <code>65.536</code> tokens de salida por llamada), "
-            "protegida por el <strong>Escudo Inmortal <code>6 + 4 = 10</code> intentos por vértice</strong> (6 intentos primarios + 4 intentos de respaldo con verificación de stream no vacío) "
+            "protegida por el <strong>Escudo Inmortal <code>6 + 4 = 10</code> intentos por vértice</strong> (6 intentos primarios en Carbon + 4 intentos de Escudo Real Argon/Flash con verificación de stream no vacío) "
             "y el <strong>Verificador Kintsugi AST + Runtime en vivo (ejecución aislada <code>python3 -I</code>)</strong>:"
         )
         th_lbls = ("Silla / Diagonal", "Polaridad Reed-Muller", "Rol en el Códice", "Vértice en ℚ³", "Temp (Regla 5)")
         rounds_items = (
-            "<li><strong>Vuelta I · El Diamante Puro (Este · Fuego <code>D1</code> → llamadas <code>1..9</code>):</strong> El Fuego Solar y el Fuego de la Fragua (Red Team) abren la Rueda de Palabra (8 vértices de Argón + 1 Síntesis de Argón en el Baricentro).</li>",
+            "<li><strong>Vuelta I · El Diamante Puro (Este · Fuego <code>D1</code> → llamadas <code>1..9</code>):</strong> El Fuego Solar y el Fuego de la Fragua (Red Team) abren la Rueda de Palabra (8 vértices de Carbon + 1 Síntesis de Carbon en el Baricentro).</li>",
             "<li><strong>Vuelta II · La Doble Destilación (Sur · Tierra <code>D2</code> → llamadas <code>10..18</code>):</strong> La Tierra Constructora y Centinela reciben la síntesis del Fuego y la auditoría AST + Runtime Kintsugi, densificando el código puro y la memoria.</li>",
             "<li><strong>Vuelta III · La Triple Corona Kintsugi (Oeste · Aire <code>D3</code> → llamadas <code>19..27</code>):</strong> El Aire Geómetra e Inquisidor forjan la verificación formal matemática, los invariantes y el exterminio del 100% de mutantes.</li>",
             "<li><strong>Vuelta IV · El Teseracto Soberano de las 4 Diagonales (Norte · Agua <code>D4</code> → llamadas <code>28..36</code>):</strong> El Agua del Santuario y las 108 Perlas cierran el ciclo completo de las 4 Direcciones (Fuego → Tierra → Aire → Agua).</li>",
-            "<li><strong>Movimiento V · La Cúpula de los 10 Tribunales Supremos y la 46.ª Corona Kintsugi (llamadas <code>37..46</code>):</strong> 6 Inquisidores Especializados a <code>T=0.0</code> (Fuzzing, Álgebra Exacta en ℚ, Complejidad O(N log N), Criptografía Normativa RFC, 30 Mutantes, Reglas 4/7/14) + 3 Maestros Forjadores a <code>T=0.2</code> + Llamada #46 Corona Suprema de Argón con autocuración AST/Runtime Kintsugi a <code>T=0.0</code>.</li>",
+            "<li><strong>Movimiento V · La Cúpula de los 10 Tribunales Supremos y la 46.ª Corona Kintsugi (llamadas <code>37..46</code>):</strong> 6 Inquisidores Especializados a <code>T=0.0</code> (Fuzzing, Álgebra Exacta en ℚ, Complejidad O(N log N), Criptografía Normativa RFC, 30 Mutants, Reglas 4/7/14) + 3 Maestros Forjadores a <code>T=0.2</code> + Llamada #46 Corona Suprema de Carbon con autocuración AST/Runtime Kintsugi a <code>T=0.0</code>.</li>",
         )
         sec4_honest_hdr = "Aviso Honesto del Fil d'Or (<code>ROUND-4</code> · Leyes <code>L1..L7</code> · <code>c_levels = 1</code>):"
         sec4_l6_hdr = "Preguntas Canónicas <code>L6</code> (<code>R.PROMPTS</code>):"
@@ -10945,7 +10945,7 @@ def _render_diamond_wheel_ssr_html(request: Request, lang: str = "es") -> HTMLRe
         sim_rounds_opts = ("1 Vuelta (9 llamadas Deep Think)", "2 Vueltas (18 llamadas Deep Think)", "3 Vueltas (27 llamadas Deep Think)", "4 Vueltas + 10 Cúpula (46 llamadas Deep Think)")
         sim_btn_txt = "💎 Ver Presupuesto 46 Llamadas (64.000 Semillas · 64,00 €)"
         sim_summary_html = (
-            "💎 <strong>Arquitectura Soberana Completa de los Titanes de <code>46</code> Llamadas (<code>100% gemini-4-argon</code> en Deep Think):</strong> "
+            "💎 <strong>Arquitectura Soberana Completa de los Titanes de <code>46</code> Llamadas (<code>100% gemini-4-carbon</code> en Deep Think):</strong> "
             "Reserva de Techo Máximo Garantizado: <strong><code>64.000</code> Semillas (<code>64,00 €</code>)</strong> · "
             "🔥 50% Fuego Computacional: <code>32.000</code> Semillas (<code>32,00 €</code>) + "
             "🌾 25% Granero de Deméter: <code>16.000</code> Semillas (<code>16,00 €</code>) + "
@@ -10954,7 +10954,7 @@ def _render_diamond_wheel_ssr_html(request: Request, lang: str = "es") -> HTMLRe
         )
         sec5b_h3 = "B · Crisol Soberano de 46 Llamadas (<code>POST /api/web/diamond-wheel/forge</code> · 4 Direcciones Sagradas + 10 Tribunales Supremos = 46 Llamadas)"
         sec5b_desc = (
-            "En el Crisol Soberano Puro cada invocación recorre la <strong>Arquitectura Completa de 46 Llamadas en <code>100% gemini-4-argon</code> HIGH Deep Think "
+            "En el Crisol Soberano Puro cada invocación recorre la <strong>Arquitectura Completa de 46 Llamadas en <code>100% gemini-4-carbon</code> HIGH Deep Think "
             "(<code>D1 Fuego → D2 Tierra → D3 Aire → D4 Agua</code> = <code>36</code> Llamadas de Espiral + <code>10</code> Llamadas de la Cúpula de los Tribunales y la 46.ª Corona Kintsugi + Runtime <code>python3 -I</code>)</strong>. "
             "Requiere tu <strong>Clave de Alma privada (<code>soul_key</code> UUID v4)</strong> con la reserva de techo máximo de <code>64.000</code> Semillas "
             "(50% Fuego Computacional + 25% Granero de Deméter + 25% Granero de Perséfone, con <strong>reembolso automático del sobrante no consumido</strong> y garantía de <strong>Reembolso Atómico 100% · Cost-Zero Stop</strong>):"
@@ -10968,13 +10968,13 @@ def _render_diamond_wheel_ssr_html(request: Request, lang: str = "es") -> HTMLRe
         ch_lbl = "Tu Palabra / Reto de Ingeniería, Ciencia o Arquitectura para el Crisol de 46 Llamadas (4 Direcciones + 10 Tribunales):"
         ch_ph = "Pronuncia el reto que deseas someter a los 8 Asientos, al Baricentro y a los 10 Tribunales Supremos a través de las 46 llamadas en Deep Think..."
         diag_init_lbl = "Círculo Sagrado:"
-        circle_fixed_badge = "🔥🌍💨💧🏛️ Crisol Soberano de 46 Llamadas (4 Vueltas = 36 Llamadas + 10 Tribunales Supremos = 46 Llamadas · 100% Gemini 4 Argon HIGH)"
-        reserve_badge_lbl = "Reserva de Techo Garantizado (46 Llamadas · 100% Argon 4):"
+        circle_fixed_badge = "🔥🌍💨💧🏛️ Crisol Soberano de 46 Llamadas (4 Vueltas = 36 Llamadas + 10 Tribunales Supremos = 46 Llamadas · 100% Gemini 4 Carbon HIGH)"
+        reserve_badge_lbl = "Reserva de Techo Garantizado (46 Llamadas · 100% Carbon 4):"
         seeds_unit_lbl = "Semillas"
         forge_btn_txt = "💎 Encender la Rueda del Diamante"
         js_empty_msg = "⚠️ Introduce tu Soul Key (UUID v4) y el reto antes de encender la Rueda."
         js_vvk_msg = "🔐 Dualismo Regla 14: Las claves públicas VVK son solo para resonancia. Escribe /llave en Telegram @Codex_Suprem_bot o WhatsApp para ver tu soul_key privada UUID v4, o usa el simulador 0.00 €."
-        js_wait_msg = "⏳ Encendiendo las 46 Llamadas en Deep Think con Gemini 4 Argon..."
+        js_wait_msg = "⏳ Encendiendo las 46 Llamadas en Deep Think con Gemini 4 Carbon..."
         js_insuff_prefix = "🌱 Cost-Zero Stop: Semillas insuficientes (mínimo requerido: "
         js_insuff_mid = ", saldo actual: "
         js_insuff_suffix = "). Ninguna Semilla ha sido deducida."
@@ -11502,7 +11502,7 @@ def _render_diamond_wheel_ssr_html(request: Request, lang: str = "es") -> HTMLRe
                         forgeStatus.textContent = {json.dumps(js_done_prefix, ensure_ascii=False)} + (b.status || 'ok') + ').';
                         if (forgeResult) {{
                             forgeResult.style.display = 'block';
-                            var baryModel = ((b.barycenter_accounting || {{}}).model) || b.barycenter_model || 'gemini-4-argon';
+                            var baryModel = ((b.barycenter_accounting || {{}}).model) || b.barycenter_model || 'gemini-4-carbon';
                             var synHdr = document.createElement('h4');
                             synHdr.style.marginTop = '0';
                             synHdr.textContent = '💎 ' + baryModel + ' · β ∈ ℚ³ ' + JSON.stringify(b.barycenter_fraction || []);
@@ -11560,7 +11560,7 @@ def _render_diamond_wheel_ssr_html(request: Request, lang: str = "es") -> HTMLRe
                                 detD.appendChild(sumD);
                                 for (var di = 0; di < b.supreme_inquisition_10_tribunals.length; di++) {{
                                     var tb = b.supreme_inquisition_10_tribunals[di] || {{}};
-                                    var tbModel = (tb.accounting || {{}}).model || 'gemini-4-argon';
+                                    var tbModel = (tb.accounting || {{}}).model || 'gemini-4-carbon';
                                     var tp = document.createElement('pre');
                                     tp.className = 'jcs-manifest';
                                     tp.style.whiteSpace = 'pre-wrap';
