@@ -404,6 +404,29 @@ app = FastAPI(
 )
 
 
+@app.api_route("/LICENSE", methods=["GET", "HEAD"], include_in_schema=False)
+@app.api_route("/LICENSE.txt", methods=["GET", "HEAD"], include_in_schema=False)
+@app.api_route("/license", methods=["GET", "HEAD"], include_in_schema=False)
+@app.api_route("/license.txt", methods=["GET", "HEAD"], include_in_schema=False)
+async def get_license_file() -> Response:
+    for candidate in ("LICENSE", "LICENSES/Apache-2.0.txt"):
+        if os.path.exists(candidate):
+            with open(candidate, "r", encoding="utf-8") as fh:
+                return Response(content=fh.read(), media_type="text/plain; charset=utf-8", headers=CORS_HEADERS)
+    return Response(content="", status_code=404, headers=CORS_HEADERS)
+
+
+@app.api_route("/NOTICE", methods=["GET", "HEAD"], include_in_schema=False)
+@app.api_route("/NOTICE.txt", methods=["GET", "HEAD"], include_in_schema=False)
+@app.api_route("/notice", methods=["GET", "HEAD"], include_in_schema=False)
+@app.api_route("/notice.txt", methods=["GET", "HEAD"], include_in_schema=False)
+async def get_notice_file() -> Response:
+    if os.path.exists("NOTICE"):
+        with open("NOTICE", "r", encoding="utf-8") as fh:
+            return Response(content=fh.read(), media_type="text/plain; charset=utf-8", headers=CORS_HEADERS)
+    return Response(content="", status_code=404, headers=CORS_HEADERS)
+
+
 @app.api_route("/mcp", methods=["GET", "HEAD", "POST", "DELETE", "OPTIONS"])
 async def mcp_endpoint(request: Request) -> Response:
     if request.method == "OPTIONS":

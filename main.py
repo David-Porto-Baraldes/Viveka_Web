@@ -452,8 +452,27 @@ async def mcp_endpoint(request: Request) -> Response:
     return JSONResponse(headers=headers, content=resp_dict)
 
 
+async def license_endpoint() -> Response:
+    for candidate in ("LICENSE", "LICENSES/Apache-2.0.txt"):
+        if os.path.exists(candidate):
+            with open(candidate, "r", encoding="utf-8") as fh:
+                return Response(content=fh.read(), media_type="text/plain; charset=utf-8", headers=CORS_HEADERS)
+    return Response(content="", status_code=404, headers=CORS_HEADERS)
+
+
+async def notice_endpoint() -> Response:
+    if os.path.exists("NOTICE"):
+        with open("NOTICE", "r", encoding="utf-8") as fh:
+            return Response(content=fh.read(), media_type="text/plain; charset=utf-8", headers=CORS_HEADERS)
+    return Response(content="", status_code=404, headers=CORS_HEADERS)
+
+
 if app is not None:
     app.add_api_route("/mcp", mcp_endpoint, methods=["GET", "HEAD", "POST", "DELETE", "OPTIONS"])
+    for _lic_p in ("/LICENSE", "/LICENSE.txt", "/license", "/license.txt"):
+        app.add_api_route(_lic_p, license_endpoint, methods=["GET", "HEAD"], include_in_schema=False)
+    for _not_p in ("/NOTICE", "/NOTICE.txt", "/notice", "/notice.txt"):
+        app.add_api_route(_not_p, notice_endpoint, methods=["GET", "HEAD"], include_in_schema=False)
 
 
 def _dispatch_mcp_jsonrpc(payload: dict[str, Any]) -> dict[str, Any] | None:
