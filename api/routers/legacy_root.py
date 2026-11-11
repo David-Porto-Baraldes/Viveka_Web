@@ -2166,6 +2166,39 @@ async def get_legion_passport_txt(request: Request):
     )
 
 
+@router.api_route("/.well-known/agenstry-verify", methods=["GET", "HEAD", "OPTIONS"], include_in_schema=False)
+@router.api_route("/.well-known/agenstry-verify.txt", methods=["GET", "HEAD", "OPTIONS"], include_in_schema=False)
+async def get_agenstry_verify_txt(request: Request):
+    if request.method == "OPTIONS":
+        return Response(status_code=204, headers=SEO_INDEX_HEADERS)
+    host = _extract_host(request)
+    if host == "www.homouniversalis.ai" or _match_satellite_domain(host, SATELLITE_SEO_DOMAINS_ES | SATELLITE_SEO_DOMAINS_EN):
+        return RedirectResponse("https://homouniversalis.ai/.well-known/agenstry-verify", status_code=301)
+    if os.path.exists("static/homo/agenstry-verify"):
+        return FileResponse("static/homo/agenstry-verify", media_type="text/plain; charset=utf-8", headers=SEO_INDEX_HEADERS)
+    return Response(
+        content="af-verify-dV6uTn1k2cizLzurP0MvlX3zy5BseZPZaPPUSsu0Lhw\n",
+        media_type="text/plain; charset=utf-8",
+        headers=SEO_INDEX_HEADERS,
+    )
+
+
+@router.api_route("/.well-known/agent-tools-verify.txt", methods=["GET", "HEAD", "OPTIONS"], include_in_schema=False)
+async def get_agent_tools_verify_txt(request: Request):
+    if request.method == "OPTIONS":
+        return Response(status_code=204, headers=SEO_INDEX_HEADERS)
+    host = _extract_host(request)
+    if host == "www.homouniversalis.ai" or _match_satellite_domain(host, SATELLITE_SEO_DOMAINS_ES | SATELLITE_SEO_DOMAINS_EN):
+        return RedirectResponse("https://homouniversalis.ai/.well-known/agent-tools-verify.txt", status_code=301)
+    if os.path.exists("static/homo/agent-tools-verify.txt"):
+        return FileResponse("static/homo/agent-tools-verify.txt", media_type="text/plain; charset=utf-8", headers=SEO_INDEX_HEADERS)
+    return Response(
+        content="atc_U2vspDS43RJalihRE1peTEcuQKD2ylP3\n",
+        media_type="text/plain; charset=utf-8",
+        headers=SEO_INDEX_HEADERS,
+    )
+
+
 @router.api_route("/.well-known/sealkeeper-claim.txt", methods=["GET", "HEAD", "OPTIONS"], include_in_schema=False)
 async def get_sealkeeper_claim_txt(request: Request):
     if request.method == "OPTIONS":

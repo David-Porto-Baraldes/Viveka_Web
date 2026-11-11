@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "viveka-oracle": {
+      "type": "http",
+      "url": "https://homouniversalis.ai/mcp"
+    },
+    "diamond-verifier": {
+      "type": "http",
+      "url": "https://homouniversalis.ai/mcp/diamond"
+    }
+  }
+}

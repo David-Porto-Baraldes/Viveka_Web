@@ -1,0 +1,14 @@
+{
+  "name": "homo-universalis",
+  "version": "1.1.0",
+  "description": "Homo Universalis — Viveka: deterministic Swiss Ephemeris 7-Wisdoms oracle and HU-DIAMOND v1.1 + W3C VC 2.0 Ma'at cryptographic verifier skills & Zero-Auth Streamable HTTP MCP servers.",
+  "author": {
+    "name": "David Porto Baraldés",
+    "url": "https://homouniversalis.ai"
+  },
+  "homepage": "https://homouniversalis.ai",
+  "repository": "https://github.com/David-Porto-Baraldes/Viveka_Web",
+  "license": "Apache-2.0",
+  "skills": "./skills",
+  "mcpServers": "./.mcp.json"
+}

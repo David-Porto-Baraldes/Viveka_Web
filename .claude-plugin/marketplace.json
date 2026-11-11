@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
+  "name": "homo-universalis",
+  "description": "Homo Universalis — Viveka: deterministic Swiss Ephemeris 7-Wisdoms oracle and HU-DIAMOND v1.1 + W3C VC 2.0 Ma'at cryptographic verifier skills & Zero-Auth Streamable HTTP MCP servers.",
+  "owner": {
+    "name": "David Porto Baraldés",
+    "url": "https://homouniversalis.ai"
+  },
+  "plugins": [
+    {
+      "name": "homo-universalis",
+      "version": "1.1.0",
+      "source": {
+        "source": "github",
+        "repo": "David-Porto-Baraldes/Viveka_Web"
+      },
+      "description": "Zero-Auth Swiss Ephemeris 7-Wisdoms oracle, blind VVK-XXXX-YYYY synastry, Reed-Muller RM(1,3) + RFC 6962 Merkle audit verifier, and W3C VC 2.0 Ma'at Human Dignity credentials.",
+      "homepage": "https://homouniversalis.ai",
+      "license": "Apache-2.0",
+      "keywords": [
+        "ephemeris",
+        "astrology",
+        "synastry",
+        "bazi",
+        "iching",
+        "cryptography",
+        "merkle",
+        "w3c-vc",
+        "mcp",
+        "a2a"
+      ]
+    }
+  ]
+}
