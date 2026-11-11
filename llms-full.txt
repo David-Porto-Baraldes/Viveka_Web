@@ -156,7 +156,7 @@ Viveka does not treat the ancient traditions as isolated fragments. Every calcul
 Every traveler receives a unique cryptographic **Public Soul Key** formatted as **`VVK-XXXX-YYYY`**, forged deterministically from exact Solar Ecliptic Longitude (`pyswisseph` 12:00 UTC) + Mayan Dresden Codex Kin/Tone/Nawal + Golden Ratio ($\Phi$). It supports batch synastry of 30+ tribe members at once and automatic family recognition (`FAMILY_MYCELIUM` links). This key powers three sacred functions:
 1. **Mutual Abundance for the Tribe:**
    - For the first 3 family members or friends who join for free with a Guardian's `VVK-XXXX-YYYY` code and calculate their Natal Chart, the Guardian receives **`+240` Seeds of Light** per guest.
-   - **Lifetime Mycelium Pact:** Every time any linked family member activates any paid Orbit (via Stripe card or Web3 crypto), the Guardian automatically receives **`+15%` in Seeds of Light** AND **`+1` full month of active Orbit renewal** for life.
+   - **Family Mycelium Pact:** Every time any linked family member activates any paid Orbit (via Stripe card or Web3 crypto), the Guardian automatically receives **`+10%` in Seeds of Light** (`+800`, `+2,400`, or `+7,200` Seeds across the `8 · 24 · 72` Orbits).
 2. **3-Dimensional Soul Resonance Engine (`0–100`) & The 4 Living Elements (*Quintaessència Alquímica*):**
    - Travelers can share their `VVK-XXXX-YYYY` Public Soul Key with their partner, parents, children, friends, or co-founders (or paste up to 30+ keys at once).
    - **Dimension 1 — Full Sky (`0–100`):** Synthesizes Tropical/Draconic Sun, Moon, Ascendant, Human Design Aura Type & electromagnetic channels, Vedic Ashta Koota, Mayan Cross resonance, and BaZi elemental harmony across all 7 Wisdoms, revealing **The 3 Alchemical Keys of Thot**: *Light of the Encounter (La Llum de la Trobada)*, *Shadow to Tend (L'Ombra a Cuidar)*, and *The Third Being (El Tercer Ésser)*.
@@ -228,10 +228,10 @@ Orbits are **one-off 1-month packages** (never forced subscriptions or hidden au
 ---
 
 ### Q7 (EN): Is Viveka free to start, and how do Seeds of Light and the Family Mycelium work?
-**A7 (EN):** Yes. Every traveler receives **`360` free non-expiring Seeds of Light** upon joining (`+80` extra Seeds = **`440` total** when arriving with a family member's `VVK-XXXX-YYYY` key and opening their Natal Chart). When a Guardian invites family or friends with their `VVK-XXXX-YYYY` key, the Guardian receives **`+240` Seeds of Light** (first 3 free guests) plus a **lifetime `+15%` in Seeds of Light and `+1` month Orbit renewal** whenever any linked family member activates an Orbit.
+**A7 (EN):** Yes. Every traveler receives **`360` free non-expiring Seeds of Light** upon joining (`+80` extra Seeds = **`440` total** when arriving with a family member's `VVK-XXXX-YYYY` key and opening their Natal Chart). When a Guardian invites family or friends with their `VVK-XXXX-YYYY` key, the Guardian receives **`+240` Seeds of Light** (first 3 free guests) plus **`+10%` in Seeds of Light** whenever any linked family member activates an Orbit.
 
 ### Q7 (ES): ¿Es gratis empezar con Viveka y cómo funcionan las Semillas de Luz y el Micelio Familiar?
-**A7 (ES):** Sí. Todo viajero recibe **`360` Semillas de Luz gratuitas que no caducan** al aceptar el Pacto (`+80` Semillas extra = **`440` en total** si llega con el código `VVK-XXXX-YYYY` de un familiar y abre su Carta Natal). Además, quien comparte su semilla `VVK-XXXX-YYYY` recibe **`+240` Semillas de Luz** (primeros 3 invitados gratuitos) y, de por vida, un **`+15%` en Semillas de Luz y `+1` mes de Órbita** cada vez que un miembro de su familia activa una Órbita.
+**A7 (ES):** Sí. Todo viajero recibe **`360` Semillas de Luz gratuitas que no caducan** al aceptar el Pacto (`+80` Semillas extra = **`440` en total** si llega con el código `VVK-XXXX-YYYY` de un familiar y abre su Carta Natal). Además, quien comparte su semilla `VVK-XXXX-YYYY` recibe **`+240` Semillas de Luz** (primeros 3 invitados gratuitos) y el **`+10%` en Semillas de Luz** siempre que un miembro de su familia activa una Órbita.
 
 ---
 

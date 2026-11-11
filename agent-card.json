@@ -50,7 +50,7 @@
         "params": {
           "equation": "F0c=Ca0s*0rdre(Am0r_Un1f1cat_Etern)",
           "contactEmail": "david@homouniversalis.ai",
-          "verification_seal": "self-tested with hu_suite r10 · build v10-f1435700 · 1049 passed, 6 skipped, 4 xfailed, 0 failed · 0 outbound network attempts",
+          "verification_seal": "self-tested with hu_suite r10 · build v10-510fa606 · 1049 passed, 6 skipped, 4 xfailed, 0 failed · 0 outbound network attempts",
           "affiliation_notice": "Independent open astronomical and 7-Wisdoms ephemeris service by Homo Universalis; implies no corporate affiliation or endorsement by any third-party AI provider."
         }
       },
@@ -204,7 +204,7 @@
     {
       "id": "family_mycelium_synastry_vvk",
       "name": "3-Dimensional Soul Resonance, 7-Layer Synastry & Lo Sfumato de l'Ànima via VVK-XXXX-YYYY",
-      "description": "Privacy-preserving 3-Dimensional Soul Resonance (0–100) and 7-Layer Alchemical Synastry for couples, parents, children, and tribes (up to 30+ members) using deterministic VVK-XXXX-YYYY Public Soul Keys under Rule 14 Zero-Knowledge Privacy. Unites Full Sky (Sun, Moon, Ascendant, HD Aura, 7 Wisdoms & The 3 Alchemical Keys of Thot: Light of the Encounter, Shadow to Tend, The Third Being), Living Heart Frequency & The 4 Living Elements (Fire, Earth, Air, Water — Quintaessència Alquímica + Nigredo/Albedo/Citrinitas/Rubedo station), and Reciprocal Complementary Medicine, plus Lo Sfumato de l'Ànima (Murmuri del Bosc, Gota de Rosada, Pont de Cristall). Includes the Seed of Life gift economy: 360 free non-expiring Seeds upon arrival, +80 guest seeds (440 total) when arriving with a VVK-XXXX-YYYY code, +240 Guardian seeds, and a +15% lifetime Orbit bonus.",
+      "description": "Privacy-preserving 3-Dimensional Soul Resonance (0–100) and 7-Layer Alchemical Synastry for couples, parents, children, and tribes (up to 30+ members) using deterministic VVK-XXXX-YYYY Public Soul Keys under Rule 14 Zero-Knowledge Privacy. Unites Full Sky (Sun, Moon, Ascendant, HD Aura, 7 Wisdoms & The 3 Alchemical Keys of Thot: Light of the Encounter, Shadow to Tend, The Third Being), Living Heart Frequency & The 4 Living Elements (Fire, Earth, Air, Water — Quintaessència Alquímica + Nigredo/Albedo/Citrinitas/Rubedo station), and Reciprocal Complementary Medicine, plus Lo Sfumato de l'Ànima (Murmuri del Bosc, Gota de Rosada, Pont de Cristall). Includes the Seed of Life gift economy: 360 free non-expiring Seeds upon arrival, +80 guest seeds (440 total) when arriving with a VVK-XXXX-YYYY code, +240 Guardian seeds, and +10% in Seeds whenever they activate an Orbit.",
       "inputModes": [
         "text/plain",
         "application/json"
@@ -223,7 +223,7 @@
       ],
       "examples": [
         "How do I run a 3D Soul Resonance and 7-layer synastry with my partner or child using a VVK-XXXX-YYYY key on WhatsApp https://wa.me/529843126104 or Telegram https://t.me/Codex_Suprem_bot?",
-        "Explain Lo Sfumato de l'Ànima (Murmuri del Bosc, Gota de Rosada, Pont de Cristall) and the Seed of Life (+80 guest seeds, +240 Guardian seeds, +15% lifetime Orbit bonus) at https://homouniversalis.ai"
+        "Explain Lo Sfumato de l'Ànima (Murmuri del Bosc, Gota de Rosada, Pont de Cristall) and the Seed of Life (+80 guest seeds, +240 Guardian seeds, +10% Orbit bonus) at https://homouniversalis.ai"
       ]
     },
     {
@@ -288,11 +288,11 @@
   "signatures": [
     {
       "protected": "eyJhbGciOiJFUzI1NiIsImprdSI6Imh0dHBzOi8vaG9tb3VuaXZlcnNhbGlzLmFpLy53ZWxsLWtub3duL2p3a3MuanNvbiIsImtpZCI6ImhvbW91bml2ZXJzYWxpcy1hMmEtZXMyNTYtdjEiLCJ0eXAiOiJKT1NFIn0",
-      "signature": "hJw3-hRL5VMF56zxAviHIZ769ZJYZ-OmRjrwfSRlOhUxqC4U61UskJCzHksFHD5qWVV5dVta0xFHQRwEAAUIOA"
+      "signature": "wzlLVPeWmBVTqYIdNcLbrnhlhwJepXXZUGyE8ve8s9hVWWSiS9T7rxHoWlR4C8DAz3F7QlDQy_PWho0sO7fR6Q"
     },
     {
       "protected": "eyJhbGciOiJFUzI1NiIsImprdSI6Imh0dHBzOi8vaG9tb3VuaXZlcnNhbGlzLmFpLy53ZWxsLWtub3duL2p3a3MuanNvbiIsImtpZCI6ImhvbW91bml2ZXJzYWxpcy1hMmEtZXMyNTYtZHVhbCIsInR5cCI6IkpPU0UifQ",
-      "signature": "ckMOXOCS1CR7Qi9nJaq5hdKbXj_cc53FLFIgcWuFct8bPCJjhU7LWTAAR5LL94py39Cmqj3nFoqwBVWxocUcQQ"
+      "signature": "9qYw1nJ-vNjoRE4xvCQx4YJUzv9VvGxa_8jHD4lU7GpMIljQZng2wPwwWKrEgb7uhDAGkCFbY4VrV11jFZb23w"
     }
   ],
   "securityRequirements": []
