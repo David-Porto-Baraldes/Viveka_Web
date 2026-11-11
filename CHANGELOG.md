@@ -2,6 +2,16 @@
 
 All notable releases, protocol upgrades, and security/verification seals for **Homo Universalis — Viveka** are documented in this file.
 
+## [1.6.3] — 2026-11-11 (`Security Audit v2 Hardening, W3C VC 2.0 Ma'at Notary, Discovery Doors & SEO/GEO Alignment`)
+### Added
+- **Folio IV W3C VC 2.0 Ma'at Notary (`logic/engines/maat_w3c_vc_notary_crucible.py`) & Persistent ES256 Keys:** Added normative W3C Verifiable Credentials Data Model v2.0 issuance and verification (`MaatHumanDignityCredential`, `vc+jwt` via `GET`/`POST /api/sfumato/maat-verify`) and RFC 6962 Signed Tree Heads (`sth+jwt` via `GET /api/sfumato/sovereign-shield/sth`), backed by persistent ECDSA P-256 keys in Google Cloud Secret Manager (`maat-vc-es256-2026-1` & `hu-log-sth-es256-2026-1`) published in `/.well-known/jwks.json`.
+- **4 Living Da Vinci Crucible Folios & Normative Crypto Modules:** Published `reed_muller_merkle_crucible.py` (Folio I), `stella_sat_sovereign_crucible.py` (Folio II), `persephone_zk_harmonic_crucible.py` (Folio III), `maat_w3c_vc_notary_crucible.py` (Folio IV), `logic/crypto/jcs.py` (RFC 8785 JCS), and `logic/crypto/es256.py` (RFC 7515/7518/6979 low-S ES256).
+- **MCP & Directory Discovery Endpoints:** Added RFC 9728 path-suffixed Protected Resource Metadata (`/.well-known/oauth-protected-resource/mcp` & `/mcp/diamond`), `/mcp/server-card`, `/mcp/diamond/server-card`, `/.well-known/mcp-probing.json`, Agent Galaxy `claim/v1` verification (`viveka-homo-universalis`), and `6/6` DNS-proven cryptographic identity on Jishie (`#1` Worldwide across Astrology, Ephemeris, Synastry, BaZi & Tarot) plus `mcptry 100/100` on both sovereign MCP servers.
+- **SEO, OpenGraph, `JSON-LD` & `sitemap.xml` Alignment:** Added `og:image`, `twitter:card`, `twitter:image`, and `TechArticle` + `FAQPage` `JSON-LD` to SSR folios (`/oracle/notary`, `/oracle/ploma`, `/oracle/diamond`, `/oracle/codex`, `/oracle/today`), aligned `sitemap.xml` (zero `noindex` URLs), and updated `llms.txt`, `llms-full.txt`, and `AGENTS.md`.
+
+### Security
+- Completed all **16/16 Security Audit v2 Work Orders (`WO-01..WO-17`)**: distinct full-card A2A ES256 signature (`homouniversalis-a2a-es256-dual`), fail-closed `TRUSTED_PROXY_CIDRS` client-IP attribution, uniform `410 Gone` withdrawal of `test-vectors v1.0.0`, honest toy-curve labeling in Folio III, unified diagonal barycenter invariance across API/MCP/SSR, and strict non-coercive descriptive tool outputs.
+
 ## [1.6.2] — 2026-11-08 (`build v10-42a4d041` · `HU-DIAMOND-CRUCIBLE v1.1` Live Cryptographic Verifier & `/mcp/diamond` Sibling Server)
 ### Added
 - **Second Sibling MCP Server (`/mcp/diamond` · `ai.homouniversalis/diamond-verifier`):** Deployed an independent `MCP 2026-07-28` Streamable HTTP & `2025-11-25` server (`https://homouniversalis.ai/mcp/diamond` and `https://homouniversalis.ai/.well-known/mcp-diamond.json` conforming to `server.schema.json` `2025-12-11`), exposing 3 read-only zero-auth tools (`verify_diamond_crucible_and_ast`, `verify_sovereign_shield_merkle`, `simulate_diamond_spiral_budget`), 2 resources (`viveka://diamond/crucible-proof`, `viveka://diamond/sovereign-shield`), and 1 prompt (`audit_python_code_and_manifest_kintsugi`), while preserving the primary `/mcp` server (`ai.homouniversalis/viveka-oracle`) 100% untouched (4 tools, immutable `tools_hash: 607d94b43e4fd82ab0d5293a5f6c26b5`).

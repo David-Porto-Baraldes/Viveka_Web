@@ -3,7 +3,7 @@
   "name": "ai.homouniversalis/diamond-verifier",
   "title": "Homo Universalis — HU-DIAMOND v1.1 Cryptographic Verifier & AST Kintsugi MCP Server",
   "description": "Zero-auth Cryptographic Notary & AST Verifier: Reed-Muller RM(1,3), L1..L7, RFC 6962 & ES256 JWS.",
-  "version": "1.5.2",
+  "version": "1.6.0",
   "a2aProtocolVersion": "0.3.0",
   "a2aProtocolVersions": [
     "0.3",
@@ -54,7 +54,8 @@
   "tools": [
     "verify_diamond_crucible_and_ast",
     "verify_sovereign_shield_merkle",
-    "simulate_diamond_spiral_budget"
+    "simulate_diamond_spiral_budget",
+    "weigh_agent_on_scales_of_maat_w3c_vc"
   ],
   "resources": [
     "viveka://diamond/crucible-proof",

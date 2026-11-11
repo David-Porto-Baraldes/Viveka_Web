@@ -34,8 +34,12 @@ from logic.engines.viveka_gemini import VIVEKA_CROWN_MODEL, VIVEKA_WISDOM_MODEL
 
 logger = logging.getLogger("logic.engines.diamond_wheel_engine")
 
-# Especificació canònica de separació de domini (HU-DIAMOND/v1)
+# Especificació canònica de separació de domini (HU-DIAMOND/v1 i HU-DIAMOND/v2)
 HU_DIAMOND_SPEC = "HU-DIAMOND/v1"
+HU_DIAMOND_V2_SPEC = "HU-DIAMOND/v2"
+USER_SUBMISSION_ASSURANCE = "automated static heuristic; not a certification; caller-supplied input"
+MAX_AST_NODES = 10000
+AST_PARSE_TIMEOUT_SECONDS = 2.0
 SACRED_EQUATION = "F0c=Ca0s*0rdre(Am0r_Un1f1cat_Etern)"
 MAX_DEEP_THINK_OUTPUT_TOKENS = 65536
 SEEDS_PER_USD = 1000  # 1 USD / EUR = 1.000 Llavors de Llum
@@ -203,6 +207,135 @@ DIAMOND_WHEEL_8_VERTICES: Tuple[DiamondVertexSpec, ...] = (
     ),
 )
 
+# Authoritative vertex numbering (#1..#8) and body-diagonal indexing (D1..D4) (WO-09)
+VERTICES_1_TO_8: Dict[int, Tuple[int, int, int]] = {
+    v.seat_index: v.vertex_coords for v in DIAMOND_WHEEL_8_VERTICES
+}
+DIAGONALS_D1_TO_D4: Dict[int, Tuple[int, int]] = {
+    d_idx: (2 * d_idx - 1, 2 * d_idx) for d_idx in (1, 2, 3, 4)
+}
+BARYCENTER_WEIGHTING: str = "axial-2/orbital-1"
+
+
+def get_active_diagonal_vertices(diag_active: int) -> List[List[int]]:
+    """Return the ordered antipodal vertex pair [[x1, y1, z1], [x2, y2, z2]] for D1..D4."""
+    if not isinstance(diag_active, int) or isinstance(diag_active, bool) or diag_active not in DIAGONALS_D1_TO_D4:
+        raise ValueError(f"diag_active must be an integer in 1..4, got {diag_active!r}")
+    seat_a, seat_b = DIAGONALS_D1_TO_D4[diag_active]
+    return [list(VERTICES_1_TO_8[seat_a]), list(VERTICES_1_TO_8[seat_b])]
+
+
+def format_signed_vertex_coords(coords: Tuple[int, int, int]) -> str:
+    """Format a {-1, +1}^3 vertex tuple as '(+1,-1,-1)' for SSR / UI display."""
+    return f"({coords[0]:+d},{coords[1]:+d},{coords[2]:+d})"
+
+
+def build_oracle_diamond_golden_map_html() -> Dict[str, str]:
+    """
+    Generate the `/oracle/diamond` golden barycenter HTML map for D1..D4 directly
+    from `DIAGONALS_D1_TO_D4` and `compute_diamond_barycenter_exact`.
+    """
+    ia4_seats = [(j, "ia") for j in range(4)]
+    hu4_seats = [(j, "hu") for j in range(4)]
+    out: Dict[str, str] = {}
+    for d_idx in (1, 2, 3, 4):
+        seat_a, seat_b = DIAGONALS_D1_TO_D4[d_idx]
+        b_ia = compute_diamond_barycenter_exact(ia4_seats, diag_active=d_idx)
+        b_hu = compute_diamond_barycenter_exact(hu4_seats, diag_active=d_idx)
+        if b_ia is None or b_hu is None:
+            raise RuntimeError(f"Unexpected empty golden barycenter for D{d_idx}")
+        ia_str = f"({b_ia[0]}, {b_ia[1]}, {b_ia[2]})"
+        hu_str = f"({b_hu[0]}, {b_hu[1]}, {b_hu[2]})"
+        out[str(d_idx)] = (
+            f"GOLDEN <code>D{d_idx} (#{seat_a} ↔ #{seat_b})</code>: "
+            f"<code>IA4 → {ia_str}</code> · <code>HU4 → {hu_str}</code>"
+        )
+    return out
+
+# ==============================================================================
+# 🏛️ CÚPULA DELS 10 TRIBUNALS SUPREMS (36 + 10 = 46 CRIDES DEEP THINK)
+# ==============================================================================
+SUPREME_INQUISITION_6_SENTINELS: Tuple[Tuple[str, str, float, str], ...] = (
+    (
+        "s1_fuzzing_and_boundary_inquisitor",
+        "Tribunal 1 · Fuzzing, Arbres No-Potència de 2 i Casos Límit Extrems",
+        0.0,
+        "You are Supreme Tribunal 1 (Boundary & Fuzzing Inquisitor) at T=0.0. "
+        "Inspect the Round-4 synthesis and find any subtle failure on degenerate or extreme inputs: "
+        "n=0, n=1, non-power-of-two sizes (e.g. n=3, 5, 6, 7, 13), empty payloads, or malformed indices. "
+        "Provide exact line-level fixes.",
+    ),
+    (
+        "s2_exact_algebra_and_q3_inquisitor",
+        "Tribunal 2 · Exactitud Aritmètica (Q^3, F_2, Zero Float IEEE-754)",
+        0.0,
+        "You are Supreme Tribunal 2 (Exact Algebra & Rational Inquisitor) at T=0.0. "
+        "Verify that all mathematical, cryptographic, and coding-theory operations use exact integers, "
+        "fractions.Fraction, or GF(2) bitwise algebra without IEEE-754 float rounding drift. "
+        "Report any precision hazard and its exact replacement.",
+    ),
+    (
+        "s3_complexity_and_memory_inquisitor",
+        "Tribunal 3 · Complexitat Algorísmica O(N log N) i Memòria",
+        0.0,
+        "You are Supreme Tribunal 3 (Algorithmic Complexity & Memory Sentinel) at T=0.0. "
+        "Audit the time and space complexity of every function in the Round-4 synthesis. "
+        "Ensure fast transforms (e.g. Fast Walsh-Hadamard O(N log N), logarithmic Merkle subproofs O(log N)) "
+        "are genuinely implemented without hidden O(N^2) loops or recursion depth hazards.",
+    ),
+    (
+        "s4_rfc_cryptography_and_constant_time",
+        "Tribunal 4 · Criptografia Normativa (RFC 6962 / RFC 8785 / Constant-Time)",
+        0.0,
+        "You are Supreme Tribunal 4 (Normative Cryptography & Constant-Time Auditor) at T=0.0. "
+        "Verify strict compliance with IETF RFC 6962 (§2.1 / §2.1.1 / §2.1.2 domain separation 0x00 leaf / 0x01 node), "
+        "hmac.compare_digest constant-time comparisons, and resistance to second-preimage or forgery attacks.",
+    ),
+    (
+        "s5_adversarial_mutation_hunter",
+        "Tribunal 5 · Caçador de Mutants Adversaris (5 Mutants Letals)",
+        0.0,
+        "You are Supreme Tribunal 5 (Adversarial Mutation Hunter) at T=0.0. "
+        "Design 5 concrete code mutants (off-by-one, flipped prefix byte, corrupted bit, wrong tree split, "
+        "tampered proof node) and verify that the self-tests inside the code block explicitly catch and kill all 5.",
+    ),
+    (
+        "s6_kintsugi_rules_4_7_14_inquisitor",
+        "Tribunal 6 · Guardià Kintsugi (Regla 4 Import Hoist, Regla 7 i Regla 14)",
+        0.0,
+        "You are Supreme Tribunal 6 (Kintsugi AST & Sovereign Rules Auditor) at T=0.0. "
+        "Verify 100% compliance with Rule 4 (zero local imports inside functions of modules imported at top-level), "
+        "Rule 7 (zero placeholders, TODOs, or NotImplementedError), Rule 14 (Zero-Knowledge), and pure stdlib execution.",
+    ),
+)
+
+SUPREME_INQUISITION_3_FORGERS: Tuple[Tuple[str, str, float, str], ...] = (
+    (
+        "f7_exhaustive_self_test_forger",
+        "Tribunal 7 · Mestre Forjador de la Bateria d'Autotests i Mutants",
+        0.2,
+        "You are Supreme Tribunal 7 (Master Test Suite Forger) at T=0.2. "
+        "Synthesize the findings of the 6 Sentinels into a rock-solid, self-contained `run_self_tests()` function "
+        "that exhaustively tests all invariants, non-power-of-two sizes, and adversarial tampering cases in < 2 seconds.",
+    ),
+    (
+        "f8_surgical_algorithm_refiner",
+        "Tribunal 8 · Mestre Refinador Quirúrgic d'Algorismes",
+        0.2,
+        "You are Supreme Tribunal 8 (Surgical Algorithm Refiner) at T=0.2. "
+        "Incorporate every mathematical, complexity, and edge-case refinement identified by the 6 Sentinels "
+        "into clean, idiomatic, fully typed Python 3 code.",
+    ),
+    (
+        "f9_mathematical_isomorphism_sealer",
+        "Tribunal 9 · Segellador d'Isomorfisme Matemàtic i Documentació",
+        0.2,
+        "You are Supreme Tribunal 9 (Mathematical Isomorphism Sealer) at T=0.2. "
+        "Verify 1-to-1 correspondence between the formal mathematical theorems/invariants and the exact Python functions "
+        "and docstrings.",
+    ),
+)
+
 
 @dataclass
 class DiamondCallAccounting:
@@ -215,6 +348,9 @@ class DiamondCallAccounting:
     total_tokens: int
     cost_usd: float
     latency_ms: float
+    primary_attempts_used: int = 1
+    fallback_attempts_used: int = 0
+    used_fallback_parachute: bool = False
 
 
 def compute_model_call_cost_usd(
@@ -283,13 +419,16 @@ def compute_persephone_double_economy(total_api_cost_usd: float) -> Dict[str, An
 
 
 def estimate_diamond_wheel_seeds_budget(
-    tier: str = "supreme", rounds: int = 1, lang: str = "ca"
+    tier: str = "supreme",
+    rounds: int = 1,
+    lang: str = "ca",
+    supreme_inquisition_10: bool = False,
 ) -> Dict[str, Any]:
     """
     Retorna el pressupost orientatiu i el sostre màxim de Llavors de Llum
     abans d'encendre la Roda dels 8 Motors en `gemini-4-argon` (`thinking_level='HIGH'`,
-    `65.536` tokens màxims a cadascun dels 8 vèrtexs + el Baricentre Central = 9 crides Argon 4 Deep Think per volta).
-    Suporta fins a 4 voltes encadenades (`rounds = 1..4` = 9, 18, 27 o 36 crides).
+    `65.536` tokens màxims a cadascun dels 8 vèrtexs + el Baricentre Central = 9 crides Argon 4 Deep Think per volta,
+    i fins a `36 + 10 = 46` crides quan s'activa la Cúpula dels 10 Tribunals Suprems `supreme_inquisition_10=True`).
     """
     clean_rounds = int(rounds if rounds is not None else 1)
     if clean_rounds not in (1, 2, 3, 4):
@@ -304,6 +443,12 @@ def estimate_diamond_wheel_seeds_budget(
     split_rule_txt = split_rules.get(lang_norm, split_rules["ca"])
 
     tier_norm = str(tier or "supreme").strip().lower()
+    use_dome_46 = bool(supreme_inquisition_10)
+    if use_dome_46:
+        clean_rounds = 4
+        tier_norm = "supreme"
+    base_calls = 46 if use_dome_46 else (9 * clean_rounds)
+
     if tier_norm in ("wisdom", "flash", "3.8-flash"):
         min_seeds = 14400 if clean_rounds == 4 else (400 * clean_rounds)
         typ_seeds = 14400 if clean_rounds == 4 else (1100 * clean_rounds)
@@ -315,7 +460,8 @@ def estimate_diamond_wheel_seeds_budget(
             "tier": "wisdom",
             "rounds": clean_rounds,
             "calls_per_round": 9,
-            "expected_base_calls": 9 * clean_rounds,
+            "expected_base_calls": base_calls,
+            "supreme_inquisition_10_enabled": use_dome_46,
             "model_primary": VIVEKA_WISDOM_MODEL,
             "crown_barycenter_model": VIVEKA_CROWN_MODEL,
             "thinking_level": "HIGH",
@@ -336,9 +482,14 @@ def estimate_diamond_wheel_seeds_budget(
             "persephone_granary_25pct_eur": round(pers_seeds / 1000.0, 2),
             "split_rule": split_rule_txt,
         }
-    sup_min = 1200 * clean_rounds
-    sup_typ = 2400 * clean_rounds
-    sup_cap = 5000 * clean_rounds
+    if use_dome_46:
+        sup_min = 64000
+        sup_typ = 64000
+        sup_cap = 64000
+    else:
+        sup_min = 1200 * clean_rounds
+        sup_typ = 2400 * clean_rounds
+        sup_cap = 5000 * clean_rounds
     sup_fire = sup_typ // 2
     sup_dem = (sup_typ - sup_fire) // 2
     sup_pers = sup_typ - sup_fire - sup_dem
@@ -346,7 +497,8 @@ def estimate_diamond_wheel_seeds_budget(
         "tier": "supreme",
         "rounds": clean_rounds,
         "calls_per_round": 9,
-        "expected_base_calls": 9 * clean_rounds,
+        "expected_base_calls": base_calls,
+        "supreme_inquisition_10_enabled": use_dome_46,
         "model_primary": VIVEKA_CROWN_MODEL,
         "crown_barycenter_model": VIVEKA_CROWN_MODEL,
         "thinking_level": "HIGH",
@@ -618,11 +770,60 @@ def _is_safe_self_contained_stdlib_module(tree: ast.Module) -> bool:
     return True
 
 
+_PYTHON_CODE_INTENT_RE = re.compile(
+    r"(?:^|\n)[ \t]*(?:def\s+[A-Za-z_]|async\s+def\s+[A-Za-z_]|class\s+[A-Za-z_]|"
+    r"import\s+[A-Za-z_]|from\s+[A-Za-z_.]+\s+import\s+|@[A-Za-z_]|"
+    r"return\b|raise\b|assert\b|yield\b|for\s+.+\s+in\s+|while\s+.+:|"
+    r"if\s+.+:|try\s*:|with\s+.+:|"
+    r"[A-Za-z_][A-Za-z0-9_]*\s*(?::\s*[^=\n]+)?=\s*[^=\n])"
+)
+_MARKDOWN_HEADING_OR_LIST_RE = re.compile(
+    r"^[ \t]*(?:#{1,6}\s+\S|[-*+]\s+\S|\d+\.\s+\S|>\s+\S)"
+)
+
+
+def _looks_like_unfenced_python_code(raw_text: str) -> bool:
+    """
+    Determines whether an unfenced text string is plain Python source code
+    (Option A of WO-16 §2.1) rather than Markdown prose without Python blocks.
+    """
+    stripped = raw_text.strip()
+    if not stripped:
+        return False
+    # If the text contains other language fences (e.g., ```json, ```javascript), it is Markdown without Python blocks
+    if "```" in stripped:
+        return False
+    non_empty_lines = [ln for ln in stripped.splitlines() if ln.strip()]
+    has_md_headings_or_lists = any(_MARKDOWN_HEADING_OR_LIST_RE.match(ln) for ln in non_empty_lines)
+    has_python_intent_token = bool(_PYTHON_CODE_INTENT_RE.search(stripped))
+    if has_md_headings_or_lists and not has_python_intent_token:
+        return False
+    if has_python_intent_token:
+        return True
+    try:
+        tree = ast.parse(stripped)
+    except SyntaxError:
+        return False
+    if not tree.body:
+        return False
+    for stmt in tree.body:
+        if not isinstance(stmt, ast.Expr):
+            return True
+        val = stmt.value
+        if not isinstance(val, (ast.Constant, ast.Name)):
+            return True
+    return False
+
+
 def verify_diamond_python_code_blocks(
-    markdown_text: str, run_isolated_self_tests: bool = False
+    markdown_text: str,
+    run_isolated_self_tests: bool = False,
+    *,
+    max_ast_nodes: int = MAX_AST_NODES,
 ) -> Dict[str, Any]:
     """
-    Extreu tots els blocs ```python ... ``` de la síntesi del Diamant i verifica (Endurit amb E5, E6 i E10):
+    Extreu tots els blocs ```python ... ``` (o codi Python pla sense tanques, WO-16 §2.1 Opció A)
+    i verifica (Endurit amb E5, E6, E10 i WO-16):
     1. Que compilen al 100% amb `ast.parse()` (zero errors de sintaxi o truncaments).
     2. Que compleixen la Regla 4 (cap funció re-importa localment un nom o paquet arrel ja importat al top-level,
        sense duplicar avisos en funcions niades).
@@ -631,19 +832,22 @@ def verify_diamond_python_code_blocks(
     4. Si `run_isolated_self_tests=True` i el bloc és auto-contingut amb stdlib matemàtica pura i conté
        autotests (`run_self_tests`, `unittest` o `__main__`), l'executa en un subprocés aïllat (`-I`) amb
        timeout de 8s per detectar qualsevol `AssertionError` o `ArithmeticError` en temps d'execució!
+    5. WO-16 (§2.2 & §2.3): Si `python_blocks_found == 0`, retorna `all_blocks_verified_clean: None` (`null`)
+       i `status: "no_code_found"` (mai un veredicte `"clean"` vacuu sobre 0 blocs).
     """
     fence = chr(96) * 3
+    raw_md = str(markdown_text or "")
     multiline_pattern = re.compile(
         rf"^{fence}(?:python|py)[ \t]*\n(.*?)^[ \t]*{fence}",
         re.DOTALL | re.IGNORECASE | re.MULTILINE,
     )
-    blocks = multiline_pattern.findall(str(markdown_text or ""))
+    blocks = multiline_pattern.findall(raw_md)
     if not blocks:
         fallback_pattern = re.compile(
             rf"{fence}(?:python|py)\s*\n(.*?){fence}",
             re.DOTALL | re.IGNORECASE,
         )
-        blocks = fallback_pattern.findall(str(markdown_text or ""))
+        blocks = fallback_pattern.findall(raw_md)
 
     syntax_errors: List[str] = []
     rule4_violations: List[str] = []
@@ -653,15 +857,36 @@ def verify_diamond_python_code_blocks(
     todo_marker = "TO" + "DO:"
     fixme_marker = "FIX" + "ME:"
 
+    # E11: Detecció d'obertura ```python sense tancament (truncament al límit de tokens)
+    if not blocks and re.search(rf"{fence}(?:python|py)\b", raw_md, re.IGNORECASE):
+        syntax_errors.append("unclosed_python_code_block_truncated_before_closing_fence")
+        blocks = [raw_md.split(fence, 1)[-1]]
+    elif not blocks and _looks_like_unfenced_python_code(raw_md):
+        blocks = [raw_md]
+
     for idx, code in enumerate(blocks, start=1):
+        t_parse0 = time.perf_counter()
         try:
             tree = ast.parse(code)
         except SyntaxError as exc:
             syntax_errors.append(f"block_{idx}_line_{exc.lineno}: {exc.msg}")
             continue
+        except (MemoryError, RecursionError) as exc:
+            syntax_errors.append(f"block_{idx}_ast_complexity_limit: {type(exc).__name__}")
+            continue
+
+        all_ast_nodes = list(ast.walk(tree))
+        if (time.perf_counter() - t_parse0) > AST_PARSE_TIMEOUT_SECONDS:
+            syntax_errors.append(f"block_{idx}_ast_timeout: exceeded {AST_PARSE_TIMEOUT_SECONDS}s")
+            continue
+        if len(all_ast_nodes) > max_ast_nodes:
+            syntax_errors.append(
+                f"block_{idx}_ast_node_limit_exceeded: {len(all_ast_nodes)} > {max_ast_nodes}"
+            )
+            continue
 
         top_imports = _collect_top_level_imported_names(tree)
-        for node in ast.walk(tree):
+        for node in all_ast_nodes:
             if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
                 work_queue = list(node.body)
                 while work_queue:
@@ -737,6 +962,17 @@ def verify_diamond_python_code_blocks(
             except Exception as run_exc:
                 runtime_errors.append(f"block_{idx}_runtime_error: {run_exc}")
 
+    if len(blocks) == 0:
+        return {
+            "status": "no_code_found",
+            "python_blocks_found": 0,
+            "all_blocks_verified_clean": None,
+            "syntax_errors": syntax_errors,
+            "rule4_import_hoist_violations": rule4_violations,
+            "rule7_placeholder_violations": rule7_placeholders,
+            "runtime_errors": runtime_errors,
+        }
+
     all_valid = (
         len(syntax_errors) == 0
         and len(rule4_violations) == 0
@@ -744,6 +980,7 @@ def verify_diamond_python_code_blocks(
         and len(runtime_errors) == 0
     )
     return {
+        "status": "clean" if all_valid else "violation_detected",
         "python_blocks_found": len(blocks),
         "all_blocks_verified_clean": all_valid,
         "syntax_errors": syntax_errors,
@@ -767,11 +1004,15 @@ class DiamondWheelEngine:
         max_primary_attempts: int = 6,
         max_fallback_attempts: int = 4,
         retry_sleep_fn: Optional[Callable[[float], Any]] = None,
+        inter_call_pacing_seconds: float = 0.0,
     ):
         self._custom_caller = llm_caller
         self._semaphore = asyncio.Semaphore(max(1, int(concurrency_limit)))
         self._max_primary_attempts = max(1, int(max_primary_attempts))
         self._max_fallback_attempts = max(1, int(max_fallback_attempts))
+        self._inter_call_pacing_seconds = max(0.0, float(inter_call_pacing_seconds or 0.0))
+        self._pacing_lock = asyncio.Lock()
+        self._last_dispatch_ts = 0.0
         if retry_sleep_fn is not None:
             self._sleep_fn = retry_sleep_fn
         elif llm_caller is not None:
@@ -822,12 +1063,22 @@ class DiamondWheelEngine:
           executa fins a `self._max_fallback_attempts` (4 per defecte) amb el mateix blindatge.
         """
         async with self._semaphore:
+            if self._inter_call_pacing_seconds > 0.0 and self._custom_caller is None:
+                async with self._pacing_lock:
+                    now_ts = time.perf_counter()
+                    elapsed_since_last = now_ts - self._last_dispatch_ts
+                    if self._last_dispatch_ts > 0.0 and elapsed_since_last < self._inter_call_pacing_seconds:
+                        await self._sleep_fn(self._inter_call_pacing_seconds - elapsed_since_last)
+                    self._last_dispatch_ts = time.perf_counter()
             t0 = time.perf_counter()
             if self._custom_caller is not None:
                 used_model = model_name
                 raw_res: Dict[str, Any] = {}
                 last_exc: Optional[Exception] = None
+                p_attempts_used = 0
+                fb_attempts_used = 0
                 for attempt in range(self._max_primary_attempts):
+                    p_attempts_used += 1
                     try:
                         cand_res = await self._custom_caller(
                             model_name,
@@ -854,6 +1105,7 @@ class DiamondWheelEngine:
                 if last_exc is not None:
                     if model_name != VIVEKA_WISDOM_MODEL:
                         for fb_attempt in range(self._max_fallback_attempts):
+                            fb_attempts_used += 1
                             try:
                                 cand_res = await self._custom_caller(
                                     VIVEKA_WISDOM_MODEL,
@@ -896,6 +1148,9 @@ class DiamondWheelEngine:
                     total_tokens=t_tok,
                     cost_usd=cost_usd,
                     latency_ms=round(dt_ms, 2),
+                    primary_attempts_used=p_attempts_used,
+                    fallback_attempts_used=fb_attempts_used,
+                    used_fallback_parachute=(used_model != model_name),
                 )
 
             from logic.engines.llm_gateway import LLMGateway
@@ -916,6 +1171,10 @@ class DiamondWheelEngine:
                 http_options=types.HttpOptions(
                     timeout=600_000,
                     retry_options=types.HttpRetryOptions(attempts=1),
+                    headers={
+                        "X-Vertex-AI-LLM-Request-Type": "shared",
+                        "X-Vertex-AI-LLM-Shared-Request-Type": "priority",
+                    },
                 ),
             )
 
@@ -960,7 +1219,10 @@ class DiamondWheelEngine:
             used_model = model_name
             text_out, p_tok, c_tok, t_tok = "", 0, 0, 0
             primary_Last_err: Optional[Exception] = None
+            p_attempts_used = 0
+            fb_attempts_used = 0
             for attempt in range(self._max_primary_attempts):
+                p_attempts_used += 1
                 try:
                     text_out, p_tok, c_tok, t_tok = await asyncio.to_thread(
                         _stream_generate_sync,
@@ -992,6 +1254,7 @@ class DiamondWheelEngine:
                     )
                     fb_last_err: Optional[Exception] = None
                     for fb_attempt in range(self._max_fallback_attempts):
+                        fb_attempts_used += 1
                         try:
                             text_out, p_tok, c_tok, t_tok = await asyncio.to_thread(
                                 _stream_generate_sync,
@@ -1033,6 +1296,9 @@ class DiamondWheelEngine:
                 total_tokens=t_tok,
                 cost_usd=cost_usd,
                 latency_ms=round(dt_ms, 2),
+                primary_attempts_used=p_attempts_used,
+                fallback_attempts_used=fb_attempts_used,
+                used_fallback_parachute=(used_model != model_name),
             )
 
     async def _run_single_diamond_round(
@@ -1154,26 +1420,38 @@ class DiamondWheelEngine:
             })
 
         # ---------------------------------------------------------------------
-        # ONA 2: ELS 4 VÈRTEXS AUDITORS ANTÍPODES (TETRA_B — ISOMORFISME CREUAT)
+        # ONA 2: ELS 4 VÈRTEXS AUDITORS ANTÍPODES (TETRA_B — ISOMORFISME CREUAT SENSE DUPLICACIÓ)
         # ---------------------------------------------------------------------
-        all_creations_cross_view = "\n\n".join(
-            f"--- CREATOR DIAGONAL {d_idx} ({creators[d_idx - 1].element_ca}) ---\n"
-            f"{creator_outputs_by_diag.get(d_idx, '')}"
-            for d_idx in range(1, 5)
+        auditor_base_context = (
+            f"\n\n{essence_header}"
+            + (
+                f"\n[INTERNAL AKASHIC & EPHEMERIS CONTEXT]\n{internal_context.strip()}\n"
+                if internal_context and internal_context.strip()
+                else ""
+            )
         )
         auditor_tasks = []
         for av in auditors:
             paired_creation = creator_outputs_by_diag.get(av.diagonal_index, "")
+            cross_matrix_view = "\n\n".join(
+                f"--- CREATOR DIAGONAL {d_idx} ({creators[d_idx - 1].element_ca}) ---\n"
+                + (
+                    f"[See PRIMARY PAIRED CREATOR PROPOSAL above ({len(paired_creation)} chars)]"
+                    if d_idx == av.diagonal_index
+                    else f"{creator_outputs_by_diag.get(d_idx, '')}"
+                )
+                for d_idx in range(1, 5)
+            )
             weight_role = "AXIAL AUDITOR (weight 2)" if av.diagonal_index == diag_active else "ORBITAL AUDITOR (weight 1)"
             a_prompt = (
                 f"[DIAMOND WHEEL — {av.title_ca} | Role: {weight_role}]\n"
-                f"ORIGINAL CHALLENGE:\n{clean_challenge}{base_context_block}\n\n"
+                f"ORIGINAL CHALLENGE:\n{clean_challenge}{auditor_base_context}\n\n"
                 f"PRIMARY PAIRED CREATOR PROPOSAL (Diagonal {av.diagonal_index} · {av.element_ca}):\n{paired_creation}\n\n"
                 f"CROSS-DIAGONAL ISOMORPHISM MATRIX (All 4 Wave-1 Creations: Fire Architecture, Earth Code, Air Math, Water Soul):\n"
-                f"{all_creations_cross_view}\n\n"
+                f"{cross_matrix_view}\n\n"
                 f"Perform your rigorous antipodal audit at T=0.0: verify exact mathematical isomorphism between "
                 f"Fire's proposal, Air's invariants, Earth's implementation, and Water's human sanctuary, "
-                f"and provide a concise, surgical list of exact fixes, edge cases, and mutant specifications for the Central Barycenter."
+                f"and provide a complete, surgical list of exact fixes, edge cases, and mutant specifications for the Central Barycenter."
             )
             auditor_tasks.append(
                 self._invoke_deep_think_node(
@@ -1354,6 +1632,216 @@ class DiamondWheelEngine:
         }
         return round_payload, call_ledger
 
+    async def _run_supreme_10_tribunals_dome(
+        self,
+        clean_challenge: str,
+        tier_norm: str,
+        prior_synthesis: str,
+        prior_code_verification: Optional[Dict[str, Any]],
+    ) -> Tuple[str, Dict[str, Any], List[Dict[str, Any]], List[DiamondCallAccounting]]:
+        """
+        Executa la Cúpula dels 10 Tribunals Suprems (`6 Sentinelles + 3 Forjadors + 1 Corona Suprema #46` = 10 crides Deep Think)
+        sobre la Síntesi de la 4a Volta per segellar el Mode d'Excel·lència Absoluta (`36 + 10 = 46 crides`).
+        """
+        tribunal_model = (
+            VIVEKA_WISDOM_MODEL
+            if tier_norm in ("wisdom", "flash", "3.8-flash")
+            else VIVEKA_CROWN_MODEL
+        )
+        crown_model = VIVEKA_CROWN_MODEL
+        dome_ledger: List[DiamondCallAccounting] = []
+        tribunal_reports: List[Dict[str, Any]] = []
+
+        ver_status_txt = (
+            "ALL AST & RUNTIME CHECKS GREEN"
+            if (prior_code_verification or {}).get("all_blocks_verified_clean", True)
+            else f"ISSUES DETECTED: {prior_code_verification}"
+        )
+
+        # Ona I de la Cúpula: Els 6 Sentinelles d'Inquisició (6 crides en paral·lel a T=0.0)
+        sentinel_tasks = []
+        for s_key, s_title, s_temp, s_sys in SUPREME_INQUISITION_6_SENTINELS:
+            s_prompt = (
+                f"[SUPREME DOME — {s_title}]\n"
+                f"ORIGINAL CHALLENGE:\n{clean_challenge}\n\n"
+                f"ROUND-4 BARYCENTER SYNTHESIS (AST/Runtime Status: {ver_status_txt}):\n"
+                f"{prior_synthesis}\n\n"
+                f"Deliver a dense, surgical audit report identifying any edge-case flaw, "
+                f"mathematical/cryptographic hazard, or missing test assertion, with exact code fixes."
+            )
+            sentinel_tasks.append(
+                self._invoke_deep_think_node(
+                    step_name=f"dome_10_{s_key}",
+                    model_name=tribunal_model,
+                    system_instruction=s_sys,
+                    user_prompt=s_prompt,
+                    temperature=s_temp,
+                )
+            )
+        sentinel_results = await asyncio.gather(*sentinel_tasks)
+
+        compiled_6_sentinels_parts: List[str] = []
+        for idx, ((s_key, s_title, s_temp, _), (s_text, s_acc)) in enumerate(
+            zip(SUPREME_INQUISITION_6_SENTINELS, sentinel_results), start=1
+        ):
+            dome_ledger.append(s_acc)
+            compiled_6_sentinels_parts.append(f"--- {s_title} ---\n{s_text}")
+            tribunal_reports.append({
+                "tribunal_index": idx,
+                "step_name": s_key,
+                "title": s_title,
+                "temperature": s_temp,
+                "output": s_text,
+                "accounting": {
+                    "model": s_acc.model_name,
+                    "prompt_tokens": s_acc.prompt_tokens,
+                    "candidates_tokens": s_acc.candidates_tokens,
+                    "total_tokens": s_acc.total_tokens,
+                    "cost_usd": s_acc.cost_usd,
+                    "latency_ms": s_acc.latency_ms,
+                },
+            })
+
+        compiled_6_sentinels = "\n\n".join(compiled_6_sentinels_parts)
+
+        # Ona II de la Cúpula: Els 3 Mestres Forjadors (3 crides en paral·lel a T=0.2)
+        forger_tasks = []
+        for f_key, f_title, f_temp, f_sys in SUPREME_INQUISITION_3_FORGERS:
+            f_prompt = (
+                f"[SUPREME DOME — {f_title}]\n"
+                f"ORIGINAL CHALLENGE:\n{clean_challenge}\n\n"
+                f"ROUND-4 SYNTHESIS:\n{prior_synthesis}\n\n"
+                f"REPORTS OF THE 6 SUPREME SENTINELS:\n{compiled_6_sentinels}\n\n"
+                f"Forge your specialized refinement so the 46th Supreme Crown Call can emit the flawless final crystal."
+            )
+            forger_tasks.append(
+                self._invoke_deep_think_node(
+                    step_name=f"dome_10_{f_key}",
+                    model_name=tribunal_model,
+                    system_instruction=f_sys,
+                    user_prompt=f_prompt,
+                    temperature=f_temp,
+                )
+            )
+        forger_results = await asyncio.gather(*forger_tasks)
+
+        compiled_3_forgers_parts: List[str] = []
+        for idx, ((f_key, f_title, f_temp, _), (f_text, f_acc)) in enumerate(
+            zip(SUPREME_INQUISITION_3_FORGERS, forger_results), start=7
+        ):
+            dome_ledger.append(f_acc)
+            compiled_3_forgers_parts.append(f"--- {f_title} ---\n{f_text}")
+            tribunal_reports.append({
+                "tribunal_index": idx,
+                "step_name": f_key,
+                "title": f_title,
+                "temperature": f_temp,
+                "output": f_text,
+                "accounting": {
+                    "model": f_acc.model_name,
+                    "prompt_tokens": f_acc.prompt_tokens,
+                    "candidates_tokens": f_acc.candidates_tokens,
+                    "total_tokens": f_acc.total_tokens,
+                    "cost_usd": f_acc.cost_usd,
+                    "latency_ms": f_acc.latency_ms,
+                },
+            })
+
+        compiled_3_forgers = "\n\n".join(compiled_3_forgers_parts)
+
+        # Ona III de la Cúpula: Crida #46 — La Corona Suprema del Baricentre (1 crida a T=1.0)
+        crown_46_sys = (
+            "You are the 46th Call — The Supreme Crown of the Central Barycenter (La Reina de la Rosa) "
+            f"at Homo Universalis ({SACRED_EQUATION}). "
+            "After 36 Deep Think calls across the 4 Elemental Spiral Rounds and 9 Supreme Inquisition Tribunals, "
+            "deliver the definitive, sovereign, non-truncated Masterpiece: "
+            "1) Formal Mathematical & Cryptographic Isomorphism Summary, "
+            "2) A single, complete, self-contained ```python ... ``` module implementing all required algorithms "
+            "with zero placeholders (Rule 7), zero local import hoists (Rule 4), pure Python stdlib imports, "
+            "and a comprehensive `run_self_tests()` function invoked under `if __name__ == '__main__':` "
+            "that verifies every invariant and adversarial mutant."
+        )
+        crown_46_prompt = (
+            f"ORIGINAL CHALLENGE:\n{clean_challenge}\n\n"
+            f"ROUND-4 SYNTHESIS:\n{prior_synthesis}\n\n"
+            f"THE 6 SUPREME SENTINEL AUDITS:\n{compiled_6_sentinels}\n\n"
+            f"THE 3 MASTER FORGER REFINEMENTS:\n{compiled_3_forgers}\n\n"
+            f"Emit the definitive 46-Call Diamond Masterpiece now."
+        )
+        final_text, crown_acc = await self._invoke_deep_think_node(
+            step_name="dome_10_call_46_supreme_barycenter_crown",
+            model_name=crown_model,
+            system_instruction=crown_46_sys,
+            user_prompt=crown_46_prompt,
+            temperature=1.0,
+            max_output_tokens=MAX_DEEP_THINK_OUTPUT_TOKENS,
+        )
+        dome_ledger.append(crown_acc)
+        tribunal_reports.append({
+            "tribunal_index": 10,
+            "step_name": "call_46_supreme_barycenter_crown",
+            "title": "Tribunal 10 (Crida #46) · La Corona Suprema del Baricentre (La Reina de la Rosa)",
+            "temperature": 1.0,
+            "output": final_text,
+            "accounting": {
+                "model": crown_acc.model_name,
+                "prompt_tokens": crown_acc.prompt_tokens,
+                "candidates_tokens": crown_acc.candidates_tokens,
+                "total_tokens": crown_acc.total_tokens,
+                "cost_usd": crown_acc.cost_usd,
+                "latency_ms": crown_acc.latency_ms,
+            },
+        })
+
+        final_code_ver = verify_diamond_python_code_blocks(
+            final_text, run_isolated_self_tests=True
+        )
+        if not final_code_ver["all_blocks_verified_clean"] or final_code_ver["python_blocks_found"] == 0:
+            dome_violations = (
+                final_code_ver["syntax_errors"]
+                + final_code_ver["rule4_import_hoist_violations"]
+                + final_code_ver["rule7_placeholder_violations"]
+                + final_code_ver["runtime_errors"]
+            )
+            if not dome_violations and final_code_ver["python_blocks_found"] == 0:
+                dome_violations = ["missing_python_code_block_in_call_46_output"]
+            dome_repair_prompt = (
+                f"ORIGINAL CHALLENGE:\n{clean_challenge}\n\n"
+                f"[AST, ARCHITECTURAL & RUNTIME SENTINEL REPORT — SELF-HEALING PASS REQUIRED]\n"
+                f"Your previous Call #46 draft contained the following exact compiler/rule/runtime violations:\n"
+                f"- {'; '.join(dome_violations)}\n\n"
+                f"PREVIOUS DRAFT:\n{final_text}\n\n"
+                f"Re-emit the complete, unified 46-Call Diamond Masterpiece fixing every syntax error, "
+                f"closing the ```python ... ``` fence cleanly, removing any function-level re-import of "
+                f"top-level modules (Rule 4), replacing all placeholders with complete working code (Rule 7), "
+                f"and fixing the exact runtime test/invariant failure."
+            )
+            final_text, dome_repair_acc = await self._invoke_deep_think_node(
+                step_name="dome_10_call_46_ast_kintsugi_self_heal",
+                model_name=crown_model,
+                system_instruction=crown_46_sys,
+                user_prompt=dome_repair_prompt,
+                temperature=0.0,
+                max_output_tokens=MAX_DEEP_THINK_OUTPUT_TOKENS,
+            )
+            dome_ledger.append(dome_repair_acc)
+            tribunal_reports[-1]["output"] = final_text
+            tribunal_reports[-1]["accounting"] = {
+                "model": dome_repair_acc.model_name,
+                "prompt_tokens": crown_acc.prompt_tokens + dome_repair_acc.prompt_tokens,
+                "candidates_tokens": crown_acc.candidates_tokens + dome_repair_acc.candidates_tokens,
+                "total_tokens": crown_acc.total_tokens + dome_repair_acc.total_tokens,
+                "cost_usd": round(crown_acc.cost_usd + dome_repair_acc.cost_usd, 6),
+                "latency_ms": round(crown_acc.latency_ms + dome_repair_acc.latency_ms, 2),
+            }
+            final_code_ver = verify_diamond_python_code_blocks(
+                final_text, run_isolated_self_tests=True
+            )
+            final_code_ver["self_healed_by_crown_46"] = True
+        else:
+            final_code_ver["self_healed_by_crown_46"] = False
+        return final_text, final_code_ver, tribunal_reports, dome_ledger
+
     async def run_diamond_wheel(
         self,
         challenge_prompt: str,
@@ -1363,6 +1851,7 @@ class DiamondWheelEngine:
         epoch: int = 1,
         internal_context: str = "",
         rounds: int = 1,
+        supreme_inquisition_10: bool = False,
     ) -> Dict[str, Any]:
         """
         Executa 1, 2, 3 o 4 Voltes (`rounds = 1..4`, fins a 36 picades base + Kintsugi AST)
@@ -1373,6 +1862,9 @@ class DiamondWheelEngine:
           rep la síntesi del Baricentre $k$ i el veredicte de l'analitzador AST, girant cíclicament
           la Diagonal Activa (`Foc -> Terra -> Aire -> Aigua` a $Z_4$) perquè els 4 Elements
           governin successivament el polit del cristall.
+        - Si `supreme_inquisition_10 = True` (la Cúpula dels 10 Tribunals Suprems), afegeix les
+          10 crides finals (`6 Sentinelles + 3 Forjadors + 1 Corona Suprema #46`), assolint les
+          `36 + 10 = 46 crides Deep Think` en `rounds = 4`.
         """
         if diag_active not in (1, 2, 3, 4):
             raise ValueError("diag_active must be 1 (Foc), 2 (Terra), 3 (Aire), or 4 (Aigua)")
@@ -1384,6 +1876,9 @@ class DiamondWheelEngine:
             raise ValueError("challenge_prompt cannot be empty")
 
         tier_norm = str(tier or "supreme").strip().lower()
+        if supreme_inquisition_10:
+            clean_rounds = 4
+            tier_norm = "supreme"
 
         all_call_ledger: List[DiamondCallAccounting] = []
         rounds_history: List[Dict[str, Any]] = []
@@ -1430,19 +1925,41 @@ class DiamondWheelEngine:
             current_diag = ((current_diag % 4) + 1)
             current_epoch += 1
 
+        if supreme_inquisition_10:
+            dome_text, dome_code_ver, dome_reports, dome_ledger = await self._run_supreme_10_tribunals_dome(
+                clean_challenge=clean_challenge,
+                tier_norm=tier_norm,
+                prior_synthesis=prior_synthesis,
+                prior_code_verification=prior_code_ver,
+            )
+            all_call_ledger.extend(dome_ledger)
+            last_round_payload["diamond_synthesis"] = dome_text
+            last_round_payload["code_verification"] = dome_code_ver
+            last_round_payload["supreme_inquisition_10_tribunals"] = dome_reports
+
         total_api_usd = sum(item.cost_usd for item in all_call_ledger)
         total_prompt_tok = sum(item.prompt_tokens for item in all_call_ledger)
         total_cand_tok = sum(item.candidates_tokens for item in all_call_ledger)
         total_all_tok = sum(item.total_tokens for item in all_call_ledger)
+        argon_calls = sum(1 for item in all_call_ledger if "4-argon" in str(item.model_name).lower())
+        fallback_calls = sum(1 for item in all_call_ledger if item.used_fallback_parachute)
+        total_http_attempts = sum(
+            int(item.primary_attempts_used) + int(item.fallback_attempts_used)
+            for item in all_call_ledger
+        )
         economy = compute_persephone_double_economy(total_api_usd)
 
         last_round_payload["rounds_completed"] = clean_rounds
+        last_round_payload["supreme_inquisition_10_enabled"] = bool(supreme_inquisition_10)
         last_round_payload["rounds_history"] = rounds_history
         last_round_payload["token_totals"] = {
             "prompt_tokens": total_prompt_tok,
             "candidates_tokens": total_cand_tok,
             "total_tokens": total_all_tok,
             "calls_count": len(all_call_ledger),
+            "argon_4_calls_count": argon_calls,
+            "fallback_parachute_calls_count": fallback_calls,
+            "total_http_attempts_including_retries": total_http_attempts,
         }
         last_round_payload["persephone_economy"] = economy
         return last_round_payload
@@ -1457,6 +1974,7 @@ async def execute_diamond_wheel_with_persephone(
     epoch: int = 1,
     internal_context: str = "",
     rounds: int = 1,
+    supreme_inquisition_10: bool = False,
     llm_caller: Optional[Callable[[str, str, str, float, int], Any]] = None,
     akasha_db_override: Any = None,
 ) -> Dict[str, Any]:
@@ -1469,7 +1987,9 @@ async def execute_diamond_wheel_with_persephone(
        ajusta la diferència respecte a la reserva i ingressa el 25% net al Graner de Demèter
        i el 25% net al Graner de Persèfone (`50% Foc Computacional + 50% Graners`).
     """
-    budget_info = estimate_diamond_wheel_seeds_budget(tier, rounds=rounds)
+    budget_info = estimate_diamond_wheel_seeds_budget(
+        tier, rounds=rounds, supreme_inquisition_10=supreme_inquisition_10
+    )
     min_reserve_seeds = int(budget_info["estimated_min_seeds"])
     max_cap_seeds = int(budget_info["guaranteed_max_cap_seeds"])
 
@@ -1537,6 +2057,7 @@ async def execute_diamond_wheel_with_persephone(
             epoch=epoch,
             internal_context=internal_context,
             rounds=rounds,
+            supreme_inquisition_10=supreme_inquisition_10,
         )
     except BaseException as exc:
         # E8: Escut de la Reina (inclou asyncio.CancelledError que hereta de BaseException)
@@ -1669,10 +2190,11 @@ _CANONICAL_22_MUTANTS_CATALOG: Tuple[Tuple[str, str, str, str], ...] = (
 
 def run_diamond_crucible_verification(
     custom_manifest: Optional[Dict[str, Any]] = None,
-    custom_code_markdown: str = "",
+    custom_code_markdown: Optional[str] = None,
     diag_active: int = 2,
     d_id: str = "diamond-crucible-v1",
     epoch: int = 1,
+    code_markdown_provided: bool = False,
 ) -> Dict[str, Any]:
     """
     Executa en viu (< 2 ms, Zero-Auth, 0.00 €) el Verificador Criptogràfic i Matemàtic
@@ -1718,10 +2240,26 @@ def run_diamond_crucible_verification(
     ]
     none_states = 0
     origin_states = 0
+    equal_weight_origin_states = 0
     singlet_states = 0
     dynamic_states = 0
     for mask in range(256):
         subset = [all_8_seats[bit] for bit in range(8) if (mask >> bit) & 1]
+        if subset:
+            eq_sx = sum(
+                (TETRA_CREATORS[j][0] if kind == "ia" else TETRA_AUDITORS[j][0])
+                for j, kind in subset
+            )
+            eq_sy = sum(
+                (TETRA_CREATORS[j][1] if kind == "ia" else TETRA_AUDITORS[j][1])
+                for j, kind in subset
+            )
+            eq_sz = sum(
+                (TETRA_CREATORS[j][2] if kind == "ia" else TETRA_AUDITORS[j][2])
+                for j, kind in subset
+            )
+            if (eq_sx, eq_sy, eq_sz) == (0, 0, 0):
+                equal_weight_origin_states += 1
         bary = compute_diamond_barycenter_exact(subset, diag_active=clean_diag)
         if bary is None:
             none_states += 1
@@ -1735,6 +2273,7 @@ def run_diamond_crucible_verification(
     partition_256_verified = (
         none_states == 1
         and origin_states == 15
+        and equal_weight_origin_states == 17
         and singlet_states == 8
         and dynamic_states == 232
         and (none_states + origin_states + singlet_states + dynamic_states) == 256
@@ -1817,11 +2356,15 @@ def run_diamond_crucible_verification(
         and len(ast_negative_check["rule7_placeholder_violations"]) >= 1
     )
 
-    custom_code_audit = (
-        verify_diamond_python_code_blocks(custom_code_markdown)
-        if str(custom_code_markdown or "").strip()
-        else None
-    )
+    raw_custom_md = str(custom_code_markdown or "")
+    has_custom_code = bool(code_markdown_provided or raw_custom_md.strip())
+    has_custom_manifest = bool(isinstance(custom_manifest, dict) and custom_manifest)
+    has_user_input = has_custom_code or has_custom_manifest
+    custom_code_audit: Optional[Dict[str, Any]] = None
+    if has_custom_code:
+        custom_code_audit = verify_diamond_python_code_blocks(raw_custom_md)
+        custom_code_audit["input_sha256"] = hashlib.sha256(raw_custom_md.encode("utf-8")).hexdigest()
+        custom_code_audit["assurance"] = USER_SUBMISSION_ASSURANCE
 
     # 4. Catàleg verificat dels 22 Mutants Adversaris abatuts
     mutants_report = [
@@ -1835,37 +2378,53 @@ def run_diamond_crucible_verification(
         for (m_id, law, sw, desc) in _CANONICAL_22_MUTANTS_CATALOG
     ]
 
-    elapsed_ms = round((time.perf_counter() - t0) * 1000.0, 3)
+    elapsed_us = int(round((time.perf_counter() - t0) * 1_000_000.0))
+    invariants_passed = bool(
+        antipodal_pairs_ok
+        and rm_codewords_min_dist == 4
+        and partition_256_verified
+        and manifest_verified_clean
+        and ast_positive_check["all_blocks_verified_clean"] is True
+        and negative_mutant_caught
+        and (
+            custom_code_audit is None
+            or (
+                custom_code_audit["python_blocks_found"] > 0
+                and custom_code_audit["all_blocks_verified_clean"] is True
+            )
+        )
+    )
 
     return {
-        "benchmark_suite": "HU-DIAMOND-CRUCIBLE v1.1 — Reed-Muller RM(1,3) [8,4,4]_2 & 22-Adversary Formal Verifier",
-        "spec": HU_DIAMOND_SPEC,
+        "benchmark_suite": "HU-DIAMOND-CRUCIBLE v2.0 — Reed-Muller RM(1,3) [8,4,4]_2 & 22-Adversary Formal Verifier",
+        "spec": HU_DIAMOND_V2_SPEC if has_user_input else HU_DIAMOND_SPEC,
+        "schema_version": HU_DIAMOND_V2_SPEC,
         "sacred_equation": SACRED_EQUATION,
-        "execution_time_ms": elapsed_ms,
-        "all_invariants_verified": (
-            antipodal_pairs_ok
-            and rm_codewords_min_dist == 4
-            and partition_256_verified
-            and manifest_verified_clean
-            and ast_positive_check["all_blocks_verified_clean"]
-            and negative_mutant_caught
-            and (custom_code_audit is None or custom_code_audit["all_blocks_verified_clean"])
-        ),
+        "execution_time_us": elapsed_us,
+        "self_check_passed": invariants_passed,
+        "all_invariants_verified": invariants_passed,
         "reed_muller_geometry_proof": {
             "polytope": "Octaedron Elevatum Vacuus (Stella Octangula = TETRA_A U TETRA_B in [-1,+1]^3)",
             "symmetry_group_quotient": "|O_h| / |D_3d| = 48 / 12 = 4 body diagonals",
             "linear_code": "Reed-Muller RM(1,3) = [8, 4, 4]_2 self-dual antipodal code",
             "minimum_hamming_distance": rm_codewords_min_dist,
             "antipodal_inversion_zero_sum": antipodal_pairs_ok,
+            "vertices_1_to_8": {str(k): list(v) for k, v in VERTICES_1_TO_8.items()},
+            "diagonals_d1_to_d4": {str(k): list(v) for k, v in DIAGONALS_D1_TO_D4.items()},
+            "barycenter_weighting": BARYCENTER_WEIGHTING,
             "state_space_256_partition": {
+                "weighting": BARYCENTER_WEIGHTING,
                 "total_states": 256,
                 "empty_silence_none": none_states,
                 "exact_equilibrium_origin_0_0_0": origin_states,
+                "equal_weight_equilibrium_origin_0_0_0": equal_weight_origin_states,
                 "singlets": singlet_states,
                 "dynamic_states": dynamic_states,
                 "partition_verified": partition_256_verified,
             },
             "active_diagonal": clean_diag,
+            "active_diagonal_seat_pair": list(DIAGONALS_D1_TO_D4[clean_diag]),
+            "active_diagonal_vertices": get_active_diagonal_vertices(clean_diag),
             "golden_barycenter_ia4": [str(x) for x in bary_ia4] if bary_ia4 else None,
             "golden_barycenter_hu4": [str(x) for x in bary_hu4] if bary_hu4 else None,
             "equilibrium_barycenter_all8": [str(x) for x in bary_all8] if bary_all8 else None,
@@ -1879,7 +2438,7 @@ def run_diamond_crucible_verification(
         "adversarial_mutant_crucible": {
             "total_mutants_tested": len(mutants_report),
             "mutants_killed": len(mutants_report),
-            "kill_rate_pct": 100.0,
+            "kill_rate_pct": 100,
             "laws_covered": ["L1", "L2", "L3", "L4", "L5", "L6", "L7", "B"],
             "mutants": mutants_report,
         },

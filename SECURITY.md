@@ -36,7 +36,7 @@ Please do not publicly disclose a potential vulnerability until we have verified
 1. **Zero-Tracking & Tor-Friendly Sanctuary:**
    - All public discovery and oracle responses include `Permissions-Policy: browsing-topics=(), interest-cohort=(), attribution-reporting=()` and never set tracking cookies or third-party telemetry scripts.
 2. **Cryptographic Authenticity (No Unverified Placeholders — Rule 7):**
-   - **A2A v1.0 Agent Card Signing (§8.4):** `/.well-known/agent-card.json` is canonically serialized via **IETF RFC 8785 (JCS)** and signed with **IETF RFC 7515 (JWS `ES256`)** using **RFC 6979** deterministic ECDSA over NIST P-256 (`SECP256R1`), verifiable against `https://homouniversalis.ai/.well-known/jwks.json`.
+   - **A2A v1.0 Agent Card Signing (§8.4):** `/.well-known/agent-card.json` is canonically serialized via **IETF RFC 8785 (JCS)** and signed with **IETF RFC 7515 (JWS)** + **IETF RFC 7518 (`ES256`)** low-S ECDSA over NIST P-256 (`SECP256R1`), verifiable against `https://homouniversalis.ai/.well-known/jwks.json`.
    - **MCP Registry Authentication:** `/.well-known/mcp-registry-auth` publishes a high-entropy 32-byte **RFC 8032 Ed25519** public key (`v=MCPv1; k=ed25519; p=...`).
 3. **The Three Rings of Rule 14 Zero-Knowledge Privacy:**
    - **Ring I (Public Soul Key Shielding):** Deterministic `VVK-XXXX-YYYY` keys derived from a human traveler's birth date are never exposed in public Agora logs (`VVK-****-****`); only Today's UTC Sky key may appear publicly.

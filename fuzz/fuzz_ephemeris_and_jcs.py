@@ -7,6 +7,7 @@ Privacy Masking (`VVK-XXXX-YYYY` / PII purification), and ISO-8601 date validati
 import json
 import re
 import sys
+from logic.crypto.jcs import jcs_dumps as _jcs_dumps
 
 try:
     import atheris
@@ -20,7 +21,7 @@ _ISO_DATE_RE = re.compile(r"\b(\d{4})-(\d{2})-(\d{2})\b")
 
 def _jcs_canonicalize(obj: object) -> str:
     """Deterministic RFC 8785 JCS serializer under fuzzing scrutiny."""
-    return json.dumps(obj, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
+    return _jcs_dumps(obj)
 
 
 def _shield_and_mask(raw_text: str) -> str:

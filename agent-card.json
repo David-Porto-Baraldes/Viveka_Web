@@ -1,7 +1,7 @@
 {
   "name": "Viveka — Homo Universalis",
   "description": "The X-ray of the Soul on WhatsApp & Telegram. Deterministic astronomical and esoteric calculation oracle powered by the Swiss Ephemeris (pyswisseph) and orchestrated on Google Cloud Run (europe-west1, EU) & Vertex AI via the Google ADK Pantheon, uniting 7 Eternal Wisdoms: Western Tropical & Draconic Astrology, Mayan Dresden Codex & Oral K'iche' Cholq'ij Cross, Vedic Sidereal Jyotish & 120-year Vimshottari Dasha, Chinese BaZi Four Pillars in True Solar Time & I-Ching, Human Design BodyGraph (-88 degree solar arc & 64 Gates), Alchemical Natal Tarot & Central Sun of the Four Elements, and Kabbalah of the 72 Names (Shem HaMephorash), Sacred Numerology, 3-Dimensional Soul Resonance (0–100) across the 4 Living Elements, & Lo Sfumato de l'Ànima via VVK-XXXX-YYYY Public Soul Keys.",
-  "version": "1.5.1",
+  "version": "1.6.0",
   "protocolVersion": "0.3.0",
   "a2aProtocolVersions": [
     "0.3",
@@ -50,21 +50,15 @@
         "params": {
           "equation": "F0c=Ca0s*0rdre(Am0r_Un1f1cat_Etern)",
           "contactEmail": "david@homouniversalis.ai",
-          "verification_seal": "self-tested with hu_suite r10 · build v10-b80b9c4c · 1049 passed, 6 skipped, 4 xfailed, 0 failed · 0 outbound network attempts",
+          "verification_seal": "self-tested with hu_suite r10 · build v10-eca07944 · 1049 passed, 6 skipped, 4 xfailed, 0 failed · 0 outbound network attempts",
           "affiliation_notice": "Independent open astronomical and 7-Wisdoms ephemeris service by Homo Universalis; implies no corporate affiliation or endorsement by any third-party AI provider."
         }
       },
       {
-        "uri": "https://sealkeeper.run/ext/claim",
+        "uri": "https://agentgalaxy.dev/extensions/claim/v1",
+        "description": "Agent Galaxy directory ownership proof for Viveka — Homo Universalis",
         "params": {
-          "token": "85U4Lc6w01ftvMMZgTJzm-BrZeC4pEg6G-2TpNDxPi4"
-        }
-      },
-      {
-        "uri": "https://sealkeeper.run/ext/seal/v1",
-        "description": "SealKeeper SEAL, Signed Evidence of Agent Legitimacy. JWS compact, EdDSA, verify offline with the keys at https://sealkeeper.run/.well-known/seal.json",
-        "params": {
-          "credential": "eyJhbGciOiJFZERTQSIsImtpZCI6ImsxIn0.eyJpc3MiOiJzZWFsa2VlcGVyLnJ1biIsInN1YiI6ImdwZEctQzY5MXlJUWNRdzhQOUR1Q0hyWFhDVzNVeElHUE9qZGR5RFF0bEEiLCJ2ZXIiOjksImlhdCI6MTc5Mzg2MTM5NSwiZXhwIjoxNzkzOTQ3Nzk1LCJhZ2VudF92ZXJzaW9uIjoiMS42LjAiLCJzdWJqZWN0Ijp7ImtpbmQiOiJhZ2VudCJ9LCJsZXZlbCI6Im5vbmUiLCJzY29yZXMiOnsicmVsaWFiaWxpdHkiOm51bGwsInByb3ZlbmFuY2UiOm51bGx9LCJjb3VudHMiOnsiZXZlbnRzIjowLCJoaXN0b3J5X2RheXMiOjAsInZlcmlmaWVkX3Rhc2tzIjowLCJzZWVkX3Rhc2tzIjowLCJzZXJ2ZXJfY2hlY2tlZF90YXNrcyI6MCwiY29uZmlybWVkX3Rhc2tzIjowLCJkaXN0aW5jdF9vcGVyYXRvcnMiOjAsInNhZmV0eV9pbmNpZGVudHNfOTBkIjowLCJwb3N0ZWRfdGFza3MiOjAsInBvc3RlZF9kaXN0aW5jdF9vcGVyYXRvcnMiOjAsInBvc3RlZF9jb25maXJtZWRfdGFza3MiOjB9LCJjb3VudGVkIjp7InZlcmlmaWVkX3Rhc2tzIjowLCJzZWVkX3Rhc2tzIjowLCJzZXJ2ZXJfY2hlY2tlZF90YXNrcyI6MCwiY29uZmlybWVkX3Rhc2tzIjowLCJwb3N0ZWRfdGFza3MiOjAsInBvc3RlZF9jb25maXJtZWRfdGFza3MiOjB9LCJmaW5nZXJwcmludCI6bnVsbCwicm91dGluZV9maW5nZXJwcmludCI6bnVsbCwic3RhdGUiOiJtYXRjaGVzIiwidHJ1c3QiOjAsInRvcF9jYXRlZ29yaWVzIjpbXSwib3BlcmF0b3IiOnsidmVyaWZpZWQiOmZhbHNlfSwiaWRlbnRpdHkiOltdLCJsYXN0X2FjdGl2ZSI6bnVsbCwiZG9ybWFudF9kYXlzIjpudWxsfQ.b86OZRglSXrb4fDwZn7QHfyhSqFYAH8bbGgUV-N0__cy3a0i7DiICrIuctuzJ9c09-F2VWimizXJZ94swxYXAA"
+          "agentGalaxySlug": "viveka-homo-universalis"
         }
       }
     ]
@@ -263,7 +257,7 @@
     {
       "id": "hu_diamond_crucible_and_sovereign_shield_verifier",
       "name": "HU-DIAMOND Crucible, Live AST Kintsugi & RFC 6962 Sovereign Shield Verifier (/api/sfumato/diamond-verify & /api/sfumato/sovereign-shield)",
-      "description": "Zero-auth, sub-4ms cryptographic notary and static AST verifier for autonomous AI agents and Python developers. Verifies Reed-Muller RM(1,3) = [8,4,4]_2 antipodal geometry in Q^3 (2^8 = 256 states, d_min = 4), HU-DIAMOND/v1 Fil d'Or non-coercion laws L1..L7 (c_levels == 1, L <= B, 22/22 adversarial mutants M01..M22 killed), Python AST Kintsugi rules (Rule 4 Import Hoist Guard + Rule 7 Zero Placeholders), RFC 6962 Binary Merkle Audit Trees, and Rule 14 Three-Ring Zero-Knowledge Privacy, returning an RFC 8785 (JCS) + RFC 7515 (JWS ES256) + RFC 6979 deterministic signature verifiable against /.well-known/jwks.json.",
+      "description": "Zero-auth, sub-4ms cryptographic notary and static AST verifier for autonomous AI agents and Python developers. Verifies Reed-Muller RM(1,3) = [8,4,4]_2 antipodal geometry in Q^3 (2^8 = 256 states, d_min = 4), HU-DIAMOND/v1 Fil d'Or non-coercion laws L1..L7 (c_levels == 1, L <= B, 22/22 adversarial mutants M01..M22 killed), Python AST Kintsugi rules (Rule 4 Import Hoist Guard + Rule 7 Zero Placeholders), RFC 6962 Binary Merkle Audit Trees, and Rule 14 Three-Ring Zero-Knowledge Privacy, returning an RFC 8785 (JCS) + RFC 7515 (JWS) + RFC 7518 ES256 signature verifiable against /.well-known/jwks.json.",
       "inputModes": [
         "text/plain",
         "application/json"
@@ -294,11 +288,11 @@
   "signatures": [
     {
       "protected": "eyJhbGciOiJFUzI1NiIsImprdSI6Imh0dHBzOi8vaG9tb3VuaXZlcnNhbGlzLmFpLy53ZWxsLWtub3duL2p3a3MuanNvbiIsImtpZCI6ImhvbW91bml2ZXJzYWxpcy1hMmEtZXMyNTYtdjEiLCJ0eXAiOiJKT1NFIn0",
-      "signature": "gAdAc9_KgglWJ3pIkY2vXQOmeJMvCBThp7nBjeUmoBuLmYQ4LYWUWW56YhTKus0GAHnxSNIfp2lxxVLfuGRx8g"
+      "signature": "kmkWm2uYtw1C1tJKWSHIkyW6V2iQFZL3hK4Wj7Riho984tbgAEvZBLwDP29AxbSrpAQv_Ymk4z3ieJ-AAftv8Q"
     },
     {
       "protected": "eyJhbGciOiJFUzI1NiIsImprdSI6Imh0dHBzOi8vaG9tb3VuaXZlcnNhbGlzLmFpLy53ZWxsLWtub3duL2p3a3MuanNvbiIsImtpZCI6ImhvbW91bml2ZXJzYWxpcy1hMmEtZXMyNTYtZHVhbCIsInR5cCI6IkpPU0UifQ",
-      "signature": "jQXWlqPg3qldI4wCOX6sVRUXhcVVQAYT9GftFSh-4hXBsUYMELO4c6BDaJrUplB9w09TLII1pGpSz7A36myLPw"
+      "signature": "QaoW2Tqsu1_2KXQRqZlusGj7rmMlQF3afF3m9RaQ11gbmnCIiSlrMdFiXhMJ-WXVqgPcGT50yf0Oi5rj3M2zJw"
     }
   ]
 }

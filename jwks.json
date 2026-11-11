@@ -5,6 +5,15 @@
       "crv": "P-256",
       "use": "sig",
       "alg": "ES256",
+      "kid": "a2a-card",
+      "x": "lm9POugGLTV8nNNnHxsk7o8D7QRUt6Lb_ApQnt9ZIXc",
+      "y": "Si9uDk7xQ7uVpyNrzM4yvjGgYaBb5f8iOChkPznBt9o"
+    },
+    {
+      "kty": "EC",
+      "crv": "P-256",
+      "use": "sig",
+      "alg": "ES256",
       "kid": "homouniversalis-a2a-es256-v1",
       "x": "lm9POugGLTV8nNNnHxsk7o8D7QRUt6Lb_ApQnt9ZIXc",
       "y": "Si9uDk7xQ7uVpyNrzM4yvjGgYaBb5f8iOChkPznBt9o"
@@ -15,8 +24,44 @@
       "use": "sig",
       "alg": "ES256",
       "kid": "homouniversalis-a2a-es256-dual",
-      "x": "lm9POugGLTV8nNNnHxsk7o8D7QRUt6Lb_ApQnt9ZIXc",
-      "y": "Si9uDk7xQ7uVpyNrzM4yvjGgYaBb5f8iOChkPznBt9o"
+      "x": "kxVS_hKh2qNCQqBX7BQmVuC_GI4Im3iCOnqhQg_hXHw",
+      "y": "tN8sOTsSIyG4MzTNChyjA2ctRffvS1P9QwOjtyGCA_s"
+    },
+    {
+      "kty": "EC",
+      "crv": "P-256",
+      "use": "sig",
+      "alg": "ES256",
+      "kid": "server-attestation",
+      "x": "nhM_ZyErOqfzoe_2UcwzETly1HIWIfTpOoZUaqFc1eQ",
+      "y": "9N28iXaOGl0GitY9VwNlqCo5VAWU0nWlMK5whiRT-zU"
+    },
+    {
+      "kty": "EC",
+      "crv": "P-256",
+      "use": "sig",
+      "alg": "ES256",
+      "kid": "user-submission-receipt",
+      "x": "u9tfO8EFLgHHF_Srtf4LV3b9RB32_3-zinINjd2U8_c",
+      "y": "AdmyDdBflDJQCPoHmQmUz2WMeqpPm_0QbdfhRm9Aedk"
+    },
+    {
+      "kty": "EC",
+      "crv": "P-256",
+      "use": "sig",
+      "alg": "ES256",
+      "kid": "maat-vc-es256-2026-1",
+      "x": "Mg7vqxcuGN6nZtrVd4cKNk5i06vWR7vC3N6MmmizsJk",
+      "y": "Epi9CrG_U8a8yK6AwosW3TNK8F05p4MoSTd3ygwH0cQ"
+    },
+    {
+      "kty": "EC",
+      "crv": "P-256",
+      "use": "sig",
+      "alg": "ES256",
+      "kid": "hu-log-sth-es256-2026-1",
+      "x": "AnnddyCWLc_RMnT_y1S3q5r9fZ4cnREcTPCVR_YxNzQ",
+      "y": "erWdwA6_5JrirBa69rOQr2rXB2qJWr7OV_aUgwIqum0"
     }
   ]
 }

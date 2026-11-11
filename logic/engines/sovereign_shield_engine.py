@@ -20,6 +20,7 @@ import json
 import re
 from typing import Any, Mapping, Sequence
 import unicodedata
+from logic.crypto.jcs import jcs_signable_bytes as _jcs_signable_bytes
 
 
 # ============================================================================
@@ -147,12 +148,18 @@ def _to_bytes(data: bytes | str) -> bytes:
 
 @dataclass(frozen=True)
 class MerkleInclusionProof:
-    """RFC 6962 §2.1.1 Merkle audit inclusion proof."""
+    """
+    RFC 6962 §2.1.1 Merkle audit inclusion proof (`WO-02`).
+
+    `claimed_root` is informational generator output only; verification functions
+    (`verify_inclusion`, `verify_rfc6962_inclusion_proof`) never read the root
+    from the proof object and require an explicit caller-supplied `trusted_root` / `expected_root_hex`.
+    """
 
     leaf_index: int
     tree_size: int
     audit_path: tuple[str, ...]
-    root_hash: str
+    claimed_root: str = ""
     leaf_hash: str = ""
 
     @property
@@ -160,8 +167,12 @@ class MerkleInclusionProof:
         return self.audit_path
 
     @property
+    def root_hash(self) -> str:
+        return self.claimed_root
+
+    @property
     def root_hash_hex(self) -> str:
-        return self.root_hash
+        return self.claimed_root
 
     @property
     def leaf_hash_hex(self) -> str:
@@ -244,47 +255,53 @@ def generate_rfc6962_inclusion_proof(
         leaf_index=leaf_index,
         tree_size=tree_size,
         audit_path=path_hex,
-        root_hash=root_hex,
+        claimed_root=root_hex,
         leaf_hash=leaf_hashes[leaf_index].hex(),
     )
 
 
-def verify_rfc6962_inclusion_proof(
-    leaf: bytes | str,
-    proof: MerkleInclusionProof,
-    expected_root_hex: str | None = None,
+def _coerce_digest_32(value: bytes | str) -> bytes | None:
+    if isinstance(value, (bytes, bytearray)):
+        raw = bytes(value)
+        return raw if len(raw) == 32 else None
+    if isinstance(value, str) and len(value) == 64:
+        try:
+            return bytes.fromhex(value)
+        except ValueError:
+            return None
+    return None
+
+
+def verify_inclusion(
+    leaf_hash: bytes | str,
+    index: int,
+    tree_size: int,
+    path: Sequence[bytes | str],
+    *,
+    trusted_root: bytes | str,
 ) -> bool:
     """
-    Verify an RFC 6962 inclusion proof in constant digest comparison time.
-    Rejects out-of-bounds indices, booleans, malformed hex, wrong path lengths,
-    and second-preimage internal-node-as-leaf forgeries.
+    RFC 9162 §2.1.3.2 / RFC 6962 §2.1.1 Merkle inclusion verifier (`WO-02` §2.1).
+
+    Reconstructs the root from `leaf_hash` (`SHA-256(0x00 || leaf)`), `index`, `tree_size`,
+    and `path`, and compares it in constant time against the mandatory `trusted_root`.
+    Never reads any root from a proof object.
     """
-    if not _is_strict_int(proof.tree_size) or not _is_strict_int(proof.leaf_index):
+    if not _is_strict_int(tree_size) or not _is_strict_int(index):
         return False
-    if proof.tree_size < 1 or not (0 <= proof.leaf_index < proof.tree_size):
+    if tree_size < 1 or not (0 <= index < tree_size):
         return False
-    if not isinstance(proof.audit_path, (tuple, list)):
-        return False
-    if not isinstance(proof.root_hash, str) or len(proof.root_hash) != 64:
-        return False
-    try:
-        target_root_bytes = bytes.fromhex(proof.root_hash)
-    except ValueError:
+    if isinstance(path, (str, bytes)) or not isinstance(path, Sequence):
         return False
 
-    if expected_root_hex is not None:
-        if not isinstance(expected_root_hex, str) or len(expected_root_hex) != 64:
-            return False
-        try:
-            expected_bytes = bytes.fromhex(expected_root_hex)
-        except ValueError:
-            return False
-        if not hmac.compare_digest(target_root_bytes, expected_bytes):
-            return False
+    current = _coerce_digest_32(leaf_hash)
+    target_root_bytes = _coerce_digest_32(trusted_root)
+    if current is None or target_root_bytes is None:
+        return False
 
     turns: list[bool] = []
-    m = proof.leaf_index
-    n = proof.tree_size
+    m = index
+    n = tree_size
     while n > 1:
         k = _largest_power_of_two_less_than(n)
         if m < k:
@@ -295,26 +312,12 @@ def verify_rfc6962_inclusion_proof(
             m -= k
             n -= k
 
-    if len(proof.audit_path) != len(turns):
+    if len(path) != len(turns):
         return False
 
-    current = hash_rfc6962_leaf(leaf)
-    if proof.leaf_hash:
-        if not isinstance(proof.leaf_hash, str) or len(proof.leaf_hash) != 64:
-            return False
-        try:
-            proof_leaf_bytes = bytes.fromhex(proof.leaf_hash)
-        except ValueError:
-            return False
-        if not hmac.compare_digest(current, proof_leaf_bytes):
-            return False
-
-    for is_right_child, sibling_hex in zip(reversed(turns), proof.audit_path):
-        if not isinstance(sibling_hex, str) or len(sibling_hex) != 64:
-            return False
-        try:
-            sibling_bytes = bytes.fromhex(sibling_hex)
-        except ValueError:
+    for is_right_child, sibling in zip(reversed(turns), path):
+        sibling_bytes = _coerce_digest_32(sibling)
+        if sibling_bytes is None:
             return False
         if is_right_child:
             current = hash_rfc6962_children(sibling_bytes, current)
@@ -322,6 +325,48 @@ def verify_rfc6962_inclusion_proof(
             current = hash_rfc6962_children(current, sibling_bytes)
 
     return hmac.compare_digest(current, target_root_bytes)
+
+
+def verify_rfc6962_inclusion_proof(
+    leaf: bytes | str,
+    proof: MerkleInclusionProof,
+    expected_root_hex: bytes | str,
+) -> bool:
+    """
+    Verify an RFC 6962 inclusion proof against a mandatory caller-supplied `expected_root_hex` (`WO-02`).
+
+    Never reads `claimed_root` from `proof`; `expected_root_hex` MUST come from a trusted STH or caller root.
+    Rejects out-of-bounds indices, booleans, malformed hex, wrong path lengths,
+    and second-preimage internal-node-as-leaf forgeries.
+    """
+    if not isinstance(proof, MerkleInclusionProof):
+        return False
+    if not _is_strict_int(proof.tree_size) or not _is_strict_int(proof.leaf_index):
+        return False
+    if proof.tree_size < 1 or not (0 <= proof.leaf_index < proof.tree_size):
+        return False
+    if not isinstance(proof.audit_path, (tuple, list)):
+        return False
+
+    target_root_bytes = _coerce_digest_32(expected_root_hex)
+    if target_root_bytes is None:
+        return False
+
+    current = hash_rfc6962_leaf(leaf)
+    if proof.leaf_hash:
+        proof_leaf_bytes = _coerce_digest_32(proof.leaf_hash)
+        if proof_leaf_bytes is None:
+            return False
+        if not hmac.compare_digest(current, proof_leaf_bytes):
+            return False
+
+    return verify_inclusion(
+        current,
+        proof.leaf_index,
+        proof.tree_size,
+        proof.audit_path,
+        trusted_root=target_root_bytes,
+    )
 
 
 # ============================================================================
@@ -460,12 +505,7 @@ class SovereignDignityReceipt:
 
 
 def _canonical_json_bytes(payload: Mapping[str, Any]) -> bytes:
-    return json.dumps(
-        payload,
-        sort_keys=True,
-        separators=(",", ":"),
-        ensure_ascii=False,
-    ).encode("utf-8")
+    return _jcs_signable_bytes(payload)
 
 
 def issue_sovereign_dignity_receipt(
@@ -839,6 +879,7 @@ __all__ = [
     "issue_sovereign_dignity_receipt",
     "run_sovereign_shield_selftest",
     "sanitize_three_rings_zk",
+    "verify_inclusion",
     "verify_rfc6962_inclusion_proof",
     "verify_sovereign_dignity_receipt",
 ]
@@ -906,7 +947,7 @@ def run_sovereign_shield_selftest() -> dict[str, Any]:
         leaf_index=v1["leaf_2_proof"]["leaf_index"],
         tree_size=v1["leaf_2_proof"]["tree_size"],
         audit_path=tuple(v1["leaf_2_proof"]["audit_path"]),
-        root_hash=v1["root_hash"],
+        claimed_root=v1["root_hash"],
         leaf_hash=v1["leaf_2_proof"]["leaf_hash"],
     )
     assert verify_rfc6962_inclusion_proof("pearl-2", proof, expected_root_hex=v1["root_hash"]) is True
@@ -916,7 +957,7 @@ def run_sovereign_shield_selftest() -> dict[str, Any]:
     h0 = hash_rfc6962_leaf("a")
     h1 = hash_rfc6962_leaf("b")
     root_2 = build_rfc6962_merkle_root(["a", "b"])
-    forged_proof = MerkleInclusionProof(leaf_index=0, tree_size=1, audit_path=(), root_hash=root_2)
+    forged_proof = MerkleInclusionProof(leaf_index=0, tree_size=1, audit_path=(), claimed_root=root_2)
     assert verify_rfc6962_inclusion_proof(b"\x01" + h0 + h1, forged_proof, expected_root_hex=root_2) is False
 
     # M2: Hamilton tie-break by weight (-remainder, -weight, index)
