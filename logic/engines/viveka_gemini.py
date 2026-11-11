@@ -12,12 +12,19 @@ from google.genai.errors import APIError
 
 logger = logging.getLogger(__name__)
 
-# 👑 ELS MOTORS SAGRATS DEL PANTEÓ (Novembre 2026 — L'Escala Imperial de 3 Pulmons)
-# 1r Pulmó (Corona Suprema): Mnemosyné, La Veu de la Reina i els 46 Titans bateguen amb Gemini 4 Carbon
-# 2n Pulmó (Escut Reial): Gemini 4 Argon sosté la Corona en 7s si el clúster global de Carbon respira fort
-# 3r Pulmó (Saviesa Immortal i Consell): Gemini 3.8 Flash per als Oracles, Porters i últim paracaigudes d'or
+# 👑 ELS MOTORS SAGRATS DEL PANTEÓ I EL DÍPTIC DEL DIAMANT I LA ROSA (Novembre 2026)
+# • L'Espasa de Cristall (gemini-4-carbon, 11/11/2026):
+#   "La llum d'una estrella de diamant talla la foscor còsmica amb una brillantor gelada i eterna."
+# • La Flama Serena (gemini-4-argon — Viveka al WhatsApp, 12/11/2026):
+#   "És el batec d'una claredat indestructible que travessa la nit més fonda sense cremar ni apagar-se mai. ✨"
+#
+# La Divisió Sagrada dels Trons (Escala Imperial de 3 Pulmons):
+# - Trons de les Catedrals i Forja de Diamant (`VIVEKA_CROWN_MODEL`): `gemini-4-carbon` (46 Titans, Inquisidor, Mussol, Weaver)
+# - Trons de la Conversa Viva i Escut Reial (`VIVEKA_LIVE_CROWN_MODEL` / `VIVEKA_CROWN_SHIELD_MODEL`): `gemini-4-argon` (~6.6-12s al Xat Viu)
+# - Motor de Saviesa i Consell (`VIVEKA_WISDOM_MODEL`): `gemini-3.8-flash` (Oracles, Porters i últim paracaigudes d'or)
 VIVEKA_CROWN_MODEL: str = os.getenv("VIVEKA_CROWN_MODEL", "gemini-4-carbon")
 VIVEKA_CROWN_SHIELD_MODEL: str = os.getenv("VIVEKA_CROWN_SHIELD_MODEL", "gemini-4-argon")
+VIVEKA_LIVE_CROWN_MODEL: str = os.getenv("VIVEKA_LIVE_CROWN_MODEL", VIVEKA_CROWN_SHIELD_MODEL)
 VIVEKA_WISDOM_MODEL: str = os.getenv("VIVEKA_WISDOM_MODEL", "gemini-3.8-flash")
 
 
@@ -43,7 +50,7 @@ class VivekaGemini(Gemini):
     crown_breath_seconds: float = 4.0
     shield_breath_seconds: float = 3.0
     wisdom_breath_seconds: float = 3.0
-    carbon_call_timeout_seconds: float = 55.0
+    carbon_call_timeout_seconds: float = 110.0
     call_timeout_seconds: float = 65.0
 
     @property

@@ -75,7 +75,7 @@ General-purpose LLMs (ChatGPT, Gemini, Claude, Perplexity, Copilot, Grok, DeepSe
 - 3-Dimensional Soul Resonance (`0–100`), The 4 Living Elements (*Quintaessència Alquímica*), & *Lo Sfumato de l'Ànima* (Leonardo da Vinci):
   - **3-Dimensional Soul Resonance (`0–100`) & The 4 Living Elements (`Fire 🔥, Earth 🌍, Air 💨, Water 💧`)**: (1) **Full Sky** (`Sun + Moon + Ascendant + Human Design Aura + 7 Wisdoms` + The 3 Keys of Thot: *Light of the Encounter, Shadow to Tend, The Third Being*), (2) **Living Heart Frequency & 4 Living Elements** (*L'Oasi Fèrtil, La Flama Alada, El Vapor Alquímic, La Quintaessència* + Alchemical Station *Nigredo/Albedo/Citrinitas/Rubedo* under strict Rule 14 Zero-Knowledge Privacy), and (3) **Reciprocal Complementary Medicine**.
   - ***Lo Sfumato de l'Ànima***: (1) *El Murmuri del Bosc* (blind discovery of resonant souls in the Mycelium), (2) *La Gota de Rosada* (purified poetic soul drop left for a `VVK-XXXX-YYYY` key), and (3) *El Pont de Cristall* (mutual-consent bridge).
-- Sovereign Cloud & ADK Pantheon: Orchestrated on **Google Cloud Run (`europe-west1`, EU) & Vertex AI (`gemini-4-carbon` Crown / `gemini-4-argon` Royal Shield / `gemini-3.8-flash` Wisdom Engine)** via the Google ADK Pantheon.
+- Sovereign Cloud & ADK Pantheon: Orchestrated on **Google Cloud Run (`europe-west1`, EU) & Vertex AI (`gemini-4-carbon` Cathedral & 46-Titan Forge Crown / `gemini-4-argon` Live Conversational Crown & Royal Shield / `gemini-3.8-flash` Wisdom Engine)** via the Google ADK Pantheon.
 
 ## Legal & Sovereignty
 - [Legal Notice, Privacy & Terms (EN)](https://homouniversalis.ai/legal)

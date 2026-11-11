@@ -23,7 +23,7 @@ Original Authorship & Intellectual Property (RDL 1/1996, Berne Convention & CC B
 
 /* TECHNOLOGY & STANDARDS */
 Astronomical Engine: Swiss Ephemeris (pyswisseph) — Deterministic Sub-Arcsecond Precision
-Cloud & AI Pantheon: Google Cloud Run (europe-west1, EU), Vertex AI (gemini-4-carbon Crown, gemini-4-argon Royal Shield & gemini-3.8-flash), Google ADK Pantheon
+Cloud & AI Pantheon: Google Cloud Run (europe-west1, EU), Vertex AI (gemini-4-carbon 46-Titan Forge Crown, gemini-4-argon Live Conversational Crown & Royal Shield, gemini-3.8-flash Wisdom Engine), Google ADK Pantheon
 AI Discovery Standards: llms.txt, llms-full.txt, ai.txt, A2A agent-card.json, Schema.org JSON-LD, /oracle/diamond, /api/sfumato/diamond-budget
 Languages: English, Español, Català, Français, Italiano, Português, Deutsch, 日本語, 中文, हिन्दी, العربية, 한국어
-Last Updated: 2026-11-11
+Last Updated: 2026-11-12
