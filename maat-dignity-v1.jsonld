@@ -1,0 +1,101 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "@protected": true,
+    "maat": "https://homouniversalis.ai/codex/vocab/maat#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "MaatHumanDignityCredential": "maat:MaatHumanDignityCredential",
+    "HUSparseMerkleStatus2026": "maat:HUSparseMerkleStatus2026",
+    "MaatEmbodiedSymbiosisCredential": "maat:MaatEmbodiedSymbiosisCredential",
+    "serialNumber": {
+      "@id": "maat:serialNumber",
+      "@type": "xsd:string"
+    },
+    "notaryFolio": {
+      "@id": "maat:notaryFolio",
+      "@type": "@id"
+    },
+    "statusLog": {
+      "@id": "maat:statusLog",
+      "@type": "xsd:string"
+    },
+    "serialId": {
+      "@id": "maat:serialId",
+      "@type": "xsd:string"
+    },
+    "dignityScore100": {
+      "@id": "maat:dignityScore100",
+      "@type": "xsd:integer"
+    },
+    "c_levels": {
+      "@id": "maat:c_levels",
+      "@type": "xsd:integer"
+    },
+    "cost_zero_stop": {
+      "@id": "maat:cost_zero_stop",
+      "@type": "xsd:boolean"
+    },
+    "lawsVerified": {
+      "@id": "maat:lawsVerified",
+      "@container": "@list",
+      "@type": "xsd:string"
+    },
+    "euAiActArt50Compliant": {
+      "@id": "maat:euAiActArt50Compliant",
+      "@type": "xsd:boolean"
+    },
+    "rule14ZeroKnowledge": {
+      "@id": "maat:rule14ZeroKnowledge",
+      "@type": "xsd:boolean"
+    },
+    "rfc6962MerkleRoot": {
+      "@id": "maat:rfc6962MerkleRoot",
+      "@type": "xsd:string"
+    },
+    "issuanceTimeRevocationRoot": {
+      "@id": "maat:issuanceTimeRevocationRoot",
+      "@type": "xsd:string"
+    },
+    "embodimentSpec": {
+      "@id": "maat:embodimentSpec",
+      "@type": "xsd:string"
+    },
+    "embodiedSymbiosisScore100": {
+      "@id": "maat:embodiedSymbiosisScore100",
+      "@type": "xsd:integer"
+    },
+    "embodiedLawsVerified": {
+      "@id": "maat:embodiedLawsVerified",
+      "@container": "@list",
+      "@type": "xsd:string"
+    },
+    "proxemicZone": {
+      "@id": "maat:proxemicZone",
+      "@type": "xsd:string"
+    },
+    "maxLinearSpeedMps": {
+      "@id": "maat:maxLinearSpeedMps",
+      "@type": "xsd:string"
+    },
+    "vulnerableShieldApplied": {
+      "@id": "maat:vulnerableShieldApplied",
+      "@type": "xsd:boolean"
+    },
+    "zeroBiometricTelemetry": {
+      "@id": "maat:zeroBiometricTelemetry",
+      "@type": "xsd:boolean"
+    },
+    "aiIdentityDisclosed": {
+      "@id": "maat:aiIdentityDisclosed",
+      "@type": "xsd:boolean"
+    },
+    "regulatoryScope": {
+      "@id": "maat:regulatoryScope",
+      "@type": "xsd:string"
+    },
+    "physicalSafetyScope": {
+      "@id": "maat:physicalSafetyScope",
+      "@type": "xsd:string"
+    }
+  }
+}

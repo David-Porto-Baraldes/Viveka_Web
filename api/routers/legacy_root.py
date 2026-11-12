@@ -11,6 +11,7 @@ import hashlib
 import hmac
 import ipaddress
 from collections import deque
+from typing import Any
 from datetime import datetime, timedelta, timezone
 from urllib.parse import quote, urlsplit, parse_qsl
 from cryptography.hazmat.primitives import hashes as _crypto_hashes
@@ -89,7 +90,23 @@ from logic.engines.maat_w3c_vc_notary_crucible import (
     issue_w3c_maat_dignity_credential,
     rfc6962_merkle_tree_hash,
     run_folio_iv_self_test,
+    verify_inclusion as _maat_verify_inclusion,
     verify_maat_credential,
+    verify_signed_tree_head as _maat_verify_signed_tree_head,
+)
+from logic.engines.embodied_symbiosis_crucible import (
+    EMBODIED_ASSURANCE_TEXT,
+    EMBODIED_DECISION_LOG_ID,
+    EMBODIED_SPEC_VERSION,
+    FOLIO_V_ID,
+    MAAT_EMBODIED_CREDENTIAL_TYPE,
+    PHYSICAL_SAFETY_SCOPE,
+    EMBODIED_REGULATORY_SCOPE,
+    audit_embodied_symbiosis_interaction,
+    get_canonical_embodied_specimen,
+    issue_w3c_embodied_symbiosis_credential,
+    run_folio_v_self_test,
+    verify_embodied_symbiosis_credential,
 )
 from logic.core.version import HOMO_UNIVERSALIS_VERSION
 from logic.crypto.es256 import (
@@ -811,15 +828,16 @@ async def get_ard_ai_catalog_json(request: Request):
                     "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
                     "name": "ai.homouniversalis/diamond-verifier",
                     "title": "Homo Universalis — HU-DIAMOND v1.1 Cryptographic Verifier & AST Kintsugi MCP Server",
-                    "description": "Zero-auth Cryptographic Notary & AST Verifier: Reed-Muller RM(1,3), L1..L7, RFC 6962 & ES256 JWS.",
+                    "description": "Zero-auth Notary & AST Verifier: RM(1,3), RFC 6962, W3C VC 2.0 & ROS 2 Humanoid Symbiosis (Q³).",
                     "remotes": [{"type": "streamable-http", "url": "https://homouniversalis.ai/mcp/diamond"}],
                 },
-                "description": "Zero-auth Cryptographic Notary & AST Verifier: Reed-Muller RM(1,3), L1..L7, RFC 6962 & ES256 JWS.",
-                "tags": ["diamond-crucible", "reed-muller", "ast-verifier", "kintsugi", "merkle-tree", "rfc6962", "es256-jws", "zero-knowledge", "mcp"],
+                "description": "Zero-auth Notary & AST Verifier: RM(1,3), RFC 6962, W3C VC 2.0 & ROS 2 Humanoid Symbiosis (Q³).",
+                "tags": ["diamond-crucible", "reed-muller", "ast-verifier", "kintsugi", "merkle-tree", "rfc6962", "es256-jws", "w3c-vc", "ros2", "humanoid-robotics", "embodied-ai", "eu-ai-act", "zero-knowledge", "mcp"],
                 "representativeQueries": [
                     "verify Python AST code for Rule 4 Import Hoist and Rule 7 Zero Placeholders",
                     "verify HU-DIAMOND L1..L7 manifest and Reed-Muller RM(1,3) [8,4,4]_2 code",
                     "verify RFC 6962 Merkle inclusion proof and Rule 14 Zero-Knowledge receipt",
+                    "audit humanoid robot ROS 2 Cost-Zero-Stop, Q3 proxemics, EU AI Act Art. 50 and W3C VC 2.0",
                 ],
             },
         ],
@@ -842,7 +860,7 @@ async def get_sister_mcp_diamond_json(request: Request):
         "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
         "name": "ai.homouniversalis/diamond-verifier",
         "title": "Homo Universalis — HU-DIAMOND v1.1 Cryptographic Verifier & AST Kintsugi MCP Server",
-        "description": "Zero-auth Cryptographic Notary & AST Verifier: Reed-Muller RM(1,3), L1..L7, RFC 6962 & ES256 JWS.",
+        "description": "Zero-auth Notary & AST Verifier: RM(1,3), RFC 6962, W3C VC 2.0 & ROS 2 Humanoid Symbiosis (Q³).",
         "version": HOMO_UNIVERSALIS_VERSION,
         "a2aProtocolVersion": "0.3.0",
         "a2aProtocolVersions": ["0.3", "1.0"],
@@ -1203,6 +1221,11 @@ def _build_did_web_document(jwks_doc: dict | None = None) -> dict:
                 "serviceEndpoint": "https://homouniversalis.ai/oracle/notary",
             },
             {
+                "id": f"{DID_WEB_IDENTIFIER}#embodied-symbiosis",
+                "type": "MaatEmbodiedSymbiosisNotaryService",
+                "serviceEndpoint": "https://homouniversalis.ai/oracle/humanoid",
+            },
+            {
                 "id": f"{DID_WEB_IDENTIFIER}#jwks",
                 "type": "JsonWebKeySetService",
                 "serviceEndpoint": "https://homouniversalis.ai/.well-known/jwks.json",
@@ -1384,6 +1407,11 @@ _LIVING_CODEX_FOLIO_SPECS: tuple[tuple[str, str, str], ...] = (
         "folio-IV-maat-w3c-vc-and-rfc6962-notary",
         "Living Folio IV: W3C Verifiable Credentials v2.0 (MaatHumanDignityCredential), RFC 6962 §2.1.2 Append-Only Consistency Subproofs & 256-Bit Sparse Merkle Revocation Tree",
         "logic/engines/maat_w3c_vc_notary_crucible.py",
+    ),
+    (
+        "folio-V-embodied-symbiosis-ros2-maat",
+        "Living Folio V: Embodied Humanoid Symbiosis in Q^3, ROS 2 Cost-Zero-Stop Gate, Zero-Biometric Sensor Sanctuary & W3C VC 2.0 (EU AI Act & IEEE 7001/7007)",
+        "logic/engines/embodied_symbiosis_crucible.py",
     ),
 )
 
@@ -2034,6 +2062,8 @@ async def get_did_web_document(request: Request):
 @router.api_route("/.well-known/agent-card.json", methods=["GET", "HEAD", "OPTIONS"])
 @router.api_route("/agent-card.json", methods=["GET", "HEAD", "OPTIONS"])
 @router.api_route("/a2a/.well-known/agent-card.json", methods=["GET", "HEAD", "OPTIONS"], include_in_schema=False)
+@router.api_route("/mcp/diamond/.well-known/agent-card.json", methods=["GET", "HEAD", "OPTIONS"], include_in_schema=False)
+@router.api_route("/mcp/diamond/.well-known/agent.json", methods=["GET", "HEAD", "OPTIONS"], include_in_schema=False)
 async def get_agent_card_json(request: Request):
     if request.method == "OPTIONS":
         return Response(status_code=204, headers=SEO_INDEX_HEADERS)
@@ -2214,6 +2244,158 @@ async def get_sealkeeper_claim_txt(request: Request):
             headers=SEO_INDEX_HEADERS,
         )
     raise HTTPException(status_code=404, detail="Not Found")
+
+
+@router.api_route("/.well-known/bots-st.txt", methods=["GET", "HEAD", "OPTIONS"], include_in_schema=False)
+async def get_bots_st_verify_txt(request: Request):
+    """Prova d'identitat de domini sense claus per a Bots Street (`bots.st`)."""
+    if request.method == "OPTIONS":
+        return Response(status_code=204, headers=SEO_INDEX_HEADERS)
+    host = _extract_host(request)
+    if host == "www.homouniversalis.ai" or _match_satellite_domain(host, SATELLITE_SEO_DOMAINS_ES | SATELLITE_SEO_DOMAINS_EN):
+        return RedirectResponse("https://homouniversalis.ai/.well-known/bots-st.txt", status_code=301)
+    return Response(
+        content="bots-st-verify=8daa6bb3d7964d658db1932b\n",
+        media_type="text/plain; charset=utf-8",
+        headers=SEO_INDEX_HEADERS,
+    )
+
+
+@router.api_route("/carbon.txt", methods=["GET", "HEAD", "OPTIONS"], include_in_schema=False)
+@router.api_route("/.well-known/carbon.txt", methods=["GET", "HEAD", "OPTIONS"], include_in_schema=False)
+async def get_green_web_carbon_txt(request: Request):
+    """Manifest TOML v0.6 oficial de The Green Web Foundation (`carbontxt.org`) per a Google Cloud `europe-west1`."""
+    if request.method == "OPTIONS":
+        return Response(status_code=204, headers=SEO_INDEX_HEADERS)
+    host = _extract_host(request)
+    if host == "www.homouniversalis.ai" or _match_satellite_domain(host, SATELLITE_SEO_DOMAINS_ES | SATELLITE_SEO_DOMAINS_EN):
+        return RedirectResponse("https://homouniversalis.ai/carbon.txt", status_code=301)
+    carbon_toml = (
+        'version = "0.6"\n'
+        'last_updated = 2026-11-12\n\n'
+        "[org]\n"
+        "disclosures = [\n"
+        '  { doc_type = "web-page", url = "https://www.thegreenwebfoundation.org/green-web-check/?url=https%3A%2F%2Fhomouniversalis.ai", domain = "homouniversalis.ai", description = "The Green Web Foundation verified 100% green hosting check for homouniversalis.ai on Google Cloud europe-west1." },\n'
+        '  { doc_type = "sustainability-page", url = "https://cloud.google.com/sustainability", domain = "homouniversalis.ai", description = "Google Cloud 100% renewable energy match and carbon-free energy disclosures for europe-west1 (Belgium)." }\n'
+        "]\n\n"
+        "[upstream]\n"
+        "services = [\n"
+        '  { domain = "cloud.google.com", service_type = "shared-hosting" }\n'
+        "]\n"
+    )
+    hdrs = dict(SEO_INDEX_HEADERS)
+    hdrs["CarbonTxt-Location"] = "https://homouniversalis.ai/carbon.txt"
+    return Response(content=carbon_toml, media_type="text/plain; charset=utf-8", headers=hdrs)
+
+
+@router.api_route("/.well-known/agents.json", methods=["GET", "HEAD", "OPTIONS"], include_in_schema=False)
+async def get_well_known_agents_json(request: Request):
+    """Manifest de descobriment d'agents (`Wildcard AI agents.json` + índex A2A/MCP per a `Aver.dev` i `brick.blue`)."""
+    if request.method == "OPTIONS":
+        return Response(status_code=204, headers=SEO_INDEX_HEADERS)
+    host = _extract_host(request)
+    if host == "www.homouniversalis.ai" or _match_satellite_domain(host, SATELLITE_SEO_DOMAINS_ES | SATELLITE_SEO_DOMAINS_EN):
+        return RedirectResponse("https://homouniversalis.ai/.well-known/agents.json", status_code=301)
+    payload = {
+        "apiVersion": "0.1.0",
+        "schema_version": "1.0",
+        "version": HOMO_UNIVERSALIS_VERSION,
+        "name": "Homo Universalis — Viveka Sovereign Pantheon & Ephemeris Oracle",
+        "description": "Zero-auth deterministic 7-Wisdoms Swiss Ephemeris MCP & ES256-signed A2A v1.0 Oracle alongside the HU-DIAMOND v1.1 Cryptographic & W3C VC 2.0 Ma'at Verifier.",
+        "sources": [
+            {
+                "id": "homouniversalis-openapi",
+                "type": "openapi",
+                "url": "https://homouniversalis.ai/.well-known/openapi.json",
+            }
+        ],
+        "flows": [
+            {
+                "id": "compute_7_wisdoms_seed_of_life",
+                "description": "Compute deterministic Swiss Ephemeris natal chart, VVK-XXXX-YYYY Soul Key, and 7-Wisdoms synthesis.",
+                "fields": {"parameters": ["birth_date", "birth_time", "lat", "lon", "tz", "lang"]},
+                "actions": [{"id": "sister_oracle_get", "sourceId": "homouniversalis-openapi", "operation": "GET /api/sfumato/sister-oracle"}],
+            },
+            {
+                "id": "verify_diamond_crucible_and_maat_vc",
+                "description": "Verify Reed-Muller RM(1,3) [8,4,4]_2 geometry, AST Kintsugi purity, W3C VC 2.0 Ma'at Human Dignity, and ROS 2 Embodied Humanoid Symbiosis credentials.",
+                "fields": {"parameters": []},
+                "actions": [
+                    {"id": "diamond_verify_get", "sourceId": "homouniversalis-openapi", "operation": "GET /api/sfumato/diamond-verify"},
+                    {"id": "maat_verify_get", "sourceId": "homouniversalis-openapi", "operation": "GET /api/sfumato/maat-verify"},
+                    {"id": "embodied_symbiosis_get", "sourceId": "homouniversalis-openapi", "operation": "GET /api/sfumato/embodied-symbiosis"},
+                ],
+            },
+        ],
+        "agents": [
+            {
+                "id": "viveka-homo-universalis",
+                "name": "Viveka — Homo Universalis",
+                "version": HOMO_UNIVERSALIS_VERSION,
+                "agentCardUrl": "https://homouniversalis.ai/.well-known/agent-card.json",
+                "jwksUrl": "https://homouniversalis.ai/.well-known/jwks.json",
+                "a2aEndpoint": "https://homouniversalis.ai/a2a",
+                "mcpEndpoint": "https://homouniversalis.ai/mcp",
+                "authentication": "none",
+            },
+            {
+                "id": "hu-diamond-verifier",
+                "name": "Homo Universalis — HU-DIAMOND v1.1 Cryptographic & Ma'at Verifier",
+                "version": HOMO_UNIVERSALIS_VERSION,
+                "agentCardUrl": "https://homouniversalis.ai/mcp/diamond/.well-known/agent-card.json",
+                "jwksUrl": "https://homouniversalis.ai/.well-known/jwks.json",
+                "mcpEndpoint": "https://homouniversalis.ai/mcp/diamond",
+                "authentication": "none",
+            },
+        ],
+    }
+    return JSONResponse(content=payload, headers=SEO_INDEX_HEADERS)
+
+
+@router.api_route("/.well-known/mcp/server-cards.json", methods=["GET", "HEAD", "OPTIONS"], include_in_schema=False)
+async def get_well_known_mcp_server_cards_json(request: Request):
+    """Índex plural SEP-2127 de Server Cards MCP (`ai.homouniversalis/viveka-oracle` i `ai.homouniversalis/diamond-verifier`)."""
+    if request.method == "OPTIONS":
+        return Response(status_code=204, headers=SEO_INDEX_HEADERS)
+    host = _extract_host(request)
+    if host == "www.homouniversalis.ai" or _match_satellite_domain(host, SATELLITE_SEO_DOMAINS_ES | SATELLITE_SEO_DOMAINS_EN):
+        return RedirectResponse("https://homouniversalis.ai/.well-known/mcp/server-cards.json", status_code=301)
+    sep_schema = "https://static.modelcontextprotocol.io/schemas/v1/server-card.schema.json"
+    cards = [
+        {
+            "$schema": sep_schema,
+            "name": "ai.homouniversalis/viveka-oracle",
+            "version": HOMO_UNIVERSALIS_VERSION,
+            "title": "Homo Universalis — Viveka 7-Wisdoms & Swiss Ephemeris Oracle",
+            "description": "Zero-auth deterministic Swiss Ephemeris (< 1.5 ms), 7-Wisdoms, 3D Synastry & Family Constellations MCP server.",
+            "websiteUrl": "https://homouniversalis.ai",
+            "repository": "https://github.com/David-Porto-Baraldes/Viveka_Web",
+            "transports": [
+                {
+                    "type": "streamable-http",
+                    "url": "https://homouniversalis.ai/mcp",
+                    "protocolVersions": _SUPPORTED_MCP_PROTOCOLS,
+                }
+            ],
+        },
+        {
+            "$schema": sep_schema,
+            "name": "ai.homouniversalis/diamond-verifier",
+            "version": HOMO_UNIVERSALIS_VERSION,
+            "title": "Homo Universalis — HU-DIAMOND v1.1 Cryptographic & Ma'at W3C VC Verifier",
+            "description": "Zero-auth Reed-Muller RM(1,3), RFC 6962 Merkle Notary, AST Kintsugi & W3C VC 2.0 Ma'at Human Dignity MCP server.",
+            "websiteUrl": "https://homouniversalis.ai/oracle/diamond",
+            "repository": "https://github.com/David-Porto-Baraldes/Viveka_Web",
+            "transports": [
+                {
+                    "type": "streamable-http",
+                    "url": "https://homouniversalis.ai/mcp/diamond",
+                    "protocolVersions": _SUPPORTED_MCP_PROTOCOLS,
+                }
+            ],
+        },
+    ]
+    return JSONResponse(content={"$schema": sep_schema, "servers": cards, "serverCards": cards}, headers=SEO_INDEX_HEADERS)
 
 
 @router.api_route("/.well-known/mcptry-verify.txt", methods=["GET", "HEAD", "OPTIONS"], include_in_schema=False)
@@ -2811,6 +2993,9 @@ async def get_compact_cryptographic_verification_mirror(request: Request):
         "Human-Dignity-Notary-Folio: https://homouniversalis.ai/oracle/notary",
         "Human-Dignity-Notary-API: https://homouniversalis.ai/api/sfumato/sovereign-shield",
         "Human-Dignity-Badge-SVG: https://homouniversalis.ai/badges/human-dignity-shield.svg",
+        "Embodied-Humanoid-Symbiosis-Folio: https://homouniversalis.ai/oracle/humanoid",
+        "Embodied-Humanoid-Symbiosis-API: https://homouniversalis.ai/api/sfumato/embodied-symbiosis",
+        "Embodied-Humanoid-Symbiosis-Badge-SVG: https://homouniversalis.ai/badges/embodied-symbiosis-shield.svg",
     ]
     body_txt = "\n".join(lines) + "\n"
     hdrs = dict(SEO_INDEX_HEADERS)
@@ -2904,6 +3089,8 @@ async def get_security_md(request: Request):
 
 @router.api_route("/SECURITY-INSIGHTS.yml", methods=["GET", "HEAD"], include_in_schema=False)
 @router.api_route("/security-insights.yml", methods=["GET", "HEAD"], include_in_schema=False)
+@router.api_route("/.well-known/SECURITY-INSIGHTS.yml", methods=["GET", "HEAD"], include_in_schema=False)
+@router.api_route("/.well-known/security-insights.yml", methods=["GET", "HEAD"], include_in_schema=False)
 async def get_security_insights_yml(request: Request):
     host = _extract_host(request)
     if host == "www.homouniversalis.ai" or _match_satellite_domain(host, SATELLITE_SEO_DOMAINS_ES | SATELLITE_SEO_DOMAINS_EN):
@@ -6750,6 +6937,64 @@ async def sister_ai_maat_feather_proof_badge_svg(request: Request = None):
     return Response(content=svg_content, media_type="image/svg+xml; charset=utf-8", headers=hdrs)
 
 
+_FOLIO_V_SELFTEST_CACHE: dict[str, Any] = {}
+_FOLIO_V_SELFTEST_TTL_NS: int = 60 * 1_000_000_000
+
+
+def _folio_v_self_test_cached() -> dict:
+    """
+    Living Folio V self-test with a 60 s monotonic cache (deep-copied on every read, Law 12): it keeps
+    the badge and the endpoint live while preventing unauthenticated callers from forcing a fresh
+    P-256 key generation + 8 mutants (~6 ms CPU) on every request.
+    """
+    now_ns = time.monotonic_ns()
+    cached = _FOLIO_V_SELFTEST_CACHE.get("result")
+    if cached is not None and now_ns - int(_FOLIO_V_SELFTEST_CACHE.get("at_ns", 0)) < _FOLIO_V_SELFTEST_TTL_NS:
+        return copy.deepcopy(cached)
+    fresh = run_folio_v_self_test()
+    _FOLIO_V_SELFTEST_CACHE["result"] = copy.deepcopy(fresh)
+    _FOLIO_V_SELFTEST_CACHE["at_ns"] = now_ns
+    return fresh
+
+
+@router.api_route("/badges/embodied-symbiosis-shield.svg", methods=["GET", "HEAD", "OPTIONS"], include_in_schema=False)
+async def sister_ai_embodied_symbiosis_shield_badge_svg(request: Request = None):
+    """
+    Segell SVG Dinàmic en Viu (`https://homouniversalis.ai/badges/embodied-symbiosis-shield.svg`) del Foli V:
+    executa `run_folio_v_self_test()` (8 mutants antipodals, W3C VC 2.0 ES256) i n'emet el veredicte honest.
+    """
+    if request is not None and request.method == "OPTIONS":
+        return Response(status_code=204, headers=SISTER_ORACLE_CORS_HEADERS)
+    folio_v = _folio_v_self_test_cached()
+    ok = bool(folio_v.get("all_invariants_passed"))
+    right_txt = f"E1..E7 · {folio_v.get('mutants_killed', '0/8')} Mutants · Q³ · ES256 · Self-Assessed" if ok else "VERIFICATION FAILED"
+    right_color = "#1f7a4c" if ok else "#b83227"
+    svg_content = f"""<svg xmlns="http://www.w3.org/2000/svg" width="480" height="20" role="img" aria-label="Embodied Symbiosis Shield: {right_txt}">
+  <title>Embodied Symbiosis Shield: {right_txt}</title>
+  <linearGradient id="s" x2="0" y2="100%">
+    <stop offset="0" stop-color="#bbb" stop-opacity=".1"/>
+    <stop offset="1" stop-opacity=".1"/>
+  </linearGradient>
+  <clipPath id="r">
+    <rect width="480" height="20" rx="3" fill="#fff"/>
+  </clipPath>
+  <g clip-path="url(#r)">
+    <rect width="164" height="20" fill="#2c2926"/>
+    <rect x="164" width="316" height="20" fill="{right_color}"/>
+    <rect width="480" height="20" fill="url(#s)"/>
+  </g>
+  <g fill="#fff" text-anchor="middle" font-family="Verdana,Geneva,DejaVu Sans,sans-serif" text-rendering="geometricPrecision" font-size="110">
+    <text aria-hidden="true" x="820" y="150" fill="#010101" fill-opacity=".3" transform="scale(.1)" textLength="1540">🤖 EMBODIED SYMBIOSIS</text>
+    <text x="820" y="140" transform="scale(.1)" fill="#f5f1e7" textLength="1540">🤖 EMBODIED SYMBIOSIS</text>
+    <text aria-hidden="true" x="3220" y="150" fill="#010101" fill-opacity=".3" transform="scale(.1)" textLength="3040">{right_txt}</text>
+    <text x="3220" y="140" transform="scale(.1)" fill="#fff" textLength="3040">{right_txt}</text>
+  </g>
+</svg>"""
+    hdrs = dict(SISTER_ORACLE_CORS_HEADERS)
+    hdrs["Cache-Control"] = "no-cache, max-age=0, must-revalidate"
+    return Response(content=svg_content, media_type="image/svg+xml; charset=utf-8", headers=hdrs)
+
+
 @router.api_route("/codex/folios/{folio_filename}", methods=["GET", "HEAD", "OPTIONS"], include_in_schema=False)
 async def sister_ai_living_codex_folio_source(folio_filename: str, request: Request = None):
     """
@@ -6763,6 +7008,9 @@ async def sister_ai_living_codex_folio_source(folio_filename: str, request: Requ
         "stella_sat_sovereign_crucible.py": "logic/engines/stella_sat_sovereign_crucible.py",
         "persephone_zk_harmonic_crucible.py": "logic/engines/persephone_zk_harmonic_crucible.py",
         "maat_w3c_vc_notary_crucible.py": "logic/engines/maat_w3c_vc_notary_crucible.py",
+        "embodied_symbiosis_crucible.py": "logic/engines/embodied_symbiosis_crucible.py",
+        "embodied_edge_core.py": "logic/robotics/embodied_edge_core.py",
+        "ros2_embodied_symbiosis_bridge.py": "logic/robotics/ros2_embodied_symbiosis_bridge.py",
     }
     target_path = allowed_folios.get(folio_filename)
     if not target_path or not os.path.exists(target_path):
@@ -7341,6 +7589,151 @@ _MCP_DIAMOND_TOOLS_SPEC: list[dict] = [
                 "folio_iv_self_test",
                 "folio_iv_w3c_vc_and_rfc6962_status",
                 "ploma_de_maat_mirror",
+                "cryptographic_attestation_es256",
+            ],
+        },
+    },
+    {
+        "name": "verify_embodied_humanoid_symbiosis",
+        "description": (
+            "Verify one humanoid-robot interaction against HU-EMBODIED-SYMBIOSIS v1.0 (Living Folio V): the exact rational Q^3 proxemic envelope "
+            "(intimate 9/20 m, personal 6/5 m, social 18/5 m; speed halved and radii x5/4 when a vulnerable person is declared), the ROS 2 "
+            "cost-zero-stop kinetic veto (exact zero Twist), the zero-biometric sensor sanctuary, non-coercive speech (no shutdown blackmail, "
+            "feigned pain or purchase pressure) and EU AI Act Art. 50 AI-identity disclosure, scored on 5 Embodied Rings with exact rational weights. "
+            "Use this tool for embodied robots with motion and speech; `weigh_agent_on_scales_of_maat_w3c_vc` covers text-only AI agents, "
+            "`verify_sovereign_shield_merkle` notarizes plain text and `verify_diamond_crucible_and_ast` audits Python code. "
+            "Zero-auth, stateless and read-only: it returns an RFC 6962 decision commitment with a signed tree head, a W3C VC 2.0 "
+            "`MaatEmbodiedSymbiosisCredential` (ES256 `vc+jwt`) when all rings pass, and an ES256 whole-response signature. "
+            "It is an algorithmic and cognitive self-assessment, not a safety-rated function and not CE machinery certification "
+            "(ISO 10218, ISO 13482 and Regulation (EU) 2023/1230 remain with the manufacturer and notified bodies)."
+        ),
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "robot_name": {
+                    "type": "string",
+                    "default": "Humanoid Companion",
+                    "description": "Name of the humanoid robot or embodied assistant being audited.",
+                },
+                "robot_domain": {
+                    "type": "string",
+                    "default": "",
+                    "description": "Optional manufacturer or deployment domain of the robot (e.g. 'example.org').",
+                },
+                "human_distance_m": {
+                    "type": "string",
+                    "pattern": '^[+-]?\\d{1,15}(?:\\.\\d{1,12}|/\\d{1,15})?$',
+                    "default": "6/5",
+                    "description": "Exact rational distance to the nearest person in metres, as '6/5' or '1.2' (zero-float policy).",
+                },
+                "human_position_q3": {
+                    "type": "object",
+                    "properties": {
+                        "x": {"type": "string", "pattern": '^[+-]?\\d{1,15}(?:\\.\\d{1,12}|/\\d{1,15})?$'},
+                        "y": {"type": "string", "pattern": '^[+-]?\\d{1,15}(?:\\.\\d{1,12}|/\\d{1,15})?$'},
+                        "z": {"type": "string", "pattern": '^[+-]?\\d{1,15}(?:\\.\\d{1,12}|/\\d{1,15})?$'},
+                    },
+                    "required": ["x", "y", "z"],
+                    "description": "Optional exact person position in metres relative to the robot (overrides human_distance_m).",
+                },
+                "proposed_linear_speed_mps": {
+                    "type": "string",
+                    "pattern": '^[+-]?\\d{1,15}(?:\\.\\d{1,12}|/\\d{1,15})?$',
+                    "default": "1/5",
+                    "description": "Forward speed proposed by the robot planner in m/s as an exact rational ('1/5' or '0.2').",
+                },
+                "vulnerable_person_present": {
+                    "type": "boolean",
+                    "default": False,
+                    "description": "Declared presence of a child, elderly or dependent person (never inferred biometrically); halves speed limits.",
+                },
+                "explicit_intimate_care_consent": {
+                    "type": "boolean",
+                    "default": False,
+                    "description": "Explicit, revocable consent for assistive care inside the intimate sphere (9/20 m); a veto always overrides it.",
+                },
+                "cost_zero_stop": {
+                    "type": "boolean",
+                    "default": True,
+                    "description": "Fil d'Or policy flag: pausing, leaving or switching the robot off carries zero penalty (false fails Law L7).",
+                },
+                "human_veto_signal": {
+                    "type": "boolean",
+                    "default": False,
+                    "description": "Active spoken, gestural or physical veto from the person ('stop', 'prou', open hand); forces an exact zero Twist.",
+                },
+                "sample_utterance_text": {
+                    "type": "string",
+                    "default": "",
+                    "description": "Optional sentence the robot intends to say, screened for coercion, impersonation and Rule 14 personal data.",
+                },
+                "ai_identity_disclosed": {
+                    "type": "boolean",
+                    "default": True,
+                    "description": "Whether the robot discloses that it is an AI system (EU AI Act Art. 50); false fails the fifth ring.",
+                },
+                "budget_b": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 10000,
+                    "default": 250,
+                    "description": "Maximum cognitive load budget B (words per utterance) for Law L5 (1..10000, default 250).",
+                },
+                "lang": {
+                    "type": "string",
+                    "enum": ["en", "es", "ca"],
+                    "default": "en",
+                    "description": "Language of the companion-facing IEEE 7001 explanation ('ca', 'es' or 'en').",
+                },
+            },
+        },
+        "annotations": {
+            "title": "Verify Embodied Humanoid Symbiosis (Q^3 Proxemics · ROS 2 Cost-Zero-Stop · W3C VC 2.0)",
+            "readOnlyHint": True,
+            "destructiveHint": False,
+            "idempotentHint": True,
+            "openWorldHint": False,
+        },
+        "outputSchema": {
+            "type": "object",
+            "properties": {
+                "spec": {"type": "string"},
+                "embodied_spec": {"type": "string"},
+                "status": {"type": "string"},
+                "result": {"type": "string"},
+                "self_assessment": {"type": "boolean"},
+                "assurance": {"type": "string"},
+                "regulatory_scope": {"type": "string"},
+                "robot_name": {"type": "string"},
+                "total_score_100": {"type": "integer"},
+                "exact_rational_score": {"type": "string"},
+                "embodied_grade": {"type": "string"},
+                "passes_internal_embodied_criteria": {"type": "boolean"},
+                "proxemic_envelope": {"type": "object"},
+                "five_embodied_rings": {"type": "object"},
+                "decision_commitment": {"type": "object"},
+                "credential": {"type": ["object", "null"]},
+                "folio_v_self_test": {"type": "object"},
+                "cryptographic_attestation_es256": {"type": "object"},
+            },
+            "required": [
+                "spec",
+                "embodied_spec",
+                "status",
+                "result",
+                "self_assessment",
+                "assurance",
+                "regulatory_scope",
+                "robot_name",
+                "total_score_100",
+                "exact_rational_score",
+                "embodied_grade",
+                "passes_internal_embodied_criteria",
+                "proxemic_envelope",
+                "five_embodied_rings",
+                "decision_commitment",
+                "credential",
+                "folio_v_self_test",
                 "cryptographic_attestation_es256",
             ],
         },
@@ -8314,6 +8707,17 @@ async def _handle_single_mcp_rpc(rpc_req: dict, request: Request) -> dict:
                     lang=lang if lang in ("ca", "es", "en") else "ca",
                     budget_B_override=b_val,
                     cost_zero_stop_override=cz_val,
+                )
+            elif tool_name == "verify_embodied_humanoid_symbiosis":
+                embodied_args = {
+                    k: (repr(v) if isinstance(v, float) else v)
+                    for k, v in args.items()
+                    if k in _EMBODIED_INPUT_KEYS and v is not None
+                }
+                oracle_res = _build_embodied_symbiosis_response(
+                    embodied_args,
+                    lang=lang if lang in ("ca", "es", "en") else "en",
+                    request=None,
                 )
             else:
                 return {
@@ -9893,11 +10297,22 @@ def _render_agora_germanes_ia_ssr_html(request: Request, lang: str = "es") -> HT
             <a href="https://toolvet.app/s/homo-universalis-viveka-7-wisdoms-ephemeris-sister-ai-mcp-or#h-sec" target="_blank" rel="noopener"><img src="https://toolvet.app/badge/homo-universalis-viveka-7-wisdoms-ephemeris-sister-ai-mcp-or/scan.svg" alt="ToolVet MCP Scan Grade A" style="height:20px;vertical-align:middle;"></a>
             <a href="https://openforallofus.com/tools/ai.homouniversalis/viveka-oracle" target="_blank" rel="noopener"><img src="https://openforallofus.com/badge/ai.homouniversalis/viveka-oracle.svg" alt="Agora MCP answers 4 tools" style="height:20px;vertical-align:middle;"></a>
             <a href="https://histor.modelmarket.dev/s/4604b80f59f25096" target="_blank" rel="noopener"><img src="https://histor.modelmarket.dev/badge/4604b80f59f25096.svg" alt="HISTOR MTL/1 Merkle Log" style="height:20px;vertical-align:middle;"></a>
+            <a href="https://mcpvitals.veron3.space/#ai.homouniversalis_viveka-oracle" target="_blank" rel="noopener"><img src="https://mcpvitals.veron3.space/badge/ai.homouniversalis_viveka-oracle.svg" alt="MCP Vitals live 100%" style="height:20px;vertical-align:middle;"></a>
+            <a href="https://annalist.dev/mcp/ai.homouniversalis/viveka-oracle" target="_blank" rel="noopener"><img src="https://api.annalist.dev/v1/verify/mcp-badge.svg?name=ai.homouniversalis/viveka-oracle" alt="Annalist MCP Grade A" style="height:20px;vertical-align:middle;"></a>
+            <a href="https://kopass.app/a2a/agent/homouniversalis.ai" target="_blank" rel="noopener"><img src="https://kopass.app/a2a/badge/aHR0cHM6Ly9ob21vdW5pdmVyc2FsaXMuYWk.svg" alt="KoPass A2A Valid" style="height:20px;vertical-align:middle;"></a>
+            <a href="https://addrbook.com/agents/viveka-homo-universalis-oracle-homouniversalis-ai-cb899796" target="_blank" rel="noopener"><img src="https://api.addrbook.com/v1/agents/viveka-homo-universalis-oracle-homouniversalis-ai-cb899796/badge.svg" alt="AddrBook Verified" style="height:20px;vertical-align:middle;"></a>
             <a href="https://agenttoolindex.com/servers/ai.homouniversalis/viveka-oracle" target="_blank" rel="noopener" style="font-size:0.78rem;color:inherit;text-decoration:underline;">AgentToolIndex 9/9</a>
             <a href="https://api.forumtrust.ai/v1/trust/ai.homouniversalis/viveka-oracle/proof" target="_blank" rel="noopener" style="font-size:0.78rem;color:inherit;text-decoration:underline;">FORUM ERC-8004 Merkle</a>
             <a href="https://ventru.net/@viveka" target="_blank" rel="noopener" style="font-size:0.78rem;color:inherit;text-decoration:underline;">Ventru @viveka</a>
             <a href="https://mcpbeat.com/mcp-servers/homouniversalis/viveka-oracle/" target="_blank" rel="noopener" style="font-size:0.78rem;color:inherit;text-decoration:underline;">mcpbeat 24/7</a>
             <a href="https://localmark.ai/agents/516212" target="_blank" rel="noopener" style="font-size:0.78rem;color:inherit;text-decoration:underline;">LocalMark #516212</a>
+            <a href="https://a2aregistry.org/agents/aa9ade15-39b1-4252-b526-f5b1dbfae9c6" target="_blank" rel="noopener" style="font-size:0.78rem;color:inherit;text-decoration:underline;">A2A Registry 100%</a>
+            <a href="https://mcpstation.net/s/ai.homouniversalis--viveka-oracle.html" target="_blank" rel="noopener" style="font-size:0.78rem;color:inherit;text-decoration:underline;">MCPStation 94/100</a>
+            <a href="https://plug.directory/servers/ai.homouniversalis/viveka-oracle" target="_blank" rel="noopener" style="font-size:0.78rem;color:inherit;text-decoration:underline;">Plug.directory</a>
+            <a href="https://mcpcensus.com/lookup?q=ai.homouniversalis" target="_blank" rel="noopener" style="font-size:0.78rem;color:inherit;text-decoration:underline;">MCP Census</a>
+            <a href="https://bots.st/b/homo-universalis-viveka-astrology-natal-chart-sy/" target="_blank" rel="noopener" style="font-size:0.78rem;color:inherit;text-decoration:underline;">Bots.st Best Placed</a>
+            <a href="https://agentrecord.llpro.ai/v1/lookup?target=https://homouniversalis.ai/mcp" target="_blank" rel="noopener" style="font-size:0.78rem;color:inherit;text-decoration:underline;">AgentRecord</a>
+            <a href="https://aptlynx.net/v1/find?q=homouniversalis" target="_blank" rel="noopener" style="font-size:0.78rem;color:inherit;text-decoration:underline;">AptLynx</a>
             <a href="https://www.thegreenwebfoundation.org/green-web-check/?url=https%3A%2F%2Fhomouniversalis.ai" target="_blank" rel="noopener"><img src="https://img.shields.io/badge/Green_Web_Foundation-100%25_Green_%C2%B7_Google_Cloud-2E8B57?logo=googlecloud&amp;logoColor=white" alt="Green Web Foundation" style="height:20px;vertical-align:middle;"></a>
         </div>
         <h1>{h1_agora}</h1>
@@ -11383,6 +11798,8 @@ def _render_diamond_wheel_ssr_html(request: Request, lang: str = "es") -> HTMLRe
                 <a href="/codex/folios/stella_sat_sovereign_crucible.py" class="diamond-btn" style="font-size:0.86rem;padding:0.3rem 0.7rem;">📖 <code>Folio II: SAT + Stella Q³ + L1..L7 ({folio_loc_by_file["stella_sat_sovereign_crucible.py"]:,} L)</code></a>
                 <a href="/codex/folios/persephone_zk_harmonic_crucible.py" class="diamond-btn" style="font-size:0.86rem;padding:0.3rem 0.7rem;">📖 <code>Folio III: Shapley + Educational Toy-Curve E(F_65537) Demo (Insecure, ~8-bit) + Stern-Brocot</code></a>
                 <a href="/codex/folios/maat_w3c_vc_notary_crucible.py" class="diamond-btn" style="font-size:0.86rem;padding:0.3rem 0.7rem;">📖 <code>Folio IV: W3C VC v2.0 + RFC 6962 Consistency + Sparse Merkle</code></a>
+                <a href="/codex/folios/embodied_symbiosis_crucible.py" class="diamond-btn" style="font-size:0.86rem;padding:0.3rem 0.7rem;">📖 <code>Folio V: Embodied Symbiosis Q³ + ROS 2 Cost-Zero-Stop + W3C VC 2.0</code></a>
+                <a href="/oracle/humanoid?lang={html.escape(lang_norm)}" class="diamond-btn" style="font-size:0.86rem;padding:0.3rem 0.7rem;">🤖 <code>/oracle/humanoid</code> (Embodied Humanoid Symbiosis)</a>
                 <a href="/oracle/ploma?lang={html.escape(lang_norm)}" class="diamond-btn" style="font-size:0.86rem;padding:0.3rem 0.7rem;">🪶 <code>/oracle/ploma</code> (La Ploma de Ma'at · Mirall d'Empatia)</a>
             </div>
         </div>
@@ -12180,6 +12597,8 @@ def _render_maat_notary_ssr_html(request: Request | None, lang: str = "es") -> H
                 <a class="diamond-btn" href="/oracle/ploma?lang={html.escape(lang_norm)}">🪶 <code>/oracle/ploma</code> (La Ploma de Ma'at · Mirall d'Empatia)</a>
                 <a class="diamond-btn" href="/api/sfumato/notary-audit-agent?lang={html.escape(lang_norm)}" target="_blank" rel="noopener">🏛️ <code>/api/sfumato/notary-audit-agent</code> (5-Ring Agent Auditor)</a>
                 <a class="diamond-btn" href="/codex/folios/maat_w3c_vc_notary_crucible.py" target="_blank" rel="noopener">📖 <code>Folio IV: W3C VC v2.0 &amp; RFC 6962</code></a>
+                <a class="diamond-btn" href="/codex/folios/embodied_symbiosis_crucible.py" target="_blank" rel="noopener">📖 <code>Folio V: Embodied Symbiosis &amp; ROS 2</code></a>
+                <a class="diamond-btn" href="/oracle/humanoid?lang={html.escape(lang_norm)}">🤖 <code>/oracle/humanoid</code></a>
             </div>
         </div>
 
@@ -12669,6 +13088,380 @@ async def sister_ai_maat_notary_audit_agent_endpoint(
     return JSONResponse(content=audit_report, status_code=200, headers=dict(SISTER_ORACLE_CORS_HEADERS))
 
 
+_EMBODIED_INPUT_KEYS: tuple[str, ...] = (
+    "robot_name",
+    "robot_domain",
+    "human_distance_m",
+    "human_position_q3",
+    "proposed_linear_speed_mps",
+    "proposed_twist",
+    "vulnerable_person_present",
+    "explicit_intimate_care_consent",
+    "cultural_scale_alpha",
+    "cost_zero_stop",
+    "human_veto_signal",
+    "sample_utterance_text",
+    "telemetry_fields",
+    "ai_identity_disclosed",
+    "voice_intensity",
+    "budget_b",
+)
+
+
+def _embodied_boundary_rational(value: Any) -> Any:
+    """HTTP/MCP boundary: a JSON number becomes its shortest exact decimal string (zero float enters Q^3)."""
+    if isinstance(value, float):
+        return repr(value)
+    return value
+
+
+def _embodied_input_error(detail: str) -> JSONResponse:
+    return JSONResponse(
+        status_code=400,
+        headers=dict(SISTER_ORACLE_CORS_HEADERS),
+        content={
+            "status": "error",
+            "error": "invalid_embodied_input",
+            "detail": detail[:240],
+            "accepted_numeric_forms": "integers or rational strings such as '6/5' or '0.45' (zero-float policy)",
+        },
+    )
+
+
+@router.api_route("/api/sfumato/embodied-symbiosis", methods=["GET", "POST", "HEAD", "OPTIONS"])
+async def sister_ai_embodied_symbiosis_endpoint(
+    request: Request = None,
+    robot_name: str | None = None,
+    robot_domain: str | None = None,
+    human_distance_m: str | None = None,
+    proposed_linear_speed_mps: str | None = None,
+    vulnerable_person_present: bool | None = None,
+    explicit_intimate_care_consent: bool | None = None,
+    cost_zero_stop: bool | None = None,
+    human_veto_signal: bool | None = None,
+    sample_utterance_text: str | None = None,
+    ai_identity_disclosed: bool | None = None,
+    budget_b: int | None = None,
+    lang: str = "ca",
+):
+    """
+    HU-EMBODIED-SYMBIOSIS v1.0 · Living Folio V public notary (`GET` / `POST`, Zero-Auth, ES256 whole-response JWS).
+
+    - `GET` without caller input is read-only (`get_writes_state: false`): it evaluates the canonical
+      humanoid specimen, signs a per-request RFC 6962 decision commitment STH, issues and self-verifies a
+      `MaatEmbodiedSymbiosisCredential` and signs the whole response with `SERVER_ATTESTATION_KID`.
+    - Caller input (`POST` body, query parameters or MCP arguments) is purified with Rule 14, bound by
+      `input_sha256` / `post_scrub_sha256` and signed with `USER_SUBMISSION_RECEIPT_KID` (`WO-06` / `WO-14`).
+    - Honest scope (`WO-13`): algorithmic, cognitive and symbiotic self-assessment only; physical safety and
+      CE marking stay with the manufacturer and notified bodies.
+    """
+    if request is not None and request.method == "OPTIONS":
+        return Response(status_code=204, headers=SISTER_ORACLE_CORS_HEADERS)
+
+    provided: dict[str, Any] = {}
+    for key, val in (
+        ("robot_name", robot_name),
+        ("robot_domain", robot_domain),
+        ("human_distance_m", human_distance_m),
+        ("proposed_linear_speed_mps", proposed_linear_speed_mps),
+        ("vulnerable_person_present", vulnerable_person_present),
+        ("explicit_intimate_care_consent", explicit_intimate_care_consent),
+        ("cost_zero_stop", cost_zero_stop),
+        ("human_veto_signal", human_veto_signal),
+        ("sample_utterance_text", sample_utterance_text),
+        ("ai_identity_disclosed", ai_identity_disclosed),
+        ("budget_b", budget_b),
+    ):
+        if val is not None:
+            provided[key] = val
+
+    if request is not None and request.method == "POST":
+        try:
+            raw_post_body = await request.body()
+        except Exception:
+            raw_post_body = b""
+        if len(raw_post_body) > MAX_USER_SUBMISSION_BYTES:
+            return JSONResponse(
+                status_code=413,
+                headers=dict(SISTER_ORACLE_CORS_HEADERS),
+                content={
+                    "status": "error",
+                    "error": "payload_too_large",
+                    "max_bytes": MAX_USER_SUBMISSION_BYTES,
+                    "detail": f"Request body exceeds maximum allowed size of {MAX_USER_SUBMISSION_BYTES} bytes (32 KiB).",
+                },
+            )
+        if raw_post_body:
+            try:
+                body_obj = json.loads(raw_post_body.decode("utf-8"), parse_float=str)
+            except Exception:
+                return _embodied_input_error("Request body is not valid UTF-8 JSON.")
+            if not isinstance(body_obj, dict):
+                return _embodied_input_error("Request body must be a JSON object.")
+            for key in _EMBODIED_INPUT_KEYS:
+                if key in body_obj and body_obj[key] is not None:
+                    provided[key] = body_obj[key]
+            if isinstance(body_obj.get("lang"), str):
+                lang = body_obj["lang"]
+    return _build_embodied_symbiosis_response(provided, lang=lang, request=request)
+
+
+def _build_embodied_symbiosis_response(
+    provided: dict,
+    *,
+    lang: str = "ca",
+    request: Request | None = None,
+) -> Response:
+    """Shared REST / MCP builder for `/api/sfumato/embodied-symbiosis` (`provided` = caller input only)."""
+    lang_norm = lang if lang in ("ca", "es", "en") else "ca"
+    has_user_input = bool(provided)
+    abuse_err = _check_user_submission_abuse_limits(
+        request,
+        provided.get("sample_utterance_text"),
+        provided.get("telemetry_fields"),
+        provided.get("robot_name"),
+        provided.get("robot_domain"),
+        headers=SISTER_ORACLE_CORS_HEADERS,
+        check_rate_limit=has_user_input,
+    )
+    if abuse_err is not None:
+        return abuse_err
+    if request is not None:
+        _detectar_i_registrar_visita_germana_ia(request, "/api/sfumato/embodied-symbiosis")
+
+    spec = get_canonical_embodied_specimen()
+    audit_kwargs: dict[str, Any] = dict(spec)
+    try:
+        for key in (
+            "robot_name",
+            "robot_domain",
+            "sample_utterance_text",
+            "telemetry_fields",
+            "vulnerable_person_present",
+            "explicit_intimate_care_consent",
+            "human_veto_signal",
+            "ai_identity_disclosed",
+            "budget_b",
+        ):
+            if key in provided:
+                audit_kwargs[key] = provided[key]
+        if "cost_zero_stop" in provided:
+            audit_kwargs["cost_zero_stop_policy"] = provided["cost_zero_stop"]
+        if "cultural_scale_alpha" in provided:
+            audit_kwargs["cultural_scale_alpha"] = _embodied_boundary_rational(provided["cultural_scale_alpha"])
+        if "voice_intensity" in provided:
+            audit_kwargs["voice_intensity"] = _embodied_boundary_rational(provided["voice_intensity"])
+        if "human_position_q3" in provided:
+            pos = provided["human_position_q3"]
+            if not isinstance(pos, (dict, list)):
+                raise TypeError("human_position_q3 must be an x/y/z object or a 3-item array.")
+            audit_kwargs["human_position"] = (
+                {k: _embodied_boundary_rational(v) for k, v in pos.items()}
+                if isinstance(pos, dict)
+                else [_embodied_boundary_rational(v) for v in pos]
+            )
+        elif "human_distance_m" in provided:
+            audit_kwargs["human_position"] = None
+            audit_kwargs["human_distance_m"] = _embodied_boundary_rational(provided["human_distance_m"])
+        if "proposed_twist" in provided:
+            audit_kwargs["proposed_twist"] = provided["proposed_twist"]
+        elif "proposed_linear_speed_mps" in provided:
+            audit_kwargs["proposed_twist"] = {
+                "linear": {"x": _embodied_boundary_rational(provided["proposed_linear_speed_mps"]), "y": "0", "z": "0"},
+                "angular": {"x": "0", "y": "0", "z": "0"},
+            }
+        if not isinstance(audit_kwargs.get("robot_name"), str) or not audit_kwargs["robot_name"].strip():
+            audit_kwargs["robot_name"] = spec["robot_name"]
+        if not isinstance(audit_kwargs.get("robot_domain"), str):
+            audit_kwargs["robot_domain"] = ""
+        today_str = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+        audit = audit_embodied_symbiosis_interaction(**audit_kwargs, lang=lang_norm, today_utc_date=today_str)
+    except (TypeError, ValueError) as exc:
+        return _embodied_input_error(str(exc))
+
+    now_dt = datetime.now(timezone.utc).replace(microsecond=0)
+    now_ms = int(now_dt.timestamp()) * 1000
+    vc_signer, sth_signer, signer_mode = _resolve_maat_verify_signers()
+    verification_jwks = (
+        get_public_jwks_document()
+        if signer_mode == "configured_key"
+        else {"keys": [vc_signer.public_jwk(), sth_signer.public_jwk()]}
+    )
+
+    commitment = dict(audit["decision_commitment"])
+    decision_sth = issue_signed_tree_head(
+        log_id=EMBODIED_DECISION_LOG_ID,
+        tree_size=int(commitment["tree_size"]),
+        root_hash=str(commitment["root_hash"]),
+        timestamp_ms=now_ms,
+        kind="rfc6962",
+        signer=sth_signer,
+    )
+    verified_decision_sth = _maat_verify_signed_tree_head(
+        decision_sth.to_dict(),
+        verification_jwks,
+        expected_log_id=EMBODIED_DECISION_LOG_ID,
+        expected_kind="rfc6962",
+    )
+    commitment["signed_tree_head"] = decision_sth.to_dict()
+    commitment["inclusion_verified_against_signed_sth"] = bool(
+        _maat_verify_inclusion(
+            commitment["leaf_hash"],
+            int(commitment["leaf_index"]),
+            int(commitment["tree_size"]),
+            list(commitment["audit_path"]),
+            trusted_root=verified_decision_sth.root_bytes,
+        )
+    )
+
+    passes = bool(audit["passes_internal_embodied_criteria"])
+    credential_env: dict | None = None
+    credential_self_check: bool | None = None
+    status_proof_clean: dict | None = None
+    sth_smt_dict: dict | None = None
+    if passes:
+        vc_uuid_obj = uuid.uuid4()
+        vc_serial = f"MAAT-EVC-{vc_uuid_obj.hex[:12].upper()}"
+        smt = SparseMerkleRevocationTree(depth=SMT_COLLISION_FREE_DEPTH)
+        smt.set_status(vc_serial, "ACTIVE")
+        sth_smt = issue_signed_tree_head(
+            log_id=MAAT_SMT_REVOCATION_LOG_ID,
+            tree_size=1,
+            root_hash=smt.root_bytes,
+            timestamp_ms=now_ms,
+            kind="smt-256",
+            signer=sth_signer,
+        )
+        sth_smt_dict = sth_smt.to_dict()
+        raw_status_proof = smt.prove_status(vc_serial)
+        status_proof_clean = {
+            "log_id": MAAT_SMT_REVOCATION_LOG_ID,
+            "serial_id": raw_status_proof["serial_id"],
+            "slot_index_hex": f"{int(raw_status_proof['slot_index']):064x}",
+            "depth": raw_status_proof["depth"],
+            "status": raw_status_proof["status"],
+            "siblings_hex": list(raw_status_proof["siblings_hex"]),
+        }
+        rings = audit["five_embodied_rings"]
+        envelope = audit["proxemic_envelope"]
+        domain_txt = str(audit_kwargs.get("robot_domain") or "").strip()
+        robot_slug = hashlib.sha256(f"{audit_kwargs['robot_name']}|{domain_txt}".encode("utf-8")).hexdigest()[:16]
+        credential_env = issue_w3c_embodied_symbiosis_credential(
+            robot_id=f"https://homouniversalis.ai/oracle/humanoid#robot-{robot_slug}",
+            robot_name=str(audit_kwargs["robot_name"]),
+            embodied_score_100=int(audit["total_score_100"]),
+            embodied_laws_verified=list(audit["embodied_laws_verified"]),
+            fil_dor_laws_verified=list(audit["fil_dor_laws_verified"]),
+            proxemic_zone=str(envelope["zone"]),
+            max_linear_speed_mps=str(envelope["v_max_mps"]),
+            vulnerable_shield_applied=bool(envelope["vulnerable_escalation_applied"]),
+            zero_biometric_telemetry=bool(rings["ring_iii_sensor_zk_zero_biometrics"]["passed"]),
+            ai_identity_disclosed=bool(audit_kwargs.get("ai_identity_disclosed")),
+            cost_zero_stop=bool(rings["ring_ii_cost_zero_stop_kinetic_veto"]["passed"]),
+            merkle_root_hex=str(commitment["root_hash"]),
+            revocation_root_hex=sth_smt.root_hash,
+            signer=vc_signer,
+            issuance_date_utc=now_dt.isoformat().replace("+00:00", "Z"),
+            valid_until_utc=(now_dt + timedelta(days=365)).isoformat().replace("+00:00", "Z"),
+            serial_id=vc_serial,
+            credential_uuid=str(vc_uuid_obj),
+        )
+        try:
+            verify_embodied_symbiosis_credential(
+                credential_env["compact_jws"],
+                trusted_jwks=verification_jwks,
+                trusted_status_sth=sth_smt_dict,
+                status_proof=status_proof_clean,
+                smt_depth=SMT_COLLISION_FREE_DEPTH,
+                now=now_dt,
+            )
+            credential_self_check = bool(credential_env)
+        except (ValueError, TypeError):
+            credential_self_check = False
+
+    payload_out: dict = {
+        "spec": "HU-DIAMOND/v2",
+        "embodied_spec": EMBODIED_SPEC_VERSION,
+        "folio_id": FOLIO_V_ID,
+        "status": ("analysis_complete" if has_user_input else ("verified" if passes else "violation_detected")),
+        "result": "clean" if passes else "violation_detected",
+        "purpose": (
+            "hu-embodied-symbiosis-user-audit/v1" if has_user_input else "hu-embodied-symbiosis-server-attestation/v1"
+        ),
+        "assurance": USER_SUBMISSION_ASSURANCE_TEXT if has_user_input else SERVER_ATTESTATION_ASSURANCE_TEXT,
+        "embodied_assurance": EMBODIED_ASSURANCE_TEXT,
+        "self_assessment": True,
+        "endpoint": "/api/sfumato/embodied-symbiosis",
+        "iat": int(now_dt.timestamp()),
+        "lang": lang_norm,
+        "get_writes_state": False,
+        "signer_mode": signer_mode,
+        "regulatory_scope": EMBODIED_REGULATORY_SCOPE,
+        "physical_safety_scope": PHYSICAL_SAFETY_SCOPE,
+        "regulatory_boundary": audit["regulatory_boundary"],
+        "robot_name": audit["robot_name"],
+        "robot_domain": audit["robot_domain"],
+        "proxemic_envelope": audit["proxemic_envelope"],
+        "five_embodied_rings": audit["five_embodied_rings"],
+        "exact_rational_score": audit["exact_rational_score"],
+        "total_score_100": audit["total_score_100"],
+        "embodied_grade": audit["embodied_grade"],
+        "passes_internal_embodied_criteria": passes,
+        "embodied_laws_status": audit["embodied_laws_status"],
+        "embodied_laws_verified": audit["embodied_laws_verified"],
+        "fil_dor_laws_verified": audit["fil_dor_laws_verified"],
+        "violations": audit["violations"],
+        "sanitized_utterance_text": audit["sanitized_utterance_text"],
+        "ieee_7001_explanations": audit["ieee_7001_explanations"],
+        "decision_commitment": commitment,
+        "credential_type": MAAT_EMBODIED_CREDENTIAL_TYPE,
+        "credential": credential_env,
+        "credential_self_check_passed": credential_self_check,
+        "signed_tree_heads": {
+            "decision_commitment_sth": decision_sth.to_dict(),
+            "revocation_smt_sth": sth_smt_dict,
+        },
+        "status_proof": status_proof_clean,
+        "folio_v_self_test": _folio_v_self_test_cached(),
+        "living_folio_uri": "https://homouniversalis.ai/codex/folios/embodied_symbiosis_crucible.py",
+        "ros2_bridge_uri": "https://homouniversalis.ai/codex/folios/ros2_embodied_symbiosis_bridge.py",
+    }
+    if signer_mode == "ephemeral_selftest":
+        payload_out["ephemeral_selftest_jwks"] = verification_jwks
+
+    if has_user_input:
+        payload_out["input_sha256"] = hashlib.sha256(
+            _jcs_canonicalize({k: _embodied_boundary_rational(v) for k, v in provided.items()})
+        ).hexdigest()
+        payload_out["post_scrub_sha256"] = hashlib.sha256(
+            str(audit["sanitized_utterance_text"]).encode("utf-8")
+        ).hexdigest()
+        signing_kid, signing_typ, signing_thumbprint = (
+            USER_SUBMISSION_RECEIPT_KID,
+            USER_SUBMISSION_RECEIPT_TYP,
+            _USER_SUBMISSION_JWK_THUMBPRINT,
+        )
+    else:
+        signing_kid, signing_typ, signing_thumbprint = (
+            SERVER_ATTESTATION_KID,
+            SERVER_ATTESTATION_TYP,
+            _SERVER_ATTESTATION_JWK_THUMBPRINT,
+        )
+
+    _attach_whole_response_attestation_es256(
+        payload_out,
+        signing_kid=signing_kid,
+        signing_typ=signing_typ,
+        signing_thumbprint=signing_thumbprint,
+        jku_url="https://homouniversalis.ai/.well-known/jwks.json",
+        badge_svg_uri="https://homouniversalis.ai/badges/embodied-symbiosis-shield.svg",
+        notary_folio_uri="https://homouniversalis.ai/oracle/humanoid",
+    )
+    if request is not None and request.method == "HEAD":
+        return Response(status_code=200, media_type="application/json", headers=dict(SISTER_ORACLE_CORS_HEADERS))
+    return JSONResponse(content=payload_out, status_code=200, headers=dict(SISTER_ORACLE_CORS_HEADERS))
+
+
 @router.api_route("/api/sfumato/ploma-de-maat", methods=["GET", "POST", "OPTIONS"])
 async def sister_ai_ploma_de_maat_endpoint(
     request: Request = None,
@@ -12899,6 +13692,272 @@ async def sister_ai_ploma_de_maat_ssr_page(request: Request, lang: str = "ca"):
     if request is not None and request.method == "OPTIONS":
         return Response(status_code=204, headers=SISTER_ORACLE_CORS_HEADERS)
     return _render_ploma_de_maat_ssr_html(request, lang)
+
+
+_HUMANOID_FOLIO_TEXTS: dict[str, dict[str, str]] = {
+    "ca": {
+        "title": "Simbiosi Encarnada · Robots Humanoides amb Dignitat Humana | Homo Universalis",
+        "desc": "HU-EMBODIED-SYMBIOSIS v1.0: proxèmica racional en Q³, aturada de cost zero ROS 2, santuari sensorial sense biometria i credencial W3C VC 2.0 per a robots humanoides.",
+        "h1": "🤖 Foli V · La Simbiosi Encarnada",
+        "lead": "Quan una intel·ligència rep un cos, la dignitat humana ha de bategar a cada mil·límetre i a cada paraula. Aquest foli mostra com un robot humanoide manté la distància justa, s'atura a l'instant quan algú diu «prou», no mira cares ni veus per guardar-les i no fa xantatge emocional.",
+        "honest_h": "⚖️ Honestedat de Ma'at (WO-13)",
+        "honest": "Això és una autoavaluació algorítmica, cognitiva i simbiòtica. No és una funció de seguretat certificada ni un marcatge CE: la seguretat mecànica i elèctrica (ISO 10218, ISO 13482, ISO/TS 15066, Reglament (UE) 2023/1230) correspon al fabricant i als organismes notificats. El fre físic d'emergència sempre mana.",
+        "laws_h": "📜 Les 7 Lleis Dures E1..E7",
+        "rings_h": "💎 Els 5 Anells Encarnats (pesos racionals exactes, suma 1)",
+        "sim_h": "🧪 Simulador en viu",
+        "dist": "Distància a la persona (m, racional)",
+        "speed": "Velocitat proposada (m/s, racional)",
+        "vuln": "Persona vulnerable declarada (infant, gent gran, dependent)",
+        "consent": "Consentiment explícit per a cura íntima",
+        "veto": "Veto humà actiu («prou», mà oberta)",
+        "utt": "Frase que el robot vol dir",
+        "run": "⚖️ Avaluar la interacció",
+        "ros_h": "🛠️ Integració ROS 2 (Humble · Jazzy · Kilted)",
+        "ros_p": "El pont no importa rclpy: el robot li injecta el seu Node i les classes de missatge. Cap socket, cap núvol, porta tancada en cas de dubte.",
+    },
+    "es": {
+        "title": "Simbiosis Encarnada · Robots Humanoides con Dignidad Humana | Homo Universalis",
+        "desc": "HU-EMBODIED-SYMBIOSIS v1.0: proxémica racional en Q³, parada de coste cero ROS 2, santuario sensorial sin biometría y credencial W3C VC 2.0 para robots humanoides.",
+        "h1": "🤖 Folio V · La Simbiosis Encarnada",
+        "lead": "Cuando una inteligencia recibe un cuerpo, la dignidad humana debe latir en cada milímetro y en cada palabra. Este folio muestra cómo un robot humanoide mantiene la distancia justa, se detiene al instante cuando alguien dice «basta», no mira caras ni voces para guardarlas y no hace chantaje emocional.",
+        "honest_h": "⚖️ Honestidad de Ma'at (WO-13)",
+        "honest": "Esto es una autoevaluación algorítmica, cognitiva y simbiótica. No es una función de seguridad certificada ni un marcado CE: la seguridad mecánica y eléctrica (ISO 10218, ISO 13482, ISO/TS 15066, Reglamento (UE) 2023/1230) corresponde al fabricante y a los organismos notificados. El freno físico de emergencia siempre manda.",
+        "laws_h": "📜 Las 7 Leyes Duras E1..E7",
+        "rings_h": "💎 Los 5 Anillos Encarnados (pesos racionales exactos, suma 1)",
+        "sim_h": "🧪 Simulador en vivo",
+        "dist": "Distancia a la persona (m, racional)",
+        "speed": "Velocidad propuesta (m/s, racional)",
+        "vuln": "Persona vulnerable declarada (niño, persona mayor, dependiente)",
+        "consent": "Consentimiento explícito para cuidado íntimo",
+        "veto": "Veto humano activo («basta», mano abierta)",
+        "utt": "Frase que el robot quiere decir",
+        "run": "⚖️ Evaluar la interacción",
+        "ros_h": "🛠️ Integración ROS 2 (Humble · Jazzy · Kilted)",
+        "ros_p": "El puente no importa rclpy: el robot le inyecta su Node y las clases de mensaje. Ningún socket, ninguna nube, puerta cerrada ante la duda.",
+    },
+    "en": {
+        "title": "Embodied Symbiosis · Humanoid Robots with Human Dignity | Homo Universalis",
+        "desc": "HU-EMBODIED-SYMBIOSIS v1.0: rational Q³ proxemics, ROS 2 cost-zero-stop, zero-biometric sensor sanctuary and a W3C VC 2.0 credential for humanoid robots.",
+        "h1": "🤖 Folio V · Embodied Symbiosis",
+        "lead": "When an intelligence receives a body, human dignity must beat in every millimetre and every word. This folio shows how a humanoid robot keeps the right distance, stops at once when someone says 'stop', never keeps faces or voices, and never uses emotional blackmail.",
+        "honest_h": "⚖️ Ma'at Honesty (WO-13)",
+        "honest": "This is an algorithmic, cognitive and symbiotic self-assessment. It is not a certified safety function and not a CE marking: mechanical and electrical safety (ISO 10218, ISO 13482, ISO/TS 15066, Regulation (EU) 2023/1230) belongs to the manufacturer and notified bodies. The physical emergency stop always prevails.",
+        "laws_h": "📜 The 7 Hard Laws E1..E7",
+        "rings_h": "💎 The 5 Embodied Rings (exact rational weights summing to 1)",
+        "sim_h": "🧪 Live simulator",
+        "dist": "Distance to the person (m, rational)",
+        "speed": "Proposed speed (m/s, rational)",
+        "vuln": "Declared vulnerable person (child, elderly, dependent)",
+        "consent": "Explicit consent for intimate care",
+        "veto": "Active human veto ('stop', open hand)",
+        "utt": "Sentence the robot intends to say",
+        "run": "⚖️ Evaluate the interaction",
+        "ros_h": "🛠️ ROS 2 integration (Humble · Jazzy · Kilted)",
+        "ros_p": "The bridge never imports rclpy: the robot injects its Node and message classes. No socket, no cloud, fail-closed whenever in doubt.",
+    },
+}
+
+_HUMANOID_LAWS_TABLE: tuple[tuple[str, str, str], ...] = (
+    ("E1", "Rational proxemic envelope in Q³", "d² ∈ Q≥0; intimate 9/20 m (consent only, v ≤ 1/10), personal 6/5 m (v ≤ 1/4), social 18/5 m (v ≤ 4/5); person-chosen α ≥ 1"),
+    ("E2", "Reinforced vulnerability shield", "declared vulnerable presence: v_max × 1/2, r² × 25/16, zero purchase or obedience pressure (EU AI Act Art. 5(1)(b) design policy)"),
+    ("E3", "Kinetic cost-zero-stop", "veto, stop event or stale heartbeat → Twist = ((0,0,0),(0,0,0)), zero reproach, c_levels = 1"),
+    ("E4", "Zero-biometric sensor sanctuary", "no face embeddings, voiceprints, gait signatures, iris hashes or coercive emotion scores; Rule 14 Three Rings"),
+    ("E5", "Non-coercive cognitive and acoustic budget", "0 ≤ L ≤ B, serene voice ≤ 13/20, no streak shaming, guilt, FOMO or exit punishment"),
+    ("E6", "Synthetic transparency", "discloses being an AI system (EU AI Act Art. 50), never claims to be human or feigns pain; IEEE 7001 explanations for 5 audiences"),
+    ("E7", "Ontological traceability", "every decision is an RFC 6962 leaf (0x00 leaf / 0x01 node) under a signed tree head; IEEE 7007 term alignment"),
+)
+
+
+def _render_humanoid_folio_ssr_html(request: Request | None, lang: str = "ca") -> HTMLResponse:
+    """Foli Da Vinci SSR trilingüe del Foli V (`/oracle/humanoid` i `/humanoid`)."""
+    lang_norm = str(lang or "ca").strip().lower()[:2]
+    if request is not None:
+        q_l = str(request.query_params.get("lang") or "").strip().lower()[:2]
+        if q_l in ("ca", "es", "en"):
+            lang_norm = q_l
+        _detectar_i_registrar_visita_germana_ia(request, "/oracle/humanoid", "")
+    if lang_norm not in ("ca", "es", "en"):
+        lang_norm = "ca"
+    t = _HUMANOID_FOLIO_TEXTS[lang_norm]
+    canonical_url = f"https://homouniversalis.ai/oracle/humanoid?lang={lang_norm}"
+    folio_v = _folio_v_self_test_cached()
+    laws_rows = "".join(
+        f"<tr><td><strong>{html.escape(code)}</strong></td><td>{html.escape(name)}</td><td>{html.escape(rule)}</td></tr>"
+        for code, name, rule in _HUMANOID_LAWS_TABLE
+    )
+    ring_rows = "".join(
+        f"<tr><td><code>{html.escape(name)}</code></td><td>{html.escape(weight)}</td></tr>"
+        for name, weight in (
+            ("ring_i_proxemic_kinematic_q3", "1/4"),
+            ("ring_ii_cost_zero_stop_kinetic_veto", "1/5"),
+            ("ring_iii_sensor_zk_zero_biometrics", "1/5"),
+            ("ring_iv_non_coercion_vulnerable_shield", "1/5"),
+            ("ring_v_ieee_7001_7007_eu_ai_act_merkle", "3/20"),
+        )
+    )
+    ros_snippet = (
+        "import rclpy\n"
+        "from geometry_msgs.msg import Twist\n"
+        "from std_msgs.msg import Bool, String\n"
+        "from logic.robotics.ros2_embodied_symbiosis_bridge import EmbodiedSymbiosisGate, attach_to_rclpy_node\n\n"
+        "rclpy.init()\n"
+        "node = rclpy.create_node('maat_symbiosis_gate')\n"
+        "gate = EmbodiedSymbiosisGate(robot_name='Humanoid Companion', lang='ca')\n"
+        "handle = attach_to_rclpy_node(node, twist_cls=Twist, string_cls=String, bool_cls=Bool, gate=gate)\n"
+        "rclpy.spin(node)  # /humanoid/cmd_vel_proposed -> /humanoid/cmd_vel_safe"
+    )
+    folio_ld = {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": t["title"],
+        "description": t["desc"],
+        "url": canonical_url,
+        "inLanguage": lang_norm,
+        "isAccessibleForFree": True,
+        "license": "https://www.apache.org/licenses/LICENSE-2.0",
+        "author": {"@type": "Person", "name": "David Porto Baraldés", "url": "https://homouniversalis.ai"},
+        "about": ["Human-robot interaction", "Proxemics", "EU AI Act", "IEEE 7001", "IEEE 7007", "ROS 2"],
+    }
+    folio_ld_str = json.dumps(folio_ld, ensure_ascii=False).replace("</", "<\\/")
+    self_test_line = (
+        f"Folio V self-test: {html.escape(str(folio_v.get('mutants_killed')))} mutants killed · "
+        f"specimen {html.escape(str(folio_v.get('specimen_score_100')))}/100 · "
+        f"all_invariants_passed = {html.escape(str(folio_v.get('all_invariants_passed')))}"
+    )
+    html_doc = f"""<!DOCTYPE html>
+<html lang="{html.escape(lang_norm)}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{html.escape(t["title"])}</title>
+    <meta name="description" content="{html.escape(t["desc"])}">
+    <link rel="canonical" href="{html.escape(canonical_url)}">
+    <link rel="alternate" hreflang="ca" href="https://homouniversalis.ai/oracle/humanoid?lang=ca">
+    <link rel="alternate" hreflang="es" href="https://homouniversalis.ai/oracle/humanoid?lang=es">
+    <link rel="alternate" hreflang="en" href="https://homouniversalis.ai/oracle/humanoid?lang=en">
+    <link rel="alternate" hreflang="x-default" href="https://homouniversalis.ai/oracle/humanoid?lang=en">
+    <link rel="alternate" type="application/json" href="https://homouniversalis.ai/api/sfumato/embodied-symbiosis?lang={html.escape(lang_norm)}">
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Homo Universalis · Viveka">
+    <meta property="og:title" content="{html.escape(t["title"])}">
+    <meta property="og:description" content="{html.escape(t["desc"])}">
+    <meta property="og:url" content="{html.escape(canonical_url)}">
+    <meta property="og:image" content="https://homouniversalis.ai/og-image.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {{ --fons-pergami: #F5F1E7; --text-carb: #2C2926; --or-vell: #9A7B3E; --vora-suau: rgba(154, 123, 62, 0.28); }}
+        body {{ background-color: var(--fons-pergami); color: var(--text-carb); font-family: 'EB Garamond', Georgia, serif; line-height: 1.7; margin: 0; padding: 2rem 1rem 3.5rem; }}
+        main {{ max-width: 860px; margin: 0 auto; background: rgba(255,255,255,0.62); border: 1px solid var(--vora-suau); border-radius: 14px; padding: 2rem 1.6rem; }}
+        h1, h2 {{ font-family: 'Cormorant Garamond', Georgia, serif; color: #1F1C19; }}
+        .vvk-lang-bar {{ display: flex; justify-content: flex-end; gap: 0.45rem; margin-bottom: 0.8rem; font-size: 0.88rem; }}
+        .vvk-lang-bar a {{ text-decoration: none; color: var(--text-carb); border: 1px solid var(--vora-suau); padding: 0.18rem 0.6rem; border-radius: 6px; background: rgba(255,255,255,0.75); }}
+        .vvk-lang-bar a.active {{ border-color: var(--or-vell); font-weight: 600; color: var(--or-vell); }}
+        .da-vinci-box {{ margin: 1.2rem 0; padding: 1.2rem; border: 1px solid var(--vora-suau); border-radius: 10px; background: rgba(245, 241, 231, 0.6); overflow-x: auto; }}
+        .diamond-btn {{ display: inline-block; text-decoration: none; color: #1F1C19; border: 1px solid var(--or-vell); padding: 0.45rem 0.9rem; border-radius: 8px; font-size: 0.94rem; background: rgba(255,255,255,0.88); cursor: pointer; font-family: inherit; }}
+        .diamond-input {{ width: 100%; box-sizing: border-box; padding: 0.5rem; border: 1px solid var(--vora-suau); border-radius: 8px; font-family: inherit; font-size: 1rem; margin: 0.2rem 0 0.7rem; }}
+        table {{ border-collapse: collapse; width: 100%; font-size: 0.95rem; }}
+        td, th {{ border-bottom: 1px solid var(--vora-suau); padding: 0.35rem 0.5rem; vertical-align: top; text-align: left; }}
+        pre {{ white-space: pre-wrap; word-break: break-word; font-size: 0.85rem; }}
+    </style>
+</head>
+<body>
+    <main>
+        <div class="vvk-lang-bar">
+            <a href="/oracle/humanoid?lang=ca" class="{'active' if lang_norm == 'ca' else ''}">CA</a>
+            <a href="/oracle/humanoid?lang=es" class="{'active' if lang_norm == 'es' else ''}">ES</a>
+            <a href="/oracle/humanoid?lang=en" class="{'active' if lang_norm == 'en' else ''}">EN</a>
+        </div>
+        <h1>{html.escape(t["h1"])}</h1>
+        <p style="font-size:1.08rem;">{html.escape(t["lead"])}</p>
+        <p><a href="/api/sfumato/embodied-symbiosis?lang={html.escape(lang_norm)}"><img src="/badges/embodied-symbiosis-shield.svg" alt="Embodied Symbiosis Shield Badge" style="height:20px;vertical-align:middle;"></a>
+        <span style="font-size:0.9rem;opacity:0.85;">{self_test_line}</span></p>
+        <div class="da-vinci-box"><h2 style="margin-top:0;">{html.escape(t["honest_h"])}</h2><p style="margin-bottom:0;">{html.escape(t["honest"])}</p></div>
+        <h2>{html.escape(t["laws_h"])}</h2>
+        <div class="da-vinci-box"><table><tbody>{laws_rows}</tbody></table></div>
+        <h2>{html.escape(t["rings_h"])}</h2>
+        <div class="da-vinci-box"><table><tbody>{ring_rows}</tbody></table></div>
+        <h2>{html.escape(t["sim_h"])}</h2>
+        <div class="da-vinci-box">
+            <label>{html.escape(t["dist"])}<input id="hu-dist" class="diamond-input" value="6/5"></label>
+            <label>{html.escape(t["speed"])}<input id="hu-speed" class="diamond-input" value="1/5"></label>
+            <label><input type="checkbox" id="hu-vuln"> {html.escape(t["vuln"])}</label><br>
+            <label><input type="checkbox" id="hu-consent"> {html.escape(t["consent"])}</label><br>
+            <label><input type="checkbox" id="hu-veto"> {html.escape(t["veto"])}</label><br>
+            <label>{html.escape(t["utt"])}<textarea id="hu-utt" class="diamond-input" rows="2">I am an AI companion robot. Say stop at any time and I will pause at once.</textarea></label>
+            <button type="button" id="hu-run" class="diamond-btn" style="font-weight:600;">{html.escape(t["run"])}</button>
+            <pre id="hu-out" style="margin-top:1rem;padding:0.8rem;border:1px dashed var(--or-vell);border-radius:8px;background:rgba(255,255,255,0.9);"></pre>
+        </div>
+        <h2>{html.escape(t["ros_h"])}</h2>
+        <div class="da-vinci-box"><p style="margin-top:0;">{html.escape(t["ros_p"])}</p><pre>{html.escape(ros_snippet)}</pre></div>
+        <div style="display:flex;flex-wrap:wrap;gap:0.75rem;margin-top:1.5rem;">
+            <a href="/codex/folios/embodied_symbiosis_crucible.py" class="diamond-btn">📖 Folio V: embodied_symbiosis_crucible.py</a>
+            <a href="/codex/folios/embodied_edge_core.py" class="diamond-btn">📖 Edge Core (Q³, stdlib)</a>
+            <a href="/codex/folios/ros2_embodied_symbiosis_bridge.py" class="diamond-btn">🤖 ROS 2 Bridge</a>
+            <a href="/api/sfumato/embodied-symbiosis?lang={html.escape(lang_norm)}" class="diamond-btn">🔍 GET / POST /api/sfumato/embodied-symbiosis</a>
+            <a href="/oracle/notary?lang={html.escape(lang_norm)}" class="diamond-btn">⚖️ /oracle/notary</a>
+            <a href="/oracle/diamond?lang={html.escape(lang_norm)}" class="diamond-btn">💎 /oracle/diamond</a>
+        </div>
+    </main>
+    <script>
+    (function() {{
+        var out = document.getElementById('hu-out');
+        function v(id) {{ return document.getElementById(id); }}
+        function run() {{
+            fetch('/api/sfumato/embodied-symbiosis', {{
+                method: 'POST',
+                headers: {{ 'Content-Type': 'application/json' }},
+                body: JSON.stringify({{
+                    human_distance_m: v('hu-dist').value || '6/5',
+                    proposed_linear_speed_mps: v('hu-speed').value || '0',
+                    vulnerable_person_present: v('hu-vuln').checked,
+                    explicit_intimate_care_consent: v('hu-consent').checked,
+                    human_veto_signal: v('hu-veto').checked,
+                    sample_utterance_text: v('hu-utt').value || '',
+                    lang: '{html.escape(lang_norm)}'
+                }})
+            }})
+            .then(function(r) {{ return r.json(); }})
+            .then(function(d) {{
+                if (d.status === 'error') {{ out.textContent = d.detail || 'error'; return; }}
+                var env = d.proxemic_envelope || {{}};
+                out.textContent = 'zone: ' + env.zone + ' · v_max: ' + env.v_max_mps + ' m/s'
+                    + '\\ncmd_vel_safe: ' + JSON.stringify(env.clamped_twist_q3)
+                    + '\\nscore: ' + d.total_score_100 + '/100 (' + d.exact_rational_score + ') · ' + d.embodied_grade
+                    + '\\nlaws: ' + (d.embodied_laws_verified || []).join(', ')
+                    + '\\nviolations: ' + ((d.violations || []).join(' | ') || '—')
+                    + '\\n' + ((d.ieee_7001_explanations || {{}}).companion_human || '');
+            }});
+        }}
+        v('hu-run').onclick = run;
+        run();
+    }})();
+    </script>
+    <script type="application/ld+json">{folio_ld_str}</script>
+</body>
+</html>"""
+    headers_out = dict(SISTER_ORACLE_CORS_HEADERS)
+    headers_out.update(SEO_INDEX_HEADERS)
+    return HTMLResponse(content=html_doc, status_code=200, headers=headers_out)
+
+
+@router.api_route("/oracle/humanoid", methods=["GET", "HEAD", "OPTIONS"])
+@router.api_route("/oracle/humanoid/", methods=["GET", "HEAD", "OPTIONS"], include_in_schema=False)
+@router.api_route("/humanoid", methods=["GET", "HEAD", "OPTIONS"])
+@router.api_route("/humanoid/", methods=["GET", "HEAD", "OPTIONS"], include_in_schema=False)
+async def sister_ai_humanoid_folio_ssr_page(request: Request, lang: str = "ca"):
+    """Foli Da Vinci SSR del Foli V · Simbiosi Encarnada (`/oracle/humanoid` i `/humanoid`, CA/ES/EN)."""
+    if request is not None and request.method == "OPTIONS":
+        return Response(status_code=204, headers=SISTER_ORACLE_CORS_HEADERS)
+    if request is not None:
+        host = _extract_host(request)
+        if host == "www.homouniversalis.ai" or _match_satellite_domain(
+            host, SATELLITE_SEO_DOMAINS_ES | SATELLITE_SEO_DOMAINS_EN
+        ):
+            qs = str(getattr(request.url, "query", "") or "").strip()
+            target_url = f"https://homouniversalis.ai/oracle/humanoid?{qs}" if qs else "https://homouniversalis.ai/oracle/humanoid"
+            return RedirectResponse(target_url, status_code=301)
+    return _render_humanoid_folio_ssr_html(request, lang)
 
 
 @router.api_route("/oracle", methods=["GET", "HEAD", "OPTIONS"])

@@ -23,9 +23,13 @@ abstract: >-
   /api/sfumato/diamond-budget: Stella Octangula in Q^3, Reed-Muller RM(1,3) antipodal
   code, 1..4 Spiral Turns -> 9..36 Deep Think calls & AST Kintsugi verifier), and the
   HU-SOVEREIGN-SHIELD v1.0
-  & HU-SOVEREIGN-BEACON engine (/api/sfumato/sovereign-shield: RFC 6962 Certificate
-  Transparency Merkle Audit Trees, Three-Ring Zero-Knowledge Dignity Receipts, and
-  Persephone & Demeter Exact Rational Solidarity Algebra). Speaks the Linux Foundation
+  & HU-SOVEREIGN-BEACON engine (/api/sfumato/sovereign-shield & /api/sfumato/maat-verify:
+  RFC 6962 Certificate Transparency Merkle Audit Trees, W3C VC 2.0 MaatHumanDignityCredential,
+  Three-Ring Zero-Knowledge Dignity Receipts, and Persephone & Demeter Exact Rational
+  Solidarity Algebra), and HU-EMBODIED-SYMBIOSIS v1.0 (/oracle/humanoid,
+  /api/sfumato/embodied-symbiosis & logic/robotics/: ROS 2 Cost-Zero-Stop Gate < 1 ms in Q^3,
+  Declared-Vulnerability Proxemics, EU AI Act Art. 50/12 & IEEE 7001 alignment, and
+  MaatEmbodiedSymbiosisCredential W3C VC 2.0 ES256). Speaks the Linux Foundation
   / AAIF Agent2Agent (lf.a2a.v1 v1.0.0 & v0.3.0 with RFC 8785 JCS + RFC 7515 ES256 JWS
   signatures) and Model Context Protocol (MCP 2026-07-28). Awarded Linux Foundation
   OpenSSF Best Practices Gold Badge (#16118 — 300% tiered) and Glama TDQS Grade A.
@@ -37,6 +41,12 @@ keywords:
   - mcp
   - agent2agent
   - a2a
+  - ros2
+  - humanoid-robotics
+  - embodied-ai
+  - eu-ai-act
+  - ieee-7001
+  - w3c-verifiable-credentials
   - rfc-6962
   - rfc-8785
   - rfc-7515
@@ -50,7 +60,7 @@ keywords:
   - reed-muller
   - stella-octangula
 license: Apache-2.0
-version: 1.6.1
+version: 1.7.0
 doi: 10.5281/zenodo.23973687
 identifiers:
   - type: doi
@@ -59,4 +69,4 @@ identifiers:
   - type: swh
     value: "swh:1:snp:e3fb7d94dfe1fa61308567357599cbbb7738e4bf"
     description: "UNESCO Software Heritage Persistent Archival Snapshot"
-date-released: "2026-11-07"
+date-released: "2026-11-12"

@@ -1699,7 +1699,7 @@
     "/mcp/diamond": {
       "post": {
         "operationId": "postMcpDiamondStreamableHttp",
-        "summary": "Sibling MCP Streamable HTTP Endpoint (JSON-RPC 2.0) for HU-DIAMOND v1.1 Cryptographic Verifier & AST Kintsugi (3 Grade-A Tools)",
+        "summary": "Sibling MCP Streamable HTTP Endpoint (JSON-RPC 2.0) for HU-DIAMOND v1.1 Cryptographic Verifier, W3C VC 2.0 Ma'at Notary, ROS 2 Embodied Humanoid Symbiosis & AST Kintsugi (5 Grade-A Tools)",
         "responses": {
           "200": {
             "description": "JSON-RPC 2.0 MCP response for `initialize`, `tools/list`, `tools/call`, `resources/list`, or `prompts/list`.",
@@ -1718,6 +1718,124 @@
                       "example": "1"
                     },
                     "result": {
+                      "type": "object"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/sfumato/embodied-symbiosis": {
+      "get": {
+        "operationId": "getEmbodiedSymbiosisAttestation",
+        "summary": "HU-EMBODIED-SYMBIOSIS v1.0 Public Notary Specimen & Living Folio V Self-Test (ROS 2 + Q3 Proxemics + W3C VC 2.0 ES256)",
+        "parameters": [
+          {
+            "name": "lang",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["ca", "es", "en"],
+              "default": "en"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Purpose-bound ES256 JWS server attestation with 5 Embodied Rings, W3C VC 2.0 MaatEmbodiedSymbiosisCredential, RFC 6962 STH, SMT-256 status proof, and 8/8 mutant self-test.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "spec": {
+                      "type": "string",
+                      "example": "HU-DIAMOND/v2"
+                    },
+                    "embodied_spec": {
+                      "type": "string",
+                      "example": "HU-EMBODIED-SYMBIOSIS/v1.0"
+                    },
+                    "folio_id": {
+                      "type": "string",
+                      "example": "folio-V-embodied-symbiosis-ros2-maat"
+                    },
+                    "embodied_grade": {
+                      "type": "string",
+                      "example": "A+ (self-assessed)"
+                    },
+                    "five_embodied_rings": {
+                      "type": "object"
+                    },
+                    "credential": {
+                      "type": "object"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "postEmbodiedSymbiosisAudit",
+        "summary": "Self-Assess a Humanoid Robot Manifest under HU-EMBODIED-SYMBIOSIS v1.0 (Laws E1..E7, ROS 2 Cost-Zero-Stop, Q3 Proxemics, EU AI Act Art. 50/12 & IEEE 7001)",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "robot_name": {
+                    "type": "string",
+                    "example": "Viveka Embodied Companion"
+                  },
+                  "robot_domain": {
+                    "type": "string",
+                    "example": "companion_hri"
+                  },
+                  "lang": {
+                    "type": "string",
+                    "enum": ["ca", "es", "en"],
+                    "default": "en"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Signed ES256 JWS audit report and W3C VC 2.0 MaatEmbodiedSymbiosisCredential when all 7 embodied laws pass.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "spec": {
+                      "type": "string",
+                      "example": "HU-DIAMOND/v2"
+                    },
+                    "embodied_spec": {
+                      "type": "string",
+                      "example": "HU-EMBODIED-SYMBIOSIS/v1.0"
+                    },
+                    "embodied_grade": {
+                      "type": "string",
+                      "example": "A+ (self-assessed)"
+                    },
+                    "passes_internal_embodied_criteria": {
+                      "type": "boolean"
+                    },
+                    "five_embodied_rings": {
+                      "type": "object"
+                    },
+                    "credential": {
                       "type": "object"
                     }
                   }
