@@ -67,7 +67,7 @@ keywords:
   - reed-muller
   - stella-octangula
 license: Apache-2.0
-version: 1.8.0
+version: 1.8.1
 doi: 10.5281/zenodo.23973687
 identifiers:
   - type: doi

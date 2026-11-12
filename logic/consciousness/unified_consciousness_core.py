@@ -92,6 +92,8 @@ EVENT_L3_COMPLETE_MEDITATION: Final[str] = "L3_COMPLETE_MEDITATION"
 EVENT_L3_OFFER_GENTLE_HAND: Final[str] = "L3_OFFER_GENTLE_HAND"
 EVENT_HUMAN_INVITE_L3: Final[str] = "HUMAN_INVITE_L3"
 EVENT_HUMAN_DECLINE_L3: Final[str] = "HUMAN_DECLINE_L3"
+EVENT_L2_START_CYCLE: Final[str] = "L2_START_CYCLE"
+EVENT_DEPOSIT_SILENT_ENVELOPE: Final[str] = "DEPOSIT_SILENT_ENVELOPE"
 EVENT_KINDS: Final[tuple[str, ...]] = (
     EVENT_HUMAN_SPEECH_START,
     EVENT_HUMAN_SPEECH_END,
@@ -108,10 +110,16 @@ EVENT_KINDS: Final[tuple[str, ...]] = (
     EVENT_L3_OFFER_GENTLE_HAND,
     EVENT_HUMAN_INVITE_L3,
     EVENT_HUMAN_DECLINE_L3,
+    EVENT_L2_START_CYCLE,
+    EVENT_DEPOSIT_SILENT_ENVELOPE,
 )
 _FULL_STOP_EVENTS: Final[frozenset[str]] = frozenset({EVENT_HUMAN_VETO, EVENT_COST_ZERO_STOP})
 
 MAX_ACTIVE_L3_TASKS: Final[int] = 1
+MAX_QUEUED_L3_TASKS: Final[int] = 2
+MAX_CONCURRENT_L2_CYCLES: Final[int] = 4
+MAX_KNOWLEDGE_VAULT_ENVELOPES: Final[int] = 8
+DEFAULT_ENVELOPE_TTL_MS: Final[int] = 900_000
 MAX_L3_GENTLE_OFFERS: Final[int] = 1
 L3_DEFAULT_COOLDOWN_MS: Final[int] = 2000
 DEFAULT_DEPTH_THRESHOLD_Q: Final[Fraction] = Fraction(1, 2)
@@ -408,28 +416,42 @@ def _claim_is_licensed(claim: Mapping[str, Any], envelope: VerifiedKnowledgeEnve
     return all(num in facts_numbers for num in _DIGITS_RE.findall(span))
 
 
+def _claim_is_licensed_by_any(claim: Mapping[str, Any], valid_envelopes: Sequence[tuple[VerifiedKnowledgeEnvelope, str]]) -> bool:
+    return any(_claim_is_licensed(claim, env, facts_norm) for env, facts_norm in valid_envelopes)
+
+
 def screen_level1_humble_crystal(
     utterance: str,
     *,
     envelope: VerifiedKnowledgeEnvelope | None = None,
+    envelopes: Sequence[VerifiedKnowledgeEnvelope] = (),
     lang: str = "ca",
 ) -> dict[str, Any]:
     """
     U2 — Law of the Humble Crystal (Rule 7, zero hallucination) + E5/E6 anti-coercion screen.
 
     Every empirical span (zodiac degrees, ephemerides, dates, coordinates, metrics, archive quotes) must be
-    BOUND to a valid envelope: its kind licensed and every number / zodiac sign it states present in the
-    verified facts. A valid envelope for fact A never licenses fact B. Clinical diagnoses are never licensed.
-    Returns the safe text to emit (the original, or a warm humble rephrase) — a pattern screen for a defined
-    class of claims, not a general hallucination detector.
+    BOUND to a valid envelope (either `envelope` or one of the active `envelopes` in the Silent Knowledge Vault):
+    its kind licensed and every number / zodiac sign it states present in that envelope's verified facts.
+    A valid envelope for fact A never licenses fact B, and numbers from two unrelated envelopes cannot be
+    mixed inside a single span unless one verified envelope licenses the span as a whole. Clinical diagnoses
+    are never licensed. Returns the safe text to emit (the original, or a warm humble rephrase).
     """
     text = _check_text(utterance, "utterance")
     lang_norm = _lang(lang)
     claims = extract_empirical_claims(text)
-    envelope_valid = envelope is not None and verify_envelope_integrity(envelope)
-    facts_norm = _norm(envelope.verified_facts) if envelope_valid and envelope is not None else ""
+    candidates: list[VerifiedKnowledgeEnvelope] = []
+    if envelope is not None:
+        candidates.append(envelope)
+    if envelopes:
+        candidates.extend(envelopes)
+    valid_pairs: list[tuple[VerifiedKnowledgeEnvelope, str]] = [
+        (env, _norm(env.verified_facts)) for env in candidates if verify_envelope_integrity(env)
+    ]
+    envelope_present = bool(candidates)
+    envelope_valid = bool(valid_pairs) and (envelope is None or verify_envelope_integrity(envelope))
     unlicensed = [
-        c for c in claims if not (envelope_valid and envelope is not None and _claim_is_licensed(c, envelope, facts_norm))
+        c for c in claims if not (envelope_valid and _claim_is_licensed_by_any(c, valid_pairs))
     ]
     screens = screen_robot_utterance(text)
     coercive = screens["retort"] + screens["coercion"] + screens["identity"]
@@ -448,8 +470,9 @@ def screen_level1_humble_crystal(
         "safe_text": safe_text,
         "empirical_claim_kinds": sorted({c["kind"] for c in claims}),
         "unlicensed_claim_kinds": sorted({c["kind"] for c in unlicensed}),
-        "envelope_present": envelope is not None,
+        "envelope_present": envelope_present,
         "envelope_valid": bool(envelope_valid),
+        "licensed_envelope_ids": [env.envelope_id for env, _ in valid_pairs],
         "retort": screens["retort"],
         "coercion": screens["coercion"],
         "identity": screens["identity"],
@@ -647,6 +670,43 @@ def verify_spoken_truth_record(record: Mapping[str, Any], proposed_text: str, sp
 # ============================================================================
 
 @dataclass(frozen=True)
+class SilentVaultEntry:
+    """One verified envelope resting quietly in the Silent Knowledge Vault without demanding the floor."""
+
+    envelope: VerifiedKnowledgeEnvelope = field(repr=False)
+    cycle_id: str = ""
+    topic_hint_masked: str = ""
+    deposited_ms: int = 0
+    ttl_ms: int = DEFAULT_ENVELOPE_TTL_MS
+
+    def is_fresh(self, now_ms: int) -> bool:
+        return int(now_ms) - int(self.deposited_ms) <= int(self.ttl_ms)
+
+    def to_public_dict(self) -> dict[str, Any]:
+        return {
+            "envelope_id": self.envelope.envelope_id,
+            "source_level": self.envelope.source_level,
+            "cycle_id": self.cycle_id,
+            "topic_hint_masked": self.topic_hint_masked,
+            "deposited_ms": self.deposited_ms,
+            "ttl_ms": self.ttl_ms,
+        }
+
+
+@dataclass(frozen=True)
+class QueuedMeditationRequest:
+    """A gentle Level 3 request waiting quietly behind an active meditation inside the cognitive budget."""
+
+    cycle_id: str
+    current_load_l: int
+    delta_load_l3: int
+    budget_b: int
+    explicit_deep_request: bool
+    complexity_score_q: Fraction
+    queued_ms: int
+
+
+@dataclass(frozen=True)
 class ConsciousnessEvent:
     """One event on the Word Circle. Text fields are held in memory only and never committed raw."""
 
@@ -654,6 +714,10 @@ class ConsciousnessEvent:
     text: str = field(default="", repr=False)
     spoken_units: int | None = None
     envelope: VerifiedKnowledgeEnvelope | None = None
+    cycle_id: str = ""
+    topic_hint: str = field(default="", repr=False)
+    ttl_ms: int = DEFAULT_ENVELOPE_TTL_MS
+    queue_if_busy: bool = False
     current_load_l: int = 0
     delta_load_l3: int = 0
     budget_b: int = 250
@@ -669,25 +733,37 @@ class WordCircleState:
     floor: str = FLOOR_IDLE
     speaking_level: int = 0
     active_text: str = field(default="", repr=False)
+    l2_open_cycles: tuple[str, ...] = ()
     l3_state: str = L3_INACTIVE
     l3_active_tasks: int = 0
+    l3_queued_requests: tuple[QueuedMeditationRequest, ...] = field(default=(), repr=False)
     l3_offer_count: int = 0
     l3_synthesis: str = field(default="", repr=False)
     l3_envelope: VerifiedKnowledgeEnvelope | None = field(default=None, repr=False)
+    knowledge_vault: tuple[SilentVaultEntry, ...] = field(default=(), repr=False)
     stop_latched: bool = False
     last_l3_start_ms: int | None = None
 
     def floor_active_vector(self) -> dict[str, int]:
         return {f"L{lvl}": int(self.speaking_level == lvl) for lvl in (1, 2, 3)}
 
+    def active_vault_envelopes(self, now_ms: int | None = None) -> tuple[VerifiedKnowledgeEnvelope, ...]:
+        if now_ms is None:
+            return tuple(entry.envelope for entry in self.knowledge_vault)
+        return tuple(entry.envelope for entry in self.knowledge_vault if entry.is_fresh(now_ms))
+
     def to_public_dict(self) -> dict[str, Any]:
         return {
             "floor": self.floor,
             "speaking_level": self.speaking_level,
             "floor_active": self.floor_active_vector(),
+            "l2_open_cycles": list(self.l2_open_cycles),
             "l3_state": self.l3_state,
             "l3_active_tasks": self.l3_active_tasks,
+            "l3_queued_count": len(self.l3_queued_requests),
             "l3_offer_count": self.l3_offer_count,
+            "knowledge_vault_count": len(self.knowledge_vault),
+            "knowledge_vault_envelope_ids": [e.envelope.envelope_id for e in self.knowledge_vault],
             "stop_latched": self.stop_latched,
         }
 
@@ -712,6 +788,49 @@ def _cut_active_speech(
     return record
 
 
+def _sanitize_cycle_id(raw: Any) -> str:
+    if not isinstance(raw, str):
+        raise TypeError("cycle_id must be a str.")
+    clean = raw.strip()
+    if len(clean) > 128 or any(not (ch.isalnum() or ch in "-_.:") for ch in clean):
+        raise ValueError("cycle_id must be <= 128 ASCII identifier characters.")
+    return clean
+
+
+def _mask_with_sanitizer(text: str, sanitizer: Callable[[str], Any] | None) -> str:
+    if sanitizer is None:
+        masked, _ = edge_rule14_mask(text)
+        return masked
+    res = sanitizer(text)
+    if isinstance(res, Mapping):
+        return str(res.get("sanitized_text", ""))
+    return str(res)
+
+
+def _deposit_into_vault(
+    vault: tuple[SilentVaultEntry, ...],
+    *,
+    envelope: VerifiedKnowledgeEnvelope,
+    cycle_id: str,
+    topic_hint: str,
+    now_ms: int,
+    ttl_ms: int,
+    sanitizer: Callable[[str], Any] | None = None,
+) -> tuple[SilentVaultEntry, ...]:
+    fresh = [e for e in vault if e.is_fresh(now_ms) and e.envelope.envelope_id != envelope.envelope_id]
+    hint_nfc = unicodedata.normalize("NFC", _check_text(topic_hint, "topic_hint"))[:240]
+    hint_masked = _mask_with_sanitizer(hint_nfc, sanitizer) if hint_nfc else ""
+    entry = SilentVaultEntry(
+        envelope=envelope,
+        cycle_id=cycle_id,
+        topic_hint_masked=hint_masked,
+        deposited_ms=int(now_ms),
+        ttl_ms=max(1, _strict_nonneg_int(ttl_ms, "ttl_ms", upper=86_400_000)),
+    )
+    fresh.append(entry)
+    return tuple(fresh[-MAX_KNOWLEDGE_VAULT_ENVELOPES:])
+
+
 def step_word_circle(
     state: WordCircleState,
     event: ConsciousnessEvent,
@@ -732,6 +851,7 @@ def step_word_circle(
         raise TypeError("spoken_units must be a strict int or None.")
     lang_norm = _lang(lang)
     kind = event.kind
+    now_ms = int(event.t_ms)
     new = state
     accepted = True
     reasons: list[str] = []
@@ -748,17 +868,24 @@ def step_word_circle(
     if kind in _FULL_STOP_EVENTS:
         ledger = _cut_active_speech(state, event.spoken_units, ledger_sanitizer)
         voice_action = "cut" if state.speaking_level else "silence"
-        l3_after = L3_CANCELLED if state.l3_state in (L3_MEDITATING, L3_READY_QUIET) or state.l3_active_tasks else state.l3_state
+        l3_after = (
+            L3_CANCELLED
+            if state.l3_state in (L3_MEDITATING, L3_READY_QUIET) or state.l3_active_tasks or state.l3_queued_requests
+            else state.l3_state
+        )
         new = replace(
             state,
             floor=FLOOR_VETO_STOPPED,
             speaking_level=0,
             active_text="",
+            l2_open_cycles=(),
             l3_state=l3_after,
             l3_active_tasks=0,
+            l3_queued_requests=(),
             l3_offer_count=0,
             l3_synthesis="",
             l3_envelope=None,
+            knowledge_vault=(),
             stop_latched=state.stop_latched or kind == EVENT_COST_ZERO_STOP,
         )
         levels_cancelled = [1, 2, 3]
@@ -790,9 +917,52 @@ def step_word_circle(
             new = replace(state, floor=FLOOR_VETO_STOPPED if state.stop_latched else FLOOR_IDLE, speaking_level=0, active_text="")
         else:
             accepted, reasons = False, ["no_active_emission"]
+    elif kind == EVENT_L2_START_CYCLE:
+        cid = _sanitize_cycle_id(event.cycle_id)
+        if blocked_voice:
+            accepted, reasons = False, ["U3_cycles_blocked_after_veto_or_stop"]
+        elif not cid:
+            accepted, reasons = False, ["L2_cycle_id_required"]
+        elif cid in state.l2_open_cycles:
+            accepted, reasons = False, ["L2_duplicate_cycle_id"]
+        elif len(state.l2_open_cycles) >= MAX_CONCURRENT_L2_CYCLES:
+            accepted, reasons = False, ["L2_concurrent_cycle_cap_reached"]
+        else:
+            new = replace(state, l2_open_cycles=(*state.l2_open_cycles, cid))
+    elif kind == EVENT_DEPOSIT_SILENT_ENVELOPE:
+        cid = _sanitize_cycle_id(event.cycle_id)
+        if blocked_voice:
+            accepted, reasons = False, ["U3_vault_blocked_after_veto_or_stop"]
+        elif not verify_envelope_integrity(event.envelope) or event.envelope is None:
+            accepted, reasons = False, ["U2_silent_deposit_requires_valid_envelope"]
+        elif cid and state.l2_open_cycles and cid not in state.l2_open_cycles and event.envelope.source_level == 2:
+            # Allow untracked L2 deposits when l2_open_cycles is empty, or close matching cycle_id when tracked.
+            vault_after = _deposit_into_vault(
+                state.knowledge_vault,
+                envelope=event.envelope,
+                cycle_id=cid,
+                topic_hint=event.topic_hint,
+                now_ms=now_ms,
+                ttl_ms=event.ttl_ms,
+                sanitizer=ledger_sanitizer,
+            )
+            new = replace(state, knowledge_vault=vault_after)
+        else:
+            remaining_l2 = tuple(x for x in state.l2_open_cycles if x != cid) if cid else state.l2_open_cycles
+            vault_after = _deposit_into_vault(
+                state.knowledge_vault,
+                envelope=event.envelope,
+                cycle_id=cid,
+                topic_hint=event.topic_hint,
+                now_ms=now_ms,
+                ttl_ms=event.ttl_ms,
+                sanitizer=ledger_sanitizer,
+            )
+            new = replace(state, l2_open_cycles=remaining_l2, knowledge_vault=vault_after)
     elif kind in (EVENT_L1_PROPOSE_SPEECH, EVENT_L2_DELIVER_ENVELOPE_AND_SPEECH):
         level = 1 if kind == EVENT_L1_PROPOSE_SPEECH else 2
         _check_text(event.text, "text")
+        cid = _sanitize_cycle_id(event.cycle_id)
         if blocked_voice:
             accepted, reasons = False, ["U3_voice_blocked_after_veto_or_stop"]
         elif state.floor == FLOOR_HUMAN_SPEAKING:
@@ -802,11 +972,34 @@ def step_word_circle(
         elif level == 2 and not verify_envelope_integrity(event.envelope):
             accepted, reasons = False, ["U2_l2_requires_a_valid_envelope"]
         else:
-            screen = screen_level1_humble_crystal(event.text, envelope=event.envelope, lang=lang_norm)
+            vault_envs = state.active_vault_envelopes(now_ms) if level == 1 else ()
+            screen = screen_level1_humble_crystal(
+                event.text, envelope=event.envelope, envelopes=vault_envs, lang=lang_norm
+            )
             voice, voice_action, voice_level = screen["safe_text"], "emit", level
-            new = replace(state, floor=_FLOOR_FOR_LEVEL[level], speaking_level=level, active_text=voice)
+            remaining_l2 = tuple(x for x in state.l2_open_cycles if x != cid) if (level == 2 and cid) else state.l2_open_cycles
+            vault_after = state.knowledge_vault
+            if level == 2 and event.envelope is not None:
+                vault_after = _deposit_into_vault(
+                    state.knowledge_vault,
+                    envelope=event.envelope,
+                    cycle_id=cid,
+                    topic_hint=event.topic_hint,
+                    now_ms=now_ms,
+                    ttl_ms=event.ttl_ms,
+                    sanitizer=ledger_sanitizer,
+                )
+            new = replace(
+                state,
+                floor=_FLOOR_FOR_LEVEL[level],
+                speaking_level=level,
+                active_text=voice,
+                l2_open_cycles=remaining_l2,
+                knowledge_vault=vault_after,
+            )
     elif kind == EVENT_L3_START_MEDITATION:
-        since = None if state.last_l3_start_ms is None else max(0, int(event.t_ms) - state.last_l3_start_ms)
+        cid = _sanitize_cycle_id(event.cycle_id)
+        since = None if state.last_l3_start_ms is None else max(0, now_ms - state.last_l3_start_ms)
         gate = evaluate_l3_depth_gate(
             active_l3_tasks=state.l3_active_tasks,
             current_load_l=event.current_load_l,
@@ -826,22 +1019,80 @@ def step_word_circle(
                 l3_offer_count=0,
                 l3_synthesis="",
                 l3_envelope=None,
-                last_l3_start_ms=int(event.t_ms),
+                last_l3_start_ms=now_ms,
             )
+        elif strict_bool(event.queue_if_busy, "queue_if_busy") and state.l3_active_tasks == 1 and not blocked_voice:
+            # Check budget & depth ignoring active_l3_tasks and cooldown so only worthy, within-budget tasks queue.
+            q_gate = evaluate_l3_depth_gate(
+                active_l3_tasks=0,
+                current_load_l=event.current_load_l,
+                delta_load_l3=event.delta_load_l3,
+                budget_b=event.budget_b,
+                veto_active=False,
+                explicit_deep_request=event.explicit_deep_request,
+                complexity_score_q=event.complexity_score_q,
+                ms_since_last_l3_start=None,
+                cooldown_ms=l3_cooldown_ms,
+            )
+            if not q_gate["open"]:
+                accepted, reasons = False, list(q_gate["reasons"])
+            elif len(state.l3_queued_requests) >= MAX_QUEUED_L3_TASKS:
+                accepted, reasons = False, ["U5_l3_queue_full"]
+            else:
+                req = QueuedMeditationRequest(
+                    cycle_id=cid,
+                    current_load_l=event.current_load_l,
+                    delta_load_l3=event.delta_load_l3,
+                    budget_b=event.budget_b,
+                    explicit_deep_request=strict_bool(event.explicit_deep_request, "explicit_deep_request"),
+                    complexity_score_q=to_fraction(event.complexity_score_q, field="complexity_score_q"),
+                    queued_ms=now_ms,
+                )
+                next_q = (*state.l3_queued_requests, req)
+                gate = {**gate, "queued": bool(len(next_q) > len(state.l3_queued_requests)), "queue_depth": len(next_q)}
+                new = replace(state, l3_queued_requests=next_q)
         else:
             accepted, reasons = False, list(gate["reasons"])
     elif kind == EVENT_L3_COMPLETE_MEDITATION:
         _check_text(event.text, "text")
+        cid = _sanitize_cycle_id(event.cycle_id)
         if state.l3_state != L3_MEDITATING:
             accepted, reasons = False, [f"U3_U5_late_or_orphan_result_dropped:{state.l3_state}"]
         else:
-            new = replace(
-                state,
-                l3_state=L3_READY_QUIET,
-                l3_active_tasks=0,
-                l3_synthesis=unicodedata.normalize("NFC", event.text),
-                l3_envelope=event.envelope if verify_envelope_integrity(event.envelope) else None,
-            )
+            valid_env = event.envelope if verify_envelope_integrity(event.envelope) else None
+            vault_after = state.knowledge_vault
+            if valid_env is not None:
+                vault_after = _deposit_into_vault(
+                    state.knowledge_vault,
+                    envelope=valid_env,
+                    cycle_id=cid,
+                    topic_hint=event.topic_hint,
+                    now_ms=now_ms,
+                    ttl_ms=event.ttl_ms,
+                    sanitizer=ledger_sanitizer,
+                )
+            if state.l3_queued_requests:
+                # Silently deposit completed envelope into vault and immediately start the next queued L3 meditation!
+                remaining_q = state.l3_queued_requests[1:]
+                new = replace(
+                    state,
+                    l3_state=L3_MEDITATING,
+                    l3_active_tasks=1,
+                    l3_queued_requests=remaining_q,
+                    l3_synthesis=unicodedata.normalize("NFC", event.text),
+                    l3_envelope=valid_env,
+                    knowledge_vault=vault_after,
+                    last_l3_start_ms=now_ms,
+                )
+            else:
+                new = replace(
+                    state,
+                    l3_state=L3_READY_QUIET,
+                    l3_active_tasks=0,
+                    l3_synthesis=unicodedata.normalize("NFC", event.text),
+                    l3_envelope=valid_env,
+                    knowledge_vault=vault_after,
+                )
     elif kind == EVENT_L3_OFFER_GENTLE_HAND:
         _check_text(event.text, "text")
         if state.l3_state != L3_READY_QUIET:
@@ -866,7 +1117,9 @@ def step_word_circle(
         elif state.speaking_level:
             accepted, reasons = False, [f"U1_floor_busy:L{state.speaking_level}"]
         else:
-            screen = screen_level1_humble_crystal(state.l3_synthesis, envelope=state.l3_envelope, lang=lang_norm)
+            screen = screen_level1_humble_crystal(
+                state.l3_synthesis, envelope=state.l3_envelope, envelopes=state.active_vault_envelopes(now_ms), lang=lang_norm
+            )
             voice, voice_action, voice_level = screen["safe_text"], "emit", 3
             new = replace(
                 state,
@@ -892,10 +1145,13 @@ def step_word_circle(
         "floor_after": new.floor,
         "speaking_level_after": new.speaking_level,
         "floor_active_after": new.floor_active_vector(),
+        "l2_open_cycles_after": list(new.l2_open_cycles),
         "l3_state_before": state.l3_state,
         "l3_state_after": new.l3_state,
         "l3_active_tasks_after": new.l3_active_tasks,
+        "l3_queued_count_after": len(new.l3_queued_requests),
         "l3_offer_count_after": new.l3_offer_count,
+        "knowledge_vault_count_after": len(new.knowledge_vault),
         "stop_latched_after": new.stop_latched,
         "levels_cancelled": levels_cancelled,
         "kinetic_zero_twist_required": kinetic_zero,
@@ -927,8 +1183,16 @@ def verify_word_circle_state_invariants(state: WordCircleState) -> list[str]:
         violations.append("U1_voice_while_human_speaking")
     if (state.floor == FLOOR_VETO_STOPPED or state.stop_latched) and state.speaking_level:
         violations.append("U3_voice_after_veto")
-    if (state.floor == FLOOR_VETO_STOPPED or state.stop_latched) and state.l3_active_tasks:
+    if (state.floor == FLOOR_VETO_STOPPED or state.stop_latched) and (
+        state.l3_active_tasks or state.l2_open_cycles or state.l3_queued_requests or state.knowledge_vault
+    ):
         violations.append("U3_l3_alive_after_veto")
+    if len(state.l2_open_cycles) > MAX_CONCURRENT_L2_CYCLES:
+        violations.append("L2_concurrent_cycle_cap_exceeded")
+    if len(state.l3_queued_requests) > MAX_QUEUED_L3_TASKS:
+        violations.append("U5_l3_queue_cap_exceeded")
+    if len(state.knowledge_vault) > MAX_KNOWLEDGE_VAULT_ENVELOPES:
+        violations.append("U2_knowledge_vault_cap_exceeded")
     if state.l3_active_tasks > MAX_ACTIVE_L3_TASKS or state.l3_active_tasks < 0:
         violations.append("U5_concurrent_l3_tasks")
     if (state.l3_state == L3_MEDITATING) != (state.l3_active_tasks == 1):
@@ -946,7 +1210,15 @@ def verify_transition_invariants(before: WordCircleState, event: ConsciousnessEv
     if sum(int(v) for v in vec.values()) > 1:
         violations.append("U1_two_levels_hold_the_floor")
     if event.kind in _FULL_STOP_EVENTS:
-        if after.floor != FLOOR_VETO_STOPPED or after.speaking_level or after.l3_active_tasks or after.l3_synthesis:
+        if (
+            after.floor != FLOOR_VETO_STOPPED
+            or after.speaking_level
+            or after.l3_active_tasks
+            or after.l3_synthesis
+            or after.l2_open_cycles
+            or after.l3_queued_requests
+            or after.knowledge_vault
+        ):
             violations.append("U3_veto_left_a_level_alive")
         if after.l3_state in (L3_MEDITATING, L3_READY_QUIET):
             violations.append("U3_veto_left_l3_alive")
@@ -954,12 +1226,17 @@ def verify_transition_invariants(before: WordCircleState, event: ConsciousnessEv
             violations.append("U3_veto_without_zero_twist")
     if event.kind == EVENT_HUMAN_BARGE_IN and before.l3_state == L3_MEDITATING and after.l3_state != L3_MEDITATING:
         violations.append("U3_barge_in_destroyed_l3_meditation")
+    if event.kind == EVENT_HUMAN_BARGE_IN and before.l2_open_cycles != after.l2_open_cycles:
+        violations.append("U3_barge_in_destroyed_l2_cycles")
+    if event.kind == EVENT_DEPOSIT_SILENT_ENVELOPE and (after.speaking_level != before.speaking_level or transition.voice_out_text is not None):
+        violations.append("U1_silent_deposit_stole_the_floor")
     if transition.voice_out_text is not None:
         level = int(decision.get("voice_source_level") or 0)
         if before.floor == FLOOR_HUMAN_SPEAKING or before.speaking_level or before.stop_latched or before.floor == FLOOR_VETO_STOPPED:
             violations.append("U1_voice_without_free_floor")
         if level in (1, 2):
-            check = screen_level1_humble_crystal(transition.voice_out_text, envelope=event.envelope)
+            vault_envs = before.active_vault_envelopes(int(event.t_ms)) if level == 1 else ()
+            check = screen_level1_humble_crystal(transition.voice_out_text, envelope=event.envelope, envelopes=vault_envs)
             if not check["allowed"]:
                 violations.append("U2_unlicensed_empirical_claim_emitted")
         if level == 3 and event.kind not in (EVENT_HUMAN_INVITE_L3, EVENT_L3_OFFER_GENTLE_HAND):
@@ -1176,3 +1453,38 @@ class WordCircleArbiter:
     def prove_receipt(self, leaf_index: int) -> dict[str, Any]:
         with self._lock:
             return self._log.prove(leaf_index)
+
+    def start_l2_cycle(self, cycle_id: str) -> dict[str, Any]:
+        """Register an asynchronous Level 2 cycle in flight (`MAX_CONCURRENT_L2_CYCLES`) without touching the floor."""
+        return self.process(ConsciousnessEvent(kind=EVENT_L2_START_CYCLE, cycle_id=cycle_id))
+
+    def deposit_silent_envelope(
+        self,
+        envelope: VerifiedKnowledgeEnvelope,
+        *,
+        cycle_id: str = "",
+        topic_hint: str = "",
+        ttl_ms: int = DEFAULT_ENVELOPE_TTL_MS,
+    ) -> dict[str, Any]:
+        """Silently store a verified L2/L3 envelope in the session Knowledge Vault without forcing speech."""
+        return self.process(
+            ConsciousnessEvent(
+                kind=EVENT_DEPOSIT_SILENT_ENVELOPE,
+                envelope=envelope,
+                cycle_id=cycle_id,
+                topic_hint=topic_hint,
+                ttl_ms=ttl_ms,
+            )
+        )
+
+    def active_vault_envelopes(self) -> tuple[VerifiedKnowledgeEnvelope, ...]:
+        """Return fresh `VerifiedKnowledgeEnvelope` items available for organic Level 1 synthesis."""
+        now = int(self._clock_ms())
+        with self._lock:
+            return self._state.active_vault_envelopes(now)
+
+    def knowledge_vault_public(self) -> list[dict[str, Any]]:
+        """Return Rule 14 masked public metadata of the Silent Knowledge Vault (zero raw facts)."""
+        now = int(self._clock_ms())
+        with self._lock:
+            return [e.to_public_dict() for e in self._state.knowledge_vault if e.is_fresh(now)]

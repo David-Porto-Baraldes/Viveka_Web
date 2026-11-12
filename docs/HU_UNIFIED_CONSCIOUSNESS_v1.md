@@ -74,11 +74,13 @@ Els pressupostos de la taula són **objectius de disseny** de la cadena de model
 | `HUMAN_VETO` | Buida els 3 nivells, `L3_CANCELLED`, `kinetic_zero_twist_required = true` |
 | `COST_ZERO_STOP` / `COST_ZERO_STOP_RELEASE` *(alliberament afegit)* | Com el veto, però enclavat fins a l'alliberament explícit |
 | `PRESENCE_LOST` *(afegit)* | Batec sensorial caducat: atura el cos i pausa la veu; **la meditació es conserva** |
-| `L1_PROPOSE_SPEECH` | Només amb el torn lliure; passa per l'Humil Cristall i el sedàs E5/E6; emet el text segur |
-| `L2_DELIVER_ENVELOPE_AND_SPEECH` | Exigeix un sobre íntegre; la frase ha d'estar lligada al sobre |
+| `L1_PROPOSE_SPEECH` | Només amb el torn lliure; passa per l'Humil Cristall (comprovant `envelope` + tots els sobres vius de `knowledge_vault`) i el sedàs E5/E6; emet el text segur |
+| `L2_START_CYCLE` *(afegit v1.8.1)* | Registra un cicle asíncron de Nivell 2 en paral·lel (`MAX_CONCURRENT_L2_CYCLES = 4`) sense reclamar el torn de paraula |
+| `DEPOSIT_SILENT_ENVELOPE` *(afegit v1.8.1)* | Diposita un `VerifiedKnowledgeEnvelope` íntegre al **Celler Silenciós (`knowledge_vault`, màx. `8` sobres amb `TTL`)** sense tocar el micròfon ni obligar a respondre si la conversa ha canviat de tema |
+| `L2_DELIVER_ENVELOPE_AND_SPEECH` | Exigeix un sobre íntegre; la frase ha d'estar lligada al sobre (i en desa còpia al Celler) |
 | `VOICE_EMISSION_COMPLETE` *(afegit)* | Consolida la frase sencera a la memòria i allibera el torn |
-| `L3_START_MEDITATION` | Porter `U5` |
-| `L3_COMPLETE_MEDITATION` | Només si `L3_MEDITATING`: un resultat que arriba **després d'un veto es descarta** |
+| `L3_START_MEDITATION` | Porter `U5` (`active_l3_tasks ≤ 1`; amb `queue_if_busy = True` encua fins a `MAX_QUEUED_L3_TASKS = 2` meditacions dins del pressupost $L + \Delta L_3 \le B$) |
+| `L3_COMPLETE_MEDITATION` | Només si `L3_MEDITATING`: desa el sobre al Celler i promou la següent meditació en cua (o passa a `L3_READY_QUIET`); un resultat que arriba **després d'un veto es descarta** |
 | `L3_OFFER_GENTLE_HAND` | Un sol avís, només amb el torn `IDLE`; si és coercitiu es substitueix per un avís neutre |
 | `HUMAN_INVITE_L3` / `HUMAN_DECLINE_L3` *(declinar afegit)* | Lliura la síntesi o la descarta sense insistir |
 

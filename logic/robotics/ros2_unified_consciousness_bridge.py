@@ -35,8 +35,10 @@ from typing import Any, Callable, Final, Mapping
 import uuid
 
 from logic.consciousness.unified_consciousness_core import (
+    DEFAULT_ENVELOPE_TTL_MS,
     EVENT_COST_ZERO_STOP,
     EVENT_COST_ZERO_STOP_RELEASE,
+    EVENT_DEPOSIT_SILENT_ENVELOPE,
     EVENT_HUMAN_BARGE_IN,
     EVENT_HUMAN_DECLINE_L3,
     EVENT_HUMAN_INVITE_L3,
@@ -45,6 +47,7 @@ from logic.consciousness.unified_consciousness_core import (
     EVENT_HUMAN_VETO,
     EVENT_L1_PROPOSE_SPEECH,
     EVENT_L2_DELIVER_ENVELOPE_AND_SPEECH,
+    EVENT_L2_START_CYCLE,
     EVENT_L3_COMPLETE_MEDITATION,
     EVENT_L3_OFFER_GENTLE_HAND,
     EVENT_L3_START_MEDITATION,
@@ -186,8 +189,18 @@ class UnifiedConsciousnessGate:
         return self._mind(ConsciousnessEvent(kind=EVENT_L1_PROPOSE_SPEECH, text=raw if isinstance(raw, str) else ""))
 
     def on_l2_verified_turn(self, payload: Mapping[str, Any] | Any) -> dict[str, Any]:
-        """`{"text", "verified_facts", "claim_kinds"?, "source_level"?}` -> envelope + Level 2 speech (rejected if malformed)."""
+        """
+        `{"event": "start_cycle", "cycle_id": "..."}` registers an asynchronous L2 cycle without taking the floor;
+        `{"silent": true, "verified_facts": "...", "cycle_id"?, "topic_hint"?, "ttl_ms"?}` deposits silently into
+        the session Knowledge Vault without forcing speech; otherwise `{"text", "verified_facts", ...}` speaks on L2.
+        """
         data = _parse_json_message(payload) or {}
+        cycle_id = str(data.get("cycle_id") or "")
+        if data.get("event") == "start_cycle":
+            try:
+                return self._mind(ConsciousnessEvent(kind=EVENT_L2_START_CYCLE, cycle_id=cycle_id))
+            except (TypeError, ValueError) as exc:
+                return {"decision": None, "voice_out_text": None, "rejected": f"malformed_l2_cycle:{type(exc).__name__}"}
         envelope = None
         try:
             envelope = issue_verified_knowledge_envelope(
@@ -197,17 +210,48 @@ class UnifiedConsciousnessGate:
             )
         except (TypeError, ValueError):
             envelope = None
+        topic_hint = data.get("topic_hint") if isinstance(data.get("topic_hint"), str) else ""
+        ttl_ms = data.get("ttl_ms", DEFAULT_ENVELOPE_TTL_MS)
+        if data.get("silent") is True:
+            try:
+                return self._mind(
+                    ConsciousnessEvent(
+                        kind=EVENT_DEPOSIT_SILENT_ENVELOPE,
+                        envelope=envelope,
+                        cycle_id=cycle_id,
+                        topic_hint=topic_hint,
+                        ttl_ms=ttl_ms,
+                    )
+                )
+            except (TypeError, ValueError) as exc:
+                return {"decision": None, "voice_out_text": None, "rejected": f"malformed_silent_deposit:{type(exc).__name__}"}
         text = data.get("text") if isinstance(data.get("text"), str) else ""
-        return self._mind(ConsciousnessEvent(kind=EVENT_L2_DELIVER_ENVELOPE_AND_SPEECH, text=text, envelope=envelope))
+        try:
+            return self._mind(
+                ConsciousnessEvent(
+                    kind=EVENT_L2_DELIVER_ENVELOPE_AND_SPEECH,
+                    text=text,
+                    envelope=envelope,
+                    cycle_id=cycle_id,
+                    topic_hint=topic_hint,
+                    ttl_ms=ttl_ms,
+                )
+            )
+        except (TypeError, ValueError) as exc:
+            return {"decision": None, "voice_out_text": None, "rejected": f"malformed_l2_turn:{type(exc).__name__}"}
 
     def on_l3_meditation_event(self, payload: Mapping[str, Any] | Any) -> dict[str, Any]:
         """`{"event": start|complete|gentle_offer, ...}`; numeric loads are strict ints, complexity a rational string."""
         data = _parse_json_message(payload) or {}
         name = str(data.get("event") or "")
+        cycle_id = str(data.get("cycle_id") or "")
+        topic_hint = data.get("topic_hint") if isinstance(data.get("topic_hint"), str) else ""
         try:
             if name == "start":
                 event = ConsciousnessEvent(
                     kind=EVENT_L3_START_MEDITATION,
+                    cycle_id=cycle_id,
+                    queue_if_busy=data.get("queue_if_busy", False),
                     current_load_l=data.get("current_load_l", 0),
                     delta_load_l3=data.get("delta_load_l3", 0),
                     budget_b=data.get("budget_b", 250),
@@ -217,7 +261,14 @@ class UnifiedConsciousnessGate:
             elif name == "complete":
                 facts = data.get("verified_facts")
                 env = issue_verified_knowledge_envelope(source_level=3, verified_facts=facts) if isinstance(facts, str) and facts.strip() else None
-                event = ConsciousnessEvent(kind=EVENT_L3_COMPLETE_MEDITATION, text=str(data.get("synthesis_text") or ""), envelope=env)
+                event = ConsciousnessEvent(
+                    kind=EVENT_L3_COMPLETE_MEDITATION,
+                    text=str(data.get("synthesis_text") or ""),
+                    envelope=env,
+                    cycle_id=cycle_id,
+                    topic_hint=topic_hint,
+                    ttl_ms=data.get("ttl_ms", DEFAULT_ENVELOPE_TTL_MS),
+                )
             elif name == "gentle_offer":
                 event = ConsciousnessEvent(kind=EVENT_L3_OFFER_GENTLE_HAND, text=str(data.get("gentle_offer_text") or ""))
             else:
