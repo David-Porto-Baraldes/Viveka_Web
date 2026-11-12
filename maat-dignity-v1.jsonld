@@ -7,6 +7,7 @@
     "MaatHumanDignityCredential": "maat:MaatHumanDignityCredential",
     "HUSparseMerkleStatus2026": "maat:HUSparseMerkleStatus2026",
     "MaatEmbodiedSymbiosisCredential": "maat:MaatEmbodiedSymbiosisCredential",
+    "MaatUnifiedConsciousnessCredential": "maat:MaatUnifiedConsciousnessCredential",
     "serialNumber": {
       "@id": "maat:serialNumber",
       "@type": "xsd:string"
@@ -96,6 +97,39 @@
     "physicalSafetyScope": {
       "@id": "maat:physicalSafetyScope",
       "@type": "xsd:string"
+    },
+    "consciousnessSpec": {
+      "@id": "maat:consciousnessSpec",
+      "@type": "xsd:string"
+    },
+    "unifiedConsciousnessScore100": {
+      "@id": "maat:unifiedConsciousnessScore100",
+      "@type": "xsd:integer"
+    },
+    "unifiedLawsVerified": {
+      "@id": "maat:unifiedLawsVerified",
+      "@container": "@list",
+      "@type": "xsd:string"
+    },
+    "maxActiveL3Tasks": {
+      "@id": "maat:maxActiveL3Tasks",
+      "@type": "xsd:integer"
+    },
+    "l3GentleOfferCount": {
+      "@id": "maat:l3GentleOfferCount",
+      "@type": "xsd:integer"
+    },
+    "humbleCrystalLevel1": {
+      "@id": "maat:humbleCrystalLevel1",
+      "@type": "xsd:boolean"
+    },
+    "spokenTruthLedger": {
+      "@id": "maat:spokenTruthLedger",
+      "@type": "xsd:boolean"
+    },
+    "phenomenalConsciousnessClaimed": {
+      "@id": "maat:phenomenalConsciousnessClaimed",
+      "@type": "xsd:boolean"
     }
   }
 }

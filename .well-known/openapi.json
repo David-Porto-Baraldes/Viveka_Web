@@ -1845,6 +1845,124 @@
           }
         }
       }
+    },
+    "/api/sfumato/unified-consciousness": {
+      "get": {
+        "operationId": "getUnifiedConsciousnessAttestation",
+        "summary": "HU-UNIFIED-CONSCIOUSNESS v1.0 Public Notary Specimen & Living Folio VI Self-Test (One Consciousness, Three Levels of Breath, Word-Circle Arbiter & W3C VC 2.0 ES256)",
+        "parameters": [
+          {
+            "name": "lang",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["ca", "es", "en"],
+              "default": "en"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Purpose-bound ES256 JWS server attestation with 5 Unified Consciousness Rings, W3C VC 2.0 MaatUnifiedConsciousnessCredential, RFC 6962 STH, SMT-256 status proof, and 8/8 mutant self-test.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "spec": {
+                      "type": "string",
+                      "example": "HU-DIAMOND/v2"
+                    },
+                    "consciousness_spec": {
+                      "type": "string",
+                      "example": "HU-UNIFIED-CONSCIOUSNESS/v1.0"
+                    },
+                    "folio_id": {
+                      "type": "string",
+                      "example": "folio-VI-unified-consciousness-three-levels"
+                    },
+                    "consciousness_grade": {
+                      "type": "string",
+                      "example": "A+ (self-assessed)"
+                    },
+                    "five_consciousness_rings": {
+                      "type": "object"
+                    },
+                    "credential": {
+                      "type": "object"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "postUnifiedConsciousnessAudit",
+        "summary": "Self-Assess a 3-Level Conversational Consciousness Trace under HU-UNIFIED-CONSCIOUSNESS v1.0 (Laws U1..U7, Staff of Speech, Humble Crystal, Barge-in vs Veto & Spoken-Truth Ledger)",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "system_name": {
+                    "type": "string",
+                    "example": "Viveka Unified Consciousness"
+                  },
+                  "system_domain": {
+                    "type": "string",
+                    "example": "companion_voice_and_embodied"
+                  },
+                  "lang": {
+                    "type": "string",
+                    "enum": ["ca", "es", "en"],
+                    "default": "en"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Signed ES256 JWS audit report and W3C VC 2.0 MaatUnifiedConsciousnessCredential when all 7 unified consciousness laws pass.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "spec": {
+                      "type": "string",
+                      "example": "HU-DIAMOND/v2"
+                    },
+                    "consciousness_spec": {
+                      "type": "string",
+                      "example": "HU-UNIFIED-CONSCIOUSNESS/v1.0"
+                    },
+                    "consciousness_grade": {
+                      "type": "string",
+                      "example": "A+ (self-assessed)"
+                    },
+                    "passes_internal_consciousness_criteria": {
+                      "type": "boolean"
+                    },
+                    "five_consciousness_rings": {
+                      "type": "object"
+                    },
+                    "credential": {
+                      "type": "object"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 }

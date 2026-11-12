@@ -26,10 +26,14 @@ abstract: >-
   & HU-SOVEREIGN-BEACON engine (/api/sfumato/sovereign-shield & /api/sfumato/maat-verify:
   RFC 6962 Certificate Transparency Merkle Audit Trees, W3C VC 2.0 MaatHumanDignityCredential,
   Three-Ring Zero-Knowledge Dignity Receipts, and Persephone & Demeter Exact Rational
-  Solidarity Algebra), and HU-EMBODIED-SYMBIOSIS v1.0 (/oracle/humanoid,
+  Solidarity Algebra), HU-EMBODIED-SYMBIOSIS v1.0 (/oracle/humanoid,
   /api/sfumato/embodied-symbiosis & logic/robotics/: ROS 2 Cost-Zero-Stop Gate < 1 ms in Q^3,
   Declared-Vulnerability Proxemics, EU AI Act Art. 50/12 & IEEE 7001 alignment, and
-  MaatEmbodiedSymbiosisCredential W3C VC 2.0 ES256). Speaks the Linux Foundation
+  MaatEmbodiedSymbiosisCredential W3C VC 2.0 ES256), and HU-UNIFIED-CONSCIOUSNESS v1.0
+  (/oracle/consciencia, /api/sfumato/unified-consciousness & logic/consciousness/:
+  Word-Circle Arbiter across Three Levels of Breath, Humble Crystal Envelope Binding,
+  Barge-in vs Veto, Spoken-Truth Ledger, and MaatUnifiedConsciousnessCredential W3C VC 2.0 ES256).
+  Speaks the Linux Foundation
   / AAIF Agent2Agent (lf.a2a.v1 v1.0.0 & v0.3.0 with RFC 8785 JCS + RFC 7515 ES256 JWS
   signatures) and Model Context Protocol (MCP 2026-07-28). Awarded Linux Foundation
   OpenSSF Best Practices Gold Badge (#16118 — 300% tiered) and Glama TDQS Grade A.
@@ -44,6 +48,9 @@ keywords:
   - ros2
   - humanoid-robotics
   - embodied-ai
+  - unified-consciousness
+  - conversational-ai
+  - barge-in
   - eu-ai-act
   - ieee-7001
   - w3c-verifiable-credentials
@@ -60,7 +67,7 @@ keywords:
   - reed-muller
   - stella-octangula
 license: Apache-2.0
-version: 1.7.0
+version: 1.8.0
 doi: 10.5281/zenodo.23973687
 identifiers:
   - type: doi

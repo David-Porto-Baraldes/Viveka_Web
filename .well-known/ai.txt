@@ -32,6 +32,8 @@ MCP-Diamond-Endpoint: https://homouniversalis.ai/mcp/diamond
 Human-Dignity-Notary-Folio: https://homouniversalis.ai/oracle/notary
 Embodied-Humanoid-Symbiosis-Folio: https://homouniversalis.ai/oracle/humanoid
 Embodied-Humanoid-Symbiosis-Endpoint: https://homouniversalis.ai/api/sfumato/embodied-symbiosis
+Unified-Consciousness-Folio: https://homouniversalis.ai/oracle/consciencia
+Unified-Consciousness-Endpoint: https://homouniversalis.ai/api/sfumato/unified-consciousness
 OpenSSF-Best-Practices-Certificate: https://www.bestpractices.dev/projects/16118
 OpenSSF-Best-Practices-Badge-ID: 16118 (Gold — 100% / 300% tiered)
 ARD-Catalog-Manifest: https://homouniversalis.ai/.well-known/ard.json

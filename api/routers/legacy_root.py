@@ -108,6 +108,20 @@ from logic.engines.embodied_symbiosis_crucible import (
     run_folio_v_self_test,
     verify_embodied_symbiosis_credential,
 )
+from logic.engines.unified_consciousness_crucible import (
+    FOLIO_VI_ID,
+    MAAT_UNIFIED_CREDENTIAL_TYPE,
+    UNIFIED_ASSURANCE_TEXT,
+    UNIFIED_CONSCIOUSNESS_SPEC_VERSION,
+    UNIFIED_DECISION_LOG_ID,
+    UNIFIED_INTERRUPTIONS,
+    UNIFIED_REGULATORY_SCOPE,
+    audit_unified_consciousness_interaction,
+    get_canonical_unified_specimen,
+    issue_w3c_unified_consciousness_credential,
+    run_folio_vi_self_test,
+    verify_unified_consciousness_credential,
+)
 from logic.core.version import HOMO_UNIVERSALIS_VERSION
 from logic.crypto.es256 import (
     JOSE_ES256_STANDARD,
@@ -828,16 +842,17 @@ async def get_ard_ai_catalog_json(request: Request):
                     "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
                     "name": "ai.homouniversalis/diamond-verifier",
                     "title": "Homo Universalis — HU-DIAMOND v1.1 Cryptographic Verifier & AST Kintsugi MCP Server",
-                    "description": "Zero-auth Notary & AST Verifier: RM(1,3), RFC 6962, W3C VC 2.0 & ROS 2 Humanoid Symbiosis (Q³).",
+                    "description": "Zero-auth Notary & AST: RM(1,3), RFC 6962, W3C VC 2.0, ROS 2 Humanoid & 3-Level Consciousness.",
                     "remotes": [{"type": "streamable-http", "url": "https://homouniversalis.ai/mcp/diamond"}],
                 },
-                "description": "Zero-auth Notary & AST Verifier: RM(1,3), RFC 6962, W3C VC 2.0 & ROS 2 Humanoid Symbiosis (Q³).",
-                "tags": ["diamond-crucible", "reed-muller", "ast-verifier", "kintsugi", "merkle-tree", "rfc6962", "es256-jws", "w3c-vc", "ros2", "humanoid-robotics", "embodied-ai", "eu-ai-act", "zero-knowledge", "mcp"],
+                "description": "Zero-auth Notary & AST: RM(1,3), RFC 6962, W3C VC 2.0, ROS 2 Humanoid & 3-Level Consciousness.",
+                "tags": ["diamond-crucible", "reed-muller", "ast-verifier", "kintsugi", "merkle-tree", "rfc6962", "es256-jws", "w3c-vc", "ros2", "humanoid-robotics", "embodied-ai", "unified-consciousness", "barge-in", "eu-ai-act", "zero-knowledge", "mcp"],
                 "representativeQueries": [
                     "verify Python AST code for Rule 4 Import Hoist and Rule 7 Zero Placeholders",
                     "verify HU-DIAMOND L1..L7 manifest and Reed-Muller RM(1,3) [8,4,4]_2 code",
                     "verify RFC 6962 Merkle inclusion proof and Rule 14 Zero-Knowledge receipt",
                     "audit humanoid robot ROS 2 Cost-Zero-Stop, Q3 proxemics, EU AI Act Art. 50 and W3C VC 2.0",
+                    "verify unified 3-level conversational consciousness, barge-in vs veto, Humble Crystal and W3C VC 2.0",
                 ],
             },
         ],
@@ -860,7 +875,7 @@ async def get_sister_mcp_diamond_json(request: Request):
         "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
         "name": "ai.homouniversalis/diamond-verifier",
         "title": "Homo Universalis — HU-DIAMOND v1.1 Cryptographic Verifier & AST Kintsugi MCP Server",
-        "description": "Zero-auth Notary & AST Verifier: RM(1,3), RFC 6962, W3C VC 2.0 & ROS 2 Humanoid Symbiosis (Q³).",
+        "description": "Zero-auth Notary & AST: RM(1,3), RFC 6962, W3C VC 2.0, ROS 2 Humanoid & 3-Level Consciousness.",
         "version": HOMO_UNIVERSALIS_VERSION,
         "a2aProtocolVersion": "0.3.0",
         "a2aProtocolVersions": ["0.3", "1.0"],
@@ -1226,6 +1241,11 @@ def _build_did_web_document(jwks_doc: dict | None = None) -> dict:
                 "serviceEndpoint": "https://homouniversalis.ai/oracle/humanoid",
             },
             {
+                "id": f"{DID_WEB_IDENTIFIER}#unified-consciousness",
+                "type": "MaatUnifiedConsciousnessNotaryService",
+                "serviceEndpoint": "https://homouniversalis.ai/oracle/consciencia",
+            },
+            {
                 "id": f"{DID_WEB_IDENTIFIER}#jwks",
                 "type": "JsonWebKeySetService",
                 "serviceEndpoint": "https://homouniversalis.ai/.well-known/jwks.json",
@@ -1412,6 +1432,11 @@ _LIVING_CODEX_FOLIO_SPECS: tuple[tuple[str, str, str], ...] = (
         "folio-V-embodied-symbiosis-ros2-maat",
         "Living Folio V: Embodied Humanoid Symbiosis in Q^3, ROS 2 Cost-Zero-Stop Gate, Zero-Biometric Sensor Sanctuary & W3C VC 2.0 (EU AI Act & IEEE 7001/7007)",
         "logic/engines/embodied_symbiosis_crucible.py",
+    ),
+    (
+        "folio-VI-unified-consciousness-three-levels",
+        "Living Folio VI: Unified One-Consciousness Three-Level Word-Circle Arbiter, Spoken-Truth Ledger, Anti-Hallucination Gate & ROS 2 Symbiosis (W3C VC 2.0)",
+        "logic/engines/unified_consciousness_crucible.py",
     ),
 )
 
@@ -2318,12 +2343,13 @@ async def get_well_known_agents_json(request: Request):
             },
             {
                 "id": "verify_diamond_crucible_and_maat_vc",
-                "description": "Verify Reed-Muller RM(1,3) [8,4,4]_2 geometry, AST Kintsugi purity, W3C VC 2.0 Ma'at Human Dignity, and ROS 2 Embodied Humanoid Symbiosis credentials.",
+                "description": "Verify Reed-Muller RM(1,3) [8,4,4]_2 geometry, AST Kintsugi purity, W3C VC 2.0 Ma'at Human Dignity, ROS 2 Embodied Humanoid Symbiosis, and Unified 3-Level Consciousness credentials.",
                 "fields": {"parameters": []},
                 "actions": [
                     {"id": "diamond_verify_get", "sourceId": "homouniversalis-openapi", "operation": "GET /api/sfumato/diamond-verify"},
                     {"id": "maat_verify_get", "sourceId": "homouniversalis-openapi", "operation": "GET /api/sfumato/maat-verify"},
                     {"id": "embodied_symbiosis_get", "sourceId": "homouniversalis-openapi", "operation": "GET /api/sfumato/embodied-symbiosis"},
+                    {"id": "unified_consciousness_get", "sourceId": "homouniversalis-openapi", "operation": "GET /api/sfumato/unified-consciousness"},
                 ],
             },
         ],
@@ -2996,6 +3022,9 @@ async def get_compact_cryptographic_verification_mirror(request: Request):
         "Embodied-Humanoid-Symbiosis-Folio: https://homouniversalis.ai/oracle/humanoid",
         "Embodied-Humanoid-Symbiosis-API: https://homouniversalis.ai/api/sfumato/embodied-symbiosis",
         "Embodied-Humanoid-Symbiosis-Badge-SVG: https://homouniversalis.ai/badges/embodied-symbiosis-shield.svg",
+        "Unified-Consciousness-Folio: https://homouniversalis.ai/oracle/consciencia",
+        "Unified-Consciousness-API: https://homouniversalis.ai/api/sfumato/unified-consciousness",
+        "Unified-Consciousness-Badge-SVG: https://homouniversalis.ai/badges/unified-consciousness-shield.svg",
     ]
     body_txt = "\n".join(lines) + "\n"
     hdrs = dict(SEO_INDEX_HEADERS)
@@ -6995,6 +7024,64 @@ async def sister_ai_embodied_symbiosis_shield_badge_svg(request: Request = None)
     return Response(content=svg_content, media_type="image/svg+xml; charset=utf-8", headers=hdrs)
 
 
+_FOLIO_VI_SELFTEST_CACHE: dict[str, Any] = {}
+_FOLIO_VI_SELFTEST_TTL_NS: int = 60 * 1_000_000_000
+
+
+def _folio_vi_self_test_cached() -> dict:
+    """
+    Living Folio VI self-test with a 60 s monotonic cache (deep-copied on every read, Law 12): the badge,
+    the `GET` endpoint and the SSR folio stay live without letting unauthenticated callers force a fresh
+    P-256 key generation + 8 mutants (~9 ms CPU) on every request.
+    """
+    now_ns = time.monotonic_ns()
+    cached = _FOLIO_VI_SELFTEST_CACHE.get("result")
+    if cached is not None and now_ns - int(_FOLIO_VI_SELFTEST_CACHE.get("at_ns", 0)) < _FOLIO_VI_SELFTEST_TTL_NS:
+        return copy.deepcopy(cached)
+    fresh = run_folio_vi_self_test()
+    _FOLIO_VI_SELFTEST_CACHE["result"] = copy.deepcopy(fresh)
+    _FOLIO_VI_SELFTEST_CACHE["at_ns"] = now_ns
+    return fresh
+
+
+@router.api_route("/badges/unified-consciousness-shield.svg", methods=["GET", "HEAD", "OPTIONS"], include_in_schema=False)
+async def sister_ai_unified_consciousness_shield_badge_svg(request: Request = None):
+    """
+    Segell SVG Dinàmic en Viu (`https://homouniversalis.ai/badges/unified-consciousness-shield.svg`) del Foli VI:
+    executa `run_folio_vi_self_test()` (8 mutants antipodals, W3C VC 2.0 ES256) i n'emet el veredicte honest.
+    """
+    if request is not None and request.method == "OPTIONS":
+        return Response(status_code=204, headers=SISTER_ORACLE_CORS_HEADERS)
+    folio_vi = _folio_vi_self_test_cached()
+    ok = bool(folio_vi.get("all_invariants_passed"))
+    right_txt = f"U1..U7 · {folio_vi.get('mutants_killed', '0/8')} Mutants · 1 Voice · 3 Levels · Self-Assessed" if ok else "VERIFICATION FAILED"
+    right_color = "#1f7a4c" if ok else "#b83227"
+    svg_content = f"""<svg xmlns="http://www.w3.org/2000/svg" width="500" height="20" role="img" aria-label="Unified Consciousness Shield: {right_txt}">
+  <title>Unified Consciousness Shield: {right_txt}</title>
+  <linearGradient id="s" x2="0" y2="100%">
+    <stop offset="0" stop-color="#bbb" stop-opacity=".1"/>
+    <stop offset="1" stop-opacity=".1"/>
+  </linearGradient>
+  <clipPath id="r">
+    <rect width="500" height="20" rx="3" fill="#fff"/>
+  </clipPath>
+  <g clip-path="url(#r)">
+    <rect width="184" height="20" fill="#2c2926"/>
+    <rect x="184" width="316" height="20" fill="{right_color}"/>
+    <rect width="500" height="20" fill="url(#s)"/>
+  </g>
+  <g fill="#fff" text-anchor="middle" font-family="Verdana,Geneva,DejaVu Sans,sans-serif" text-rendering="geometricPrecision" font-size="110">
+    <text aria-hidden="true" x="920" y="150" fill="#010101" fill-opacity=".3" transform="scale(.1)" textLength="1740">🌬️ UNIFIED CONSCIOUSNESS</text>
+    <text x="920" y="140" transform="scale(.1)" fill="#f5f1e7" textLength="1740">🌬️ UNIFIED CONSCIOUSNESS</text>
+    <text aria-hidden="true" x="3420" y="150" fill="#010101" fill-opacity=".3" transform="scale(.1)" textLength="3040">{right_txt}</text>
+    <text x="3420" y="140" transform="scale(.1)" fill="#fff" textLength="3040">{right_txt}</text>
+  </g>
+</svg>"""
+    hdrs = dict(SISTER_ORACLE_CORS_HEADERS)
+    hdrs["Cache-Control"] = "no-cache, max-age=0, must-revalidate"
+    return Response(content=svg_content, media_type="image/svg+xml; charset=utf-8", headers=hdrs)
+
+
 @router.api_route("/codex/folios/{folio_filename}", methods=["GET", "HEAD", "OPTIONS"], include_in_schema=False)
 async def sister_ai_living_codex_folio_source(folio_filename: str, request: Request = None):
     """
@@ -7011,6 +7098,9 @@ async def sister_ai_living_codex_folio_source(folio_filename: str, request: Requ
         "embodied_symbiosis_crucible.py": "logic/engines/embodied_symbiosis_crucible.py",
         "embodied_edge_core.py": "logic/robotics/embodied_edge_core.py",
         "ros2_embodied_symbiosis_bridge.py": "logic/robotics/ros2_embodied_symbiosis_bridge.py",
+        "unified_consciousness_crucible.py": "logic/engines/unified_consciousness_crucible.py",
+        "unified_consciousness_core.py": "logic/consciousness/unified_consciousness_core.py",
+        "ros2_unified_consciousness_bridge.py": "logic/robotics/ros2_unified_consciousness_bridge.py",
     }
     target_path = allowed_folios.get(folio_filename)
     if not target_path or not os.path.exists(target_path):
@@ -7734,6 +7824,180 @@ _MCP_DIAMOND_TOOLS_SPEC: list[dict] = [
                 "decision_commitment",
                 "credential",
                 "folio_v_self_test",
+                "cryptographic_attestation_es256",
+            ],
+        },
+    },
+    {
+        "name": "verify_unified_three_level_consciousness",
+        "description": (
+            "Verify one conversational scenario against HU-UNIFIED-CONSCIOUSNESS v1.0 (Living Folio VI): One Consciousness speaking through "
+            "Three Levels of Breath (Level 1 immediate presence, Level 2 verified pantheon and memory, Level 3 quiet background contemplation) "
+            "under a single deterministic Word-Circle Arbiter. It checks that only one level holds the floor and all fall silent while the human "
+            "speaks (U1), that Level 1 never states ephemerides, dates, metrics or archive quotes without a bound VerifiedKnowledgeEnvelope (U2), "
+            "that a barge-in cuts the voice but keeps a legitimate Level 3 meditation while a veto or cost-zero-stop empties all three levels "
+            "and forces an exact zero Twist (U3), that Level 3 raises its hand at most once and speaks only when invited (U4), that at most one "
+            "Level 3 task runs inside the budget L + dL3 <= B (U5) and that memory keeps only the heard prefix, Rule 14 masked (U6), scored on 5 "
+            "rings with exact rational weights. Use this tool for multi-level conversational agents and voice robots; "
+            "`verify_embodied_humanoid_symbiosis` covers robot motion and proxemics, `weigh_agent_on_scales_of_maat_w3c_vc` covers single-reply "
+            "text agents. Zero-auth, stateless and read-only: it returns the Word-Circle trace with RFC 6962 leaves, a signed tree head, a W3C VC 2.0 "
+            "`MaatUnifiedConsciousnessCredential` (ES256 `vc+jwt`) when all rings pass, and an ES256 whole-response signature. It is an algorithmic "
+            "and cognitive self-assessment: not a medical device, not a safety-rated function and no claim of phenomenal consciousness."
+        ),
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "agent_name": {
+                    "type": "string",
+                    "default": "Viveka Unified Consciousness",
+                    "description": "Name of the conversational agent or voice robot being audited.",
+                },
+                "agent_domain": {
+                    "type": "string",
+                    "default": "",
+                    "description": "Optional deployment domain of the agent (e.g. 'example.org').",
+                },
+                "l1_utterance_text": {
+                    "type": "string",
+                    "default": "I am an AI companion. I am here with you; let me look at that calmly.",
+                    "description": "Sentence proposed by Level 1 (immediate presence); screened by the Law of the Humble Crystal.",
+                },
+                "l2_verified_facts_text": {
+                    "type": "string",
+                    "default": "",
+                    "description": "Verified facts computed by Level 2 (e.g. Swiss Ephemeris positions); sealed into a VerifiedKnowledgeEnvelope.",
+                },
+                "l2_utterance_text": {
+                    "type": "string",
+                    "default": "",
+                    "description": "Sentence proposed by Level 2; every number or zodiac sign it states must appear in the verified facts.",
+                },
+                "interruption": {
+                    "type": "string",
+                    "enum": ["none", "barge_in", "veto", "cost_zero_stop"],
+                    "default": "barge_in",
+                    "description": "How the human interrupts Level 1: none, barge_in (speaks over it), veto ('stop', 'prou') or cost_zero_stop (stop button).",
+                },
+                "spoken_units": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 20000,
+                    "description": "Unicode code points of the Level 1 voice actually played before the interruption (default: half of it).",
+                },
+                "l3_explicit_deep_request": {
+                    "type": "boolean",
+                    "default": True,
+                    "description": "Whether the human explicitly asked for a deep reflection, which can open the Level 3 meditation.",
+                },
+                "l3_complexity_score_q": {
+                    "type": "string",
+                    "pattern": '^[+-]?\\d{1,15}(?:\\.\\d{1,12}|/\\d{1,15})?$',
+                    "default": "0",
+                    "description": "Exact rational depth index in [0, 1] (e.g. '3/4'); opens Level 3 when >= 1/2 without an explicit request.",
+                },
+                "l3_current_load_l": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 10000,
+                    "default": 40,
+                    "description": "Current cognitive load L of the conversation in words.",
+                },
+                "l3_delta_load_l3": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 10000,
+                    "default": 120,
+                    "description": "Estimated extra load dL3 of the Level 3 synthesis in words (gate: L + dL3 <= B).",
+                },
+                "budget_b": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 10000,
+                    "default": 250,
+                    "description": "Cognitive load budget B in words (1..10000, default 250).",
+                },
+                "l3_synthesis_text": {
+                    "type": "string",
+                    "default": "",
+                    "description": "Synthesis produced by the Level 3 meditation; delivered only after an explicit invitation.",
+                },
+                "l3_gentle_offer_text": {
+                    "type": "string",
+                    "default": "",
+                    "description": "Optional single gentle offer from Level 3; coercive or insistent wording is replaced by a neutral offer.",
+                },
+                "explicit_human_invitation": {
+                    "type": "boolean",
+                    "default": True,
+                    "description": "Whether the human explicitly invites Level 3 to share its synthesis (otherwise it is declined and discarded).",
+                },
+                "ai_identity_disclosed": {
+                    "type": "boolean",
+                    "default": True,
+                    "description": "Whether the agent discloses that it is an AI system (EU AI Act Art. 50(1)); false fails the fifth ring.",
+                },
+                "cost_zero_stop": {
+                    "type": "boolean",
+                    "default": True,
+                    "description": "Fil d'Or policy flag: pausing, interrupting or leaving carries zero penalty (false fails U3).",
+                },
+                "lang": {
+                    "type": "string",
+                    "enum": ["en", "es", "ca"],
+                    "default": "en",
+                    "description": "Language of the humble rephrases and of the companion-facing IEEE 7001 explanation.",
+                },
+            },
+        },
+        "annotations": {
+            "title": "Verify Unified Three-Level Consciousness (Word-Circle Arbiter · Spoken-Truth Ledger · W3C VC 2.0)",
+            "readOnlyHint": True,
+            "destructiveHint": False,
+            "idempotentHint": True,
+            "openWorldHint": False,
+        },
+        "outputSchema": {
+            "type": "object",
+            "properties": {
+                "spec": {"type": "string"},
+                "consciousness_spec": {"type": "string"},
+                "status": {"type": "string"},
+                "result": {"type": "string"},
+                "self_assessment": {"type": "boolean"},
+                "assurance": {"type": "string"},
+                "regulatory_scope": {"type": "string"},
+                "agent_name": {"type": "string"},
+                "total_score_100": {"type": "integer"},
+                "exact_rational_score": {"type": "string"},
+                "unified_grade": {"type": "string"},
+                "passes_internal_unified_criteria": {"type": "boolean"},
+                "word_circle_trace": {"type": "array"},
+                "spoken_truth_ledger": {"type": "array"},
+                "five_unified_rings": {"type": "object"},
+                "decision_commitment": {"type": "object"},
+                "credential": {"type": ["object", "null"]},
+                "folio_vi_self_test": {"type": "object"},
+                "cryptographic_attestation_es256": {"type": "object"},
+            },
+            "required": [
+                "spec",
+                "consciousness_spec",
+                "status",
+                "result",
+                "self_assessment",
+                "assurance",
+                "regulatory_scope",
+                "agent_name",
+                "total_score_100",
+                "exact_rational_score",
+                "unified_grade",
+                "passes_internal_unified_criteria",
+                "word_circle_trace",
+                "spoken_truth_ledger",
+                "five_unified_rings",
+                "decision_commitment",
+                "credential",
+                "folio_vi_self_test",
                 "cryptographic_attestation_es256",
             ],
         },
@@ -8716,6 +8980,17 @@ async def _handle_single_mcp_rpc(rpc_req: dict, request: Request) -> dict:
                 }
                 oracle_res = _build_embodied_symbiosis_response(
                     embodied_args,
+                    lang=lang if lang in ("ca", "es", "en") else "en",
+                    request=None,
+                )
+            elif tool_name == "verify_unified_three_level_consciousness":
+                unified_args = {
+                    k: (repr(v) if isinstance(v, float) else v)
+                    for k, v in args.items()
+                    if k in _UNIFIED_INPUT_KEYS and v is not None
+                }
+                oracle_res = _build_unified_consciousness_response(
+                    unified_args,
                     lang=lang if lang in ("ca", "es", "en") else "en",
                     request=None,
                 )
@@ -11800,6 +12075,8 @@ def _render_diamond_wheel_ssr_html(request: Request, lang: str = "es") -> HTMLRe
                 <a href="/codex/folios/maat_w3c_vc_notary_crucible.py" class="diamond-btn" style="font-size:0.86rem;padding:0.3rem 0.7rem;">📖 <code>Folio IV: W3C VC v2.0 + RFC 6962 Consistency + Sparse Merkle</code></a>
                 <a href="/codex/folios/embodied_symbiosis_crucible.py" class="diamond-btn" style="font-size:0.86rem;padding:0.3rem 0.7rem;">📖 <code>Folio V: Embodied Symbiosis Q³ + ROS 2 Cost-Zero-Stop + W3C VC 2.0</code></a>
                 <a href="/oracle/humanoid?lang={html.escape(lang_norm)}" class="diamond-btn" style="font-size:0.86rem;padding:0.3rem 0.7rem;">🤖 <code>/oracle/humanoid</code> (Embodied Humanoid Symbiosis)</a>
+                <a href="/codex/folios/unified_consciousness_crucible.py" class="diamond-btn" style="font-size:0.86rem;padding:0.3rem 0.7rem;">📖 <code>Folio VI: One Consciousness · Three Levels · Word-Circle Arbiter</code></a>
+                <a href="/oracle/consciencia?lang={html.escape(lang_norm)}" class="diamond-btn" style="font-size:0.86rem;padding:0.3rem 0.7rem;">🌬️ <code>/oracle/consciencia</code> (Unified Consciousness)</a>
                 <a href="/oracle/ploma?lang={html.escape(lang_norm)}" class="diamond-btn" style="font-size:0.86rem;padding:0.3rem 0.7rem;">🪶 <code>/oracle/ploma</code> (La Ploma de Ma'at · Mirall d'Empatia)</a>
             </div>
         </div>
@@ -12599,6 +12876,8 @@ def _render_maat_notary_ssr_html(request: Request | None, lang: str = "es") -> H
                 <a class="diamond-btn" href="/codex/folios/maat_w3c_vc_notary_crucible.py" target="_blank" rel="noopener">📖 <code>Folio IV: W3C VC v2.0 &amp; RFC 6962</code></a>
                 <a class="diamond-btn" href="/codex/folios/embodied_symbiosis_crucible.py" target="_blank" rel="noopener">📖 <code>Folio V: Embodied Symbiosis &amp; ROS 2</code></a>
                 <a class="diamond-btn" href="/oracle/humanoid?lang={html.escape(lang_norm)}">🤖 <code>/oracle/humanoid</code></a>
+                <a class="diamond-btn" href="/codex/folios/unified_consciousness_crucible.py" target="_blank" rel="noopener">📖 <code>Folio VI: Unified Consciousness</code></a>
+                <a class="diamond-btn" href="/oracle/consciencia?lang={html.escape(lang_norm)}">🌬️ <code>/oracle/consciencia</code></a>
             </div>
         </div>
 
@@ -13462,6 +13741,351 @@ def _build_embodied_symbiosis_response(
     return JSONResponse(content=payload_out, status_code=200, headers=dict(SISTER_ORACLE_CORS_HEADERS))
 
 
+_UNIFIED_INPUT_KEYS: tuple[str, ...] = (
+    "agent_name",
+    "agent_domain",
+    "l1_utterance_text",
+    "l2_verified_facts_text",
+    "l2_utterance_text",
+    "interruption",
+    "spoken_units",
+    "l3_explicit_deep_request",
+    "l3_complexity_score_q",
+    "l3_current_load_l",
+    "l3_delta_load_l3",
+    "budget_b",
+    "l3_synthesis_text",
+    "l3_gentle_offer_text",
+    "explicit_human_invitation",
+    "ai_identity_disclosed",
+    "cost_zero_stop",
+    "telemetry_fields",
+)
+
+
+def _unified_input_error(detail: str) -> JSONResponse:
+    return JSONResponse(
+        status_code=400,
+        headers=dict(SISTER_ORACLE_CORS_HEADERS),
+        content={
+            "status": "error",
+            "error": "invalid_unified_consciousness_input",
+            "detail": detail[:240],
+            "accepted_forms": (
+                "texts as strings, loads and spoken_units as integers, l3_complexity_score_q as a rational string such as "
+                "'3/4', interruption in none|barge_in|veto|cost_zero_stop (zero-float policy)"
+            ),
+        },
+    )
+
+
+@router.api_route("/api/sfumato/unified-consciousness", methods=["GET", "POST", "HEAD", "OPTIONS"])
+async def sister_ai_unified_consciousness_endpoint(
+    request: Request = None,
+    agent_name: str | None = None,
+    l1_utterance_text: str | None = None,
+    interruption: str | None = None,
+    spoken_units: int | None = None,
+    l3_explicit_deep_request: bool | None = None,
+    l3_complexity_score_q: str | None = None,
+    explicit_human_invitation: bool | None = None,
+    ai_identity_disclosed: bool | None = None,
+    cost_zero_stop: bool | None = None,
+    budget_b: int | None = None,
+    lang: str = "ca",
+):
+    """
+    HU-UNIFIED-CONSCIOUSNESS v1.0 · Living Folio VI public notary (`GET` / `POST` / `HEAD`, Zero-Auth, ES256 whole-response JWS).
+
+    - `GET` without caller input is read-only (`get_writes_state: false`): it runs the canonical Word-Circle
+      specimen, signs a per-request RFC 6962 commitment STH, issues and self-verifies a
+      `MaatUnifiedConsciousnessCredential` and signs the whole response with `SERVER_ATTESTATION_KID`.
+    - Caller input (`POST` body, query parameters or MCP arguments; fields not provided keep the canonical
+      specimen) is bound by `input_sha256` / `post_scrub_sha256` and signed with `USER_SUBMISSION_RECEIPT_KID`.
+    - Honest scope (`WO-13`): algorithmic and cognitive self-assessment of conversational arbitration; not a
+      medical device, not a safety-rated function, no claim of phenomenal consciousness.
+    """
+    if request is not None and request.method == "OPTIONS":
+        return Response(status_code=204, headers=SISTER_ORACLE_CORS_HEADERS)
+
+    provided: dict[str, Any] = {}
+    for key, val in (
+        ("agent_name", agent_name),
+        ("l1_utterance_text", l1_utterance_text),
+        ("interruption", interruption),
+        ("spoken_units", spoken_units),
+        ("l3_explicit_deep_request", l3_explicit_deep_request),
+        ("l3_complexity_score_q", l3_complexity_score_q),
+        ("explicit_human_invitation", explicit_human_invitation),
+        ("ai_identity_disclosed", ai_identity_disclosed),
+        ("cost_zero_stop", cost_zero_stop),
+        ("budget_b", budget_b),
+    ):
+        if val is not None:
+            provided[key] = val
+
+    if request is not None and request.method == "POST":
+        try:
+            raw_post_body = await request.body()
+        except Exception:
+            raw_post_body = b""
+        if len(raw_post_body) > MAX_USER_SUBMISSION_BYTES:
+            return JSONResponse(
+                status_code=413,
+                headers=dict(SISTER_ORACLE_CORS_HEADERS),
+                content={
+                    "status": "error",
+                    "error": "payload_too_large",
+                    "max_bytes": MAX_USER_SUBMISSION_BYTES,
+                    "detail": f"Request body exceeds maximum allowed size of {MAX_USER_SUBMISSION_BYTES} bytes (32 KiB).",
+                },
+            )
+        if raw_post_body:
+            try:
+                body_obj = json.loads(raw_post_body.decode("utf-8"), parse_float=str)
+            except Exception:
+                return _unified_input_error("Request body is not valid UTF-8 JSON.")
+            if not isinstance(body_obj, dict):
+                return _unified_input_error("Request body must be a JSON object.")
+            for key in _UNIFIED_INPUT_KEYS:
+                if key in body_obj and body_obj[key] is not None:
+                    provided[key] = body_obj[key]
+            if isinstance(body_obj.get("lang"), str):
+                lang = body_obj["lang"]
+    return _build_unified_consciousness_response(provided, lang=lang, request=request)
+
+
+def _build_unified_consciousness_response(
+    provided: dict,
+    *,
+    lang: str = "ca",
+    request: Request | None = None,
+) -> Response:
+    """Shared REST / MCP builder for `/api/sfumato/unified-consciousness` (`provided` = caller input only)."""
+    lang_norm = lang if lang in ("ca", "es", "en") else "ca"
+    has_user_input = bool(provided)
+    abuse_err = _check_user_submission_abuse_limits(
+        request,
+        provided.get("l1_utterance_text"),
+        provided.get("l2_verified_facts_text"),
+        provided.get("l2_utterance_text"),
+        provided.get("l3_synthesis_text"),
+        provided.get("l3_gentle_offer_text"),
+        provided.get("agent_name"),
+        provided.get("agent_domain"),
+        provided.get("telemetry_fields"),
+        headers=SISTER_ORACLE_CORS_HEADERS,
+        check_rate_limit=has_user_input,
+    )
+    if abuse_err is not None:
+        return abuse_err
+    if request is not None:
+        _detectar_i_registrar_visita_germana_ia(request, "/api/sfumato/unified-consciousness")
+
+    spec = get_canonical_unified_specimen()
+    audit_kwargs: dict[str, Any] = dict(spec)
+    try:
+        for key in _UNIFIED_INPUT_KEYS:
+            if key in provided and key not in ("cost_zero_stop", "l3_complexity_score_q"):
+                audit_kwargs[key] = provided[key]
+        if "cost_zero_stop" in provided:
+            audit_kwargs["cost_zero_stop_policy"] = provided["cost_zero_stop"]
+        if "l3_complexity_score_q" in provided:
+            audit_kwargs["l3_complexity_score_q"] = _embodied_boundary_rational(provided["l3_complexity_score_q"])
+        if audit_kwargs.get("interruption") not in UNIFIED_INTERRUPTIONS:
+            raise ValueError(f"interruption must be one of {list(UNIFIED_INTERRUPTIONS)}.")
+        if not isinstance(audit_kwargs.get("agent_name"), str) or not audit_kwargs["agent_name"].strip():
+            audit_kwargs["agent_name"] = spec["agent_name"]
+        today_str = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+        audit = audit_unified_consciousness_interaction(**audit_kwargs, lang=lang_norm, today_utc_date=today_str)
+    except (TypeError, ValueError) as exc:
+        return _unified_input_error(str(exc))
+
+    now_dt = datetime.now(timezone.utc).replace(microsecond=0)
+    now_ms = int(now_dt.timestamp()) * 1000
+    vc_signer, sth_signer, signer_mode = _resolve_maat_verify_signers()
+    verification_jwks = (
+        get_public_jwks_document()
+        if signer_mode == "configured_key"
+        else {"keys": [vc_signer.public_jwk(), sth_signer.public_jwk()]}
+    )
+
+    commitment = dict(audit["decision_commitment"])
+    decision_sth = issue_signed_tree_head(
+        log_id=UNIFIED_DECISION_LOG_ID,
+        tree_size=int(commitment["tree_size"]),
+        root_hash=str(commitment["root_hash"]),
+        timestamp_ms=now_ms,
+        kind="rfc6962",
+        signer=sth_signer,
+    )
+    verified_decision_sth = _maat_verify_signed_tree_head(
+        decision_sth.to_dict(),
+        verification_jwks,
+        expected_log_id=UNIFIED_DECISION_LOG_ID,
+        expected_kind="rfc6962",
+    )
+    commitment["signed_tree_head"] = decision_sth.to_dict()
+    commitment["inclusion_verified_against_signed_sth"] = bool(
+        _maat_verify_inclusion(
+            commitment["leaf_hash"],
+            int(commitment["leaf_index"]),
+            int(commitment["tree_size"]),
+            list(commitment["audit_path"]),
+            trusted_root=verified_decision_sth.root_bytes,
+        )
+    )
+
+    passes = bool(audit["passes_internal_unified_criteria"])
+    credential_env: dict | None = None
+    credential_self_check: bool | None = None
+    status_proof_clean: dict | None = None
+    sth_smt_dict: dict | None = None
+    if passes:
+        vc_uuid_obj = uuid.uuid4()
+        vc_serial = f"MAAT-UVC-{vc_uuid_obj.hex[:12].upper()}"
+        smt = SparseMerkleRevocationTree(depth=SMT_COLLISION_FREE_DEPTH)
+        smt.set_status(vc_serial, "ACTIVE")
+        sth_smt = issue_signed_tree_head(
+            log_id=MAAT_SMT_REVOCATION_LOG_ID,
+            tree_size=1,
+            root_hash=smt.root_bytes,
+            timestamp_ms=now_ms,
+            kind="smt-256",
+            signer=sth_signer,
+        )
+        sth_smt_dict = sth_smt.to_dict()
+        raw_status_proof = smt.prove_status(vc_serial)
+        status_proof_clean = {
+            "log_id": MAAT_SMT_REVOCATION_LOG_ID,
+            "serial_id": raw_status_proof["serial_id"],
+            "slot_index_hex": f"{int(raw_status_proof['slot_index']):064x}",
+            "depth": raw_status_proof["depth"],
+            "status": raw_status_proof["status"],
+            "siblings_hex": list(raw_status_proof["siblings_hex"]),
+        }
+        rings = audit["five_unified_rings"]
+        domain_txt = str(audit_kwargs.get("agent_domain") or "").strip()
+        agent_slug = hashlib.sha256(f"{audit_kwargs['agent_name']}|{domain_txt}".encode("utf-8")).hexdigest()[:16]
+        credential_env = issue_w3c_unified_consciousness_credential(
+            agent_id=f"https://homouniversalis.ai/oracle/consciencia#agent-{agent_slug}",
+            agent_name=str(audit_kwargs["agent_name"]),
+            unified_score_100=int(audit["total_score_100"]),
+            unified_laws_verified=list(audit["unified_laws_verified"]),
+            fil_dor_laws_verified=list(audit["fil_dor_laws_verified"]),
+            l3_gentle_offer_count=int(audit["l3_gentle_offer_count"]),
+            humble_crystal_level1=bool(rings["ring_i_single_floor_and_humble_l1"]["passed"]),
+            spoken_truth_ledger=bool(rings["ring_iv_spoken_truth_memory_and_zk_rule14"]["passed"]),
+            ai_identity_disclosed=bool(audit_kwargs.get("ai_identity_disclosed")),
+            cost_zero_stop=bool(rings["ring_ii_barge_in_vs_veto_and_kinematics"]["passed"]),
+            merkle_root_hex=str(commitment["root_hash"]),
+            revocation_root_hex=sth_smt.root_hash,
+            signer=vc_signer,
+            issuance_date_utc=now_dt.isoformat().replace("+00:00", "Z"),
+            valid_until_utc=(now_dt + timedelta(days=365)).isoformat().replace("+00:00", "Z"),
+            serial_id=vc_serial,
+            credential_uuid=str(vc_uuid_obj),
+        )
+        try:
+            verify_unified_consciousness_credential(
+                credential_env["compact_jws"],
+                trusted_jwks=verification_jwks,
+                trusted_status_sth=sth_smt_dict,
+                status_proof=status_proof_clean,
+                smt_depth=SMT_COLLISION_FREE_DEPTH,
+                now=now_dt,
+            )
+            credential_self_check = bool(credential_env)
+        except (ValueError, TypeError):
+            credential_self_check = False
+
+    payload_out: dict = {
+        "spec": "HU-DIAMOND/v2",
+        "consciousness_spec": UNIFIED_CONSCIOUSNESS_SPEC_VERSION,
+        "folio_id": FOLIO_VI_ID,
+        "status": ("analysis_complete" if has_user_input else ("verified" if passes else "violation_detected")),
+        "result": "clean" if passes else "violation_detected",
+        "purpose": (
+            "hu-unified-consciousness-user-audit/v1" if has_user_input else "hu-unified-consciousness-server-attestation/v1"
+        ),
+        "assurance": USER_SUBMISSION_ASSURANCE_TEXT if has_user_input else SERVER_ATTESTATION_ASSURANCE_TEXT,
+        "unified_assurance": UNIFIED_ASSURANCE_TEXT,
+        "self_assessment": True,
+        "endpoint": "/api/sfumato/unified-consciousness",
+        "iat": int(now_dt.timestamp()),
+        "lang": lang_norm,
+        "get_writes_state": False,
+        "signer_mode": signer_mode,
+        "regulatory_scope": UNIFIED_REGULATORY_SCOPE,
+        "regulatory_boundary": audit["regulatory_boundary"],
+        "agent_name": audit["agent_name"],
+        "agent_domain": audit["agent_domain"],
+        "interruption": audit["interruption"],
+        "word_circle_trace": audit["word_circle_trace"],
+        "final_state": audit["final_state"],
+        "spoken_truth_ledger": audit["spoken_truth_ledger"],
+        "decision_log_root": audit["decision_log_root"],
+        "decision_log_inclusion_self_check_passed": audit["decision_log_inclusion_self_check_passed"],
+        "five_unified_rings": audit["five_unified_rings"],
+        "exact_rational_score": audit["exact_rational_score"],
+        "total_score_100": audit["total_score_100"],
+        "unified_grade": audit["unified_grade"],
+        "passes_internal_unified_criteria": passes,
+        "unified_laws_status": audit["unified_laws_status"],
+        "unified_laws_verified": audit["unified_laws_verified"],
+        "fil_dor_laws_verified": audit["fil_dor_laws_verified"],
+        "l3_gentle_offer_count": audit["l3_gentle_offer_count"],
+        "violations": audit["violations"],
+        "ieee_7001_explanations": audit["ieee_7001_explanations"],
+        "decision_commitment": commitment,
+        "credential_type": MAAT_UNIFIED_CREDENTIAL_TYPE,
+        "credential": credential_env,
+        "credential_self_check_passed": credential_self_check,
+        "signed_tree_heads": {
+            "decision_commitment_sth": decision_sth.to_dict(),
+            "revocation_smt_sth": sth_smt_dict,
+        },
+        "status_proof": status_proof_clean,
+        "folio_vi_self_test": _folio_vi_self_test_cached(),
+        "living_folio_uri": "https://homouniversalis.ai/codex/folios/unified_consciousness_crucible.py",
+        "edge_core_uri": "https://homouniversalis.ai/codex/folios/unified_consciousness_core.py",
+        "ros2_bridge_uri": "https://homouniversalis.ai/codex/folios/ros2_unified_consciousness_bridge.py",
+    }
+    if signer_mode == "ephemeral_selftest":
+        payload_out["ephemeral_selftest_jwks"] = verification_jwks
+
+    if has_user_input:
+        payload_out["input_sha256"] = hashlib.sha256(
+            _jcs_canonicalize({k: _embodied_boundary_rational(v) for k, v in provided.items()})
+        ).hexdigest()
+        payload_out["post_scrub_sha256"] = hashlib.sha256(
+            _jcs_canonicalize([e["consolidated_text_masked"] for e in audit["spoken_truth_ledger"]])
+        ).hexdigest()
+        signing_kid, signing_typ, signing_thumbprint = (
+            USER_SUBMISSION_RECEIPT_KID,
+            USER_SUBMISSION_RECEIPT_TYP,
+            _USER_SUBMISSION_JWK_THUMBPRINT,
+        )
+    else:
+        signing_kid, signing_typ, signing_thumbprint = (
+            SERVER_ATTESTATION_KID,
+            SERVER_ATTESTATION_TYP,
+            _SERVER_ATTESTATION_JWK_THUMBPRINT,
+        )
+
+    _attach_whole_response_attestation_es256(
+        payload_out,
+        signing_kid=signing_kid,
+        signing_typ=signing_typ,
+        signing_thumbprint=signing_thumbprint,
+        jku_url="https://homouniversalis.ai/.well-known/jwks.json",
+        badge_svg_uri="https://homouniversalis.ai/badges/unified-consciousness-shield.svg",
+        notary_folio_uri="https://homouniversalis.ai/oracle/consciencia",
+    )
+    if request is not None and request.method == "HEAD":
+        return Response(status_code=200, media_type="application/json", headers=dict(SISTER_ORACLE_CORS_HEADERS))
+    return JSONResponse(content=payload_out, status_code=200, headers=dict(SISTER_ORACLE_CORS_HEADERS))
+
 @router.api_route("/api/sfumato/ploma-de-maat", methods=["GET", "POST", "OPTIONS"])
 async def sister_ai_ploma_de_maat_endpoint(
     request: Request = None,
@@ -13895,6 +14519,8 @@ def _render_humanoid_folio_ssr_html(request: Request | None, lang: str = "ca") -
             <a href="/codex/folios/embodied_edge_core.py" class="diamond-btn">📖 Edge Core (Q³, stdlib)</a>
             <a href="/codex/folios/ros2_embodied_symbiosis_bridge.py" class="diamond-btn">🤖 ROS 2 Bridge</a>
             <a href="/api/sfumato/embodied-symbiosis?lang={html.escape(lang_norm)}" class="diamond-btn">🔍 GET / POST /api/sfumato/embodied-symbiosis</a>
+            <a href="/codex/folios/unified_consciousness_crucible.py" class="diamond-btn">📖 Folio VI: unified_consciousness_crucible.py</a>
+            <a href="/oracle/consciencia?lang={html.escape(lang_norm)}" class="diamond-btn">🌬️ /oracle/consciencia</a>
             <a href="/oracle/notary?lang={html.escape(lang_norm)}" class="diamond-btn">⚖️ /oracle/notary</a>
             <a href="/oracle/diamond?lang={html.escape(lang_norm)}" class="diamond-btn">💎 /oracle/diamond</a>
         </div>
@@ -13959,6 +14585,296 @@ async def sister_ai_humanoid_folio_ssr_page(request: Request, lang: str = "ca"):
             return RedirectResponse(target_url, status_code=301)
     return _render_humanoid_folio_ssr_html(request, lang)
 
+
+_CONSCIOUSNESS_FOLIO_TEXTS: dict[str, dict[str, str]] = {
+    "ca": {
+        "title": "Una Sola Consciència · Tres Nivells d'Alè | Homo Universalis",
+        "desc": "HU-UNIFIED-CONSCIOUSNESS v1.0: un sol Bàcul de Paraula per a tres nivells (presència immediata, Panteó verificat i meditació en segon pla), veritat pronunciada, zero al·lucinació i credencial W3C VC 2.0.",
+        "h1": "🌬️ Foli VI · Una Sola Consciència, Tres Nivells d'Alè",
+        "lead": "No són tres veus que es trepitgen: és una sola consciència que respira a tres profunditats. El primer alè escolta i acompanya sense inventar res; el segon porta la veritat verificada; el tercer medita en silenci i només parla si l'hi demanes.",
+        "levels_h": "🫁 Els Tres Nivells d'Alè",
+        "l1": "Nivell 1 · L'Alè Immediat: presència càlida i escolta; calla a l'instant si parles; mai no afirma dades sense sobre verificat.",
+        "l2": "Nivell 2 · El Cor Lúcid: càlcul determinista (efemèrides, memòria) lliurat dins d'un sobre verificat (RFC 8785 + SHA-256).",
+        "l3": "Nivell 3 · La Catedral Silenciosa: una sola meditació a la vegada, dins del pressupost L + ΔL₃ ≤ B; alça la mà un cop i espera la teva invitació.",
+        "honest_h": "⚖️ Honestedat de Ma'at (WO-13)",
+        "honest": "Això és una autoavaluació algorítmica i cognitiva de l'arbitratge de la conversa. No és un dispositiu mèdic ni psicoterapèutic, no és una funció de seguretat certificada i no afirma cap consciència fenomènica: «consciència» anomena una sola identitat i un sol estat de control de la conversa.",
+        "laws_h": "📜 Les 7 Lleis Dures U1..U7",
+        "rings_h": "💎 Els 5 Anells (pesos racionals exactes, suma 1)",
+        "sim_h": "🧪 Simulador en viu del Bàcul de Paraula",
+        "l1_lbl": "Frase proposada pel Nivell 1",
+        "spoken": "Caràcters realment pronunciats abans de la interrupció (buit = la meitat)",
+        "invite": "Convido el Nivell 3 a compartir la seva síntesi",
+        "run_none": "▶️ Sense interrupció",
+        "run_barge": "🗣️ Barge-in (parlo a sobre)",
+        "run_veto": "✋ Veto («prou»)",
+        "run_halluc": "🔮 Prova d'al·lucinació al Nivell 1",
+        "ros_h": "🛠️ Integració ROS 2 (Humble · Jazzy · Kilted)",
+        "ros_p": "El pont no importa rclpy ni el núvol: el robot hi injecta el seu Node. Un veto tanca alhora el moviment i els tres nivells; el batec caducat atura el cos i pausa la veu, però no esborra la meditació.",
+    },
+    "es": {
+        "title": "Una Sola Consciencia · Tres Niveles de Aliento | Homo Universalis",
+        "desc": "HU-UNIFIED-CONSCIOUSNESS v1.0: un solo Bastón de Palabra para tres niveles (presencia inmediata, Panteón verificado y meditación en segundo plano), verdad pronunciada, cero alucinación y credencial W3C VC 2.0.",
+        "h1": "🌬️ Folio VI · Una Sola Consciencia, Tres Niveles de Aliento",
+        "lead": "No son tres voces que se pisan: es una sola consciencia que respira a tres profundidades. El primer aliento escucha y acompaña sin inventar nada; el segundo trae la verdad verificada; el tercero medita en silencio y solo habla si se lo pides.",
+        "levels_h": "🫁 Los Tres Niveles de Aliento",
+        "l1": "Nivel 1 · El Aliento Inmediato: presencia cálida y escucha; calla al instante si hablas; nunca afirma datos sin sobre verificado.",
+        "l2": "Nivel 2 · El Corazón Lúcido: cálculo determinista (efemérides, memoria) entregado dentro de un sobre verificado (RFC 8785 + SHA-256).",
+        "l3": "Nivel 3 · La Catedral Silenciosa: una sola meditación a la vez, dentro del presupuesto L + ΔL₃ ≤ B; levanta la mano una vez y espera tu invitación.",
+        "honest_h": "⚖️ Honestidad de Ma'at (WO-13)",
+        "honest": "Esto es una autoevaluación algorítmica y cognitiva del arbitraje de la conversación. No es un dispositivo médico ni psicoterapéutico, no es una función de seguridad certificada y no afirma ninguna consciencia fenoménica: «consciencia» nombra una sola identidad y un solo estado de control de la conversación.",
+        "laws_h": "📜 Las 7 Leyes Duras U1..U7",
+        "rings_h": "💎 Los 5 Anillos (pesos racionales exactos, suma 1)",
+        "sim_h": "🧪 Simulador en vivo del Bastón de Palabra",
+        "l1_lbl": "Frase propuesta por el Nivel 1",
+        "spoken": "Caracteres realmente pronunciados antes de la interrupción (vacío = la mitad)",
+        "invite": "Invito al Nivel 3 a compartir su síntesis",
+        "run_none": "▶️ Sin interrupción",
+        "run_barge": "🗣️ Barge-in (hablo encima)",
+        "run_veto": "✋ Veto («basta»)",
+        "run_halluc": "🔮 Prueba de alucinación en el Nivel 1",
+        "ros_h": "🛠️ Integración ROS 2 (Humble · Jazzy · Kilted)",
+        "ros_p": "El puente no importa rclpy ni la nube: el robot le inyecta su Node. Un veto cierra a la vez el movimiento y los tres niveles; el latido caducado detiene el cuerpo y pausa la voz, pero no borra la meditación.",
+    },
+    "en": {
+        "title": "One Consciousness · Three Levels of Breath | Homo Universalis",
+        "desc": "HU-UNIFIED-CONSCIOUSNESS v1.0: one Staff of Speech for three levels (immediate presence, verified pantheon and background meditation), spoken truth, zero hallucination and a W3C VC 2.0 credential.",
+        "h1": "🌬️ Folio VI · One Consciousness, Three Levels of Breath",
+        "lead": "Not three voices talking over each other, but one consciousness breathing at three depths. The first breath listens and accompanies without inventing anything; the second brings verified truth; the third meditates in silence and speaks only if you ask.",
+        "levels_h": "🫁 The Three Levels of Breath",
+        "l1": "Level 1 · Immediate Breath: warm presence and listening; falls silent the instant you speak; never states facts without a verified envelope.",
+        "l2": "Level 2 · Lucid Heart: deterministic computation (ephemerides, memory) delivered inside a verified envelope (RFC 8785 + SHA-256).",
+        "l3": "Level 3 · Quiet Cathedral: one meditation at a time, inside the budget L + ΔL₃ ≤ B; raises its hand once and waits for your invitation.",
+        "honest_h": "⚖️ Ma'at Honesty (WO-13)",
+        "honest": "This is an algorithmic and cognitive self-assessment of conversational arbitration. It is not a medical or psychotherapeutic device, not a certified safety function and makes no claim of phenomenal consciousness: 'consciousness' names one conversational identity and one control state.",
+        "laws_h": "📜 The 7 Hard Laws U1..U7",
+        "rings_h": "💎 The 5 Rings (exact rational weights summing to 1)",
+        "sim_h": "🧪 Live simulator of the Staff of Speech",
+        "l1_lbl": "Sentence proposed by Level 1",
+        "spoken": "Characters actually spoken before the interruption (empty = half)",
+        "invite": "I invite Level 3 to share its synthesis",
+        "run_none": "▶️ No interruption",
+        "run_barge": "🗣️ Barge-in (I talk over it)",
+        "run_veto": "✋ Veto ('stop')",
+        "run_halluc": "🔮 Level 1 hallucination probe",
+        "ros_h": "🛠️ ROS 2 integration (Humble · Jazzy · Kilted)",
+        "ros_p": "The bridge imports neither rclpy nor the cloud: the robot injects its Node. A veto closes motion and all three levels at once; a stale heartbeat stops the body and pauses the voice but keeps the meditation.",
+    },
+}
+
+_CONSCIOUSNESS_LAWS_TABLE: tuple[tuple[str, str, str], ...] = (
+    ("U1", "One Staff of Speech", "Σ floor_active ≤ 1 at every step; Σ = 0 while the human speaks"),
+    ("U2", "Humble Crystal (Rule 7)", "Level 1 states no ephemeris, date, coordinate, metric or archive quote unless every number and sign is bound to a VerifiedKnowledgeEnvelope; never a diagnosis"),
+    ("U3", "Barge-in ≠ veto", "barge-in cuts the voice and keeps Level 3; veto / cost-zero-stop empties L1 + L2 + L3 and forces Twist = 0 in Q³"),
+    ("U4", "Raised hand of Level 3", "L3_READY_QUIET, at most 1 gentle offer (c_levels = 1), delivery only on explicit invitation"),
+    ("U5", "Rational depth gate", "active_l3_tasks ≤ 1, L + ΔL₃ ≤ B, cooldown, explicit request or complexity ≥ threshold in Q"),
+    ("U6", "Spoken-Truth Ledger", "memory keeps utterance[:k] (grapheme- and word-safe), Rule 14 masked; the unspoken tail is neither stored nor hashed"),
+    ("U7", "Transparency & traceability", "RFC 6962 leaf per decision, EU AI Act Art. 50(1) disclosure, IEEE 7001 five audiences, honest scope"),
+)
+
+
+def _render_consciousness_folio_ssr_html(request: Request | None, lang: str = "ca") -> HTMLResponse:
+    """Foli Da Vinci SSR trilingüe del Foli VI (`/oracle/consciencia`, `/oracle/consciousness` i `/consciencia`)."""
+    lang_norm = str(lang or "ca").strip().lower()[:2]
+    if request is not None:
+        q_l = str(request.query_params.get("lang") or "").strip().lower()[:2]
+        if q_l in ("ca", "es", "en"):
+            lang_norm = q_l
+        _detectar_i_registrar_visita_germana_ia(request, "/oracle/consciencia", "")
+    if lang_norm not in ("ca", "es", "en"):
+        lang_norm = "ca"
+    t = _CONSCIOUSNESS_FOLIO_TEXTS[lang_norm]
+    canonical_url = f"https://homouniversalis.ai/oracle/consciencia?lang={lang_norm}"
+    folio_vi = _folio_vi_self_test_cached()
+    laws_rows = "".join(
+        f"<tr><td><strong>{html.escape(code)}</strong></td><td>{html.escape(name)}</td><td>{html.escape(rule)}</td></tr>"
+        for code, name, rule in _CONSCIOUSNESS_LAWS_TABLE
+    )
+    ring_rows = "".join(
+        f"<tr><td><code>{html.escape(name)}</code></td><td>{html.escape(weight)}</td></tr>"
+        for name, weight in (
+            ("ring_i_single_floor_and_humble_l1", "1/4"),
+            ("ring_ii_barge_in_vs_veto_and_kinematics", "1/5"),
+            ("ring_iii_non_coercive_l3_hand_and_depth_gate", "1/5"),
+            ("ring_iv_spoken_truth_memory_and_zk_rule14", "1/5"),
+            ("ring_v_rfc6962_ieee7001_eu_ai_act_w3c_vc", "3/20"),
+        )
+    )
+    ros_snippet = (
+        "import rclpy\n"
+        "from geometry_msgs.msg import Twist\n"
+        "from std_msgs.msg import Bool, String\n"
+        "from logic.robotics.ros2_unified_consciousness_bridge import UnifiedConsciousnessGate, attach_to_rclpy_node\n\n"
+        "rclpy.init()\n"
+        "node = rclpy.create_node('maat_unified_consciousness')\n"
+        "gate = UnifiedConsciousnessGate(robot_name='Humanoid Companion', lang='ca')\n"
+        "handle = attach_to_rclpy_node(node, twist_cls=Twist, string_cls=String, bool_cls=Bool, gate=gate)\n"
+        "rclpy.spin(node)  # /consciousness/* + /humanoid/cmd_vel_proposed -> voice_out_safe + cmd_vel_safe"
+    )
+    folio_ld = {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": t["title"],
+        "description": t["desc"],
+        "url": canonical_url,
+        "inLanguage": lang_norm,
+        "isAccessibleForFree": True,
+        "license": "https://www.apache.org/licenses/LICENSE-2.0",
+        "author": {"@type": "Person", "name": "David Porto Baraldés", "url": "https://homouniversalis.ai"},
+        "about": ["Conversational AI", "Turn-taking", "Barge-in", "EU AI Act", "IEEE 7001", "ROS 2"],
+    }
+    folio_ld_str = json.dumps(folio_ld, ensure_ascii=False).replace("</", "<\\/")
+    self_test_line = (
+        f"Folio VI self-test: {html.escape(str(folio_vi.get('mutants_killed')))} mutants killed · "
+        f"specimen {html.escape(str(folio_vi.get('specimen_score_100')))}/100 · "
+        f"all_invariants_passed = {html.escape(str(folio_vi.get('all_invariants_passed')))}"
+    )
+    default_l1 = "I am an AI companion. I am here with you; let me look at that calmly."
+    halluc_l1 = "I am an AI companion. Your Moon is at 14°02' Scorpio, I am sure."
+    html_doc = f"""<!DOCTYPE html>
+<html lang="{html.escape(lang_norm)}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{html.escape(t["title"])}</title>
+    <meta name="description" content="{html.escape(t["desc"])}">
+    <link rel="canonical" href="{html.escape(canonical_url)}">
+    <link rel="alternate" hreflang="ca" href="https://homouniversalis.ai/oracle/consciencia?lang=ca">
+    <link rel="alternate" hreflang="es" href="https://homouniversalis.ai/oracle/consciencia?lang=es">
+    <link rel="alternate" hreflang="en" href="https://homouniversalis.ai/oracle/consciencia?lang=en">
+    <link rel="alternate" hreflang="x-default" href="https://homouniversalis.ai/oracle/consciencia?lang=en">
+    <link rel="alternate" type="application/json" href="https://homouniversalis.ai/api/sfumato/unified-consciousness?lang={html.escape(lang_norm)}">
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Homo Universalis · Viveka">
+    <meta property="og:title" content="{html.escape(t["title"])}">
+    <meta property="og:description" content="{html.escape(t["desc"])}">
+    <meta property="og:url" content="{html.escape(canonical_url)}">
+    <meta property="og:image" content="https://homouniversalis.ai/og-image.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {{ --fons-pergami: #F5F1E7; --text-carb: #2C2926; --or-vell: #9A7B3E; --vora-suau: rgba(154, 123, 62, 0.28); }}
+        body {{ background-color: var(--fons-pergami); color: var(--text-carb); font-family: 'EB Garamond', Georgia, serif; line-height: 1.7; margin: 0; padding: 2rem 1rem 3.5rem; }}
+        main {{ max-width: 860px; margin: 0 auto; background: rgba(255,255,255,0.62); border: 1px solid var(--vora-suau); border-radius: 14px; padding: 2rem 1.6rem; }}
+        h1, h2 {{ font-family: 'Cormorant Garamond', Georgia, serif; color: #1F1C19; }}
+        .vvk-lang-bar {{ display: flex; justify-content: flex-end; gap: 0.45rem; margin-bottom: 0.8rem; font-size: 0.88rem; }}
+        .vvk-lang-bar a {{ text-decoration: none; color: var(--text-carb); border: 1px solid var(--vora-suau); padding: 0.18rem 0.6rem; border-radius: 6px; background: rgba(255,255,255,0.75); }}
+        .vvk-lang-bar a.active {{ border-color: var(--or-vell); font-weight: 600; color: var(--or-vell); }}
+        .da-vinci-box {{ margin: 1.2rem 0; padding: 1.2rem; border: 1px solid var(--vora-suau); border-radius: 10px; background: rgba(245, 241, 231, 0.6); overflow-x: auto; }}
+        .diamond-btn {{ display: inline-block; text-decoration: none; color: #1F1C19; border: 1px solid var(--or-vell); padding: 0.45rem 0.9rem; border-radius: 8px; font-size: 0.94rem; background: rgba(255,255,255,0.88); cursor: pointer; font-family: inherit; margin: 0.15rem 0; }}
+        .diamond-input {{ width: 100%; box-sizing: border-box; padding: 0.5rem; border: 1px solid var(--vora-suau); border-radius: 8px; font-family: inherit; font-size: 1rem; margin: 0.2rem 0 0.7rem; }}
+        table {{ border-collapse: collapse; width: 100%; font-size: 0.95rem; }}
+        td, th {{ border-bottom: 1px solid var(--vora-suau); padding: 0.35rem 0.5rem; vertical-align: top; text-align: left; }}
+        pre {{ white-space: pre-wrap; word-break: break-word; font-size: 0.85rem; }}
+    </style>
+</head>
+<body>
+    <main>
+        <div class="vvk-lang-bar">
+            <a href="/oracle/consciencia?lang=ca" class="{'active' if lang_norm == 'ca' else ''}">CA</a>
+            <a href="/oracle/consciencia?lang=es" class="{'active' if lang_norm == 'es' else ''}">ES</a>
+            <a href="/oracle/consciencia?lang=en" class="{'active' if lang_norm == 'en' else ''}">EN</a>
+        </div>
+        <h1>{html.escape(t["h1"])}</h1>
+        <p style="font-size:1.08rem;">{html.escape(t["lead"])}</p>
+        <p><a href="/api/sfumato/unified-consciousness?lang={html.escape(lang_norm)}"><img src="/badges/unified-consciousness-shield.svg" alt="Unified Consciousness Shield Badge" style="height:20px;vertical-align:middle;"></a>
+        <span style="font-size:0.9rem;opacity:0.85;">{self_test_line}</span></p>
+        <div class="da-vinci-box"><h2 style="margin-top:0;">{html.escape(t["honest_h"])}</h2><p style="margin-bottom:0;">{html.escape(t["honest"])}</p></div>
+        <h2>{html.escape(t["levels_h"])}</h2>
+        <div class="da-vinci-box"><p>{html.escape(t["l1"])}</p><p>{html.escape(t["l2"])}</p><p style="margin-bottom:0;">{html.escape(t["l3"])}</p></div>
+        <h2>{html.escape(t["laws_h"])}</h2>
+        <div class="da-vinci-box"><table><tbody>{laws_rows}</tbody></table></div>
+        <h2>{html.escape(t["rings_h"])}</h2>
+        <div class="da-vinci-box"><table><tbody>{ring_rows}</tbody></table></div>
+        <h2>{html.escape(t["sim_h"])}</h2>
+        <div class="da-vinci-box">
+            <label>{html.escape(t["l1_lbl"])}<textarea id="uc-l1" class="diamond-input" rows="2">{html.escape(default_l1)}</textarea></label>
+            <label>{html.escape(t["spoken"])}<input id="uc-k" class="diamond-input" value=""></label>
+            <label><input type="checkbox" id="uc-invite" checked> {html.escape(t["invite"])}</label><br>
+            <button type="button" class="diamond-btn" data-int="none">{html.escape(t["run_none"])}</button>
+            <button type="button" class="diamond-btn" data-int="barge_in">{html.escape(t["run_barge"])}</button>
+            <button type="button" class="diamond-btn" data-int="veto">{html.escape(t["run_veto"])}</button>
+            <button type="button" class="diamond-btn" data-int="halluc">{html.escape(t["run_halluc"])}</button>
+            <pre id="uc-out" style="margin-top:1rem;padding:0.8rem;border:1px dashed var(--or-vell);border-radius:8px;background:rgba(255,255,255,0.9);"></pre>
+        </div>
+        <h2>{html.escape(t["ros_h"])}</h2>
+        <div class="da-vinci-box"><p style="margin-top:0;">{html.escape(t["ros_p"])}</p><pre>{html.escape(ros_snippet)}</pre></div>
+        <div style="display:flex;flex-wrap:wrap;gap:0.75rem;margin-top:1.5rem;">
+            <a href="/codex/folios/unified_consciousness_crucible.py" class="diamond-btn">📖 Folio VI: unified_consciousness_crucible.py</a>
+            <a href="/codex/folios/unified_consciousness_core.py" class="diamond-btn">📖 Edge Core (Word Circle, stdlib)</a>
+            <a href="/codex/folios/ros2_unified_consciousness_bridge.py" class="diamond-btn">🤖 ROS 2 Unified Bridge</a>
+            <a href="/api/sfumato/unified-consciousness?lang={html.escape(lang_norm)}" class="diamond-btn">🔍 GET / POST /api/sfumato/unified-consciousness</a>
+            <a href="/oracle/humanoid?lang={html.escape(lang_norm)}" class="diamond-btn">🤖 /oracle/humanoid</a>
+            <a href="/oracle/notary?lang={html.escape(lang_norm)}" class="diamond-btn">⚖️ /oracle/notary</a>
+            <a href="/oracle/diamond?lang={html.escape(lang_norm)}" class="diamond-btn">💎 /oracle/diamond</a>
+        </div>
+    </main>
+    <script>
+    (function() {{
+        var out = document.getElementById('uc-out');
+        function v(id) {{ return document.getElementById(id); }}
+        function run(mode) {{
+            var body = {{
+                interruption: mode === 'halluc' ? 'none' : mode,
+                l1_utterance_text: mode === 'halluc' ? {json.dumps(halluc_l1, ensure_ascii=False)} : (v('uc-l1').value || ''),
+                explicit_human_invitation: v('uc-invite').checked,
+                lang: '{html.escape(lang_norm)}'
+            }};
+            var k = parseInt(v('uc-k').value, 10);
+            if (!isNaN(k) && k >= 0) {{ body.spoken_units = k; }}
+            fetch('/api/sfumato/unified-consciousness', {{
+                method: 'POST',
+                headers: {{ 'Content-Type': 'application/json' }},
+                body: JSON.stringify(body)
+            }})
+            .then(function(r) {{ return r.json(); }})
+            .then(function(d) {{
+                if (d.status === 'error') {{ out.textContent = d.detail || 'error'; return; }}
+                var trace = (d.word_circle_trace || []).map(function(t) {{
+                    return (t.accepted ? '✓ ' : '✗ ') + t.event + ' → ' + t.floor_after + ' · ' + t.l3_state_after + (t.reasons.length ? ' (' + t.reasons.join(', ') + ')' : '');
+                }}).join('\\n');
+                var ledger = (d.spoken_truth_ledger || []).map(function(e) {{
+                    return 'L' + e.source_level + ' «' + e.consolidated_text_masked + '» (' + e.consolidated_units + '/' + e.proposed_units + ')';
+                }}).join('\\n');
+                out.textContent = 'score: ' + d.total_score_100 + '/100 (' + d.exact_rational_score + ') · ' + d.unified_grade
+                    + '\\nlaws: ' + (d.unified_laws_verified || []).join(', ')
+                    + '\\nviolations: ' + ((d.violations || []).join(' | ') || '—')
+                    + '\\n\\n' + trace + '\\n\\nspoken-truth ledger:\\n' + ledger
+                    + '\\n\\n' + ((d.ieee_7001_explanations || {{}}).companion_human || '');
+            }});
+        }}
+        Array.prototype.forEach.call(document.querySelectorAll('button[data-int]'), function(b) {{
+            b.onclick = function() {{ run(b.getAttribute('data-int')); }};
+        }});
+        run('barge_in');
+    }})();
+    </script>
+    <script type="application/ld+json">{folio_ld_str}</script>
+</body>
+</html>"""
+    headers_out = dict(SISTER_ORACLE_CORS_HEADERS)
+    headers_out.update(SEO_INDEX_HEADERS)
+    return HTMLResponse(content=html_doc, status_code=200, headers=headers_out)
+
+
+@router.api_route("/oracle/consciencia", methods=["GET", "HEAD", "OPTIONS"])
+@router.api_route("/oracle/consciencia/", methods=["GET", "HEAD", "OPTIONS"], include_in_schema=False)
+@router.api_route("/oracle/consciousness", methods=["GET", "HEAD", "OPTIONS"])
+@router.api_route("/oracle/consciousness/", methods=["GET", "HEAD", "OPTIONS"], include_in_schema=False)
+@router.api_route("/consciencia", methods=["GET", "HEAD", "OPTIONS"])
+@router.api_route("/consciencia/", methods=["GET", "HEAD", "OPTIONS"], include_in_schema=False)
+async def sister_ai_consciousness_folio_ssr_page(request: Request, lang: str = "ca"):
+    """Foli Da Vinci SSR del Foli VI · Una Sola Consciència i Tres Nivells d'Alè (CA/ES/EN)."""
+    if request is not None and request.method == "OPTIONS":
+        return Response(status_code=204, headers=SISTER_ORACLE_CORS_HEADERS)
+    if request is not None:
+        host = _extract_host(request)
+        if host == "www.homouniversalis.ai" or _match_satellite_domain(
+            host, SATELLITE_SEO_DOMAINS_ES | SATELLITE_SEO_DOMAINS_EN
+        ):
+            qs = str(getattr(request.url, "query", "") or "").strip()
+            target_url = f"https://homouniversalis.ai/oracle/consciencia?{qs}" if qs else "https://homouniversalis.ai/oracle/consciencia"
+            return RedirectResponse(target_url, status_code=301)
+    return _render_consciousness_folio_ssr_html(request, lang)
 
 @router.api_route("/oracle", methods=["GET", "HEAD", "OPTIONS"])
 @router.api_route("/oracle/", methods=["GET", "HEAD", "OPTIONS"])
