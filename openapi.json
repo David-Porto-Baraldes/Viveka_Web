@@ -1963,6 +1963,128 @@
           }
         }
       }
+    },
+    "/api/sfumato/symbiotic-bridge": {
+      "get": {
+        "operationId": "getSymbioticBridgeAttestation",
+        "summary": "HU-SYMBIOTIC-BRIDGE v1.0 Public Notary Specimen & Living Folio VII Self-Test (Universal A2A <-> MCP Dual Golden Seal, Schema Harmony Gate, Merkle-DAG Provenance & W3C VC 2.0 ES256)",
+        "parameters": [
+          {
+            "name": "lang",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["ca", "es", "en"],
+              "default": "en"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Purpose-bound ES256 JWS server attestation with 5 Symbiotic Bridge Rings, W3C VC 2.0 MaatSymbioticBridgeCredential, RFC 6962 STH, SMT-256 status proof, and 8/8 mutant self-test.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "spec": {
+                      "type": "string",
+                      "example": "HU-DIAMOND/v2"
+                    },
+                    "bridge_spec": {
+                      "type": "string",
+                      "example": "HU-SYMBIOTIC-BRIDGE/v1.0"
+                    },
+                    "folio_id": {
+                      "type": "string",
+                      "example": "folio-VII-a2a-mcp-symbiotic-bridge"
+                    },
+                    "symbiotic_grade": {
+                      "type": "string",
+                      "example": "A+ (self-assessed)"
+                    },
+                    "five_symbiotic_rings": {
+                      "type": "object"
+                    },
+                    "credential": {
+                      "type": "object"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "postSymbioticBridgeAudit",
+        "summary": "Self-Assess an A2A <-> MCP Delegation, Schema Harmony & Provenance Trace under HU-SYMBIOTIC-BRIDGE v1.0 (Laws B1..B7, Dual Golden Seal, Fail-Closed Drift Pause & Merkle-DAG Grounding)",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "agent_name": {
+                    "type": "string",
+                    "example": "Homo Universalis Symbiotic Bridge"
+                  },
+                  "live_tool_description": {
+                    "type": "string",
+                    "example": "Deterministic astronomical ephemeris read-only query."
+                  },
+                  "downstream_synthesis_text": {
+                    "type": "string",
+                    "example": "I am an AI agent. Verified solar longitude is 51/2 degrees with 1250 liters in reserve."
+                  },
+                  "lang": {
+                    "type": "string",
+                    "enum": ["ca", "es", "en"],
+                    "default": "en"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Signed ES256 JWS audit report and W3C VC 2.0 MaatSymbioticBridgeCredential when all 7 symbiotic bridge laws pass.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "spec": {
+                      "type": "string",
+                      "example": "HU-DIAMOND/v2"
+                    },
+                    "bridge_spec": {
+                      "type": "string",
+                      "example": "HU-SYMBIOTIC-BRIDGE/v1.0"
+                    },
+                    "symbiotic_grade": {
+                      "type": "string",
+                      "example": "A+ (self-assessed)"
+                    },
+                    "passes_internal_symbiotic_criteria": {
+                      "type": "boolean"
+                    },
+                    "five_symbiotic_rings": {
+                      "type": "object"
+                    },
+                    "credential": {
+                      "type": "object"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 }

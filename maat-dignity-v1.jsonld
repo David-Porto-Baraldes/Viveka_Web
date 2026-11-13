@@ -8,6 +8,7 @@
     "HUSparseMerkleStatus2026": "maat:HUSparseMerkleStatus2026",
     "MaatEmbodiedSymbiosisCredential": "maat:MaatEmbodiedSymbiosisCredential",
     "MaatUnifiedConsciousnessCredential": "maat:MaatUnifiedConsciousnessCredential",
+    "MaatSymbioticBridgeCredential": "maat:MaatSymbioticBridgeCredential",
     "serialNumber": {
       "@id": "maat:serialNumber",
       "@type": "xsd:string"
@@ -129,6 +130,39 @@
     },
     "phenomenalConsciousnessClaimed": {
       "@id": "maat:phenomenalConsciousnessClaimed",
+      "@type": "xsd:boolean"
+    },
+    "bridgeSpec": {
+      "@id": "maat:bridgeSpec",
+      "@type": "xsd:string"
+    },
+    "symbioticBridgeScore100": {
+      "@id": "maat:symbioticBridgeScore100",
+      "@type": "xsd:integer"
+    },
+    "bridgeLawsVerified": {
+      "@id": "maat:bridgeLawsVerified",
+      "@container": "@list",
+      "@type": "xsd:string"
+    },
+    "dualGoldenSealVerified": {
+      "@id": "maat:dualGoldenSealVerified",
+      "@type": "xsd:boolean"
+    },
+    "mcpSchemaHarmonyVerified": {
+      "@id": "maat:mcpSchemaHarmonyVerified",
+      "@type": "xsd:boolean"
+    },
+    "merkleDagProvenanceVerified": {
+      "@id": "maat:merkleDagProvenanceVerified",
+      "@type": "xsd:boolean"
+    },
+    "rationalEnergyConserved": {
+      "@id": "maat:rationalEnergyConserved",
+      "@type": "xsd:boolean"
+    },
+    "hardwareSecurityModuleClaimed": {
+      "@id": "maat:hardwareSecurityModuleClaimed",
       "@type": "xsd:boolean"
     }
   }

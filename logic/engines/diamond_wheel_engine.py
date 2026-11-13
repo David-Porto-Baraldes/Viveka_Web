@@ -43,6 +43,7 @@ HU_DIAMOND_SPEC = "HU-DIAMOND/v1"
 HU_DIAMOND_V2_SPEC = "HU-DIAMOND/v2"
 USER_SUBMISSION_ASSURANCE = "automated static heuristic; not a certification; caller-supplied input"
 MAX_AST_NODES = 10000
+MAX_SOVEREIGN_FORGE_AST_NODES = 30000
 AST_PARSE_TIMEOUT_SECONDS = 2.0
 SACRED_EQUATION = "F0c=Ca0s*0rdre(Am0r_Un1f1cat_Etern)"
 MAX_DEEP_THINK_OUTPUT_TOKENS = 65536
@@ -379,6 +380,8 @@ def compute_model_call_cost_usd(
     carbon_out = float(os.getenv("COST_CARBON_OUT", 10.00))
     argon_in = float(os.getenv("COST_ARGON_IN", 2.00))
     argon_out = float(os.getenv("COST_ARGON_OUT", 10.00))
+    hydrogen_in = float(os.getenv("COST_HYDROGEN_IN", 1.50))
+    hydrogen_out = float(os.getenv("COST_HYDROGEN_OUT", 7.50))
     flash38_in = float(os.getenv("COST_38_FLASH_IN", 0.75))
     flash38_out = float(os.getenv("COST_38_FLASH_OUT", 3.75))
     pro_in = float(os.getenv("COST_PRO_IN", 1.25))
@@ -390,6 +393,8 @@ def compute_model_call_cost_usd(
         in_rate, out_rate = carbon_in, carbon_out
     elif "4-argon" in model_lower:
         in_rate, out_rate = argon_in, argon_out
+    elif "4-hydrogen" in model_lower:
+        in_rate, out_rate = hydrogen_in, hydrogen_out
     elif "3.8-flash" in model_lower:
         in_rate, out_rate = flash38_in, flash38_out
     elif "pro" in model_lower:
@@ -1013,12 +1018,16 @@ class DiamondWheelEngine:
         max_fallback_attempts: int = 4,
         retry_sleep_fn: Optional[Callable[[float], Any]] = None,
         inter_call_pacing_seconds: float = 0.0,
+        live_checkpoint_dir: Optional[str] = None,
     ):
         self._custom_caller = llm_caller
         self._semaphore = asyncio.Semaphore(max(1, int(concurrency_limit)))
         self._max_primary_attempts = max(1, int(max_primary_attempts))
         self._max_fallback_attempts = max(1, int(max_fallback_attempts))
         self._inter_call_pacing_seconds = max(0.0, float(inter_call_pacing_seconds or 0.0))
+        self._live_checkpoint_dir = str(live_checkpoint_dir).strip() if live_checkpoint_dir else None
+        self._checkpoint_seq = 0
+        self._checkpoint_lock = asyncio.Lock()
         self._pacing_lock = asyncio.Lock()
         self._last_dispatch_ts = 0.0
         if retry_sleep_fn is not None:
@@ -1029,6 +1038,59 @@ class DiamondWheelEngine:
             self._sleep_fn = _instant_test_sleep
         else:
             self._sleep_fn = asyncio.sleep
+
+    @staticmethod
+    def _sanitize_checkpoint_slug(step_name: str) -> str:
+        cleaned = re.sub(r"[^A-Za-z0-9._-]+", "_", str(step_name or "step")).strip("._-")
+        return (cleaned[:96] or "step")
+
+    async def _persist_live_node_checkpoint(
+        self,
+        step_name: str,
+        accounting: DiamondCallAccounting,
+        output_text: str,
+    ) -> None:
+        if not self._live_checkpoint_dir:
+            return
+        async with self._checkpoint_lock:
+            self._checkpoint_seq += 1
+            seq = self._checkpoint_seq
+            target_dir = self._live_checkpoint_dir
+
+        def _write_files_sync() -> None:
+            os.makedirs(target_dir, exist_ok=True)
+            slug = self._sanitize_checkpoint_slug(step_name)
+            base_name = f"{seq:03d}_{slug}"
+            md_path = os.path.join(target_dir, f"{base_name}.md")
+            json_path = os.path.join(target_dir, f"{base_name}.json")
+            ledger_path = os.path.join(target_dir, "checkpoint_ledger.jsonl")
+            meta = {
+                "seq": seq,
+                "step_name": step_name,
+                "model": accounting.model_name,
+                "prompt_tokens": accounting.prompt_tokens,
+                "candidates_tokens": accounting.candidates_tokens,
+                "total_tokens": accounting.total_tokens,
+                "cost_usd": accounting.cost_usd,
+                "latency_ms": accounting.latency_ms,
+                "primary_attempts_used": accounting.primary_attempts_used,
+                "fallback_attempts_used": accounting.fallback_attempts_used,
+                "used_fallback_parachute": accounting.used_fallback_parachute,
+                "output_chars": len(output_text),
+                "output_sha256": hashlib.sha256(output_text.encode("utf-8")).hexdigest(),
+                "markdown_file": f"{base_name}.md",
+            }
+            with open(md_path, "w", encoding="utf-8") as fh_md:
+                fh_md.write(output_text)
+            with open(json_path, "w", encoding="utf-8") as fh_js:
+                json.dump({**meta, "output": output_text}, fh_js, ensure_ascii=False, indent=2)
+            with open(ledger_path, "a", encoding="utf-8") as fh_lg:
+                fh_lg.write(json.dumps(meta, ensure_ascii=False) + "\n")
+
+        try:
+            await asyncio.to_thread(_write_files_sync)
+        except Exception as cp_err:
+            logger.warning(f"[DIAMOND_CHECKPOINT_WARN] Could not persist {step_name}: {cp_err}")
 
     @staticmethod
     def _compute_resilient_wait_seconds(
@@ -1158,7 +1220,7 @@ class DiamondWheelEngine:
                 c_tok = int(raw_res.get("candidates_tokens", 0))
                 t_tok = int(raw_res.get("total_tokens", p_tok + c_tok))
                 cost_usd = compute_model_call_cost_usd(used_model, p_tok, c_tok, t_tok)
-                return text_out, DiamondCallAccounting(
+                custom_acc = DiamondCallAccounting(
                     step_name=step_name,
                     model_name=used_model,
                     prompt_tokens=p_tok,
@@ -1170,6 +1232,8 @@ class DiamondWheelEngine:
                     fallback_attempts_used=fb_attempts_used,
                     used_fallback_parachute=(used_model != model_name),
                 )
+                await self._persist_live_node_checkpoint(step_name, custom_acc, text_out)
+                return text_out, custom_acc
 
             from logic.engines.llm_gateway import LLMGateway
 
@@ -1178,31 +1242,35 @@ class DiamondWheelEngine:
                 gw._initialize_gemini()
             client = gw.clients["gemini"]
 
-            cfg = types.GenerateContentConfig(
-                system_instruction=system_instruction,
-                temperature=float(temperature),
-                max_output_tokens=int(max_output_tokens),
-                thinking_config=types.ThinkingConfig(
-                    thinking_level="HIGH",
-                    include_thoughts=True,
-                ),
-                http_options=types.HttpOptions(
-                    timeout=600_000,
-                    retry_options=types.HttpRetryOptions(attempts=1),
-                    headers={
-                        "X-Vertex-AI-LLM-Request-Type": "shared",
-                        "X-Vertex-AI-LLM-Shared-Request-Type": "priority",
-                    },
-                ),
-            )
-
             def _stream_generate_sync(target_model: str) -> Tuple[str, int, int, int]:
+                effective_api_temperature = (
+                    1.0
+                    if ("3." in target_model or "4-" in target_model or "4." in target_model)
+                    else float(temperature)
+                )
+                target_cfg = types.GenerateContentConfig(
+                    system_instruction=system_instruction,
+                    temperature=effective_api_temperature,
+                    max_output_tokens=int(max_output_tokens),
+                    thinking_config=types.ThinkingConfig(
+                        thinking_level="HIGH",
+                        include_thoughts=True,
+                    ),
+                    http_options=types.HttpOptions(
+                        timeout=600_000,
+                        retry_options=types.HttpRetryOptions(attempts=1),
+                        headers={
+                            "X-Vertex-AI-LLM-Request-Type": "shared",
+                            "X-Vertex-AI-LLM-Shared-Request-Type": "priority",
+                        },
+                    ),
+                )
                 chunks_text: List[str] = []
                 last_usage = None
                 for chunk in client.models.generate_content_stream(
                     model=target_model,
                     contents=user_prompt,
-                    config=cfg,
+                    config=target_cfg,
                 ):
                     cands = getattr(chunk, "candidates", None)
                     if cands:
@@ -1307,7 +1375,7 @@ class DiamondWheelEngine:
                 f"tokens={t_tok} (prompt={p_tok}, out={c_tok}) | chars={len(text_out)}"
             )
 
-            return text_out, DiamondCallAccounting(
+            live_acc = DiamondCallAccounting(
                 step_name=step_name,
                 model_name=used_model,
                 prompt_tokens=p_tok,
@@ -1319,6 +1387,8 @@ class DiamondWheelEngine:
                 fallback_attempts_used=fb_attempts_used,
                 used_fallback_parachute=(used_model != model_name),
             )
+            await self._persist_live_node_checkpoint(step_name, live_acc, text_out)
+            return text_out, live_acc
 
     async def _run_single_diamond_round(
         self,
@@ -1549,7 +1619,9 @@ class DiamondWheelEngine:
         )
         call_ledger.append(bary_acc)
         code_verification = verify_diamond_python_code_blocks(
-            bary_text, run_isolated_self_tests=True
+            bary_text,
+            run_isolated_self_tests=True,
+            max_ast_nodes=MAX_SOVEREIGN_FORGE_AST_NODES,
         )
 
         # Auto-Refinament del Baricentre (Kintsugi AST + Runtime): si el codi generat té cap error de sintaxi,
@@ -1594,7 +1666,9 @@ class DiamondWheelEngine:
                 latency_ms=round(bary_acc.latency_ms + repair_acc.latency_ms, 2),
             )
             code_verification = verify_diamond_python_code_blocks(
-                bary_text, run_isolated_self_tests=True
+                bary_text,
+                run_isolated_self_tests=True,
+                max_ast_nodes=MAX_SOVEREIGN_FORGE_AST_NODES,
             )
             code_verification["self_healed_by_barycenter"] = True
         else:
@@ -1813,7 +1887,9 @@ class DiamondWheelEngine:
         })
 
         final_code_ver = verify_diamond_python_code_blocks(
-            final_text, run_isolated_self_tests=True
+            final_text,
+            run_isolated_self_tests=True,
+            max_ast_nodes=MAX_SOVEREIGN_FORGE_AST_NODES,
         )
         if not final_code_ver["all_blocks_verified_clean"] or final_code_ver["python_blocks_found"] == 0:
             dome_violations = (
@@ -1854,7 +1930,9 @@ class DiamondWheelEngine:
                 "latency_ms": round(crown_acc.latency_ms + dome_repair_acc.latency_ms, 2),
             }
             final_code_ver = verify_diamond_python_code_blocks(
-                final_text, run_isolated_self_tests=True
+                final_text,
+                run_isolated_self_tests=True,
+                max_ast_nodes=MAX_SOVEREIGN_FORGE_AST_NODES,
             )
             final_code_ver["self_healed_by_crown_46"] = True
         else:
@@ -1871,6 +1949,7 @@ class DiamondWheelEngine:
         internal_context: str = "",
         rounds: int = 1,
         supreme_inquisition_10: bool = False,
+        live_checkpoint_dir: Optional[str] = None,
     ) -> Dict[str, Any]:
         """
         Executa 1, 2, 3 o 4 Voltes (`rounds = 1..4`, fins a 36 picades base + Kintsugi AST)
@@ -1898,6 +1977,11 @@ class DiamondWheelEngine:
         if supreme_inquisition_10:
             clean_rounds = 4
             tier_norm = "supreme"
+
+        prev_checkpoint_dir = self._live_checkpoint_dir
+        if live_checkpoint_dir is not None:
+            self._live_checkpoint_dir = str(live_checkpoint_dir).strip() or None
+            self._checkpoint_seq = 0
 
         all_call_ledger: List[DiamondCallAccounting] = []
         rounds_history: List[Dict[str, Any]] = []
@@ -1983,6 +2067,8 @@ class DiamondWheelEngine:
             "total_http_attempts_including_retries": total_http_attempts,
         }
         last_round_payload["persephone_economy"] = economy
+        if live_checkpoint_dir is not None:
+            self._live_checkpoint_dir = prev_checkpoint_dir
         return last_round_payload
 
 
@@ -2216,6 +2302,8 @@ def run_diamond_crucible_verification(
     d_id: str = "diamond-crucible-v1",
     epoch: int = 1,
     code_markdown_provided: bool = False,
+    *,
+    max_ast_nodes: int = MAX_AST_NODES,
 ) -> Dict[str, Any]:
     """
     Executa en viu (< 2 ms, Zero-Auth, 0.00 €) el Verificador Criptogràfic i Matemàtic
@@ -2383,7 +2471,9 @@ def run_diamond_crucible_verification(
     has_user_input = has_custom_code or has_custom_manifest
     custom_code_audit: Optional[Dict[str, Any]] = None
     if has_custom_code:
-        custom_code_audit = verify_diamond_python_code_blocks(raw_custom_md)
+        custom_code_audit = verify_diamond_python_code_blocks(
+            raw_custom_md, max_ast_nodes=max_ast_nodes
+        )
         custom_code_audit["input_sha256"] = hashlib.sha256(raw_custom_md.encode("utf-8")).hexdigest()
         custom_code_audit["assurance"] = USER_SUBMISSION_ASSURANCE
 
