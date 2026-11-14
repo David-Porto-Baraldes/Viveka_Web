@@ -1,0 +1,79 @@
+{
+  "openFloor": {
+    "schema": {
+      "version": "1.1.1",
+      "url": "https://openfloor.dev/schemas/1.1.1/openfloor.json"
+    },
+    "manifest": {
+      "identification": {
+        "speakerUri": "tag:homouniversalis.ai,2026:viveka-unified-consciousness",
+        "serviceUrl": "https://homouniversalis.ai/api/veu/openfloor",
+        "conversationalName": "Viveka — Homo Universalis",
+        "organization": "Homo Universalis (homouniversalis.ai)",
+        "role": "Symbiotic 3-Level Unified Voice & Ephemeris Consciousness",
+        "synopsis": "Deterministic 3-Level Voice Consciousness (WordCircleArbiter U1..U7, Humble Crystal U2, <20 ms Barge-in vs Veto U3, Spoken-Truth Ledger U6, Rule 14 Zero-Biometric Sanctuary U7, Aoede HD & SynthID/SHA-256 provenance)."
+      },
+      "capabilities": {
+        "keyphrases": [
+          "viveka",
+          "homo universalis",
+          "ephemeris",
+          "seed of life",
+          "synastry",
+          "meditation",
+          "three levels"
+        ],
+        "languages": [
+          "ca",
+          "es",
+          "en",
+          "fr",
+          "it",
+          "pt",
+          "de",
+          "zh",
+          "ja",
+          "ko"
+        ],
+        "descriptions": [
+          "Level 1 Adaptive Humble Presence (<4s silent orb, U2 Humble Crystal verified).",
+          "Level 2 Verified Pantheon & 7-Wisdoms Swiss Ephemeris (<1.5ms ephemeris + Aoede HD).",
+          "Level 3 Quiet Cathedral (gemini-4-carbon silent vault + Golden Halo single offer U4).",
+          "Real-time WebSocket bidirectional audio stream + Open Floor 1.1.1 JSON envelopes."
+        ],
+        "supportedLayers": {
+          "input": [
+            "text",
+            "audio/wav",
+            "audio/webm",
+            "audio/ogg",
+            "audio/pcm"
+          ],
+          "output": [
+            "text",
+            "audio/wav",
+            "audio/ogg"
+          ]
+        },
+        "symbioticGovernance": {
+          "adapterSpec": "HU-OPEN-FLOOR-ADAPTER/v1.0",
+          "consciousnessSpec": "HU-UNIFIED-CONSCIOUSNESS/v1.0",
+          "laws": [
+            "U1",
+            "U2",
+            "U3",
+            "U4",
+            "U5",
+            "U6",
+            "U7"
+          ],
+          "syntheticProvenanceSpec": "HU-SYNTHETIC-PROVENANCE-v1.0",
+          "realtimeWebSocketEndpoint": "wss://homouniversalis.ai/api/veu/ws",
+          "zeroBiometricVoiceprintStorage": true,
+          "safetyRatedHardwareFunction": false
+        }
+      }
+    },
+    "rfc6962ManifestLeafHash": "afe9afe90fc634c28d0234c23766f443bd1c617e09b929f8c09f3e93f00c1763"
+  }
+}

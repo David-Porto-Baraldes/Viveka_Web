@@ -1281,6 +1281,11 @@ def _build_did_web_document(jwks_doc: dict | None = None) -> dict:
                 "serviceEndpoint": "https://homouniversalis.ai/.well-known/sbom-robotics-edge.cdx.json",
             },
             {
+                "id": f"{DID_WEB_IDENTIFIER}#open-floor-voice",
+                "type": "OpenFloorVoiceService",
+                "serviceEndpoint": "https://homouniversalis.ai/.well-known/openfloor-manifest.json",
+            },
+            {
                 "id": f"{DID_WEB_IDENTIFIER}#jwks",
                 "type": "JsonWebKeySetService",
                 "serviceEndpoint": "https://homouniversalis.ai/.well-known/jwks.json",

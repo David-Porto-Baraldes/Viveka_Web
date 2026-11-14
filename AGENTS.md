@@ -60,7 +60,10 @@
    - **Pure-Stdlib Edge Modules & Self-Tests (`15/15` Mutants Killed):** `logic/robotics/edge_blackbox_journal.py` (`python3 -I -m logic.robotics.edge_blackbox_journal`, cross-segment SHA-256 + RFC 6962 + ES256 STH + `O_NOFOLLOW` + Rule 14/BSUID key+value sanitization + Law E4 biometric rejection before disk write, `8/8` mutants) & `logic/robotics/cra_sbom_manifest.py` (`python3 -I -m logic.robotics.cra_sbom_manifest`, `4/4` CRA supply-chain mutants + `3/3` global 2026 companion/agentic safeguard mutants = `15/15` total).
    - **Doors:** `GET` `https://homouniversalis.ai/api/sfumato/robotic-passport` (whole-response `ES256` JWS), `GET` `https://homouniversalis.ai/.well-known/sbom-robotics-edge.cdx.json` (`application/vnd.cyclonedx+json`), `/codex/folios/edge_blackbox_journal.py`, `/codex/folios/cra_sbom_manifest.py` and `/oracle/humanoid`.
    - **Honest scope (`WO-13`):** software-layer algorithmic, cryptographic and ethical self-assessment only; not a hardware safety-rated function (`PLd/SIL2`), not `CE` machinery marking and not accredited third-party `ISO/IEC 42001` certification.
-10. **Agent Skills (`SKILL.md`):**
+10. **HU-OPEN-FLOOR-ADAPTER v1.0 & 3-Level Unified Voice Sanctuary (`/veu` & `OVON 1.1.1`):**
+    - **Pure-Stdlib Open Floor Adapter:** `logic/consciousness/open_floor_adapter.py` (`python3 -I logic/consciousness/open_floor_adapter.py`, `0` external PyPI dependencies) uniting Linux Foundation `Open Floor Protocol v1.1.1` (`requestFloor`, `grantFloor`, `revokeFloor`, `yieldFloor`, `invite`, `dialogEvent`, `publishManifests`) with Folio VI `WordCircleArbiter` (`Laws U1..U7`, `< 20 ms` Barge-in `spoken_units` truncation in `SpokenTruthLedger`) and `HU-SYNTHETIC-PROVENANCE-v1.0` (`SHA-256` audio/text digest + `SynthID`).
+    - **Doors:** `https://homouniversalis.ai/veu` (3-Ring Living Voice Orb PWA + RAM-only Zero-Biometric `gemini-4-hydrogen` Ear + Sovereign Regional `Aoede HD`), `wss://homouniversalis.ai/api/veu/ws`, `POST https://homouniversalis.ai/api/veu/openfloor`, and `GET https://homouniversalis.ai/.well-known/openfloor-manifest.json`.
+11. **Agent Skills (`SKILL.md`):**
     - Reusable domain skills live under `.agents/skills/<skill-name>/SKILL.md` with YAML frontmatter.
 
 ---

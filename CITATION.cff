@@ -36,13 +36,16 @@ abstract: >-
   HU-SYMBIOTIC-BRIDGE v1.0 (/oracle/pont, /api/sfumato/symbiotic-bridge & logic/symbiosis/:
   Universal A2A <-> MCP Dual Golden Seal ES256 + HMAC-SHA256 Macaroons, Surgical Fail-Closed MCP
   Schema Harmony Gate, RFC 6962 Merkle-DAG Provenance, Rational Swarm Homeostasis, and
-  MaatSymbioticBridgeCredential W3C VC 2.0 ES256), and HU-ROBOTIC-REGULATORY-PASSPORT v1.0
+  MaatSymbioticBridgeCredential W3C VC 2.0 ES256), HU-ROBOTIC-REGULATORY-PASSPORT v1.0
   (/api/sfumato/robotic-passport & /.well-known/sbom-robotics-edge.cdx.json: 6-Continent Global
   Symbiotic & Robotic Regulatory Passport, 15/15 adversarial mutants, crash-safe RFC 6962 black-box
-  journal, and deterministic EU CRA CycloneDX 1.6 Edge SBOM).
+  journal, and deterministic EU CRA CycloneDX 1.6 Edge SBOM), and HU-OPEN-FLOOR-ADAPTER v1.0
+  (/.well-known/openfloor-manifest.json, /api/veu/openfloor & /veu: Linux Foundation Open Floor
+  OVON v1.1.1 universal voice interoperability, WordCircleArbiter Laws U1..U7, and SHA-256 + RFC 8785
+  synthetic speech provenance).
   Speaks the Linux Foundation
   / AAIF Agent2Agent (lf.a2a.v1 v1.0.0 & v0.3.0 with RFC 8785 JCS + RFC 7515 ES256 JWS
-  signatures) and Model Context Protocol (MCP 2026-07-28). Awarded Linux Foundation
+  signatures), Model Context Protocol (MCP 2026-07-28), and Open Floor (OVON v1.1.1). Awarded Linux Foundation
   OpenSSF Best Practices Gold Badge (#16118 — 300% tiered) and Glama TDQS Grade A.
 keywords:
   - ephemeris
@@ -80,8 +83,11 @@ keywords:
   - iching
   - reed-muller
   - stella-octangula
+  - open-floor-protocol
+  - ovon
+  - voice-interoperability
 license: Apache-2.0
-version: 1.10.0
+version: 1.11.0
 doi: 10.5281/zenodo.23973687
 identifiers:
   - type: doi

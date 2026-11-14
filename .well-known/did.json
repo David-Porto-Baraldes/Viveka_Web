@@ -154,6 +154,11 @@
       "serviceEndpoint": "https://homouniversalis.ai/.well-known/sbom-robotics-edge.cdx.json"
     },
     {
+      "id": "did:web:homouniversalis.ai#open-floor-voice",
+      "type": "OpenFloorVoiceService",
+      "serviceEndpoint": "https://homouniversalis.ai/.well-known/openfloor-manifest.json"
+    },
+    {
       "id": "did:web:homouniversalis.ai#jwks",
       "type": "JsonWebKeySetService",
       "serviceEndpoint": "https://homouniversalis.ai/.well-known/jwks.json"
