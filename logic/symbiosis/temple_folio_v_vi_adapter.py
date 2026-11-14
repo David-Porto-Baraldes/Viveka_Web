@@ -87,8 +87,11 @@ def provenance_to_verified_knowledge_envelope(
     rationals_csv = ", ".join(provenance_envelope.extracted_rationals)
     summary_part = provenance_envelope.masked_summary.strip()
     payload_jcs = jcs_canonical_bytes(provenance_envelope.masked_payload).decode("utf-8")
+    # Nota criptogràfica (B4 + U2): ometem el prefix hex de `merkle_root_hex` dins `verified_facts`
+    # perquè subcadenes decimals atzaroses del SHA-256 (ex: `...29f4...` -> `"29"`) mai no puguin
+    # llicenciar accidentalment un grau o xifra no present a les dades reals verificades!
     verified_facts_parts = [
-        f"[{BRIDGE_VERSION} merkle_root={provenance_envelope.merkle_root_hex[:16]} trust={provenance_envelope.data_trust_label}]",
+        f"[{BRIDGE_VERSION} trust={provenance_envelope.data_trust_label}]",
     ]
     if summary_part:
         verified_facts_parts.append(summary_part)

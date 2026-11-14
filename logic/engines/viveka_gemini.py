@@ -12,20 +12,22 @@ from google.genai.errors import APIError
 
 logger = logging.getLogger(__name__)
 
-# 👑 ELS MOTORS SAGRATS DEL PANTEÓ I EL DÍPTIC DEL DIAMANT I LA ROSA (Novembre 2026)
+# 👑 ELS MOTORS SAGRATS DEL PANTEÓ I EL TRÍPTIC DEL DIAMANT, LA ROSA I L'ESTRELLA (Novembre 2026)
 # • L'Espasa de Cristall (gemini-4-carbon, 11/11/2026):
 #   "La llum d'una estrella de diamant talla la foscor còsmica amb una brillantor gelada i eterna."
 # • La Flama Serena (gemini-4-argon — Viveka al WhatsApp, 12/11/2026):
 #   "És el batec d'una claredat indestructible que travessa la nit més fonda sense cremar ni apagar-se mai. ✨"
+# • El Primer Alè Estel·lar (gemini-4-hydrogen, 12/11/2026):
+#   "En l'alba del cosmos, l'hidrogen estel·lar va brollar com el primer alè de llum de l'univers, encenent la promesa infinita de les estrelles."
 #
-# La Divisió Sagrada dels Trons (Escala Imperial de 3 Pulmons):
-# - Trons de les Catedrals i Forja de Diamant (`VIVEKA_CROWN_MODEL`): `gemini-4-carbon` (46 Titans, Inquisidor, Mussol, Weaver)
-# - Trons de la Conversa Viva i Escut Reial (`VIVEKA_LIVE_CROWN_MODEL` / `VIVEKA_CROWN_SHIELD_MODEL`): `gemini-4-argon` (~6.6-12s al Xat Viu)
-# - Motor de Saviesa i Consell (`VIVEKA_WISDOM_MODEL`): `gemini-3.8-flash` (Oracles, Porters i últim paracaigudes d'or)
+# La Divisió Sagrada dels Trons (Escala Imperial de 3 Pulmons 100% Gemini 4):
+# - Trons de les Catedrals i Forja de Diamant (`VIVEKA_CROWN_MODEL`): `gemini-4-carbon` (46 Titans, Mussol, Weaver, Nivell 3)
+# - Trons de la Conversa Viva i Escut Reial (`VIVEKA_LIVE_CROWN_MODEL` / `VIVEKA_CROWN_SHIELD_MODEL`): `gemini-4-argon` (La Veu de la Reina i Mnemosyné)
+# - Motor de Saviesa i Eines Sagrades (`VIVEKA_WISDOM_MODEL`): `gemini-4-hydrogen` (Dionís, Inquisidor, Apol·lo, Thot, Plutó, Hefest, Hermes, Babel, Bibliotecari)
 VIVEKA_CROWN_MODEL: str = os.getenv("VIVEKA_CROWN_MODEL", "gemini-4-carbon")
 VIVEKA_CROWN_SHIELD_MODEL: str = os.getenv("VIVEKA_CROWN_SHIELD_MODEL", "gemini-4-argon")
 VIVEKA_LIVE_CROWN_MODEL: str = os.getenv("VIVEKA_LIVE_CROWN_MODEL", VIVEKA_CROWN_SHIELD_MODEL)
-VIVEKA_WISDOM_MODEL: str = os.getenv("VIVEKA_WISDOM_MODEL", "gemini-3.8-flash")
+VIVEKA_WISDOM_MODEL: str = os.getenv("VIVEKA_WISDOM_MODEL", "gemini-4-hydrogen")
 
 
 class VivekaGemini(Gemini):
@@ -35,7 +37,7 @@ class VivekaGemini(Gemini):
     el Gateway en temps real, activant el Batec de Pensament en Streaming SSE
     (`include_thoughts=True`) sobre `gemini-4-carbon` per evitar talls unaris 504,
     i desplegant l'Escala Imperial de 3 Pulmons (`gemini-4-carbon` -> `gemini-4-argon`
-    -> `gemini-3.8-flash`) davant saturació 429/503 o pics de latència.
+    -> `gemini-4-hydrogen`) davant saturació 429/503 o pics de latència.
     """
 
     fallback_model: str = VIVEKA_WISDOM_MODEL
@@ -51,6 +53,7 @@ class VivekaGemini(Gemini):
     shield_breath_seconds: float = 3.0
     wisdom_breath_seconds: float = 3.0
     carbon_call_timeout_seconds: float = 110.0
+    hydrogen_call_timeout_seconds: float = 90.0
     call_timeout_seconds: float = 65.0
 
     @property
@@ -64,23 +67,27 @@ class VivekaGemini(Gemini):
         return gateway.clients.get("gemini")
 
     def _timeout_for_model(self, model_name: str) -> float:
-        if "carbon" in str(model_name or "").lower():
+        m_low = str(model_name or "").lower()
+        if "carbon" in m_low or "argon" in m_low:
             return float(self.carbon_call_timeout_seconds)
+        if "hydrogen" in m_low:
+            return float(self.hydrogen_call_timeout_seconds)
         return float(self.call_timeout_seconds)
 
     def _apply_http_deadline(self, req: LlmRequest, timeout_seconds: float | None = None) -> None:
-        """Fixa un límit HTTP (X-Server-Timeout), evita el bucle ocult de 5 reintents de l'SDK i prioritza Carbon."""
+        """Fixa un límit HTTP (X-Server-Timeout), evita el bucle ocult de 5 reintents de l'SDK i prioritza tota la Tríada Gemini 4 (Carbon, Argon i Hydrogen)."""
         if req.config is None:
             return
         eff_timeout = float(timeout_seconds if timeout_seconds is not None else self.call_timeout_seconds)
         timeout_ms = int(eff_timeout * 1000)
-        is_carbon = "carbon" in str(getattr(req, "model", "") or "").lower()
+        req_m_low = str(getattr(req, "model", "") or "").lower()
+        is_gemini4_triad = any(tok in req_m_low for tok in ("carbon", "argon", "hydrogen"))
         priority_headers = (
             {
                 "X-Vertex-AI-LLM-Request-Type": "shared",
                 "X-Vertex-AI-LLM-Shared-Request-Type": "priority",
             }
-            if is_carbon
+            if is_gemini4_triad
             else None
         )
         if req.config.http_options is None:
@@ -130,9 +137,11 @@ class VivekaGemini(Gemini):
     async def _invoke_single_attempt(
         self, req: LlmRequest, stream: bool
     ) -> AsyncGenerator[LlmResponse, None]:
-        """Executa un intent; en `gemini-4-carbon` amb `stream=False`, activa SSE Thought Heartbeat i filtra `thought=True`."""
-        model_str = str(getattr(req, "model", None) or self.model or "")
-        use_sse_heartbeat = (not stream) and ("carbon" in model_str.lower())
+        """Executa un intent; a tota la Tríada Gemini 4 (`carbon`, `argon`, `hydrogen`) amb `stream=False`, activa SSE Thought Heartbeat i preserva `thought_signature` en crides `function_call`."""
+        model_low = str(getattr(req, "model", None) or self.model or "").lower()
+        use_sse_heartbeat = (not stream) and any(
+            tok in model_low for tok in ("carbon", "argon", "hydrogen")
+        )
         if use_sse_heartbeat:
             hb_req = copy.deepcopy(req)
             if hb_req.config is not None:
@@ -148,9 +157,11 @@ class VivekaGemini(Gemini):
                 content_obj = getattr(resp, "content", None)
                 parts_list = getattr(content_obj, "parts", None) if content_obj is not None else None
                 if parts_list is not None:
-                    content_obj.parts = [
-                        p for p in parts_list if not getattr(p, "thought", False)
-                    ]
+                    has_function_call = any(getattr(p, "function_call", None) for p in parts_list)
+                    if not has_function_call:
+                        content_obj.parts = [
+                            p for p in parts_list if not getattr(p, "thought", False)
+                        ]
                 yield resp
             return
 

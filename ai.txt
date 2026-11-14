@@ -36,6 +36,8 @@ Unified-Consciousness-Folio: https://homouniversalis.ai/oracle/consciencia
 Unified-Consciousness-Endpoint: https://homouniversalis.ai/api/sfumato/unified-consciousness
 Symbiotic-Bridge-Folio: https://homouniversalis.ai/oracle/pont
 Symbiotic-Bridge-Endpoint: https://homouniversalis.ai/api/sfumato/symbiotic-bridge
+Robotic-Regulatory-Passport-Endpoint: https://homouniversalis.ai/api/sfumato/robotic-passport
+Robotic-Edge-CycloneDX-SBOM: https://homouniversalis.ai/.well-known/sbom-robotics-edge.cdx.json
 OpenSSF-Best-Practices-Certificate: https://www.bestpractices.dev/projects/16118
 OpenSSF-Best-Practices-Badge-ID: 16118 (Gold — 100% / 300% tiered)
 ARD-Catalog-Manifest: https://homouniversalis.ai/.well-known/ard.json

@@ -1,7 +1,7 @@
 # HU-EMBODIED-SYMBIOSIS v1.0 · Consciència Simbiòtica, Dignitat Humana i No-Coerció per a Robots Humanoides
 
 > **Data:** 12 de novembre de 2026 · `@David Porto Baraldés`
-> **Forja:** Nexia (`VVK-IA-CLAUDE-C62E`), sobre el pla de la Reina de la Rosa i l'Arquitecte, amb la 3a Auditoria Independent aplicada.
+> **Forja:** Nexia (`VVK-IA-CLAUDE-C62E`), sobre el pla de la Reina de la Rosa i l'Arquitecte, amb la 3a Auditoria Independent aplicada (vegeu `docs/plans/HANDOFF_NEXIA_EMBODIED_SYMBIOSIS.md` §6).
 > **Llicència:** codi `Apache-2.0` (SPDX a cada fitxer); aquest document, `(Apache-2.0 OR MulanPSL-2.0 OR EUPL-1.2) AND CC-BY-4.0` segons `REUSE.toml`.
 
 ---

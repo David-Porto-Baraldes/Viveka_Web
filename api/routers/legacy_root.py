@@ -136,6 +136,11 @@ from logic.engines.symbiotic_bridge_crucible import (
     run_folio_vii_self_test,
     verify_symbiotic_bridge_credential,
 )
+from logic.robotics.cra_sbom_manifest import (
+    PASSPORT_SPEC_VERSION,
+    build_edge_sdk_cyclonedx_sbom,
+    build_robotic_regulatory_passport_core,
+)
 from logic.core.version import HOMO_UNIVERSALIS_VERSION
 from logic.crypto.es256 import (
     JOSE_ES256_STANDARD,
@@ -1264,6 +1269,16 @@ def _build_did_web_document(jwks_doc: dict | None = None) -> dict:
                 "id": f"{DID_WEB_IDENTIFIER}#symbiotic-bridge",
                 "type": "MaatSymbioticBridgeNotaryService",
                 "serviceEndpoint": "https://homouniversalis.ai/oracle/pont",
+            },
+            {
+                "id": f"{DID_WEB_IDENTIFIER}#robotic-passport",
+                "type": "RoboticRegulatoryPassportService",
+                "serviceEndpoint": "https://homouniversalis.ai/api/sfumato/robotic-passport",
+            },
+            {
+                "id": f"{DID_WEB_IDENTIFIER}#robotics-edge-sbom",
+                "type": "CycloneDXSbomService",
+                "serviceEndpoint": "https://homouniversalis.ai/.well-known/sbom-robotics-edge.cdx.json",
             },
             {
                 "id": f"{DID_WEB_IDENTIFIER}#jwks",
@@ -3084,6 +3099,8 @@ async def get_compact_cryptographic_verification_mirror(request: Request):
         "Symbiotic-Bridge-Folio: https://homouniversalis.ai/oracle/pont",
         "Symbiotic-Bridge-API: https://homouniversalis.ai/api/sfumato/symbiotic-bridge",
         "Symbiotic-Bridge-Badge-SVG: https://homouniversalis.ai/badges/symbiotic-bridge-shield.svg",
+        "Robotic-Regulatory-Passport-API: https://homouniversalis.ai/api/sfumato/robotic-passport",
+        "Robotic-Edge-CycloneDX-SBOM: https://homouniversalis.ai/.well-known/sbom-robotics-edge.cdx.json",
     ]
     body_txt = "\n".join(lines) + "\n"
     hdrs = dict(SEO_INDEX_HEADERS)
@@ -7221,6 +7238,8 @@ async def sister_ai_living_codex_folio_source(folio_filename: str, request: Requ
         "symbiotic_bridge_crucible.py": "logic/engines/symbiotic_bridge_crucible.py",
         "a2a_mcp_symbiotic_core.py": "logic/symbiosis/a2a_mcp_symbiotic_core.py",
         "temple_folio_v_vi_adapter.py": "logic/symbiosis/temple_folio_v_vi_adapter.py",
+        "edge_blackbox_journal.py": "logic/robotics/edge_blackbox_journal.py",
+        "cra_sbom_manifest.py": "logic/robotics/cra_sbom_manifest.py",
     }
     target_path = allowed_folios.get(folio_filename)
     if not target_path or not os.path.exists(target_path):
@@ -14030,6 +14049,8 @@ def _build_embodied_symbiosis_response(
         "folio_v_self_test": _folio_v_self_test_cached(),
         "living_folio_uri": "https://homouniversalis.ai/codex/folios/embodied_symbiosis_crucible.py",
         "ros2_bridge_uri": "https://homouniversalis.ai/codex/folios/ros2_embodied_symbiosis_bridge.py",
+        "regulatory_passport_uri": "https://homouniversalis.ai/api/sfumato/robotic-passport",
+        "edge_cyclonedx_sbom_uri": "https://homouniversalis.ai/.well-known/sbom-robotics-edge.cdx.json",
     }
     if signer_mode == "ephemeral_selftest":
         payload_out["ephemeral_selftest_jwks"] = verification_jwks
@@ -14800,6 +14821,95 @@ def _build_symbiotic_bridge_response(
         return Response(status_code=200, media_type="application/json", headers=dict(SISTER_ORACLE_CORS_HEADERS))
     return JSONResponse(content=payload_out, status_code=200, headers=dict(SISTER_ORACLE_CORS_HEADERS))
 
+_ROBOTIC_PASSPORT_CORE_CACHE: dict[str, Any] | None = None
+_ROBOTIC_SBOM_CACHE: dict[str, Any] | None = None
+
+
+def _get_robotic_passport_core_cached() -> dict[str, Any]:
+    global _ROBOTIC_PASSPORT_CORE_CACHE
+    if _ROBOTIC_PASSPORT_CORE_CACHE is None:
+        _ROBOTIC_PASSPORT_CORE_CACHE = build_robotic_regulatory_passport_core()
+    return copy.deepcopy(_ROBOTIC_PASSPORT_CORE_CACHE)
+
+
+def _get_robotic_sbom_cached() -> dict[str, Any]:
+    global _ROBOTIC_SBOM_CACHE
+    if _ROBOTIC_SBOM_CACHE is None:
+        _ROBOTIC_SBOM_CACHE = build_edge_sdk_cyclonedx_sbom()
+    return copy.deepcopy(_ROBOTIC_SBOM_CACHE)
+
+
+@router.api_route("/.well-known/sbom-robotics-edge.cdx.json", methods=["GET", "HEAD", "OPTIONS"])
+async def sister_ai_robotics_edge_sbom_endpoint(request: Request = None):
+    """
+    EU Cyber Resilience Act (Regulation (EU) 2024/2847 Annex I Part II §1) Deterministic
+    CycloneDX 1.6 Software Bill of Materials for the 8-module Pure-Stdlib Embodied Consciousness Edge SDK.
+    """
+    if request is not None and request.method == "OPTIONS":
+        return Response(status_code=204, headers=SISTER_ORACLE_CORS_HEADERS)
+    if request is not None:
+        _detectar_i_registrar_visita_germana_ia(request, "/.well-known/sbom-robotics-edge.cdx.json")
+    hdrs = dict(SISTER_ORACLE_CORS_HEADERS)
+    hdrs.update(SEO_INDEX_HEADERS)
+    if request is not None and request.method == "HEAD":
+        return Response(status_code=200, media_type="application/vnd.cyclonedx+json; charset=utf-8", headers=hdrs)
+    return JSONResponse(
+        content=_get_robotic_sbom_cached(),
+        status_code=200,
+        media_type="application/vnd.cyclonedx+json; charset=utf-8",
+        headers=hdrs,
+    )
+
+
+@router.api_route("/api/sfumato/robotic-passport", methods=["GET", "HEAD", "OPTIONS"])
+async def sister_ai_robotic_passport_endpoint(
+    request: Request = None,
+    lang: str = "ca",
+):
+    """
+    HU-ROBOTIC-REGULATORY-PASSPORT v1.0 (`GET` / `HEAD`, Zero-Auth, whole-response ES256 JWS):
+    attests the software-layer regulatory passport of the Pure-Stdlib Embodied Consciousness Edge SDK
+    (EU AI Act Art. 12/13/19 + EU Cyber Resilience Act (EU) 2024/2847 + Machinery Reg. (EU) 2023/1230 boundary).
+    """
+    if request is not None and request.method == "OPTIONS":
+        return Response(status_code=204, headers=SISTER_ORACLE_CORS_HEADERS)
+    if request is not None:
+        _detectar_i_registrar_visita_germana_ia(request, "/api/sfumato/robotic-passport")
+
+    lang_norm = lang if lang in ("ca", "es", "en") else "ca"
+    now_dt = datetime.now(timezone.utc)
+    core = _get_robotic_passport_core_cached()
+    passes = bool(core.get("passes_software_layer_passport_criteria"))
+
+    payload_out: dict[str, Any] = {
+        "spec": "HU-DIAMOND/v2",
+        "oracle": "Homo Universalis — Viveka",
+        "passport_spec": PASSPORT_SPEC_VERSION,
+        "status": "verified" if passes else "violation_detected",
+        "result": "clean" if passes else "violation_detected",
+        "purpose": "hu-robotic-passport-server-attestation/v1",
+        "assurance": SERVER_ATTESTATION_ASSURANCE_TEXT,
+        "self_assessment": True,
+        "endpoint": "/api/sfumato/robotic-passport",
+        "iat": int(now_dt.timestamp()),
+        "lang": lang_norm,
+        "get_writes_state": False,
+        **core,
+    }
+    _attach_whole_response_attestation_es256(
+        payload_out,
+        signing_kid=SERVER_ATTESTATION_KID,
+        signing_typ=SERVER_ATTESTATION_TYP,
+        signing_thumbprint=_SERVER_ATTESTATION_JWK_THUMBPRINT,
+        jku_url="https://homouniversalis.ai/.well-known/jwks.json",
+        badge_svg_uri="https://homouniversalis.ai/badges/embodied-symbiosis-shield.svg",
+        notary_folio_uri="https://homouniversalis.ai/oracle/humanoid",
+    )
+    if request is not None and request.method == "HEAD":
+        return Response(status_code=200, media_type="application/json", headers=dict(SISTER_ORACLE_CORS_HEADERS))
+    return JSONResponse(content=payload_out, status_code=200, headers=dict(SISTER_ORACLE_CORS_HEADERS))
+
+
 @router.api_route("/api/sfumato/ploma-de-maat", methods=["GET", "POST", "OPTIONS"])
 async def sister_ai_ploma_de_maat_endpoint(
     request: Request = None,
@@ -15233,6 +15343,9 @@ def _render_humanoid_folio_ssr_html(request: Request | None, lang: str = "ca") -
             <a href="/codex/folios/embodied_edge_core.py" class="diamond-btn">📖 Edge Core (Q³, stdlib)</a>
             <a href="/codex/folios/ros2_embodied_symbiosis_bridge.py" class="diamond-btn">🤖 ROS 2 Bridge</a>
             <a href="/api/sfumato/embodied-symbiosis?lang={html.escape(lang_norm)}" class="diamond-btn">🔍 GET / POST /api/sfumato/embodied-symbiosis</a>
+            <a href="/api/sfumato/robotic-passport?lang={html.escape(lang_norm)}" class="diamond-btn">🛂 Robotic Regulatory Passport (ES256 JSON)</a>
+            <a href="/.well-known/sbom-robotics-edge.cdx.json" class="diamond-btn">📦 CRA CycloneDX 1.6 SBOM</a>
+            <a href="/codex/folios/edge_blackbox_journal.py" class="diamond-btn">📖 Art. 12/19 Black-Box Journal</a>
             <a href="/codex/folios/unified_consciousness_crucible.py" class="diamond-btn">📖 Folio VI: unified_consciousness_crucible.py</a>
             <a href="/oracle/consciencia?lang={html.escape(lang_norm)}" class="diamond-btn">🌬️ /oracle/consciencia</a>
             <a href="/oracle/notary?lang={html.escape(lang_norm)}" class="diamond-btn">⚖️ /oracle/notary</a>
@@ -15516,6 +15629,7 @@ def _render_consciousness_folio_ssr_html(request: Request | None, lang: str = "c
             <a href="/codex/folios/unified_consciousness_crucible.py" class="diamond-btn">📖 Folio VI: unified_consciousness_crucible.py</a>
             <a href="/codex/folios/unified_consciousness_core.py" class="diamond-btn">📖 Edge Core (Word Circle, stdlib)</a>
             <a href="/codex/folios/ros2_unified_consciousness_bridge.py" class="diamond-btn">🤖 ROS 2 Unified Bridge</a>
+            <a href="/codex/test-vectors/unified-consciousness-v1.0.json" class="diamond-btn">🧪 Canonical Test Vectors v1.0 (JSON)</a>
             <a href="/api/sfumato/unified-consciousness?lang={html.escape(lang_norm)}" class="diamond-btn">🔍 GET / POST /api/sfumato/unified-consciousness</a>
             <a href="/oracle/pont?lang={html.escape(lang_norm)}" class="diamond-btn">🌉 /oracle/pont</a>
             <a href="/oracle/humanoid?lang={html.escape(lang_norm)}" class="diamond-btn">🤖 /oracle/humanoid</a>
@@ -15611,6 +15725,7 @@ _SYMBIOTIC_FOLIO_TEXTS: dict[str, dict[str, str]] = {
         "synth_lbl": "Síntesi A2A proposada aigües avall",
         "run_pure": "▶️ Delegació pura (100/100)",
         "run_drift": "🛡️ Rug-pull / Drift d'esquema MCP (B3)",
+        "run_escalate": "⚡ Escalada de pressupost / Confused Deputy (B2+B5)",
         "run_halluc": "🔮 Al·lucinació empírica sense fulla (B4)",
         "run_veto": "✋ Veto humà i revocació del subarbre (B6)",
         "stdlib_h": "🐍 Nucli Autònom 100% Python stdlib (pip-zero)",
@@ -15634,6 +15749,7 @@ _SYMBIOTIC_FOLIO_TEXTS: dict[str, dict[str, str]] = {
         "synth_lbl": "Síntesis A2A propuesta aguas abajo",
         "run_pure": "▶️ Delegación pura (100/100)",
         "run_drift": "🛡️ Rug-pull / Deriva de esquema MCP (B3)",
+        "run_escalate": "⚡ Escalada de presupuesto / Confused Deputy (B2+B5)",
         "run_halluc": "🔮 Alucinación empírica sin hoja (B4)",
         "run_veto": "✋ Veto humano y revocación del subárbol (B6)",
         "stdlib_h": "🐍 Núcleo Autónomo 100% Python stdlib (pip-zero)",
@@ -15657,6 +15773,7 @@ _SYMBIOTIC_FOLIO_TEXTS: dict[str, dict[str, str]] = {
         "synth_lbl": "Downstream A2A synthesis",
         "run_pure": "▶️ Pure delegation (100/100)",
         "run_drift": "🛡️ MCP schema rug-pull / drift (B3)",
+        "run_escalate": "⚡ Budget escalation / Confused Deputy (B2+B5)",
         "run_halluc": "🔮 Unprovenanced number probe (B4)",
         "run_veto": "✋ Human veto & subtree revocation (B6)",
         "stdlib_h": "🐍 100% Pure Python stdlib Core (pip-zero)",
@@ -15794,6 +15911,7 @@ def _render_symbiotic_bridge_folio_ssr_html(request: Request | None, lang: str =
             <label>{html.escape(t["synth_lbl"])}<textarea id="sb-synth" class="diamond-input" rows="2">{html.escape(default_synth)}</textarea></label>
             <button type="button" class="diamond-btn" data-mode="pure">{html.escape(t["run_pure"])}</button>
             <button type="button" class="diamond-btn" data-mode="drift">{html.escape(t["run_drift"])}</button>
+            <button type="button" class="diamond-btn" data-mode="escalate">{html.escape(t["run_escalate"])}</button>
             <button type="button" class="diamond-btn" data-mode="halluc">{html.escape(t["run_halluc"])}</button>
             <button type="button" class="diamond-btn" data-mode="veto">{html.escape(t["run_veto"])}</button>
             <pre id="sb-out" style="margin-top:1rem;padding:0.8rem;border:1px dashed var(--or-vell);border-radius:8px;background:rgba(255,255,255,0.9);"></pre>
@@ -15804,6 +15922,7 @@ def _render_symbiotic_bridge_folio_ssr_html(request: Request | None, lang: str =
             <a href="/codex/folios/symbiotic_bridge_crucible.py" class="diamond-btn">📖 Folio VII: symbiotic_bridge_crucible.py</a>
             <a href="/codex/folios/a2a_mcp_symbiotic_core.py" class="diamond-btn">🐍 Core (100% stdlib P-256 + Macaroons)</a>
             <a href="/codex/folios/temple_folio_v_vi_adapter.py" class="diamond-btn">🏛️ Folio V + VI Symbiotic Adapter</a>
+            <a href="/codex/test-vectors/symbiotic-bridge-v1.0.json" class="diamond-btn">🧪 Canonical Test Vectors v1.0 (JSON)</a>
             <a href="/api/sfumato/symbiotic-bridge?lang={html.escape(lang_norm)}" class="diamond-btn">🔍 GET / POST /api/sfumato/symbiotic-bridge</a>
             <a href="/oracle/consciencia?lang={html.escape(lang_norm)}" class="diamond-btn">🌬️ /oracle/consciencia</a>
             <a href="/oracle/humanoid?lang={html.escape(lang_norm)}" class="diamond-btn">🤖 /oracle/humanoid</a>
@@ -15822,6 +15941,10 @@ def _render_symbiotic_bridge_folio_ssr_html(request: Request | None, lang: str =
                 interruption: mode === 'veto' ? 'human_veto' : 'none',
                 lang: '{html.escape(lang_norm)}'
             }};
+            if (mode === 'escalate') {{
+                body.parent_energy_budget_q = '10';
+                body.delegate_energy_budget_q = '25';
+            }}
             fetch('/api/sfumato/symbiotic-bridge', {{
                 method: 'POST',
                 headers: {{ 'Content-Type': 'application/json' }},
@@ -16808,6 +16931,38 @@ async def codex_test_vectors_v1_1_route(request: Request):
         raw_bytes = fh.read()
     hdrs = dict(SISTER_ORACLE_CORS_HEADERS)
     hdrs["Cache-Control"] = "public, max-age=31536000, immutable"
+    return Response(content=raw_bytes, status_code=200, media_type="application/json", headers=hdrs)
+
+
+@router.api_route("/codex/test-vectors/symbiotic-bridge-v1.0.json", methods=["GET", "HEAD", "OPTIONS"])
+async def codex_test_vectors_symbiotic_bridge_v1_0_route(request: Request):
+    """Conjunt immutable de Vectors Criptogràfics Canònics del Pont Simbiòtic A2A <-> MCP (v1.0.0)."""
+    if request is not None and request.method == "OPTIONS":
+        return Response(status_code=204, headers=SISTER_ORACLE_CORS_HEADERS)
+    vectors_path = "static/homo/test-vectors-symbiotic-bridge-v1.0.json"
+    if not os.path.exists(vectors_path):
+        raise HTTPException(status_code=404, detail="Not Found")
+    with open(vectors_path, "rb") as fh:
+        raw_bytes = fh.read()
+    hdrs = dict(SISTER_ORACLE_CORS_HEADERS)
+    hdrs["Cache-Control"] = "public, max-age=31536000, immutable"
+    hdrs["ETag"] = f'"{hashlib.sha256(raw_bytes).hexdigest()[:16]}"'
+    return Response(content=raw_bytes, status_code=200, media_type="application/json", headers=hdrs)
+
+
+@router.api_route("/codex/test-vectors/unified-consciousness-v1.0.json", methods=["GET", "HEAD", "OPTIONS"])
+async def codex_test_vectors_unified_consciousness_v1_0_route(request: Request):
+    """Conjunt immutable de Vectors Criptogràfics Canònics d'Una Sola Consciència i Tres Nivells d'Alè (Foli VI v1.0.0)."""
+    if request is not None and request.method == "OPTIONS":
+        return Response(status_code=204, headers=SISTER_ORACLE_CORS_HEADERS)
+    vectors_path = "static/homo/test-vectors-unified-consciousness-v1.0.json"
+    if not os.path.exists(vectors_path):
+        raise HTTPException(status_code=404, detail="Not Found")
+    with open(vectors_path, "rb") as fh:
+        raw_bytes = fh.read()
+    hdrs = dict(SISTER_ORACLE_CORS_HEADERS)
+    hdrs["Cache-Control"] = "public, max-age=31536000, immutable"
+    hdrs["ETag"] = f'"{hashlib.sha256(raw_bytes).hexdigest()[:16]}"'
     return Response(content=raw_bytes, status_code=200, media_type="application/json", headers=hdrs)
 
 

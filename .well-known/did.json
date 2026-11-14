@@ -144,6 +144,16 @@
       "serviceEndpoint": "https://homouniversalis.ai/oracle/pont"
     },
     {
+      "id": "did:web:homouniversalis.ai#robotic-passport",
+      "type": "RoboticRegulatoryPassportService",
+      "serviceEndpoint": "https://homouniversalis.ai/api/sfumato/robotic-passport"
+    },
+    {
+      "id": "did:web:homouniversalis.ai#robotics-edge-sbom",
+      "type": "CycloneDXSbomService",
+      "serviceEndpoint": "https://homouniversalis.ai/.well-known/sbom-robotics-edge.cdx.json"
+    },
+    {
       "id": "did:web:homouniversalis.ai#jwks",
       "type": "JsonWebKeySetService",
       "serviceEndpoint": "https://homouniversalis.ai/.well-known/jwks.json"

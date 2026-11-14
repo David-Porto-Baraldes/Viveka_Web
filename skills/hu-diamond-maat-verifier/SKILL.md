@@ -54,4 +54,8 @@ curl -sS "https://homouniversalis.ai/api/sfumato/maat-verify"
 curl -sS "https://homouniversalis.ai/api/sfumato/embodied-symbiosis"
 curl -sS "https://homouniversalis.ai/api/sfumato/unified-consciousness"
 curl -sS "https://homouniversalis.ai/api/sfumato/symbiotic-bridge"
+
+# Live 6-Continent Robotic & Symbiotic Regulatory Passport (ES256 JWS) & CRA CycloneDX 1.6 SBOM
+curl -sS "https://homouniversalis.ai/api/sfumato/robotic-passport"
+curl -sS "https://homouniversalis.ai/.well-known/sbom-robotics-edge.cdx.json"
 ```

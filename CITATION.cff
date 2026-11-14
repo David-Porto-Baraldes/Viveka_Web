@@ -33,10 +33,13 @@ abstract: >-
   (/oracle/consciencia, /api/sfumato/unified-consciousness & logic/consciousness/:
   Word-Circle Arbiter across Three Levels of Breath, Humble Crystal Envelope Binding,
   Barge-in vs Veto, Spoken-Truth Ledger, and MaatUnifiedConsciousnessCredential W3C VC 2.0 ES256),
-  and HU-SYMBIOTIC-BRIDGE v1.0 (/oracle/pont, /api/sfumato/symbiotic-bridge & logic/symbiosis/:
+  HU-SYMBIOTIC-BRIDGE v1.0 (/oracle/pont, /api/sfumato/symbiotic-bridge & logic/symbiosis/:
   Universal A2A <-> MCP Dual Golden Seal ES256 + HMAC-SHA256 Macaroons, Surgical Fail-Closed MCP
   Schema Harmony Gate, RFC 6962 Merkle-DAG Provenance, Rational Swarm Homeostasis, and
-  MaatSymbioticBridgeCredential W3C VC 2.0 ES256).
+  MaatSymbioticBridgeCredential W3C VC 2.0 ES256), and HU-ROBOTIC-REGULATORY-PASSPORT v1.0
+  (/api/sfumato/robotic-passport & /.well-known/sbom-robotics-edge.cdx.json: 6-Continent Global
+  Symbiotic & Robotic Regulatory Passport, 15/15 adversarial mutants, crash-safe RFC 6962 black-box
+  journal, and deterministic EU CRA CycloneDX 1.6 Edge SBOM).
   Speaks the Linux Foundation
   / AAIF Agent2Agent (lf.a2a.v1 v1.0.0 & v0.3.0 with RFC 8785 JCS + RFC 7515 ES256 JWS
   signatures) and Model Context Protocol (MCP 2026-07-28). Awarded Linux Foundation
@@ -59,7 +62,11 @@ keywords:
   - macaroons
   - merkle-dag
   - eu-ai-act
+  - cyber-resilience-act
+  - cyclonedx-sbom
+  - iso-25785
   - ieee-7001
+  - ieee-7014
   - w3c-verifiable-credentials
   - rfc-6962
   - rfc-8785
@@ -74,7 +81,7 @@ keywords:
   - reed-muller
   - stella-octangula
 license: Apache-2.0
-version: 1.9.0
+version: 1.10.0
 doi: 10.5281/zenodo.23973687
 identifiers:
   - type: doi
@@ -83,4 +90,4 @@ identifiers:
   - type: swh
     value: "swh:1:snp:e3fb7d94dfe1fa61308567357599cbbb7738e4bf"
     description: "UNESCO Software Heritage Persistent Archival Snapshot"
-date-released: "2026-11-13"
+date-released: "2026-11-14"

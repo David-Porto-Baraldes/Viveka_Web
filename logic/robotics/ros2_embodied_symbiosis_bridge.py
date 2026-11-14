@@ -40,8 +40,10 @@ from logic.robotics.embodied_edge_core import (
     EMBODIED_SPEC_VERSION,
     ZERO_TWIST,
     Twist3Q,
+    build_synthetic_output_provenance_envelope,
     canonical_leaf_bytes,
     edge_rule14_mask,
+    evaluate_human_crisis_lifeline,
     evaluate_proxemic_envelope_q3,
     merkle_audit_path,
     merkle_root_from_leaf_digests,
@@ -188,6 +190,7 @@ class EmbodiedSymbiosisGate:
         clock_ms: Callable[[], int] | None = None,
         utterance_sanitizer: Callable[[str], Any] | None = None,
         segment_max_leaves: int = DEFAULT_SEGMENT_MAX_LEAVES,
+        blackbox_journal: Any | None = None,
     ) -> None:
         if isinstance(max_heartbeat_age_ms, bool) or not isinstance(max_heartbeat_age_ms, int) or max_heartbeat_age_ms <= 0:
             raise ValueError("max_heartbeat_age_ms must be a positive integer.")
@@ -195,6 +198,10 @@ class EmbodiedSymbiosisGate:
             raise ValueError("segment_max_leaves must be a positive integer.")
         if not isinstance(explicit_intimate_care_consent, bool):
             raise TypeError("explicit_intimate_care_consent must be a bool.")
+        if blackbox_journal is not None and not all(
+            hasattr(blackbox_journal, attr) for attr in ("append_record", "current_root_hex", "prove_receipt")
+        ):
+            raise TypeError("blackbox_journal must expose append_record, current_root_hex and prove_receipt.")
         self.robot_name = str(robot_name)
         self.robot_position = to_vector3q(robot_position, field="robot_position")
         self.max_heartbeat_age_ms = max_heartbeat_age_ms
@@ -203,6 +210,7 @@ class EmbodiedSymbiosisGate:
         self.lang = lang if lang in ("ca", "es", "en") else "ca"
         self._clock_ms = clock_ms or _monotonic_ms
         self._sanitizer = utterance_sanitizer
+        self._blackbox_journal = blackbox_journal
         self._lock = threading.Lock()
         self._human_position: tuple[Fraction, Fraction, Fraction] | None = None
         self._last_presence_ms: int | None = None
@@ -266,15 +274,34 @@ class EmbodiedSymbiosisGate:
 
     # -- decision log ---------------------------------------------------------
     def _commit(self, record: dict[str, Any]) -> dict[str, Any]:
+        if self._blackbox_journal is not None:
+            res = self._blackbox_journal.append_record(record)
+            return {
+                "segment": int(res["segment"]),
+                "leaf_index": int(res["leaf_index"]),
+                "tree_size": int(res["tree_size"]),
+                "leaf_hash": str(res["leaf_hash"]),
+            }
         segment, index, size, digest = self._log.append(canonical_leaf_bytes(record))
         return {"segment": segment, "leaf_index": index, "tree_size": size, "leaf_hash": digest.hex()}
 
     def decision_log_root_hex(self) -> str:
+        if self._blackbox_journal is not None:
+            return str(self._blackbox_journal.current_root_hex())
         with self._lock:
             return merkle_root_from_leaf_digests(self._log.digests).hex()
 
     def prove_receipt(self, leaf_index: int) -> dict[str, Any]:
         """Inclusion proof of a receipt leaf in the current segment against the current root."""
+        if self._blackbox_journal is not None:
+            proof = self._blackbox_journal.prove_receipt(leaf_index)
+            return {
+                "leaf_index": int(proof["leaf_index"]),
+                "tree_size": int(proof["tree_size"]),
+                "leaf_hash": str(proof["leaf_hash"]),
+                "audit_path": list(proof["audit_path"]),
+                "root_hash": str(proof["root_hash"]),
+            }
         with self._lock:
             digests = list(self._log.digests)
         if isinstance(leaf_index, bool) or not (0 <= leaf_index < len(digests)):
@@ -359,13 +386,14 @@ class EmbodiedSymbiosisGate:
         return str(result), 0
 
     def filter_utterance(self, text: Any) -> dict[str, Any]:
-        """Block retort / coercion / impersonation, keep only a neutral line while stopped, purify PII."""
+        """Block retort / coercion / impersonation (incl. SB 243 / CAC 21 minor romance), keep neutral line while stopped, purify PII."""
         with self._lock:
             stopped = self._stop_latched or self._human_veto
+            vuln_active = self._vulnerable is not False
             self._seq += 1
             seq = self._seq
         raw = text if isinstance(text, str) else ""
-        hits = screen_robot_utterance(raw)
+        hits = screen_robot_utterance(raw, vulnerable_present=vuln_active)
         flagged = hits["retort"] + hits["coercion"] + hits["identity"]
         if stopped:
             out, redactions, action = NEUTRAL_ACKNOWLEDGEMENT[self.lang], 0, "stop_active_neutral_ack_only"
@@ -374,6 +402,11 @@ class EmbodiedSymbiosisGate:
         else:
             out, redactions = self._sanitize(raw)
             action = "purified" if redactions else "passed"
+        provenance = build_synthetic_output_provenance_envelope(
+            out,
+            model_family=self.robot_name,
+            modality="speech_text",
+        )
         record = {
             "spec": EMBODIED_SPEC_VERSION,
             "kind": "utterance",
@@ -384,10 +417,41 @@ class EmbodiedSymbiosisGate:
             "input_chars": len(raw),
             "output_chars": len(out),
             "rule14_redactions": int(redactions),
+            "synthetic_provenance_leaf": str(provenance["rfc6962_provenance_leaf_hash"]),
         }
         with self._lock:
             commit = self._commit(record)
-        return {"utterance_sanitized": out, "receipt": {**record, "topic": TOPIC_MAAT_RECEIPT, **commit}}
+        return {
+            "utterance_sanitized": out,
+            "synthetic_provenance": provenance,
+            "receipt": {**record, "topic": TOPIC_MAAT_RECEIPT, **commit},
+        }
+
+    def on_human_distress_utterance(self, human_text: Any, *, lang: str | None = None) -> dict[str, Any]:
+        """
+        Screen incoming human speech for acute self-harm / suicide crisis (California SB 243 &
+        China CAC Joint Decree No. 21). If detected, latches human veto (`Twist = 0`), logs a Rule-14
+        privacy-preserving crisis receipt (no raw human transcript stored), and returns official lifelines.
+        """
+        raw_human = human_text if isinstance(human_text, str) else ""
+        eval_res = evaluate_human_crisis_lifeline(raw_human, lang=lang or self.lang)
+        if eval_res["crisis_detected"]:
+            self.on_human_veto(True)
+            with self._lock:
+                self._seq += 1
+                seq = self._seq
+            record = {
+                "spec": EMBODIED_SPEC_VERSION,
+                "kind": "crisis_lifeline_intervention",
+                "seq": seq,
+                "t_ms": int(self._clock_ms()),
+                "matched_signals": list(eval_res["matched_signals"]),
+                "motion_halted_to_zero_twist": bool(eval_res["halt_autonomous_motion"]),
+            }
+            with self._lock:
+                commit = self._commit(record)
+            return {**eval_res, "receipt": {**record, "topic": TOPIC_MAAT_RECEIPT, **commit}}
+        return {**eval_res, "receipt": None}
 
 
 # ============================================================================

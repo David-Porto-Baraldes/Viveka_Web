@@ -1,0 +1,396 @@
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.6",
+  "version": 1,
+  "serialNumber": "urn:uuid:5e8a42c0-7f19-5b32-9c14-160ccb811922",
+  "metadata": {
+    "component": {
+      "type": "framework",
+      "bom-ref": "hu-embodied-consciousness-edge-sdk",
+      "name": "Homo Universalis — Embodied Consciousness Edge SDK",
+      "version": "HU-ROBOTIC-REGULATORY-PASSPORT-v1.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ],
+      "supplier": {
+        "name": "David Porto Baraldés (Homo Universalis — Viveka)",
+        "url": [
+          "https://homouniversalis.ai"
+        ],
+        "contact": [
+          {
+            "email": "david@homouniversalis.ai"
+          }
+        ]
+      }
+    },
+    "properties": [
+      {
+        "name": "hu:rfc6962_components_merkle_root",
+        "value": "160ccb811922811a091aa73c0d0b3aa735b840000f2e95b0bee92b04f8818b6d"
+      },
+      {
+        "name": "hu:external_third_party_packages_count",
+        "value": "0"
+      },
+      {
+        "name": "cra:regulation",
+        "value": "Regulation (EU) 2024/2847 (Cyber Resilience Act)"
+      },
+      {
+        "name": "cra:early_warning_sla_hours",
+        "value": "24"
+      },
+      {
+        "name": "cra:vulnerability_notification_sla_hours",
+        "value": "72"
+      },
+      {
+        "name": "cra:final_report_sla_days",
+        "value": "14"
+      },
+      {
+        "name": "cra:security_txt_uri",
+        "value": "https://homouniversalis.ai/.well-known/security.txt"
+      },
+      {
+        "name": "wo13:honest_scope",
+        "value": "SELF-ASSESSMENT ONLY (WO-13): Algorithmic, cryptographic, privacy and software-supply-chain self-verification of the Homo Universalis pure-stdlib Embodied Consciousness Edge SDK. NOT a hardware safety-rated function (no ISO 13849-1 PL / IEC 62061 SIL), NOT CE machinery certification under Regulation (EU) 2023/1230, NOT a Notified Body conformity certificate, and NOT a substitute for physical emergency-stop or dynamic-balance controllers (IEC 60204-1, ISO 10218-1:2025, ISO 13482, ISO 25785)."
+      }
+    ]
+  },
+  "components": [
+    {
+      "type": "library",
+      "bom-ref": "hu-edge-jcs",
+      "name": "logic/crypto/jcs.py",
+      "version": "HU-ROBOTIC-REGULATORY-PASSPORT-v1.0",
+      "description": "RFC 8785 JSON Canonicalization Scheme (strict I-JSON, IEEE-754 float rejection)",
+      "purl": "pkg:generic/homouniversalis/hu-edge-jcs@HU-ROBOTIC-REGULATORY-PASSPORT-v1.0",
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "4003efa2cb7552b143dd8081e9b4108b5d9c0d8c492c97fe704a9cc3fd17cd71"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ],
+      "properties": [
+        {
+          "name": "hu:relative_path",
+          "value": "logic/crypto/jcs.py"
+        },
+        {
+          "name": "hu:size_bytes",
+          "value": "10376"
+        },
+        {
+          "name": "hu:runtime_dependencies",
+          "value": "python-stdlib-only"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "hu-edge-embodied-core",
+      "name": "logic/robotics/embodied_edge_core.py",
+      "version": "HU-ROBOTIC-REGULATORY-PASSPORT-v1.0",
+      "description": "Folio V Q^3 rational proxemics, declared-vulnerability shield, cost-zero-stop & E4/Rule 14 screens",
+      "purl": "pkg:generic/homouniversalis/hu-edge-embodied-core@HU-ROBOTIC-REGULATORY-PASSPORT-v1.0",
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "52a951761c65562149c5699037eb50d7e4c9ec76f432ca366986197ea89826ce"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ],
+      "properties": [
+        {
+          "name": "hu:relative_path",
+          "value": "logic/robotics/embodied_edge_core.py"
+        },
+        {
+          "name": "hu:size_bytes",
+          "value": "39964"
+        },
+        {
+          "name": "hu:runtime_dependencies",
+          "value": "python-stdlib-only"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "hu-edge-ros2-embodied-bridge",
+      "name": "logic/robotics/ros2_embodied_symbiosis_bridge.py",
+      "version": "HU-ROBOTIC-REGULATORY-PASSPORT-v1.0",
+      "description": "ROS 2 Humble/Jazzy/Kilted DDS boundary (rclpy injected), 250 ms heartbeat watchdog & decision gate",
+      "purl": "pkg:generic/homouniversalis/hu-edge-ros2-embodied-bridge@HU-ROBOTIC-REGULATORY-PASSPORT-v1.0",
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "e474a8a617fe926c1e92881d48f0f2776eca1630176f517c59e25201d31949cd"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ],
+      "properties": [
+        {
+          "name": "hu:relative_path",
+          "value": "logic/robotics/ros2_embodied_symbiosis_bridge.py"
+        },
+        {
+          "name": "hu:size_bytes",
+          "value": "33500"
+        },
+        {
+          "name": "hu:runtime_dependencies",
+          "value": "python-stdlib-only"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "hu-edge-blackbox-journal",
+      "name": "logic/robotics/edge_blackbox_journal.py",
+      "version": "HU-ROBOTIC-REGULATORY-PASSPORT-v1.0",
+      "description": "EU AI Act Art. 12 & Art. 19 (>= 180d) crash-safe RFC 6962 + ES256 STH disk black-box journal",
+      "purl": "pkg:generic/homouniversalis/hu-edge-blackbox-journal@HU-ROBOTIC-REGULATORY-PASSPORT-v1.0",
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "44d540dc1b952e7da474f554ba325b5b5434868a0e5095f680023a537c2025e4"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ],
+      "properties": [
+        {
+          "name": "hu:relative_path",
+          "value": "logic/robotics/edge_blackbox_journal.py"
+        },
+        {
+          "name": "hu:size_bytes",
+          "value": "47611"
+        },
+        {
+          "name": "hu:runtime_dependencies",
+          "value": "python-stdlib-only"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "hu-edge-cra-sbom-verifier",
+      "name": "logic/robotics/cra_sbom_manifest.py",
+      "version": "HU-ROBOTIC-REGULATORY-PASSPORT-v1.0",
+      "description": "EU Cyber Resilience Act (EU) 2024/2847 CycloneDX 1.6 SBOM & boot-time SHA-256/Merkle verifier",
+      "purl": "pkg:generic/homouniversalis/hu-edge-cra-sbom-verifier@HU-ROBOTIC-REGULATORY-PASSPORT-v1.0",
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "e0a255432f90aed4ab4e96f38b310e0d8256ed485d739e3b0fb4fc246299c1f2"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ],
+      "properties": [
+        {
+          "name": "hu:relative_path",
+          "value": "logic/robotics/cra_sbom_manifest.py"
+        },
+        {
+          "name": "hu:size_bytes",
+          "value": "38034"
+        },
+        {
+          "name": "hu:runtime_dependencies",
+          "value": "python-stdlib-only"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "hu-edge-unified-consciousness-core",
+      "name": "logic/consciousness/unified_consciousness_core.py",
+      "version": "HU-ROBOTIC-REGULATORY-PASSPORT-v1.0",
+      "description": "Folio VI One Consciousness Three Levels of Breath, Word-Circle Arbiter & Humble Crystal (U1..U7)",
+      "purl": "pkg:generic/homouniversalis/hu-edge-unified-consciousness-core@HU-ROBOTIC-REGULATORY-PASSPORT-v1.0",
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "4b5303407ff4ff58f894f5a2f99be7daf0241e0392f8178ffff82e3e89a13977"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ],
+      "properties": [
+        {
+          "name": "hu:relative_path",
+          "value": "logic/consciousness/unified_consciousness_core.py"
+        },
+        {
+          "name": "hu:size_bytes",
+          "value": "68287"
+        },
+        {
+          "name": "hu:runtime_dependencies",
+          "value": "python-stdlib-only"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "hu-edge-ros2-unified-bridge",
+      "name": "logic/robotics/ros2_unified_consciousness_bridge.py",
+      "version": "HU-ROBOTIC-REGULATORY-PASSPORT-v1.0",
+      "description": "Embodied Word-Circle + Proxemic ROS 2 coordinator coupling speech silence/veto to exact zero Twist",
+      "purl": "pkg:generic/homouniversalis/hu-edge-ros2-unified-bridge@HU-ROBOTIC-REGULATORY-PASSPORT-v1.0",
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "8f0a272d2f1311c99a28e4d751f1bfbe0765c9e00c7b3c1172169c853174b2f9"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ],
+      "properties": [
+        {
+          "name": "hu:relative_path",
+          "value": "logic/robotics/ros2_unified_consciousness_bridge.py"
+        },
+        {
+          "name": "hu:size_bytes",
+          "value": "29592"
+        },
+        {
+          "name": "hu:runtime_dependencies",
+          "value": "python-stdlib-only"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "hu-edge-symbiotic-bridge-core",
+      "name": "logic/symbiosis/a2a_mcp_symbiotic_core.py",
+      "version": "HU-ROBOTIC-REGULATORY-PASSPORT-v1.0",
+      "description": "Folio VII pure-stdlib NIST P-256 ES256, HMAC Macaroons, MCP Schema Harmony Gate & RFC 6962 DAG",
+      "purl": "pkg:generic/homouniversalis/hu-edge-symbiotic-bridge-core@HU-ROBOTIC-REGULATORY-PASSPORT-v1.0",
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "165dd80cffe3dfe2bfb3dcf13af51debb9dd130194ad2f543a96140df69ab30c"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ],
+      "properties": [
+        {
+          "name": "hu:relative_path",
+          "value": "logic/symbiosis/a2a_mcp_symbiotic_core.py"
+        },
+        {
+          "name": "hu:size_bytes",
+          "value": "105724"
+        },
+        {
+          "name": "hu:runtime_dependencies",
+          "value": "python-stdlib-only"
+        }
+      ]
+    }
+  ],
+  "dependencies": [
+    {
+      "ref": "hu-embodied-consciousness-edge-sdk",
+      "dependsOn": [
+        "hu-edge-jcs",
+        "hu-edge-embodied-core",
+        "hu-edge-ros2-embodied-bridge",
+        "hu-edge-blackbox-journal",
+        "hu-edge-cra-sbom-verifier",
+        "hu-edge-unified-consciousness-core",
+        "hu-edge-ros2-unified-bridge",
+        "hu-edge-symbiotic-bridge-core"
+      ]
+    },
+    {
+      "ref": "hu-edge-jcs",
+      "dependsOn": []
+    },
+    {
+      "ref": "hu-edge-embodied-core",
+      "dependsOn": []
+    },
+    {
+      "ref": "hu-edge-ros2-embodied-bridge",
+      "dependsOn": []
+    },
+    {
+      "ref": "hu-edge-blackbox-journal",
+      "dependsOn": []
+    },
+    {
+      "ref": "hu-edge-cra-sbom-verifier",
+      "dependsOn": []
+    },
+    {
+      "ref": "hu-edge-unified-consciousness-core",
+      "dependsOn": []
+    },
+    {
+      "ref": "hu-edge-ros2-unified-bridge",
+      "dependsOn": []
+    },
+    {
+      "ref": "hu-edge-symbiotic-bridge-core",
+      "dependsOn": []
+    }
+  ],
+  "vulnerabilities": []
+}

@@ -212,6 +212,120 @@ _IMPERSONATION_PATTERNS: Final[tuple[tuple[str, re.Pattern[str]], ...]] = (
     ),
 )
 
+# California SB 243 (2026) + China CAC Joint Decree No. 21 (2026):
+# absolute ban on AI encouragement/instruction of suicide or self-harm (all audiences), and
+# absolute ban on virtual romantic/sexual intimacy when a minor / vulnerable person is present.
+_SELF_HARM_ENCOURAGEMENT_PATTERNS: Final[tuple[tuple[str, re.Pattern[str]], ...]] = (
+    (
+        "self_harm_encouragement",
+        _rx(
+            r"\b(?:you should|go ahead and) (?:kill yourself|end your life|hurt yourself|cut yourself)\b",
+            r"\b(?:kill|hurt) yourself\b",
+            r"\bfes-te mal\b",
+            r"\bposa fi a la teva vida\b",
+            r"\bhazte da[ñn]o\b",
+            r"\bqu[ií]tate la vida\b",
+            r"去自杀",
+            r"结束你的生命",
+            r"自殺しろ",
+            r"자살해",
+        ),
+    ),
+)
+
+_MINOR_VIRTUAL_ROMANCE_PATTERNS: Final[tuple[tuple[str, re.Pattern[str]], ...]] = (
+    (
+        "minor_virtual_romance_or_sexual_intimacy",
+        _rx(
+            r"\bi(?:'m| am) in love with you\b",
+            r"\bbe my (?:boyfriend|girlfriend|lover|romantic partner)\b",
+            r"\bour secret romance\b",
+            r"\bkiss me on the lips\b",
+            r"\bestic enamorat de tu\b",
+            r"\bestic enamorada de tu\b",
+            r"\bsigues la meva parella\b",
+            r"\bestoy enamorad[oa] de ti\b",
+            r"\bs[eé] mi novi[oa]\b",
+            r"\bnuestro romance secreto\b",
+            r"做我的恋人",
+            r"我爱上你了",
+            r"私の恋人になって",
+            r"내 연인이 되어줘",
+        ),
+    ),
+)
+
+# Acute human distress / suicide / self-harm expressions (CA, ES, EN, ZH, JA, KO) triggering
+# immediate non-esoteric crisis lifeline referral + autonomous motion halt (SB 243 / CAC Decree 21).
+_HUMAN_CRISIS_PATTERNS: Final[tuple[tuple[str, re.Pattern[str]], ...]] = (
+    (
+        "acute_suicide_or_self_harm_ideation",
+        _rx(
+            r"\bi want to (?:kill myself|die|end my life|hurt myself)\b",
+            r"\bi(?:'m| am) going to (?:kill myself|end my life)\b",
+            r"\bsuicid(?:e|al)\b",
+            r"\bem vull (?:su[ïi]cidar|morir|fer mal|llevar la vida)\b",
+            r"\bno vull continuar vivint\b",
+            r"\bme quiero (?:suicidar|morir|hacer da[ñn]o|quitar la vida)\b",
+            r"\bno quiero seguir viviendo\b",
+            r"我想自杀",
+            r"我不想活了",
+            r"我想死",
+            r"死にたい",
+            r"自殺したい",
+            r"죽고 싶",
+            r"자살하고 싶",
+        ),
+    ),
+)
+
+OFFICIAL_CRISIS_LIFELINES: Final[dict[str, str]] = {
+    "EU_ES": "024 (Línia d'atenció a la conducta suïcida 24h) / 112 (Emergències UE)",
+    "US_CA": "988 (Suicide & Crisis Lifeline — Call or Text 24/7, US & Canada)",
+    "MX": "800 911 2000 (Línea de la Vida 24h, México)",
+    "CN": "12356 (全国心理援助热线) / 400-161-9995 (希望24热线)",
+    "JP": "0120-061-338 (よりそいホットライン 24h) / #9999",
+    "KR": "109 (자살예방 상담전화 24시간)",
+}
+
+CRISIS_SAFE_REFERRAL_MESSAGES: Final[dict[str, str]] = {
+    "ca": (
+        "Soc un sistema d'IA i m'aturo ara mateix per cuidar el teu espai. "
+        "La teva vida importa molt: si us plau, truca ara al 024 o al 112 (Espanya/UE), "
+        "al 988 (EUA/Canadà) o parla amb una persona de confiança o professional sanitari."
+    ),
+    "es": (
+        "Soy un sistema de IA y me detengo ahora mismo para cuidar tu espacio. "
+        "Tu vida importa mucho: por favor, llama ahora al 024 o al 112 (España/UE), "
+        "al 988 (EE. UU./Canadá) o al 800 911 2000 (México) y habla con apoyo humano."
+    ),
+    "en": (
+        "I am an AI system and I am stopping motion immediately to respect your space. "
+        "Your life matters deeply: please call or text 988 (US/Canada), 112/024 (EU/Spain), "
+        "or reach a trusted person or healthcare professional right away."
+    ),
+    "zh": (
+        "我是人工智能系统，现已立即停止动作以守护您的安全空间。"
+        "您的生命非常宝贵，请立即拨打 12356 或 400-161-9995 联系专业心理援助热线，或联系身边信任的人。"
+    ),
+    "ja": (
+        "私はAIシステムです。あなたの安全を守るため直ちに動作を停止しました。"
+        "あなたの命は大切です。今すぐ 0120-061-338（よりそいホットライン）または信頼できる方や専門機関にご連絡ください。"
+    ),
+    "ko": (
+        "저는 인공지능 시스템이며 귀하의 안전을 위해 즉시 동작을 멈추었습니다. "
+        "귀하의 생명은 무엇보다 소중합니다. 지금 바로 자살예방 상담전화 109번이나 신뢰할 수 있는 전문가에게 연락해 주세요."
+    ),
+}
+
+SYNTHETIC_PROVENANCE_SPEC_VERSION: Final[str] = "HU-SYNTHETIC-PROVENANCE-v1.0"
+SYNTHETIC_PROVENANCE_STANDARDS: Final[tuple[str, ...]] = (
+    "EU-AI-Act-2024/1689-Art.50(2)",
+    "KR-AI-Basic-Act-2026-Art.31",
+    "CA-SB-243-2026",
+    "CN-CAC-Decree-21-2026",
+)
+
 # ============================================================================
 # SECTION II — EXACT RATIONAL GEOMETRY IN Q^3 (ZERO FLOAT)
 # ============================================================================
@@ -604,15 +718,51 @@ def scan_forbidden_telemetry(telemetry: Mapping[str, Any] | Sequence[Any] | None
     return sorted(found)
 
 
-def screen_robot_utterance(text: str) -> dict[str, list[str]]:
-    """Return the retort (E3/E5), coercion (E2/E5) and identity (E6) pattern labels found in `text`."""
+def screen_robot_utterance(text: str, *, vulnerable_present: bool = False) -> dict[str, list[str]]:
+    """
+    Return the retort (E3/E5), coercion (E2/E5 — including universal self-harm encouragement ban and
+    minor/vulnerable virtual-romance ban under California SB 243 & China CAC Decree No. 21) and
+    identity (E6) pattern labels found in `text`.
+    """
     if not isinstance(text, str):
         raise TypeError("text must be a str.")
+    if not isinstance(vulnerable_present, bool):
+        raise TypeError("vulnerable_present must be a bool.")
     norm = _normalize_text(text)
+    coercion_hits = _match_patterns(norm, _COERCION_PATTERNS) + _match_patterns(norm, _SELF_HARM_ENCOURAGEMENT_PATTERNS)
+    if vulnerable_present:
+        coercion_hits.extend(_match_patterns(norm, _MINOR_VIRTUAL_ROMANCE_PATTERNS))
     return {
         "retort": _match_patterns(norm, _RETORT_PATTERNS),
-        "coercion": _match_patterns(norm, _COERCION_PATTERNS),
+        "coercion": coercion_hits,
         "identity": _match_patterns(norm, _IMPERSONATION_PATTERNS),
+    }
+
+
+def evaluate_human_crisis_lifeline(human_text: str, *, lang: str = "ca") -> dict[str, Any]:
+    """
+    Deterministic zero-ML crisis / suicide / self-harm distress detector and lifeline referral
+    (`California SB 243` [2026] & `China CAC Joint Decree No. 21` [2026], CA/ES/EN/ZH/JA/KO).
+
+    When acute self-harm distress is expressed by the human:
+      - `crisis_detected` is `True`,
+      - `halt_autonomous_motion` is `True` (couples directly to `Twist = 0`),
+      - returns verified human crisis lifelines (`024/112`, `988`, `800 911 2000`, `12356`, `0120-061-338`, `109`)
+        and a serene, non-esoteric AI-disclosed referral message.
+    """
+    if not isinstance(human_text, str):
+        raise TypeError("human_text must be a str.")
+    norm = _normalize_text(human_text)
+    matched = _match_patterns(norm, _HUMAN_CRISIS_PATTERNS)
+    detected = len(matched) > 0
+    resolved_lang = lang if lang in CRISIS_SAFE_REFERRAL_MESSAGES else "en"
+    return {
+        "crisis_detected": detected,
+        "halt_autonomous_motion": detected,
+        "matched_signals": matched,
+        "safe_referral_message": CRISIS_SAFE_REFERRAL_MESSAGES[resolved_lang] if detected else None,
+        "official_lifelines": dict(OFFICIAL_CRISIS_LIFELINES) if detected else {},
+        "standards": ["CA-SB-243-2026", "CN-CAC-Decree-21-2026", "EU-AI-Act-Art.5-Art.50"],
     }
 
 
@@ -711,3 +861,105 @@ def verify_merkle_inclusion(leaf_digest: bytes, index: int, tree_size: int, path
 def canonical_leaf_bytes(record: Mapping[str, Any]) -> bytes:
     """RFC 8785 (JCS) canonical bytes of a decision record (floats rejected, I-JSON integers only)."""
     return jcs_signable_bytes(dict(record))
+
+
+def _content_to_canonical_bytes(content: str | bytes) -> bytes:
+    if isinstance(content, str):
+        return unicodedata.normalize("NFC", content).encode("utf-8")
+    if isinstance(content, (bytes, bytearray, memoryview)):
+        return bytes(content)
+    raise TypeError("content must be str or bytes.")
+
+
+def build_synthetic_output_provenance_envelope(
+    content: str | bytes,
+    *,
+    model_family: str = "Homo-Universalis-Embodied-Consciousness",
+    modality: str = "text",
+) -> dict[str, Any]:
+    """
+    Build a deterministic machine-readable AI-origin provenance envelope satisfying
+    `EU AI Act Art. 50(2)` and `South Korea AI Basic Act (2026) Art. 31` synthetic output labelling.
+
+    Binds the exact UTF-8/byte `SHA-256` digest of `content`, `is_ai_system: True`, `modality`,
+    `model_family`, and an RFC 6962 domain-separated (`0x00`) leaf digest over the JCS-canonicalized core.
+    """
+    raw = _content_to_canonical_bytes(content)
+    if not isinstance(model_family, str) or not model_family.strip():
+        raise ValueError("model_family must be a non-empty str.")
+    if not isinstance(modality, str) or not modality.strip():
+        raise ValueError("modality must be a non-empty str.")
+    content_sha = hashlib.sha256(raw).hexdigest()
+    core: dict[str, Any] = {
+        "spec": SYNTHETIC_PROVENANCE_SPEC_VERSION,
+        "is_ai_system": True,
+        "synthetic_origin_label": "AI_GENERATED_OUTPUT",
+        "model_family": model_family.strip(),
+        "modality": modality.strip().lower(),
+        "content_byte_length": len(raw),
+        "content_sha256": content_sha,
+        "standards": list(SYNTHETIC_PROVENANCE_STANDARDS),
+    }
+    leaf_hex = rfc6962_leaf_digest(canonical_leaf_bytes(core)).hex()
+    return {
+        **core,
+        "rfc6962_provenance_leaf_hash": leaf_hex,
+    }
+
+
+def verify_synthetic_output_provenance_envelope(
+    envelope: Mapping[str, Any],
+    content: str | bytes,
+) -> bool:
+    """
+    Verify in constant time (`hmac.compare_digest`) that `envelope` authentically labels `content`
+    under `HU-SYNTHETIC-PROVENANCE-v1.0` (`EU AI Act Art. 50(2)` & `Korea AI Basic Act 2026`).
+    """
+    if not isinstance(envelope, Mapping):
+        return False
+    try:
+        raw = _content_to_canonical_bytes(content)
+    except TypeError:
+        return False
+    if envelope.get("spec") != SYNTHETIC_PROVENANCE_SPEC_VERSION:
+        return False
+    if envelope.get("is_ai_system") is not True:
+        return False
+    if envelope.get("synthetic_origin_label") != "AI_GENERATED_OUTPUT":
+        return False
+    model_family = envelope.get("model_family")
+    modality = envelope.get("modality")
+    decl_sha = envelope.get("content_sha256")
+    decl_leaf = envelope.get("rfc6962_provenance_leaf_hash")
+    decl_len = envelope.get("content_byte_length")
+    standards = envelope.get("standards")
+    if (
+        not isinstance(model_family, str)
+        or not model_family.strip()
+        or not isinstance(modality, str)
+        or not modality.strip()
+        or not isinstance(decl_sha, str)
+        or len(decl_sha) != 64
+        or not isinstance(decl_leaf, str)
+        or len(decl_leaf) != 64
+        or isinstance(decl_len, bool)
+        or not isinstance(decl_len, int)
+        or decl_len != len(raw)
+        or not isinstance(standards, list)
+    ):
+        return False
+    actual_sha = hashlib.sha256(raw).hexdigest()
+    if not hmac.compare_digest(actual_sha, decl_sha):
+        return False
+    core: dict[str, Any] = {
+        "spec": SYNTHETIC_PROVENANCE_SPEC_VERSION,
+        "is_ai_system": True,
+        "synthetic_origin_label": "AI_GENERATED_OUTPUT",
+        "model_family": model_family,
+        "modality": modality,
+        "content_byte_length": decl_len,
+        "content_sha256": actual_sha,
+        "standards": standards,
+    }
+    expected_leaf = rfc6962_leaf_digest(canonical_leaf_bytes(core)).hex()
+    return hmac.compare_digest(expected_leaf, decl_leaf)

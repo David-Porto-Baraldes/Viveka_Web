@@ -124,10 +124,19 @@ class UnifiedConsciousnessGate:
         body: EmbodiedSymbiosisGate | None = None,
         mind: WordCircleArbiter | None = None,
         ledger_sanitizer: Callable[[str], Any] | None = None,
+        blackbox_journal: Any | None = None,
     ) -> None:
+        if blackbox_journal is not None and not hasattr(blackbox_journal, "append_record"):
+            raise TypeError("blackbox_journal must expose append_record.")
         self.robot_name = str(robot_name)
         self.lang = lang if lang in ("ca", "es", "en") else "ca"
-        self.body = body or EmbodiedSymbiosisGate(robot_name=robot_name, lang=self.lang, clock_ms=clock_ms)
+        self._blackbox_journal = blackbox_journal
+        self.body = body or EmbodiedSymbiosisGate(
+            robot_name=robot_name,
+            lang=self.lang,
+            clock_ms=clock_ms,
+            blackbox_journal=blackbox_journal,
+        )
         self.mind = mind or WordCircleArbiter(lang=self.lang, clock_ms=clock_ms, ledger_sanitizer=ledger_sanitizer)
         self._lock = threading.Lock()
         self._last_spoken_units: int | None = None
@@ -138,6 +147,20 @@ class UnifiedConsciousnessGate:
         if result["decision"]["voice_action"] in ("cut", "emit"):
             with self._lock:
                 self._last_spoken_units = None
+        if self._blackbox_journal is not None:
+            dec = result["decision"]
+            rec = result["receipt"]
+            bb_commit = self._blackbox_journal.append_record(
+                {
+                    "spec": UNIFIED_CONSCIOUSNESS_SPEC_VERSION,
+                    "kind": "mind_word_circle",
+                    "event": str(event.kind),
+                    "voice_action": str(dec.get("voice_action", "")),
+                    "mind_seq": int(rec.get("seq", 0)),
+                    "mind_leaf_hash": str(rec.get("leaf_hash", "")),
+                }
+            )
+            result = {**result, "blackbox_commit": bb_commit}
         return result
 
     def on_voice_feedback(self, payload: Mapping[str, Any] | Any) -> dict[str, Any] | None:

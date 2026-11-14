@@ -69,5 +69,20 @@ We argue that the security requirements above are continuously satisfied because
 
 ## 5. Cryptographic Release Verification & Vulnerability Credits (`signed_releases` & `vulnerability_report_credit`)
 
-- **Verifying Signed Protocol Releases (`signed_releases`):** Users and AI agents can cryptographically verify the live A2A Agent Card (`https://homouniversalis.ai/.well-known/agent-card.json`) against our published JSON Web Key Set (`https://homouniversalis.ai/.well-known/jwks.json`, `kid`: `homouniversalis-a2a-es256-v1` and `homouniversalis-a2a-es256-dual`) using standard RFC 8785 JCS + RFC 7515 ES256 verification (tested in `tests/unit/hu_suite/test_hu_03_a2a.py`).
+- **Verifying Signed Protocol Releases (`signed_releases`):** Users and AI agents can cryptographically verify the live A2A Agent Card (`https://homouniversalis.ai/.well-known/agent-card.json`) against our published JSON Web Key Set (`https://homouniversalis.ai/.well-known/jwks.json`, `kid`: `homouniversalis-a2a-es256-v1` and `homouniversalis-a2a-es256-dual`, each resolving to its own distinct EC P-256 public key) using standard RFC 8785 JCS + RFC 7515 ES256 verification (`verify_agent_card_signatures()`). Both signatures cover every endpoint, transport, and security field (`url`, `additionalInterfaces`, `supportedInterfaces`, `preferredTransport`, `security`, `securitySchemes`, `skills[].security`, `capabilities`, `provider`, `version`), and clients MUST require the full-card signature (`homouniversalis-a2a-es256-dual`).
 - **Vulnerability Reporter Credits (`vulnerability_report_credit`):** No security vulnerabilities have been reported in the last 12 months. We explicitly commit to crediting all security researchers who report valid vulnerabilities in this section (and in release advisories), unless the reporter requests anonymity.
+
+---
+
+## 6. EU Cyber Resilience Act (`Regulation (EU) 2024/2847`) & Embodied Robot Edge SDK Policy
+
+For robotics manufacturers and integrators embedding the **Homo Universalis Embodied Consciousness Edge SDK** (`logic/robotics/`, `logic/consciousness/`, `logic/symbiosis/` — specification: `docs/HU_ROBOTIC_REGULATORY_PASSPORT_v1.md`):
+
+1. **Zero-Dependency Edge Supply Chain & Machine-Readable SBOM (CRA Annex I Part II §1):**
+   - All 8 on-board robot edge modules depend **exclusively on the Python standard library** (`external_pypi_dependencies_count == 0`, verified continuously by AST inspection in `logic/robotics/cra_sbom_manifest.py`), eliminating third-party transitive PyPI supply-chain attack vectors on the robot.
+   - A deterministic **CycloneDX `1.6` Software Bill of Materials (SBOM)** with `SHA-256` component digests and an `RFC 6962` Merkle root is published at `https://homouniversalis.ai/.well-known/sbom-robotics-edge.cdx.json` and attested (`ES256` JWS) at `https://homouniversalis.ai/api/sfumato/robotic-passport`.
+2. **CRA Article 14 Active Vulnerability Notification Commitments:**
+   - **Early Warning (`< 24 hours`):** In the event of an actively exploited vulnerability or severe incident affecting the Embodied Edge SDK, we commit to issuing an early warning advisory (and notifying relevant CSIRTs / ENISA where applicable) within **24 hours** of awareness.
+   - **Vulnerability Notification (`< 72 hours`):** Detailed impact assessment and interim mitigation guidance within **72 hours**.
+   - **Final Remediation Report (`<= 14 days`):** Verified patch, updated CycloneDX `1.6` SBOM hashes, and root-cause report within **14 days** of corrective release availability.
+3. **Honest Safety Scope (`WO-13`):** The Embodied Edge SDK is a soft-real-time cognitive and ethical supervisory gate, **not** a hardware safety-rated function (`ISO 13849-1` / `IEC 62061`) and **not** `CE` machinery certification under `Regulation (EU) 2023/1230`.

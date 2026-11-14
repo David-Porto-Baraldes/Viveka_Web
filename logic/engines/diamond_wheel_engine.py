@@ -2226,7 +2226,7 @@ async def execute_diamond_wheel_with_persephone(
             if isinstance(u_info, dict) and u_info:
                 meta_u = u_info.get("metadata")
                 meta_d: dict = meta_u if isinstance(meta_u, dict) else {}
-                if int(meta_d.get("beca_persefone_llavors") or 0) > 0:
+                if int(meta_d.get("beca_persefone_llavors") or 0) > 0 or bool(meta_d.get("orbita_regal_solidaria")):
                     es_llum_solidaria = True
                 elif not u_info.get("orbit_expires_at"):
                     es_llum_solidaria = True

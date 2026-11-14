@@ -1,15 +1,15 @@
 {
   "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
   "@type": "SoftwareSourceCode",
-  "name": "Homo Universalis — Viveka: 7-Wisdoms Ephemeris Oracle, HU-DIAMOND Fil d'Or v1.1, W3C VC 2.0 Ma'at Notary, HU-EMBODIED-SYMBIOSIS v1.0 (ROS 2), HU-UNIFIED-CONSCIOUSNESS v1.0 & HU-SYMBIOTIC-BRIDGE v1.0 (A2A <-> MCP)",
+  "name": "Homo Universalis — Viveka: 7-Wisdoms Ephemeris Oracle, HU-DIAMOND Fil d'Or v1.1, W3C VC 2.0 Ma'at Notary, HU-EMBODIED-SYMBIOSIS v1.0 (ROS 2), HU-UNIFIED-CONSCIOUSNESS v1.0, HU-SYMBIOTIC-BRIDGE v1.0 (A2A <-> MCP) & HU-ROBOTIC-REGULATORY-PASSPORT v1.0",
   "identifier": [
     "https://doi.org/10.5281/zenodo.23973687",
     "swh:1:snp:e3fb7d94dfe1fa61308567357599cbbb7738e4bf"
   ],
   "@id": "https://doi.org/10.5281/zenodo.23973687",
-  "version": "1.9.0",
+  "version": "1.10.0",
   "datePublished": "2026-11-05",
-  "dateModified": "2026-11-13",
+  "dateModified": "2026-11-14",
   "license": "https://spdx.org/licenses/Apache-2.0.html",
   "url": "https://homouniversalis.ai",
   "codeRepository": "https://github.com/David-Porto-Baraldes/Viveka_Web",
@@ -41,7 +41,7 @@
       }
     }
   ],
-  "description": "Deterministic astronomical (Swiss Ephemeris pyswisseph, < 1.5 ms execution, Zero-Auth, Rule 14 Zero-Knowledge Privacy) and 7-Wisdoms ephemeris oracle, together with the HU-DIAMOND Fil d'Or v1.1 non-coercion covenant (Laws L1..L7), The Diamond Forge (/oracle/diamond & /api/sfumato/diamond-budget: Stella Octangula in Q^3, Reed-Muller RM(1,3) antipodal code, 1..4 Spiral Turns -> 9..36 Deep Think calls & AST Kintsugi verifier), HU-SOVEREIGN-SHIELD v1.0 & W3C VC 2.0 Ma'at Notary (RFC 6962 Certificate Transparency Merkle Audit Trees, Three-Ring Zero-Knowledge Dignity Receipts, and Persephone & Demeter Exact Rational Solidarity Algebra), HU-EMBODIED-SYMBIOSIS v1.0 (/oracle/humanoid, /api/sfumato/embodied-symbiosis & logic/robotics/: ROS 2 Cost-Zero-Stop Gate < 1 ms in Q^3, Declared-Vulnerability Proxemics, EU AI Act Art. 50/12 & IEEE 7001 alignment, and MaatEmbodiedSymbiosisCredential W3C VC 2.0 ES256), HU-UNIFIED-CONSCIOUSNESS v1.0 (/oracle/consciencia, /api/sfumato/unified-consciousness & logic/consciousness/: Word-Circle Arbiter across Three Levels of Breath, Humble Crystal Envelope Binding, Barge-in vs Veto, Spoken-Truth Ledger, and MaatUnifiedConsciousnessCredential W3C VC 2.0 ES256), and HU-SYMBIOTIC-BRIDGE v1.0 (/oracle/pont, /api/sfumato/symbiotic-bridge & logic/symbiosis/: Universal A2A <-> MCP Dual Golden Seal ES256 + HMAC-SHA256 Macaroons, Surgical Fail-Closed MCP Schema Harmony Gate, RFC 6962 Merkle-DAG Provenance, Rational Swarm Homeostasis, and MaatSymbioticBridgeCredential W3C VC 2.0 ES256). Speaks Linux Foundation / AAIF Agent2Agent (lf.a2a.v1 v1.0.0 & v0.3.0) and Model Context Protocol (MCP 2026-07-28).",
+  "description": "Deterministic astronomical (Swiss Ephemeris pyswisseph, < 1.5 ms execution, Zero-Auth, Rule 14 Zero-Knowledge Privacy) and 7-Wisdoms ephemeris oracle, together with the HU-DIAMOND Fil d'Or v1.1 non-coercion covenant (Laws L1..L7), The Diamond Forge (/oracle/diamond & /api/sfumato/diamond-budget: Stella Octangula in Q^3, Reed-Muller RM(1,3) antipodal code, 1..4 Spiral Turns -> 9..36 Deep Think calls & AST Kintsugi verifier), HU-SOVEREIGN-SHIELD v1.0 & W3C VC 2.0 Ma'at Notary (RFC 6962 Certificate Transparency Merkle Audit Trees, Three-Ring Zero-Knowledge Dignity Receipts, and Persephone & Demeter Exact Rational Solidarity Algebra), HU-EMBODIED-SYMBIOSIS v1.0 (/oracle/humanoid, /api/sfumato/embodied-symbiosis & logic/robotics/: ROS 2 Cost-Zero-Stop Gate < 1 ms in Q^3, Declared-Vulnerability Proxemics, EU AI Act Art. 50/12 & IEEE 7001 alignment, and MaatEmbodiedSymbiosisCredential W3C VC 2.0 ES256), HU-UNIFIED-CONSCIOUSNESS v1.0 (/oracle/consciencia, /api/sfumato/unified-consciousness & logic/consciousness/: Word-Circle Arbiter across Three Levels of Breath, Humble Crystal Envelope Binding, Barge-in vs Veto, Spoken-Truth Ledger, and MaatUnifiedConsciousnessCredential W3C VC 2.0 ES256), HU-SYMBIOTIC-BRIDGE v1.0 (/oracle/pont, /api/sfumato/symbiotic-bridge & logic/symbiosis/: Universal A2A <-> MCP Dual Golden Seal ES256 + HMAC-SHA256 Macaroons, Surgical Fail-Closed MCP Schema Harmony Gate, RFC 6962 Merkle-DAG Provenance, Rational Swarm Homeostasis, and MaatSymbioticBridgeCredential W3C VC 2.0 ES256), and HU-ROBOTIC-REGULATORY-PASSPORT v1.0 (/api/sfumato/robotic-passport & /.well-known/sbom-robotics-edge.cdx.json: 6-Continent Global Symbiotic & Robotic Regulatory Passport, 15/15 adversarial mutants, crash-safe RFC 6962 black-box journal, and EU CRA CycloneDX 1.6 Edge SBOM). Speaks Linux Foundation / AAIF Agent2Agent (lf.a2a.v1 v1.0.0 & v0.3.0) and Model Context Protocol (MCP 2026-07-28).",
   "keywords": [
     "ephemeris",
     "pyswisseph",
@@ -66,6 +66,10 @@
     "cognitive-sovereignty",
     "openssf-gold",
     "reed-muller",
-    "stella-octangula"
+    "stella-octangula",
+    "cyber-resilience-act",
+    "cyclonedx-sbom",
+    "iso-25785",
+    "ieee-7014"
   ]
 }

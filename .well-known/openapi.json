@@ -2085,6 +2085,69 @@
           }
         }
       }
+    },
+    "/api/sfumato/robotic-passport": {
+      "get": {
+        "operationId": "getRoboticRegulatoryPassport",
+        "summary": "HU-ROBOTIC-REGULATORY-PASSPORT v1.0 · 6-Continent Symbiotic & Robotic Regulatory Passport (ES256 JWS)",
+        "description": "Zero-auth software-layer regulatory passport attesting EU AI Act Art. 12/13/19/50(2) (>= 180d + Korea 1,825d RFC 6962 black-box journal, 8/8 mutants), EU Cyber Resilience Act (EU) 2024/2847 CycloneDX 1.6 SBOM (0 external PyPI dependencies across 8 pure-stdlib edge modules, 4/4 mutants), California SB 243 & China CAC Decree 21 crisis lifeline + minor virtual-romance ban + Korea AI Basic Act synthetic provenance (3/3 mutants = 15/15 total), EU Machinery Regulation (EU) 2023/1230 + ISO 25785-1 non-ML Q^3 OEM boundary, and 6-Continent EU/US-NIST/Asia-Pacific/ISO-IEEE crosswalk. Software-layer self-assessment only (WO-13).",
+        "parameters": [
+          {
+            "name": "lang",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["ca", "es", "en"],
+              "default": "ca"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Whole-response ES256 JWS signed Robotic Regulatory Passport v1.0 report.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "spec": { "type": "string", "example": "HU-DIAMOND/v2" },
+                    "passport_spec": { "type": "string", "example": "HU-ROBOTIC-REGULATORY-PASSPORT-v1.0" },
+                    "passes_software_layer_passport_criteria": { "type": "boolean" },
+                    "external_pypi_dependencies_count": { "type": "integer", "example": 0 },
+                    "total_passport_mutants_killed": { "type": "integer", "example": 15 }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/.well-known/sbom-robotics-edge.cdx.json": {
+      "get": {
+        "operationId": "getRoboticEdgeCycloneDxSbom",
+        "summary": "EU Cyber Resilience Act CycloneDX 1.6 SBOM for the 8-Module Pure-Stdlib Embodied Edge SDK",
+        "description": "Deterministic CycloneDX 1.6 Software Bill of Materials with SHA-256 component hashes and RFC 6962 Merkle root across the 8 pure-stdlib Embodied Consciousness Edge SDK modules.",
+        "responses": {
+          "200": {
+            "description": "Deterministic CycloneDX 1.6 SBOM with SHA-256 component hashes and RFC 6962 Merkle root.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "bomFormat": { "type": "string", "example": "CycloneDX" },
+                    "specVersion": { "type": "string", "example": "1.6" },
+                    "version": { "type": "integer", "example": 1 },
+                    "components": { "type": "array", "items": { "type": "object" } }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 }
