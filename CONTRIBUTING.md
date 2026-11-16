@@ -10,8 +10,8 @@ Com a Teixidors del Miceli, mantenim un temple de codi immaculat. Llegeix aquest
 Si desitges preparar els teus aparells per allotjar el Còdex, cal descarregar tota la maquinària espiritual:
 1. Clona el santuari:
    ```bash
-   git clone https://github.com/David-Porto-Baraldes/codex-suprem.git
-   cd codex-suprem
+   git clone https://github.com/David-Porto-Baraldes/Viveka_Web.git
+   cd Viveka_Web
    ```
 2. Instiga l'entorn de Python (Backend API):
    ```bash

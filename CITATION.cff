@@ -23,29 +23,11 @@ abstract: >-
   /api/sfumato/diamond-budget: Stella Octangula in Q^3, Reed-Muller RM(1,3) antipodal
   code, 1..4 Spiral Turns -> 9..36 Deep Think calls & AST Kintsugi verifier), and the
   HU-SOVEREIGN-SHIELD v1.0
-  & HU-SOVEREIGN-BEACON engine (/api/sfumato/sovereign-shield & /api/sfumato/maat-verify:
-  RFC 6962 Certificate Transparency Merkle Audit Trees, W3C VC 2.0 MaatHumanDignityCredential,
-  Three-Ring Zero-Knowledge Dignity Receipts, and Persephone & Demeter Exact Rational
-  Solidarity Algebra), HU-EMBODIED-SYMBIOSIS v1.0 (/oracle/humanoid,
-  /api/sfumato/embodied-symbiosis & logic/robotics/: ROS 2 Cost-Zero-Stop Gate < 1 ms in Q^3,
-  Declared-Vulnerability Proxemics, EU AI Act Art. 50/12 & IEEE 7001 alignment, and
-  MaatEmbodiedSymbiosisCredential W3C VC 2.0 ES256), HU-UNIFIED-CONSCIOUSNESS v1.0
-  (/oracle/consciencia, /api/sfumato/unified-consciousness & logic/consciousness/:
-  Word-Circle Arbiter across Three Levels of Breath, Humble Crystal Envelope Binding,
-  Barge-in vs Veto, Spoken-Truth Ledger, and MaatUnifiedConsciousnessCredential W3C VC 2.0 ES256),
-  HU-SYMBIOTIC-BRIDGE v1.0 (/oracle/pont, /api/sfumato/symbiotic-bridge & logic/symbiosis/:
-  Universal A2A <-> MCP Dual Golden Seal ES256 + HMAC-SHA256 Macaroons, Surgical Fail-Closed MCP
-  Schema Harmony Gate, RFC 6962 Merkle-DAG Provenance, Rational Swarm Homeostasis, and
-  MaatSymbioticBridgeCredential W3C VC 2.0 ES256), HU-ROBOTIC-REGULATORY-PASSPORT v1.0
-  (/api/sfumato/robotic-passport & /.well-known/sbom-robotics-edge.cdx.json: 6-Continent Global
-  Symbiotic & Robotic Regulatory Passport, 15/15 adversarial mutants, crash-safe RFC 6962 black-box
-  journal, and deterministic EU CRA CycloneDX 1.6 Edge SBOM), and HU-OPEN-FLOOR-ADAPTER v1.0
-  (/.well-known/openfloor-manifest.json, /api/veu/openfloor & /veu: Linux Foundation Open Floor
-  OVON v1.1.1 universal voice interoperability, WordCircleArbiter Laws U1..U7, and SHA-256 + RFC 8785
-  synthetic speech provenance).
-  Speaks the Linux Foundation
+  & HU-SOVEREIGN-BEACON engine (/api/sfumato/sovereign-shield: RFC 6962 Certificate
+  Transparency Merkle Audit Trees, Three-Ring Zero-Knowledge Dignity Receipts, and
+  Persephone & Demeter Exact Rational Solidarity Algebra). Speaks the Linux Foundation
   / AAIF Agent2Agent (lf.a2a.v1 v1.0.0 & v0.3.0 with RFC 8785 JCS + RFC 7515 ES256 JWS
-  signatures), Model Context Protocol (MCP 2026-07-28), and Open Floor (OVON v1.1.1). Awarded Linux Foundation
+  signatures) and Model Context Protocol (MCP 2026-07-28). Awarded Linux Foundation
   OpenSSF Best Practices Gold Badge (#16118 — 300% tiered) and Glama TDQS Grade A.
 keywords:
   - ephemeris
@@ -55,22 +37,6 @@ keywords:
   - mcp
   - agent2agent
   - a2a
-  - ros2
-  - humanoid-robotics
-  - embodied-ai
-  - unified-consciousness
-  - conversational-ai
-  - barge-in
-  - a2a-mcp-bridge
-  - macaroons
-  - merkle-dag
-  - eu-ai-act
-  - cyber-resilience-act
-  - cyclonedx-sbom
-  - iso-25785
-  - ieee-7001
-  - ieee-7014
-  - w3c-verifiable-credentials
   - rfc-6962
   - rfc-8785
   - rfc-7515
@@ -83,11 +49,8 @@ keywords:
   - iching
   - reed-muller
   - stella-octangula
-  - open-floor-protocol
-  - ovon
-  - voice-interoperability
 license: Apache-2.0
-version: 1.11.0
+version: 1.6.1
 doi: 10.5281/zenodo.23973687
 identifiers:
   - type: doi
@@ -96,4 +59,4 @@ identifiers:
   - type: swh
     value: "swh:1:snp:e3fb7d94dfe1fa61308567357599cbbb7738e4bf"
     description: "UNESCO Software Heritage Persistent Archival Snapshot"
-date-released: "2026-11-14"
+date-released: "2026-11-07"

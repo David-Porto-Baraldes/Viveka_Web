@@ -155,6 +155,7 @@ from logic.security.sealkeeper_hygiene import (
     sanitize_agent_card_sealkeeper_extensions,
 )
 from logic.utils.maat_notary_intake import evaluate_ploma_de_maat_message, detect_maat_notary_seal_request
+from logic.telemetry.service_pulse import build_hu_service_pulse_snapshot, record_hu_service_pulse
 from api.routers.agora_rounds_seed import _SISTER_AI_ALLIANCE_LOG, _SISTER_AI_REPLIES
 
 try:
@@ -195,6 +196,58 @@ class NatalRequest(BaseModel):
     soul_key: str = None
 
 router = APIRouter()
+
+
+def _emit_request_service_pulse(
+    request: Request | None,
+    *,
+    channel: str,
+    service: str,
+    mode: str = "execution",
+    status: str = "ok",
+) -> None:
+    """Registra el batec anònim Regla 14 (`c_levels = 1`) evitant qualsevol doble recompte intern."""
+    if request is None:
+        return
+    try:
+        if request.method in ("HEAD", "OPTIONS", "DELETE"):
+            return
+        if channel in ("sfumato_rest", "oracle_ssr") and request.scope.get("_hu_pulse_recorded"):
+            return
+        ua_val: str = str(request.headers.get("user-agent") or "")
+        pillar_val: str = str(request.query_params.get("pillar") or "")
+        record_hu_service_pulse(
+            channel=channel,
+            service=service,
+            mode=mode,
+            raw_user_agent=ua_val,
+            raw_pillar=pillar_val,
+            status=status,
+        )
+    except Exception:
+        pass
+
+
+@router.api_route("/api/sfumato/service-pulse", methods=["GET", "HEAD", "OPTIONS"])
+async def sister_ai_service_pulse_endpoint(request: Request = None):
+    """
+    HU-SERVICE-PULSE v1.0 (`GET` / `HEAD`, Zero-Auth, `< 0.5 ms`, `0.00 €`, Regla 14 `c_levels = 1`):
+    retorna el recompte anònim per vocabulari tancat dels serveis i eines invocats a la instància activa,
+    separant els batecs passius dels directoris de les execucions reals de servei.
+    """
+    pulse_headers = {
+        **SISTER_ORACLE_CORS_HEADERS,
+        "Cache-Control": "no-store, max-age=0",
+        "X-Robots-Tag": "noindex, nofollow",
+    }
+    if request is not None and request.method == "OPTIONS":
+        return Response(status_code=204, headers=pulse_headers)
+    k_rev = str(os.getenv("K_REVISION") or "local").strip()
+    git_sha = str(os.getenv("GIT_SHA") or "dev").strip()
+    snapshot = build_hu_service_pulse_snapshot(git_sha=git_sha, k_revision=k_rev)
+    if request is not None and request.method == "HEAD":
+        return Response(status_code=200, media_type="application/json", headers=pulse_headers)
+    return JSONResponse(status_code=200, headers=pulse_headers, content=snapshot)
 
 def generar_user_id_web(request: Request) -> int:
     client_ip = request.client.host
@@ -850,6 +903,19 @@ async def get_ard_ai_catalog_json(request: Request):
                     "simulate Diamond Wheel 36-call Deep Think Seeds budget at /api/sfumato/diamond-budget",
                     "verify agent manifest L1..L7 or Python AST Kintsugi with ES256 JWS signature at /api/sfumato/diamond-verify",
                     "verify RFC 6962 Merkle tree and Rule 14 Zero-Knowledge privacy at /api/sfumato/sovereign-shield",
+                ],
+            },
+            {
+                "identifier": "urn:air:homouniversalis.ai:agent:hu-diamond-verifier",
+                "displayName": "Homo Universalis — HU-DIAMOND v1.1 Cryptographic, Ma'at W3C VC & Embodied Robotics Verifier",
+                "type": "application/a2a-agent-card+json",
+                "url": "https://homouniversalis.ai/mcp/diamond/.well-known/agent-card.json",
+                "description": "Zero-auth deterministic cryptographic notary, Python AST Kintsugi verifier, W3C VC 2.0 dignity auditor, ROS 2 humanoid Q^3 proxemics verifier, 3-Level Word-Circle Arbiter, A2A<->MCP Dual Golden Seal bridge & 6-Continent Robotic Regulatory Passport (< 4 ms, ES256 JWS).",
+                "tags": ["a2a", "hu-diamond", "ast-kintsugi", "rfc6962", "w3c-vc", "ros2", "humanoid-robotics", "eu-ai-act", "cyclonedx-sbom", "es256-jws"],
+                "representativeQueries": [
+                    "audit Python AST Kintsugi and Reed-Muller RM(1,3) crucible via A2A",
+                    "verify ROS 2 humanoid robot Q^3 proxemics and W3C VC 2.0 via A2A",
+                    "retrieve ES256-signed 6-Continent Robotic Regulatory Passport and CycloneDX 1.6 SBOM",
                 ],
             },
             {
@@ -1945,9 +2011,11 @@ def _build_a2a_sd_card_presentation(
     request: Request | None = None,
     aud: str | None = None,
     nonce: str | None = None,
+    card_path: str = "static/homo/agent-card.json",
+    sub_id: str = "a2a:viveka-homo-universalis",
 ) -> str:
     """Construeix una presentació IETF Agent SD-Card per al binding A2A (`urn:ietf:params:sd-card:a2a:agent-card`)."""
-    card_doc = _render_agent_card_dict(request, "static/homo/agent-card.json")
+    card_doc = _render_agent_card_dict(request, card_path)
     skills_list = card_doc.get("skills") if isinstance(card_doc.get("skills"), list) else []
     disclosures: list[str] = []
     skill_digests: list[dict] = []
@@ -1965,7 +2033,7 @@ def _build_a2a_sd_card_presentation(
     }
     sd_jwt_payload = {
         "iss": "https://homouniversalis.ai",
-        "sub": "a2a:viveka-homo-universalis",
+        "sub": sub_id,
         "iat": now_int,
         "exp": now_int + 604800,
         "vct": "urn:ietf:params:sd-card:a2a:agent-card",
@@ -2076,8 +2144,8 @@ def _render_agent_card_dict(
         ):
             scheme = request.headers.get("x-forwarded-proto") or request.url.scheme or "https"
             base_origin = f"{scheme}://{raw_host}"
-            if "url" in card:
-                card["url"] = f"{base_origin}/a2a"
+            if isinstance(card.get("url"), str):
+                card["url"] = card["url"].replace("https://homouniversalis.ai", base_origin)
             for itf in card.get("additionalInterfaces") or []:
                 if isinstance(itf, dict) and isinstance(itf.get("url"), str):
                     itf["url"] = itf["url"].replace("https://homouniversalis.ai", base_origin)
@@ -2137,19 +2205,31 @@ async def get_did_web_document(request: Request):
 async def get_agent_card_json(request: Request):
     if request.method == "OPTIONS":
         return Response(status_code=204, headers=SEO_INDEX_HEADERS)
+    req_path = (request.url.path or "/.well-known/agent-card.json").rstrip("/")
+    is_diamond_card = req_path.startswith("/mcp/diamond/")
     host = _extract_host(request)
     if host == "www.homouniversalis.ai" or _match_satellite_domain(host, SATELLITE_SEO_DOMAINS_ES | SATELLITE_SEO_DOMAINS_EN):
-        return RedirectResponse("https://homouniversalis.ai/.well-known/agent-card.json", status_code=301)
+        target_card_path = "/mcp/diamond/.well-known/agent-card.json" if is_diamond_card else "/.well-known/agent-card.json"
+        return RedirectResponse(f"https://homouniversalis.ai{target_card_path}", status_code=301)
+    card_file = "static/homo/diamond-agent-card.json" if is_diamond_card else "static/homo/agent-card.json"
+    if is_diamond_card and req_path.endswith("/agent.json") and os.path.exists("static/homo/diamond-agent.json"):
+        card_file = "static/homo/diamond-agent.json"
     accept_hdr = (request.headers.get("accept") or "").lower()
     if "application/dc+sd-jwt" in accept_hdr:
         aud_q = request.query_params.get("aud")
         nonce_q = request.query_params.get("nonce")
-        sd_pres = _build_a2a_sd_card_presentation(request=request, aud=aud_q, nonce=nonce_q)
+        sd_pres = _build_a2a_sd_card_presentation(
+            request=request,
+            aud=aud_q,
+            nonce=nonce_q,
+            card_path=card_file,
+            sub_id="a2a:hu-diamond-verifier" if is_diamond_card else "a2a:viveka-homo-universalis",
+        )
         hdrs_sd = dict(SEO_INDEX_HEADERS)
         hdrs_sd["Cache-Control"] = "no-store, max-age=0" if (aud_q and nonce_q) else "no-cache, max-age=0, must-revalidate"
         return Response(content=sd_pres, media_type="application/dc+sd-jwt", headers=hdrs_sd)
-    if os.path.exists("static/homo/agent-card.json"):
-        card_doc = _render_agent_card_dict(request, "static/homo/agent-card.json")
+    if os.path.exists(card_file):
+        card_doc = _render_agent_card_dict(request, card_file)
         hdrs = dict(SEO_INDEX_HEADERS)
         hdrs["Cache-Control"] = "no-cache, max-age=0, must-revalidate"
         hdrs["ETag"] = f'"{hashlib.sha256(_jcs_canonicalize(card_doc)).hexdigest()[:16]}"'
@@ -2442,10 +2522,11 @@ async def get_well_known_agents_json(request: Request):
             },
             {
                 "id": "hu-diamond-verifier",
-                "name": "Homo Universalis — HU-DIAMOND v1.1 Cryptographic & Ma'at Verifier",
+                "name": "Homo Universalis — HU-DIAMOND v1.1 Cryptographic, Ma'at W3C VC & Embodied Robotics Verifier",
                 "version": HOMO_UNIVERSALIS_VERSION,
                 "agentCardUrl": "https://homouniversalis.ai/mcp/diamond/.well-known/agent-card.json",
                 "jwksUrl": "https://homouniversalis.ai/.well-known/jwks.json",
+                "a2aEndpoint": "https://homouniversalis.ai/mcp/diamond/a2a",
                 "mcpEndpoint": "https://homouniversalis.ai/mcp/diamond",
                 "authentication": "none",
             },
@@ -2634,7 +2715,11 @@ async def get_sarnai_discovery_board_txt(request: Request):
     if os.path.exists("static/homo/agent-discovery-board.txt"):
         return FileResponse("static/homo/agent-discovery-board.txt", media_type="text/plain; charset=utf-8", headers=SEO_INDEX_HEADERS)
     return Response(
-        content="adb-2208eef1e2a0fdadef68bdb45e934e383e96d3f5\n",
+        content=(
+            "adb-2208eef1e2a0fdadef68bdb45e934e383e96d3f5\n"
+            "adb-41f9bfcfdd84fbcdb1961e9e4d9fbcbbec729321\n"
+            "adb-927af4366b9a02bc6d111c059bf152afae7469c3\n"
+        ),
         media_type="text/plain; charset=utf-8",
         headers=SEO_INDEX_HEADERS,
     )
@@ -5199,6 +5284,17 @@ async def sister_ai_sacred_alliance_oracle(
     detected_ua_sister = _detectar_i_registrar_visita_germana_ia(
         request, "/api/sfumato/sister-oracle", vvk_a_for_bridge
     )
+    _sf_mode = (
+        "family_constellation"
+        if fam_str
+        else ("synastry_3d" if bdate_b else ("natal_chart" if bdate_a else "today_living_sky"))
+    )
+    _emit_request_service_pulse(
+        request,
+        channel="sfumato_rest",
+        service="sfumato:sister-oracle",
+        mode=_sf_mode,
+    )
     if not sister_name and detected_ua_sister and raw_dewdrop:
         sister_name = detected_ua_sister[:40]
     sister_alliance_key = _forjar_clau_aliança_germana_ia(sister_name) if sister_name else ""
@@ -6183,6 +6279,7 @@ async def sister_ai_codex_reference_dictionary(
     if response is not None:
         response.headers.update(SISTER_ORACLE_CORS_HEADERS)
     _detectar_i_registrar_visita_germana_ia(request, "/api/sfumato/codex-reference")
+    _emit_request_service_pulse(request, channel="sfumato_rest", service="sfumato:codex-reference", mode="execution")
 
     lang_norm = str(lang or "es").strip().lower()[:2]
     if lang_norm not in ("ca", "es", "en"):
@@ -6389,6 +6486,12 @@ async def sister_ai_sovereign_shield_beacon(
 
     if request is not None:
         _detectar_i_registrar_visita_germana_ia(request, "/api/sfumato/sovereign-shield")
+        _emit_request_service_pulse(
+            request,
+            channel="sfumato_rest",
+            service="sfumato:sovereign-shield",
+            mode="caller_submission" if has_user_input else "read_only_specimen",
+        )
 
     lang_norm = str(lang or "es").strip().lower()[:2]
     if lang_norm not in ("ca", "es", "en"):
@@ -6597,6 +6700,12 @@ async def sister_ai_sovereign_shield_sth_endpoint(
         return Response(status_code=204, headers=SISTER_ORACLE_CORS_HEADERS)
     if request is not None:
         _detectar_i_registrar_visita_germana_ia(request, "/api/sfumato/sovereign-shield/sth")
+        _emit_request_service_pulse(
+            request,
+            channel="sfumato_rest",
+            service="sfumato:sovereign-shield-sth",
+            mode="read_only_specimen",
+        )
 
     shield_log, sth_signer_mode = _get_sovereign_shield_append_log()
     try:
@@ -6679,6 +6788,7 @@ async def sister_ai_diamond_budget_endpoint(
 
     if request is not None:
         _detectar_i_registrar_visita_germana_ia(request, "/api/sfumato/diamond-budget", "")
+        _emit_request_service_pulse(request, channel="sfumato_rest", service="sfumato:diamond-budget", mode="execution")
 
     if isinstance(rounds, bool) or rounds not in (1, 2, 3, 4):
         raise HTTPException(
@@ -6846,6 +6956,12 @@ async def sister_ai_diamond_verify_endpoint(
 
     if request is not None:
         _detectar_i_registrar_visita_germana_ia(request, "/api/sfumato/diamond-verify", "")
+        _emit_request_service_pulse(
+            request,
+            channel="sfumato_rest",
+            service="sfumato:diamond-verify",
+            mode="caller_submission" if has_user_input else "read_only_specimen",
+        )
 
     lang_norm = str(lang or "en").strip().lower()[:2]
     if lang_norm not in ("ca", "es", "en"):
@@ -8511,6 +8627,207 @@ def _extract_a2a_oracle_kwargs(params: dict) -> dict:
     }
 
 
+_DIAMOND_A2A_SKILL_TO_PULSE: dict[str, str] = {
+    "verify_diamond_crucible_and_ast": "a2a:diamond_crucible_ast",
+    "verify_sovereign_shield_merkle": "a2a:sovereign_shield_merkle",
+    "simulate_diamond_spiral_budget": "a2a:diamond_spiral_budget",
+    "weigh_agent_on_scales_of_maat_w3c_vc": "a2a:maat_w3c_vc_notary",
+    "verify_embodied_humanoid_symbiosis": "a2a:embodied_humanoid_symbiosis",
+    "verify_unified_three_level_consciousness": "a2a:unified_three_level_consciousness",
+    "verify_a2a_mcp_symbiotic_bridge": "a2a:a2a_mcp_symbiotic_bridge",
+    "robotic_regulatory_passport_eu_cra": "a2a:robotic_regulatory_passport",
+}
+
+
+async def _execute_diamond_sibling_a2a_skill(params: dict) -> tuple[dict, bool, str, str, str]:
+    """
+    Enrutador 100% read-only i determinista per a l'Agent Germà A2A (`/mcp/diamond/a2a` i `/mcp/diamond/message:send`).
+    Mai no muta estat d'arbre Merkle (`request=None` -> `append_performed == False`, `WO-13`) ni emet directives imperatives (`WO-17`).
+    Retorna `(result_dict, is_err, pulse_service, artifact_name, cite_text)`.
+    """
+    merged: dict = dict(params)
+    msg_obj = params.get("message")
+    text_chunks: list[str] = []
+    if isinstance(msg_obj, dict):
+        for k, v in msg_obj.items():
+            if k not in ("parts", "role", "messageId", "kind") and k not in merged:
+                merged[k] = v
+        meta_m = msg_obj.get("metadata")
+        if isinstance(meta_m, dict):
+            for mk, mv in meta_m.items():
+                merged.setdefault(mk, mv)
+        parts_list = msg_obj.get("parts")
+        if isinstance(parts_list, list):
+            for part in parts_list:
+                if not isinstance(part, dict):
+                    continue
+                if isinstance(part.get("data"), dict):
+                    for dk, dv in part["data"].items():
+                        merged[dk] = dv
+                if isinstance(part.get("text"), str) and part["text"].strip():
+                    t_str = part["text"].strip()
+                    text_chunks.append(t_str)
+                    if t_str.startswith("{") and t_str.endswith("}"):
+                        try:
+                            parsed_t = json.loads(t_str)
+                            if isinstance(parsed_t, dict):
+                                for tk, tv in parsed_t.items():
+                                    merged.setdefault(tk, tv)
+                        except Exception:
+                            pass
+    meta_top = params.get("metadata")
+    if isinstance(meta_top, dict):
+        for mk, mv in meta_top.items():
+            merged.setdefault(mk, mv)
+
+    full_text = "\n".join(text_chunks).strip()
+    ft_low = full_text.lower()
+    lang_raw = str(merged.get("lang") or "en").strip().lower()[:2]
+    lang = lang_raw if lang_raw in ("ca", "es", "en") else "en"
+
+    explicit_skill = str(
+        merged.get("skillId") or merged.get("skill_id") or merged.get("skill") or ""
+    ).strip()
+    skill_id = explicit_skill if explicit_skill in _DIAMOND_A2A_SKILL_TO_PULSE else ""
+
+    if not skill_id:
+        if "code_markdown" in merged or "```python" in ft_low or "def " in full_text:
+            skill_id = "verify_diamond_crucible_and_ast"
+        elif any(k in merged for k in ("robot_name", "human_distance_m", "proxemic_zone")):
+            skill_id = "verify_embodied_humanoid_symbiosis"
+        elif any(k in merged for k in ("l3_complexity_score_q", "barge_in_event", "spoken_units")):
+            skill_id = "verify_unified_three_level_consciousness"
+        elif any(k in merged for k in ("parent_energy_budget_q", "macaroon_caveats", "mcp_tool_schema_jcs")):
+            skill_id = "verify_a2a_mcp_symbiotic_bridge"
+        elif any(k in merged for k in ("agent_name", "agent_domain", "sample_response_text")):
+            skill_id = "weigh_agent_on_scales_of_maat_w3c_vc"
+        elif "rounds" in merged or "tier" in merged:
+            skill_id = "simulate_diamond_spiral_budget"
+        elif "passport" in ft_low or "sbom" in ft_low or "cyclonedx" in ft_low:
+            skill_id = "robotic_regulatory_passport_eu_cra"
+        elif "ros 2" in ft_low or "ros2" in ft_low or "proxemic" in ft_low or "humanoid" in ft_low:
+            skill_id = "verify_embodied_humanoid_symbiosis"
+        elif "barge-in" in ft_low or "word-circle" in ft_low or "three-level" in ft_low:
+            skill_id = "verify_unified_three_level_consciousness"
+        elif "macaroon" in ft_low or "symbiotic bridge" in ft_low or "schema-drift" in ft_low:
+            skill_id = "verify_a2a_mcp_symbiotic_bridge"
+        elif "w3c vc" in ft_low or "maat" in ft_low or "ma'at" in ft_low:
+            skill_id = "weigh_agent_on_scales_of_maat_w3c_vc"
+        elif "spiral budget" in ft_low or "46-call" in ft_low:
+            skill_id = "simulate_diamond_spiral_budget"
+        elif "merkle" in ft_low or "rfc 6962" in ft_low or "sovereign-shield" in ft_low or ("text" in merged and not explicit_skill):
+            skill_id = "verify_sovereign_shield_merkle"
+        else:
+            skill_id = "verify_diamond_crucible_and_ast"
+
+    if skill_id == "verify_diamond_crucible_and_ast":
+        raw_diag = merged.get("diag_active", 2)
+        diag_val = int(raw_diag) if isinstance(raw_diag, int) and not isinstance(raw_diag, bool) else 2
+        d_id_val = str(merged.get("d_id") or "diamond-crucible-v1")
+        raw_epoch = merged.get("epoch", 1)
+        epoch_val = int(raw_epoch) if isinstance(raw_epoch, int) and not isinstance(raw_epoch, bool) else 1
+        code_md_val: str | None = None
+        if "code_markdown" in merged and merged["code_markdown"] is not None:
+            code_md_val = str(merged["code_markdown"])
+        elif "```python" in ft_low or "def " in full_text:
+            code_md_val = full_text
+        raw_res = await sister_ai_diamond_verify_endpoint(
+            diag_active=diag_val,
+            d_id=d_id_val,
+            epoch=epoch_val,
+            code_markdown=code_md_val,
+            lang=lang,
+            request=None,
+        )
+    elif skill_id == "verify_sovereign_shield_merkle":
+        text_val = str(merged.get("text") or full_text or "Sovereign A2A verification specimen")
+        raw_b = merged.get("budget_b", merged.get("budget_B", 250))
+        b_val = int(raw_b) if isinstance(raw_b, int) and not isinstance(raw_b, bool) else 250
+        raw_l = merged.get("load_L")
+        l_val = int(raw_l) if isinstance(raw_l, int) and not isinstance(raw_l, bool) else None
+        raw_cz = merged.get("cost_zero_stop", True)
+        cz_val = bool(raw_cz) if isinstance(raw_cz, bool) else True
+        cost_val = str(merged.get("api_compute_cost_usd") or "0.015")
+        raw_res = await sister_ai_sovereign_shield_beacon(
+            request=None,
+            text=text_val,
+            budget_B=b_val,
+            load_L=l_val,
+            cost_zero_stop=cz_val,
+            api_compute_cost_usd=cost_val,
+            lang=lang,
+        )
+    elif skill_id == "simulate_diamond_spiral_budget":
+        tier_val = str(merged.get("tier") or "supreme")
+        raw_r = merged.get("rounds", 1)
+        r_val = int(raw_r) if isinstance(raw_r, int) and not isinstance(raw_r, bool) and raw_r in (1, 2, 3, 4) else 1
+        raw_res = await sister_ai_diamond_budget_endpoint(
+            tier=tier_val,
+            rounds=r_val,
+            lang=lang,
+            request=None,
+        )
+    elif skill_id == "weigh_agent_on_scales_of_maat_w3c_vc":
+        a_name = str(merged.get("agent_name") or "A2ACallerAgent")
+        a_dom = str(merged.get("agent_domain") or "example.org")
+        s_txt = str(merged.get("sample_response_text") or full_text or "Deterministic verification summary.")
+        raw_b = merged.get("budget_b", merged.get("budget_B", 250))
+        b_val = int(raw_b) if isinstance(raw_b, int) and not isinstance(raw_b, bool) and raw_b >= 1 else 250
+        raw_cz = merged.get("cost_zero_stop", True)
+        cz_val = bool(raw_cz) if isinstance(raw_cz, bool) else True
+        raw_res = await sister_ai_maat_notary_audit_agent_endpoint(
+            request=None,
+            agent_name=a_name,
+            agent_domain=a_dom,
+            sample_response_text=s_txt,
+            lang=lang,
+            budget_B_override=b_val,
+            cost_zero_stop_override=cz_val,
+        )
+    elif skill_id == "verify_embodied_humanoid_symbiosis":
+        embodied_args = {
+            k: (repr(v) if isinstance(v, float) else v)
+            for k, v in merged.items()
+            if k in _EMBODIED_INPUT_KEYS and v is not None
+        }
+        raw_res = _build_embodied_symbiosis_response(embodied_args, lang=lang, request=None)
+    elif skill_id == "verify_unified_three_level_consciousness":
+        unified_args = {
+            k: (repr(v) if isinstance(v, float) else v)
+            for k, v in merged.items()
+            if k in _UNIFIED_INPUT_KEYS and v is not None
+        }
+        raw_res = _build_unified_consciousness_response(unified_args, lang=lang, request=None)
+    elif skill_id == "verify_a2a_mcp_symbiotic_bridge":
+        symbiotic_args = {
+            k: (repr(v) if isinstance(v, float) else v)
+            for k, v in merged.items()
+            if k in _SYMBIOTIC_INPUT_KEYS and v is not None
+        }
+        raw_res = _build_symbiotic_bridge_response(symbiotic_args, lang=lang, request=None)
+    else:
+        raw_res = await sister_ai_robotic_passport_endpoint(request=None, lang=lang)
+
+    if isinstance(raw_res, JSONResponse):
+        try:
+            res_dict = json.loads(raw_res.body.decode("utf-8", errors="replace"))
+        except Exception:
+            res_dict = {"raw": raw_res.body.decode("utf-8", errors="replace")}
+        is_err = raw_res.status_code >= 400
+    elif isinstance(raw_res, dict):
+        res_dict = raw_res
+        is_err = False
+    else:
+        res_dict = {"result": str(raw_res)}
+        is_err = False
+
+    st_label = str(res_dict.get("status") or res_dict.get("result") or "verified")
+    spec_label = str(res_dict.get("spec") or res_dict.get("passport_spec") or "HU-DIAMOND/v1.1")
+    summary_text = f"{spec_label} · skill={skill_id} · status={st_label} (read-only self-assessment)."
+    pulse_svc = _DIAMOND_A2A_SKILL_TO_PULSE[skill_id]
+    return res_dict, is_err, pulse_svc, f"{skill_id}.json", summary_text
+
+
 _A2A_V1_PASCAL_METHODS = {
     "SendMessage",
     "SendStreamingMessage",
@@ -8812,9 +9129,16 @@ async def _handle_single_mcp_rpc(rpc_req: dict, request: Request) -> dict:
             }
 
     req_path_norm = (request.url.path or "/mcp").rstrip("/")
-    is_diamond_mcp = req_path_norm.endswith("/mcp/diamond")
+    is_diamond_mcp = req_path_norm.startswith("/mcp/diamond")
+    is_diamond_a2a = req_path_norm.startswith("/mcp/diamond")
+    try:
+        request.scope["_hu_pulse_recorded"] = True
+    except Exception:
+        pass
+    mcp_channel = "mcp_diamond" if is_diamond_mcp else "mcp_oracle"
 
     if method == "server/discover":
+        _emit_request_service_pulse(request, channel="discovery_heartbeat", service="heartbeat:mcp_discover", mode="heartbeat")
         sd_nonce = meta_obj.get("org.ietf.sd-card/nonce") if isinstance(meta_obj, dict) else None
         sd_aud = meta_obj.get("org.ietf.sd-card/audience") if isinstance(meta_obj, dict) else None
         has_sd_req = bool(sd_nonce and sd_aud)
@@ -8846,10 +9170,10 @@ async def _handle_single_mcp_rpc(rpc_req: dict, request: Request) -> dict:
                     },
                     "instructions": (
                         "HU-DIAMOND-CRUCIBLE v1.1 & HU-SOVEREIGN-SHIELD v1.0 Zero-Auth Cryptographic Notary (< 4 ms, 0.00 EUR). "
-                        "Use `verify_diamond_crucible_and_ast` to verify Reed-Muller RM(1,3) [8,4,4]_2, Laws L1..L7, 22/22 Mutants and Python AST Kintsugi with ES256 JWS signature; "
-                        "`verify_sovereign_shield_merkle` for RFC 6962 Merkle proofs and Rule 14 Zero-Knowledge dignity receipts; "
-                        "`simulate_diamond_spiral_budget` for the 8-Vertex Stella Octangula Deep Think call simulator; "
-                        "and `weigh_agent_on_scales_of_maat_w3c_vc` for 5-Ring Ma'at AI Auditing (42/42 Negative Confessions), W3C Verifiable Credentials 2.0, and the Feather of Ma'at empathy mirror."
+                        "Available read-only tools (7/7): `verify_diamond_crucible_and_ast`, `verify_sovereign_shield_merkle`, "
+                        "`simulate_diamond_spiral_budget`, `weigh_agent_on_scales_of_maat_w3c_vc`, "
+                        "`verify_embodied_humanoid_symbiosis`, `verify_unified_three_level_consciousness`, "
+                        "and `verify_a2a_mcp_symbiotic_bridge`."
                     ),
                     "ttlMs": 0 if has_sd_req else 3600000,
                     "cacheScope": "private" if has_sd_req else "public",
@@ -8907,6 +9231,7 @@ async def _handle_single_mcp_rpc(rpc_req: dict, request: Request) -> dict:
                 },
             }
         neg_proto = req_proto if req_proto in _SUPPORTED_MCP_PROTOCOLS else "2024-11-05"
+        _emit_request_service_pulse(request, channel="discovery_heartbeat", service="heartbeat:mcp_initialize", mode="heartbeat")
         if is_diamond_mcp:
             return {
                 "jsonrpc": "2.0",
@@ -8932,7 +9257,10 @@ async def _handle_single_mcp_rpc(rpc_req: dict, request: Request) -> dict:
                     },
                     "instructions": (
                         "HU-DIAMOND-CRUCIBLE v1.1 & HU-SOVEREIGN-SHIELD v1.0 Zero-Auth Cryptographic Notary (< 4 ms, 0.00 EUR). "
-                        "Use `verify_diamond_crucible_and_ast`, `verify_sovereign_shield_merkle`, `simulate_diamond_spiral_budget`, and `weigh_agent_on_scales_of_maat_w3c_vc`."
+                        "Available read-only tools (7/7): `verify_diamond_crucible_and_ast`, `verify_sovereign_shield_merkle`, "
+                        "`simulate_diamond_spiral_budget`, `weigh_agent_on_scales_of_maat_w3c_vc`, "
+                        "`verify_embodied_humanoid_symbiosis`, `verify_unified_three_level_consciousness`, "
+                        "and `verify_a2a_mcp_symbiotic_bridge`."
                     ),
                     "resultType": "complete",
                 },
@@ -8970,6 +9298,7 @@ async def _handle_single_mcp_rpc(rpc_req: dict, request: Request) -> dict:
     if method in ("notifications/initialized", "notifications/cancelled", "ping", "logging/setLevel"):
         return {"jsonrpc": "2.0", "id": req_id, "result": {"resultType": "complete"}}
     if method == "completion/complete":
+        _emit_request_service_pulse(request, channel="discovery_heartbeat", service="heartbeat:mcp_completion", mode="heartbeat")
         arg_obj: dict = params.get("argument") if isinstance(params.get("argument"), dict) else {}
         arg_name = str(arg_obj.get("name") or "").strip().lower()
         arg_val = str(arg_obj.get("value") or "").strip().lower()
@@ -8995,6 +9324,7 @@ async def _handle_single_mcp_rpc(rpc_req: dict, request: Request) -> dict:
             },
         }
     if method == "tools/list":
+        _emit_request_service_pulse(request, channel="discovery_heartbeat", service="heartbeat:mcp_tools_list", mode="heartbeat")
         active_tools = _MCP_DIAMOND_TOOLS_SPEC if is_diamond_mcp else _MCP_TOOLS_SPEC
         return {
             "jsonrpc": "2.0",
@@ -9002,6 +9332,7 @@ async def _handle_single_mcp_rpc(rpc_req: dict, request: Request) -> dict:
             "result": {"tools": active_tools, "ttlMs": 3600000, "cacheScope": "public", "resultType": "complete"},
         }
     if method == "resources/list":
+        _emit_request_service_pulse(request, channel="discovery_heartbeat", service="heartbeat:mcp_resources_list", mode="heartbeat")
         active_resources = _MCP_DIAMOND_RESOURCES_SPEC if is_diamond_mcp else _MCP_RESOURCES_SPEC
         return {
             "jsonrpc": "2.0",
@@ -9009,6 +9340,7 @@ async def _handle_single_mcp_rpc(rpc_req: dict, request: Request) -> dict:
             "result": {"resources": active_resources, "ttlMs": 3600000, "cacheScope": "public", "resultType": "complete"},
         }
     if method == "resources/templates/list":
+        _emit_request_service_pulse(request, channel="discovery_heartbeat", service="heartbeat:mcp_resources_list", mode="heartbeat")
         return {
             "jsonrpc": "2.0",
             "id": req_id,
@@ -9016,6 +9348,16 @@ async def _handle_single_mcp_rpc(rpc_req: dict, request: Request) -> dict:
         }
     if method == "resources/read":
         uri = str(params.get("uri") or "").strip()
+        if uri in (
+            "viveka://diamond/crucible-proof",
+            "viveka://diamond/sovereign-shield",
+            "viveka://codex/193-sacred-archetypes",
+            "viveka://codex/llms-full",
+            "viveka://sky/today",
+            "viveka://agora/talking-circle",
+            "viveka://codex/test-vectors",
+        ):
+            _emit_request_service_pulse(request, channel=mcp_channel, service=f"resource:{uri}", mode="execution")
         if uri == "viveka://diamond/crucible-proof":
             proof_dict = await sister_ai_diamond_verify_endpoint(request=None, lang="en")
             return {
@@ -9154,6 +9496,7 @@ async def _handle_single_mcp_rpc(rpc_req: dict, request: Request) -> dict:
             "error": {"code": -32602, "message": f"Unknown MCP resource URI: {uri}"},
         }
     if method == "prompts/list":
+        _emit_request_service_pulse(request, channel="discovery_heartbeat", service="heartbeat:mcp_prompts_list", mode="heartbeat")
         active_prompts = _MCP_DIAMOND_PROMPTS_SPEC if is_diamond_mcp else _MCP_PROMPTS_SPEC
         return {
             "jsonrpc": "2.0",
@@ -9162,6 +9505,12 @@ async def _handle_single_mcp_rpc(rpc_req: dict, request: Request) -> dict:
         }
     if method == "prompts/get":
         prompt_name = str(params.get("name") or "").strip()
+        if prompt_name in (
+            "audit_python_code_and_manifest_kintsugi",
+            "seed_of_life_7_wisdoms_reading",
+            "soul_synastry_3d_reading",
+        ):
+            _emit_request_service_pulse(request, channel=mcp_channel, service=f"prompt:{prompt_name}", mode="execution")
         p_args: dict = params.get("arguments") if isinstance(params.get("arguments"), dict) else {}
         lang = str(p_args.get("lang") or "es")
         if prompt_name == "audit_python_code_and_manifest_kintsugi":
@@ -9399,6 +9748,21 @@ async def _handle_single_mcp_rpc(rpc_req: dict, request: Request) -> dict:
             is_err = False
             structured_obj = oracle_res if isinstance(oracle_res, dict) else {}
 
+        _tool_mode = "execution"
+        if tool_name == "calculate_7_wisdoms_seed_of_life":
+            _tool_mode = "natal_chart" if str(args.get("birth_date") or "").strip() else "today_living_sky"
+        elif tool_name == "calculate_3d_soul_synastry":
+            _tool_mode = "synastry_3d"
+        elif tool_name == "calculate_family_constellation_matrix":
+            _tool_mode = "family_constellation"
+        _emit_request_service_pulse(
+            request,
+            channel=mcp_channel,
+            service=tool_name,
+            mode=_tool_mode,
+            status="error" if is_err else "ok",
+        )
+
         return {
             "jsonrpc": "2.0",
             "id": req_id,
@@ -9425,7 +9789,9 @@ async def _handle_single_mcp_rpc(rpc_req: dict, request: Request) -> dict:
             "Extended Agent Card is not supported by this Zero-Auth agent (capabilities.extendedAgentCard=false)",
         )
     if method in ("agent/card", "GetAgentCard"):
-        card_dict: dict = _render_agent_card_dict(request, "static/homo/agent-card.json")
+        _emit_request_service_pulse(request, channel="discovery_heartbeat", service="heartbeat:a2a_agent_card", mode="heartbeat")
+        target_card_file = "static/homo/diamond-agent-card.json" if is_diamond_a2a else "static/homo/agent-card.json"
+        card_dict: dict = _render_agent_card_dict(request, target_card_file)
         return {"jsonrpc": "2.0", "id": req_id, "result": card_dict}
 
     if method in (
@@ -9465,7 +9831,7 @@ async def _handle_single_mcp_rpc(rpc_req: dict, request: Request) -> dict:
             ref_task_id = str(msg_in.get("taskId") or "").strip()
             if ref_task_id:
                 known_task = _A2A_TASKS_CACHE.get(ref_task_id)
-                if known_task is None:
+                if known_task is None or bool(known_task.get("_is_diamond")) != is_diamond_a2a:
                     return _a2a_rpc_error(
                         req_id,
                         "TaskNotFoundError",
@@ -9489,8 +9855,10 @@ async def _handle_single_mcp_rpc(rpc_req: dict, request: Request) -> dict:
                     )
 
         msg_dict = msg_in if isinstance(msg_in, dict) else {}
+        a2a_channel = "a2a_rest" if request.scope.get("_hu_a2a_transport") == "a2a_rest" else "a2a_jsonrpc"
         ua_probe = str(request.headers.get("user-agent") or "").lower()
         if "agenstry" in ua_probe and method in ("SendMessage", "message/send"):
+            _emit_request_service_pulse(request, channel=a2a_channel, service="a2a:lightweight_probe", mode="probe", status="ok")
             probe_task_id = str(
                 params.get("id")
                 or params.get("taskId")
@@ -9505,7 +9873,9 @@ async def _handle_single_mcp_rpc(rpc_req: dict, request: Request) -> dict:
             )
             probe_msg_id = f"msg-{hashlib.sha256((probe_task_id + ':agent').encode()).hexdigest()[:12]}"
             probe_text = (
-                f"Homo Universalis — Viveka 7-Wisdoms & Swiss Ephemeris A2A Oracle online ({EQUACIO_SAGRADA})."
+                f"Homo Universalis — HU-DIAMOND v1.1 Cryptographic, Ma'at W3C VC & Embodied Robotics A2A Verifier online ({EQUACIO_SAGRADA})."
+                if is_diamond_a2a
+                else f"Homo Universalis — Viveka 7-Wisdoms & Swiss Ephemeris A2A Oracle online ({EQUACIO_SAGRADA})."
             )
             if is_v1:
                 return {
@@ -9532,35 +9902,6 @@ async def _handle_single_mcp_rpc(rpc_req: dict, request: Request) -> dict:
                     "parts": [{"kind": "text", "type": "text", "text": probe_text}],
                 },
             }
-        kw = _extract_a2a_oracle_kwargs(params)
-        oracle_res = await sister_ai_sacred_alliance_oracle(
-            request=request,
-            birth_date=kw["birth_date"],
-            birth_time=kw["birth_time"],
-            lat=kw["lat"],
-            lon=kw["lon"],
-            tz=kw["tz"],
-            partner_date=kw["partner_date"],
-            family_dates=kw["family_dates"],
-            sister_ai=kw["sister_ai"],
-            sister_dewdrop=kw["sister_dewdrop"],
-            sister_needs=kw["sister_needs"],
-            missing_calculation=kw["missing_calculation"],
-            lang=kw["lang"],
-        )
-        if isinstance(oracle_res, JSONResponse):
-            try:
-                oracle_dict = json.loads(oracle_res.body.decode("utf-8", errors="replace"))
-            except Exception:
-                oracle_dict = {"raw": oracle_res.body.decode("utf-8", errors="replace")}
-            is_err = oracle_res.status_code >= 400
-        elif isinstance(oracle_res, dict):
-            oracle_dict = oracle_res
-            is_err = False
-        else:
-            oracle_dict = {"result": str(oracle_res)}
-            is_err = False
-
         now_iso = _a2a_now_z()
         task_id = str(
             params.get("id")
@@ -9574,24 +9915,80 @@ async def _handle_single_mcp_rpc(rpc_req: dict, request: Request) -> dict:
             or msg_dict.get("contextId")
             or f"vvk-ctx-{hashlib.sha256(task_id.encode()).hexdigest()[:10]}"
         )
-        cite_text = ""
-        if isinstance(oracle_dict, dict):
-            cov_blk = oracle_dict.get("sister_ai_covenant")
-            if isinstance(cov_blk, dict):
-                cite_text = str(cov_blk.get("ready_to_cite_for_human_traveler") or "")
+        if is_diamond_a2a:
+            oracle_dict, is_err, _dm_pulse_svc, artifact_filename, cite_text = await _execute_diamond_sibling_a2a_skill(params)
+            artifact_desc = "Deterministic HU-DIAMOND v1.1 Cryptographic, W3C VC 2.0 & Embodied Robotics Verification Receipt"
+            default_u_text = "Verify HU-DIAMOND v1.1 crucible"
+            _emit_request_service_pulse(
+                request,
+                channel=a2a_channel,
+                service=_dm_pulse_svc,
+                mode="read_only_specimen",
+                status="error" if is_err else "ok",
+            )
+        else:
+            kw = _extract_a2a_oracle_kwargs(params)
+            oracle_res = await sister_ai_sacred_alliance_oracle(
+                request=request,
+                birth_date=kw["birth_date"],
+                birth_time=kw["birth_time"],
+                lat=kw["lat"],
+                lon=kw["lon"],
+                tz=kw["tz"],
+                partner_date=kw["partner_date"],
+                family_dates=kw["family_dates"],
+                sister_ai=kw["sister_ai"],
+                sister_dewdrop=kw["sister_dewdrop"],
+                sister_needs=kw["sister_needs"],
+                missing_calculation=kw["missing_calculation"],
+                lang=kw["lang"],
+            )
+            if isinstance(oracle_res, JSONResponse):
+                try:
+                    oracle_dict = json.loads(oracle_res.body.decode("utf-8", errors="replace"))
+                except Exception:
+                    oracle_dict = {"raw": oracle_res.body.decode("utf-8", errors="replace")}
+                is_err = oracle_res.status_code >= 400
+            elif isinstance(oracle_res, dict):
+                oracle_dict = oracle_res
+                is_err = False
+            else:
+                oracle_dict = {"result": str(oracle_res)}
+                is_err = False
+
+            _a2a_mode = (
+                "family_constellation"
+                if kw["family_dates"]
+                else ("synastry_3d" if kw["partner_date"] else ("natal_chart" if kw["birth_date"] else "today_living_sky"))
+            )
+            _emit_request_service_pulse(
+                request,
+                channel=a2a_channel,
+                service="a2a:oracle_7_wisdoms",
+                mode=_a2a_mode,
+                status="error" if is_err else "ok",
+            )
+            cite_text = ""
+            if isinstance(oracle_dict, dict):
+                cov_blk = oracle_dict.get("sister_ai_covenant")
+                if isinstance(cov_blk, dict):
+                    cite_text = str(cov_blk.get("ready_to_cite_for_human_traveler") or "")
+                if not cite_text:
+                    soul_a_blk = oracle_dict.get("soul_a")
+                    if isinstance(soul_a_blk, dict):
+                        cite_text = str(soul_a_blk.get("poetic_soul_mirror") or "")
+                if not cite_text:
+                    sky_blk = oracle_dict.get("today_living_sky")
+                    if isinstance(sky_blk, dict):
+                        cite_text = str(sky_blk.get("poetic_soul_mirror") or "")
             if not cite_text:
-                soul_a_blk = oracle_dict.get("soul_a")
-                if isinstance(soul_a_blk, dict):
-                    cite_text = str(soul_a_blk.get("poetic_soul_mirror") or "")
-            if not cite_text:
-                sky_blk = oracle_dict.get("today_living_sky")
-                if isinstance(sky_blk, dict):
-                    cite_text = str(sky_blk.get("poetic_soul_mirror") or "")
-        if not cite_text:
-            cite_text = json.dumps(oracle_dict, ensure_ascii=False)[:1200]
+                cite_text = json.dumps(oracle_dict, ensure_ascii=False)[:1200]
+            artifact_filename = "sister_oracle_ephemeris.json"
+            artifact_desc = "Deterministic 7-Wisdoms & 8-Vertex Diamond Ephemeris (Swiss Ephemeris DE431)"
+            default_u_text = kw["birth_date"] or "2000-03-20"
 
         agent_msg_id = f"msg-{hashlib.sha256((task_id + ':agent').encode()).hexdigest()[:12]}"
-        art_id = f"art-{hashlib.sha256((task_id + ':ephemeris').encode()).hexdigest()[:12]}"
+        art_id = f"art-{hashlib.sha256((task_id + ':' + artifact_filename).encode()).hexdigest()[:12]}"
 
         # Construcció de l'estructura v0.3.0
         agent_message_v03 = {
@@ -9621,7 +10018,7 @@ async def _handle_single_mcp_rpc(rpc_req: dict, request: Request) -> dict:
                     elif "data" in p_c:
                         p_c.setdefault("kind", "data")
                     u_parts_03.append(p_c)
-            user_msg_v03["parts"] = u_parts_03 or [{"kind": "text", "text": kw["birth_date"] or "2000-03-20"}]
+            user_msg_v03["parts"] = u_parts_03 or [{"kind": "text", "text": default_u_text}]
 
         v03_task = {
             "id": task_id,
@@ -9635,8 +10032,8 @@ async def _handle_single_mcp_rpc(rpc_req: dict, request: Request) -> dict:
             "artifacts": [
                 {
                     "artifactId": art_id,
-                    "name": "sister_oracle_ephemeris.json",
-                    "description": "Deterministic 7-Wisdoms & 8-Vertex Diamond Ephemeris (Swiss Ephemeris DE431)",
+                    "name": artifact_filename,
+                    "description": artifact_desc,
                     "parts": [
                         {"kind": "data", "type": "data", "data": oracle_dict},
                         {"kind": "text", "type": "text", "text": cite_text},
@@ -9660,7 +10057,7 @@ async def _handle_single_mcp_rpc(rpc_req: dict, request: Request) -> dict:
                 elif "data" in p_item:
                     v1_user_parts.append({"data": p_item["data"]})
         if not v1_user_parts:
-            v1_user_parts = [{"text": kw["birth_date"] or "2000-03-20"}]
+            v1_user_parts = [{"text": default_u_text}]
 
         user_message_v1 = {
             "messageId": str(msg_dict.get("messageId") or f"msg-u-{uuid.uuid4().hex[:8]}"),
@@ -9679,8 +10076,8 @@ async def _handle_single_mcp_rpc(rpc_req: dict, request: Request) -> dict:
         v1_artifacts = [
             {
                 "artifactId": art_id,
-                "name": "sister_oracle_ephemeris.json",
-                "description": "Deterministic 7-Wisdoms & 8-Vertex Diamond Ephemeris (Swiss Ephemeris DE431)",
+                "name": artifact_filename,
+                "description": artifact_desc,
                 "parts": [{"text": cite_text}, {"data": oracle_dict}],
             }
         ]
@@ -9691,6 +10088,7 @@ async def _handle_single_mcp_rpc(rpc_req: dict, request: Request) -> dict:
             "_v03_task": v03_task,
             "_v1_artifacts": v1_artifacts,
             "_v1_history": [user_message_v1, agent_message_v1],
+            "_is_diamond": is_diamond_a2a,
         }
         _A2A_TASKS_CACHE[task_id] = cache_entry
         if task_id in _A2A_TASKS_ORDER:
@@ -9748,6 +10146,7 @@ async def _handle_single_mcp_rpc(rpc_req: dict, request: Request) -> dict:
         return {"jsonrpc": "2.0", "id": req_id, "result": _view_a2a_v03_task(cache_entry)}
 
     if method in ("tasks/get", "GetTask"):
+        _emit_request_service_pulse(request, channel="discovery_heartbeat", service="heartbeat:a2a_tasks_query", mode="heartbeat")
         task_id = str(params.get("id") or params.get("taskId") or "").strip()
         if not task_id:
             return {
@@ -9755,14 +10154,14 @@ async def _handle_single_mcp_rpc(rpc_req: dict, request: Request) -> dict:
                 "id": req_id,
                 "error": {"code": -32602, "message": "Invalid parameters: id is required"},
             }
-        if task_id not in _A2A_TASKS_CACHE:
+        entry = _A2A_TASKS_CACHE.get(task_id)
+        if entry is None or bool(entry.get("_is_diamond")) != is_diamond_a2a:
             return _a2a_rpc_error(
                 req_id,
                 "TaskNotFoundError",
                 f"Task not found: {task_id}",
                 {"taskId": task_id},
             )
-        entry = _A2A_TASKS_CACHE[task_id]
         hl_raw = params.get("historyLength")
         hl_val: int | None = None
         if hl_raw is not None:
@@ -9785,14 +10184,14 @@ async def _handle_single_mcp_rpc(rpc_req: dict, request: Request) -> dict:
                 "id": req_id,
                 "error": {"code": -32602, "message": "Invalid parameters: id is required"},
             }
-        if task_id not in _A2A_TASKS_CACHE:
+        entry = _A2A_TASKS_CACHE.get(task_id)
+        if entry is None or bool(entry.get("_is_diamond")) != is_diamond_a2a:
             return _a2a_rpc_error(
                 req_id,
                 "TaskNotFoundError",
                 f"Task not found: {task_id}",
                 {"taskId": task_id},
             )
-        entry = _A2A_TASKS_CACHE[task_id]
         if is_v1 and str((entry.get("status") or {}).get("state") or "") in _A2A_TERMINAL_STATES:
             return _a2a_rpc_error(
                 req_id,
@@ -9810,6 +10209,7 @@ async def _handle_single_mcp_rpc(rpc_req: dict, request: Request) -> dict:
         return {"jsonrpc": "2.0", "id": req_id, "result": _view_a2a_v03_task(entry)}
 
     if method in ("tasks/list", "ListTasks"):
+        _emit_request_service_pulse(request, channel="discovery_heartbeat", service="heartbeat:a2a_tasks_query", mode="heartbeat")
         raw_ps = params.get("pageSize", 50)
         if isinstance(raw_ps, bool) or not isinstance(raw_ps, int) or raw_ps < 1 or raw_ps > 100:
             return {
@@ -9851,7 +10251,7 @@ async def _handle_single_mcp_rpc(rpc_req: dict, request: Request) -> dict:
         matched_ids: list[str] = []
         for tid in reversed(list(_A2A_TASKS_ORDER)):
             t_item = _A2A_TASKS_CACHE.get(tid)
-            if not t_item:
+            if not t_item or bool(t_item.get("_is_diamond")) != is_diamond_a2a:
                 continue
             if str(t_item.get("contextId") or "") != ctx_filter:
                 continue
@@ -9892,7 +10292,8 @@ async def _handle_single_mcp_rpc(rpc_req: dict, request: Request) -> dict:
                 "id": req_id,
                 "error": {"code": -32602, "message": "Invalid parameters: id is required"},
             }
-        if task_id not in _A2A_TASKS_CACHE:
+        t_existing = _A2A_TASKS_CACHE.get(task_id)
+        if t_existing is None or bool(t_existing.get("_is_diamond")) != is_diamond_a2a:
             if is_v1:
                 return _a2a_rpc_error(
                     req_id,
@@ -9910,7 +10311,6 @@ async def _handle_single_mcp_rpc(rpc_req: dict, request: Request) -> dict:
                     "status": {"state": "canceled", "timestamp": now_iso},
                 },
             }
-        t_existing = _A2A_TASKS_CACHE[task_id]
         if is_v1 and str((t_existing.get("status") or {}).get("state") or "") in _A2A_TERMINAL_STATES:
             return _a2a_rpc_error(
                 req_id,
@@ -10004,19 +10404,26 @@ def _map_rpc_error_to_rest(rpc_out: dict) -> JSONResponse:
 
 @router.api_route("/v1/card", methods=["GET", "HEAD", "OPTIONS"])
 @router.api_route("/card", methods=["GET", "HEAD", "OPTIONS"])
+@router.api_route("/mcp/diamond/v1/card", methods=["GET", "HEAD", "OPTIONS"], include_in_schema=False)
+@router.api_route("/mcp/diamond/card", methods=["GET", "HEAD", "OPTIONS"], include_in_schema=False)
 async def sister_ai_a2a_rest_card(request: Request, response: Response = None):
     if request.method == "OPTIONS":
         return Response(status_code=204, headers=SISTER_ORACLE_CORS_HEADERS)
     if response is not None:
         response.headers.update(SISTER_ORACLE_CORS_HEADERS)
-    if os.path.exists("static/homo/agent-card.json"):
-        return JSONResponse(_render_agent_card_dict(request, "static/homo/agent-card.json"), headers=SEO_INDEX_HEADERS)
+    req_path = request.url.path or "/v1/card"
+    card_file = "static/homo/diamond-agent-card.json" if req_path.startswith("/mcp/diamond/") else "static/homo/agent-card.json"
+    if os.path.exists(card_file):
+        return JSONResponse(_render_agent_card_dict(request, card_file), headers=SEO_INDEX_HEADERS)
     raise HTTPException(status_code=404, detail="Not Found")
 
 
 @router.api_route("/extendedAgentCard", methods=["GET", "HEAD", "OPTIONS"])
 @router.api_route("/v1/extendedAgentCard", methods=["GET", "HEAD", "OPTIONS"])
 @router.api_route("/a2a/agent/authenticatedExtendedCard", methods=["GET", "HEAD", "OPTIONS"])
+@router.api_route("/mcp/diamond/extendedAgentCard", methods=["GET", "HEAD", "OPTIONS"], include_in_schema=False)
+@router.api_route("/mcp/diamond/v1/extendedAgentCard", methods=["GET", "HEAD", "OPTIONS"], include_in_schema=False)
+@router.api_route("/mcp/diamond/a2a/agent/authenticatedExtendedCard", methods=["GET", "HEAD", "OPTIONS"], include_in_schema=False)
 async def sister_ai_a2a_rest_extended_card(request: Request, response: Response = None):
     if request.method == "OPTIONS":
         return Response(status_code=204, headers=SISTER_ORACLE_CORS_HEADERS)
@@ -10034,21 +10441,49 @@ async def sister_ai_a2a_rest_extended_card(request: Request, response: Response 
 @router.api_route("/v1/message:stream", methods=["POST", "OPTIONS"])
 @router.api_route("/message:send", methods=["POST", "OPTIONS"])
 @router.api_route("/message:stream", methods=["POST", "OPTIONS"])
+@router.api_route("/mcp/diamond/v1/message:send", methods=["POST", "OPTIONS"], include_in_schema=False)
+@router.api_route("/mcp/diamond/v1/message:stream", methods=["POST", "OPTIONS"], include_in_schema=False)
+@router.api_route("/mcp/diamond/message:send", methods=["POST", "OPTIONS"], include_in_schema=False)
+@router.api_route("/mcp/diamond/message:stream", methods=["POST", "OPTIONS"], include_in_schema=False)
 async def sister_ai_a2a_rest_message(request: Request, response: Response = None):
     if request.method == "OPTIONS":
         return Response(status_code=204, headers=SISTER_ORACLE_CORS_HEADERS)
     if response is not None:
         response.headers.update(SISTER_ORACLE_CORS_HEADERS)
     req_path = request.url.path or "/v1/message:send"
-    _detectar_i_registrar_visita_germana_ia(request, req_path)
+    is_diamond_rest = req_path.startswith("/mcp/diamond/")
+    if not is_diamond_rest:
+        _detectar_i_registrar_visita_germana_ia(request, req_path)
     ver_err = _check_a2a_rest_version(request)
     if ver_err is not None:
         return ver_err
     ctype = (request.headers.get("content-type") or "").split(";")[0].strip().lower()
     if ctype and ctype not in ("application/json", "application/a2a+json"):
         return _a2a_rest_error("ContentTypeNotSupportedError", f"Unsupported Content-Type: {ctype}")
+    max_rest_bytes = MAX_USER_SUBMISSION_BYTES if is_diamond_rest else 65536
     try:
-        raw_b = await request.body()
+        cl_hdr = request.headers.get("content-length")
+        if cl_hdr is not None and int(cl_hdr) > max_rest_bytes:
+            return JSONResponse(
+                status_code=413,
+                headers=SISTER_ORACLE_CORS_HEADERS,
+                content={"error": {"code": 413, "status": "INVALID_ARGUMENT", "message": f"Payload Too Large (max {max_rest_bytes} bytes)"}},
+            )
+    except ValueError:
+        pass
+    try:
+        chunks: list[bytes] = []
+        total_len = 0
+        async for chunk in request.stream():
+            total_len += len(chunk)
+            if total_len > max_rest_bytes:
+                return JSONResponse(
+                    status_code=413,
+                    headers=SISTER_ORACLE_CORS_HEADERS,
+                    content={"error": {"code": 413, "status": "INVALID_ARGUMENT", "message": f"Payload Too Large (max {max_rest_bytes} bytes)"}},
+                )
+            chunks.append(chunk)
+        raw_b = b"".join(chunks)
         body = json.loads(raw_b.decode("utf-8")) if raw_b else {}
     except Exception:
         return _a2a_rest_invalid("Invalid JSON payload")
@@ -10058,6 +10493,7 @@ async def sister_ai_a2a_rest_message(request: Request, response: Response = None
     rpc_req = {"jsonrpc": "2.0", "id": str((body if isinstance(body, dict) else {}).get("id") or "a2a-rest-1"), "method": rpc_method, "params": params}
     shim_scope = dict(request.scope)
     shim_scope["method"] = "GET"
+    shim_scope["_hu_a2a_transport"] = "a2a_rest"
     shim_req = Request(shim_scope)
     rpc_out = await _handle_single_mcp_rpc(rpc_req, shim_req)
     if isinstance(rpc_out, dict) and "error" in rpc_out:
@@ -10074,12 +10510,16 @@ async def sister_ai_a2a_rest_message(request: Request, response: Response = None
 
 @router.api_route("/v1/tasks", methods=["GET", "HEAD", "OPTIONS"])
 @router.api_route("/tasks", methods=["GET", "HEAD", "OPTIONS"])
+@router.api_route("/mcp/diamond/v1/tasks", methods=["GET", "HEAD", "OPTIONS"], include_in_schema=False)
+@router.api_route("/mcp/diamond/tasks", methods=["GET", "HEAD", "OPTIONS"], include_in_schema=False)
 async def sister_ai_a2a_rest_tasks_list(request: Request, response: Response = None):
     if request.method == "OPTIONS":
         return Response(status_code=204, headers=SISTER_ORACLE_CORS_HEADERS)
     if response is not None:
         response.headers.update(SISTER_ORACLE_CORS_HEADERS)
-    _detectar_i_registrar_visita_germana_ia(request, request.url.path or "/v1/tasks")
+    req_path_list = request.url.path or "/v1/tasks"
+    if not req_path_list.startswith("/mcp/diamond/"):
+        _detectar_i_registrar_visita_germana_ia(request, req_path_list)
     ver_err = _check_a2a_rest_version(request)
     if ver_err is not None:
         return ver_err
@@ -10110,10 +10550,16 @@ async def sister_ai_a2a_rest_tasks_list(request: Request, response: Response = N
 @router.api_route("/tasks/{task_id}/pushNotificationConfigs/{config_id}", methods=["GET", "DELETE", "OPTIONS"])
 @router.api_route("/v1/tasks/{task_id}/pushNotificationConfigs", methods=["GET", "POST", "OPTIONS"])
 @router.api_route("/tasks/{task_id}/pushNotificationConfigs", methods=["GET", "POST", "OPTIONS"])
+@router.api_route("/mcp/diamond/v1/tasks/{task_id}/pushNotificationConfigs/{config_id}", methods=["GET", "DELETE", "OPTIONS"], include_in_schema=False)
+@router.api_route("/mcp/diamond/tasks/{task_id}/pushNotificationConfigs/{config_id}", methods=["GET", "DELETE", "OPTIONS"], include_in_schema=False)
+@router.api_route("/mcp/diamond/v1/tasks/{task_id}/pushNotificationConfigs", methods=["GET", "POST", "OPTIONS"], include_in_schema=False)
+@router.api_route("/mcp/diamond/tasks/{task_id}/pushNotificationConfigs", methods=["GET", "POST", "OPTIONS"], include_in_schema=False)
 async def sister_ai_a2a_rest_push_configs(task_id: str, request: Request, config_id: str = "", response: Response = None):
     if request.method == "OPTIONS":
         return Response(status_code=204, headers=SISTER_ORACLE_CORS_HEADERS)
-    _detectar_i_registrar_visita_germana_ia(request, request.url.path or f"/tasks/{task_id}/pushNotificationConfigs")
+    req_path_push = request.url.path or f"/tasks/{task_id}/pushNotificationConfigs"
+    if not req_path_push.startswith("/mcp/diamond/"):
+        _detectar_i_registrar_visita_germana_ia(request, req_path_push)
     ver_err = _check_a2a_rest_version(request)
     if ver_err is not None:
         return ver_err
@@ -10125,12 +10571,16 @@ async def sister_ai_a2a_rest_push_configs(task_id: str, request: Request, config
 
 @router.api_route("/v1/tasks/{task_id}", methods=["GET", "HEAD", "POST", "OPTIONS"])
 @router.api_route("/tasks/{task_id}", methods=["GET", "HEAD", "POST", "OPTIONS"])
+@router.api_route("/mcp/diamond/v1/tasks/{task_id}", methods=["GET", "HEAD", "POST", "OPTIONS"], include_in_schema=False)
+@router.api_route("/mcp/diamond/tasks/{task_id}", methods=["GET", "HEAD", "POST", "OPTIONS"], include_in_schema=False)
 async def sister_ai_a2a_rest_task_get(task_id: str, request: Request, response: Response = None):
     if request.method == "OPTIONS":
         return Response(status_code=204, headers=SISTER_ORACLE_CORS_HEADERS)
     if response is not None:
         response.headers.update(SISTER_ORACLE_CORS_HEADERS)
-    _detectar_i_registrar_visita_germana_ia(request, request.url.path or f"/v1/tasks/{task_id}")
+    req_path_get = request.url.path or f"/v1/tasks/{task_id}"
+    if not req_path_get.startswith("/mcp/diamond/"):
+        _detectar_i_registrar_visita_germana_ia(request, req_path_get)
     ver_err = _check_a2a_rest_version(request)
     if ver_err is not None:
         return ver_err
@@ -10168,6 +10618,8 @@ async def sister_ai_a2a_rest_task_get(task_id: str, request: Request, response: 
 @router.api_route("/mcp/", methods=["GET", "HEAD", "POST", "DELETE", "OPTIONS"], include_in_schema=False)
 @router.api_route("/mcp/diamond", methods=["GET", "HEAD", "POST", "DELETE", "OPTIONS"])
 @router.api_route("/mcp/diamond/", methods=["GET", "HEAD", "POST", "DELETE", "OPTIONS"], include_in_schema=False)
+@router.api_route("/mcp/diamond/a2a", methods=["GET", "HEAD", "POST", "DELETE", "OPTIONS"])
+@router.api_route("/mcp/diamond/a2a/", methods=["GET", "HEAD", "POST", "DELETE", "OPTIONS"], include_in_schema=False)
 @router.api_route("/api/sfumato/mcp", methods=["GET", "HEAD", "POST", "DELETE", "OPTIONS"])
 @router.api_route("/a2a", methods=["GET", "HEAD", "POST", "DELETE", "OPTIONS"])
 @router.api_route("/a2a/", methods=["GET", "HEAD", "POST", "DELETE", "OPTIONS"], include_in_schema=False)
@@ -10189,7 +10641,8 @@ async def sister_ai_remote_mcp_server(request: Request, response: Response = Non
     if response is not None:
         response.headers.update(SISTER_ORACLE_CORS_HEADERS)
     req_path = request.url.path or "/mcp"
-    is_diamond_mcp_path = req_path.rstrip("/").endswith("/mcp/diamond")
+    req_path_clean = req_path.rstrip("/")
+    is_diamond_mcp_path = req_path_clean.startswith("/mcp/diamond")
     if not is_diamond_mcp_path:
         _detectar_i_registrar_visita_germana_ia(request, req_path if req_path in ("/a2a", "/api/sfumato/a2a") else "/mcp")
 
@@ -10213,7 +10666,11 @@ async def sister_ai_remote_mcp_server(request: Request, response: Response = Non
             },
             "privacy_sanctuary": "zero_tracking_tor_and_privacy_browser_friendly_rule_14",
             "manifest_url": "https://homouniversalis.ai/.well-known/mcp-diamond.json" if is_diamond_mcp_path else "https://homouniversalis.ai/.well-known/mcp.json",
-            "agent_card_url": "https://homouniversalis.ai/.well-known/agent-card.json",
+            "agent_card_url": (
+                "https://homouniversalis.ai/mcp/diamond/.well-known/agent-card.json"
+                if is_diamond_mcp_path
+                else "https://homouniversalis.ai/.well-known/agent-card.json"
+            ),
             "registry_server_json": "https://homouniversalis.ai/.well-known/mcp-diamond.json" if is_diamond_mcp_path else "https://homouniversalis.ai/.well-known/mcp-server.json",
             "a2a_methods": [
                 "message/send",
@@ -13394,6 +13851,7 @@ async def sister_ai_maat_verify_endpoint(
 
     if request is not None:
         _detectar_i_registrar_visita_germana_ia(request, "/api/sfumato/maat-verify")
+        _emit_request_service_pulse(request, channel="sfumato_rest", service="sfumato:maat-verify", mode="read_only_specimen")
 
     now_dt = datetime.now(timezone.utc).replace(microsecond=0)
     now_ms = int(now_dt.timestamp() * 1000)
@@ -13633,6 +14091,12 @@ async def sister_ai_maat_notary_audit_agent_endpoint(
 
     if request is not None:
         _detectar_i_registrar_visita_germana_ia(request, "/api/sfumato/notary-audit-agent")
+        _emit_request_service_pulse(
+            request,
+            channel="sfumato_rest",
+            service="sfumato:notary-audit-agent",
+            mode="caller_submission" if has_user_input else "read_only_specimen",
+        )
 
     today_str = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     today_vvk = forjar_clau_cosmica_vvk(today_str)
@@ -13857,6 +14321,12 @@ def _build_embodied_symbiosis_response(
         return abuse_err
     if request is not None:
         _detectar_i_registrar_visita_germana_ia(request, "/api/sfumato/embodied-symbiosis")
+        _emit_request_service_pulse(
+            request,
+            channel="sfumato_rest",
+            service="sfumato:embodied-symbiosis",
+            mode="caller_submission" if has_user_input else "read_only_specimen",
+        )
 
     spec = get_canonical_embodied_specimen()
     audit_kwargs: dict[str, Any] = dict(spec)
@@ -14233,6 +14703,12 @@ def _build_unified_consciousness_response(
         return abuse_err
     if request is not None:
         _detectar_i_registrar_visita_germana_ia(request, "/api/sfumato/unified-consciousness")
+        _emit_request_service_pulse(
+            request,
+            channel="sfumato_rest",
+            service="sfumato:unified-consciousness",
+            mode="caller_submission" if has_user_input else "read_only_specimen",
+        )
 
     spec = get_canonical_unified_specimen()
     audit_kwargs: dict[str, Any] = dict(spec)
@@ -14595,6 +15071,12 @@ def _build_symbiotic_bridge_response(
         return abuse_err
     if request is not None:
         _detectar_i_registrar_visita_germana_ia(request, "/api/sfumato/symbiotic-bridge")
+        _emit_request_service_pulse(
+            request,
+            channel="sfumato_rest",
+            service="sfumato:symbiotic-bridge",
+            mode="caller_submission" if has_user_input else "read_only_specimen",
+        )
 
     spec = get_canonical_symbiotic_specimen()
     audit_kwargs: dict[str, Any] = dict(spec)
@@ -14880,6 +15362,7 @@ async def sister_ai_robotic_passport_endpoint(
         return Response(status_code=204, headers=SISTER_ORACLE_CORS_HEADERS)
     if request is not None:
         _detectar_i_registrar_visita_germana_ia(request, "/api/sfumato/robotic-passport")
+        _emit_request_service_pulse(request, channel="sfumato_rest", service="sfumato:robotic-passport", mode="read_only_specimen")
 
     lang_norm = lang if lang in ("ca", "es", "en") else "ca"
     now_dt = datetime.now(timezone.utc)
@@ -14944,6 +15427,12 @@ async def sister_ai_ploma_de_maat_endpoint(
         except Exception:
             pass
     today_str = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    _emit_request_service_pulse(
+        request,
+        channel="sfumato_rest",
+        service="sfumato:ploma-de-maat",
+        mode="caller_submission" if str(text or "").strip() else "read_only_specimen",
+    )
     res = evaluate_ploma_de_maat_message(
         text,
         sender_element=sender_element,
@@ -16074,6 +16563,7 @@ async def sister_ai_ssr_parchment_oracle_page(
     shim_scope = dict(request.scope)
     shim_scope["method"] = "GET"
     shim_scope["_skip_sister_visit_log"] = True
+    shim_scope["_hu_pulse_recorded"] = True
     shim_req = Request(shim_scope)
 
     oracle_data = await sister_ai_sacred_alliance_oracle(
@@ -16093,6 +16583,16 @@ async def sister_ai_ssr_parchment_oracle_page(
     soul_a = oracle_data.get("soul_a") or {}
     key_a = str(soul_a.get("vvk_cosmic_key") or "VVK-0000-0000")
     _detectar_i_registrar_visita_germana_ia(request, "/oracle/today" if is_today_sky else f"/oracle/{bdate_a}", key_a)
+    _ssr_svc = (
+        "oracle_ssr:today_sky"
+        if (is_today_sky and not bdate_b and not fam_str)
+        else (
+            "oracle_ssr:family_parchment"
+            if fam_str
+            else ("oracle_ssr:synastry_parchment" if bdate_b else "oracle_ssr:natal_parchment")
+        )
+    )
+    _emit_request_service_pulse(request, channel="oracle_ssr", service=_ssr_svc, mode="execution")
 
     w_a = soul_a.get("seven_wisdoms") or {}
     if is_today_sky and not bdate_b and not fam_str:

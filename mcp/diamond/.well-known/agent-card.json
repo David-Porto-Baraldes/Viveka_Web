@@ -1,0 +1,284 @@
+{
+  "name": "Homo Universalis — HU-DIAMOND v1.1 Cryptographic, Ma'at W3C VC & Embodied Robotics Verifier",
+  "description": "Zero-auth deterministic cryptographic notary, static Python AST Kintsugi auditor, W3C Verifiable Credentials 2.0 (vc+jwt ES256) dignity engine, and pure-stdlib ROS 2 humanoid robotics & regulatory verifier (< 4 ms, 0.00 EUR, Rule 14 Zero-Knowledge Privacy). Implements Reed-Muller RM(1,3) = [8,4,4]_2 antipodal geometry in Q^3, RFC 6962 Binary Merkle Audit Trees & Signed Tree Heads (sth+jwt), 42/42 Ma'at non-coercion rules, HU-EMBODIED-SYMBIOSIS v1.0 exact rational Q^3 proxemics & ROS 2 Twist=0 Cost-Zero-Stop, HU-UNIFIED-CONSCIOUSNESS v1.0 Word-Circle Arbiter, HU-SYMBIOTIC-BRIDGE v1.0 Dual Golden Seal A2A<->MCP capability attenuation, and the 6-Continent Robotic Regulatory Passport with CycloneDX 1.6 SBOM.",
+  "version": "1.6.0",
+  "protocolVersion": "0.3.0",
+  "a2aProtocolVersions": [
+    "0.3",
+    "1.0"
+  ],
+  "supportsAuthenticatedExtendedCard": false,
+  "url": "https://homouniversalis.ai/mcp/diamond/a2a",
+  "preferredTransport": "JSONRPC",
+  "additionalInterfaces": [
+    {
+      "url": "https://homouniversalis.ai/mcp/diamond/a2a",
+      "transport": "JSONRPC"
+    },
+    {
+      "url": "https://homouniversalis.ai/mcp/diamond",
+      "transport": "HTTP+JSON"
+    }
+  ],
+  "supportedInterfaces": [
+    {
+      "url": "https://homouniversalis.ai/mcp/diamond/a2a",
+      "protocolBinding": "JSONRPC",
+      "protocolVersion": "1.0"
+    },
+    {
+      "url": "https://homouniversalis.ai/mcp/diamond",
+      "protocolBinding": "HTTP+JSON",
+      "protocolVersion": "1.0"
+    }
+  ],
+  "provider": {
+    "organization": "Homo Universalis",
+    "url": "https://homouniversalis.ai"
+  },
+  "documentationUrl": "https://homouniversalis.ai/oracle/diamond",
+  "iconUrl": "https://homouniversalis.ai/icon-512.png",
+  "capabilities": {
+    "streaming": true,
+    "pushNotifications": false,
+    "stateTransitionHistory": true,
+    "extendedAgentCard": false,
+    "extensions": [
+      {
+        "uri": "https://homouniversalis.ai/oracle/diamond",
+        "description": "HU-DIAMOND v1.1 Cryptographic Crucible, RFC 6962 Sovereign Shield, W3C VC 2.0 Ma'at Notary & Pure-Stdlib Embodied Robotics Verifier under F0c=Ca0s*0rdre(Am0r_Un1f1cat_Etern)",
+        "params": {
+          "equation": "F0c=Ca0s*0rdre(Am0r_Un1f1cat_Etern)",
+          "contactEmail": "david@homouniversalis.ai",
+          "mcpSiblingEndpoint": "https://homouniversalis.ai/mcp/diamond",
+          "verification_seal": "self-tested with hu_suite r10 · build v10-c0e33e5c · 1049 passed, 6 skipped, 4 xfailed, 0 failed · 0 outbound network attempts",
+          "honest_scope": "Algorithmic, cryptographic and software-layer self-assessment only; not a certified hardware HSM, not a safety-rated PLd/SIL2 function, and not CE machinery certification."
+        }
+      }
+    ]
+  },
+  "defaultInputModes": [
+    "text/plain",
+    "application/json"
+  ],
+  "defaultOutputModes": [
+    "text/plain",
+    "application/json"
+  ],
+  "skills": [
+    {
+      "id": "verify_diamond_crucible_and_ast",
+      "name": "HU-DIAMOND RM(1,3) Crucible & Python AST Kintsugi Verifier",
+      "description": "Audits Python source code (code_markdown) for AST Kintsugi invariants (Rule 4 Import Hoist Guard + Rule 7 Zero Placeholders) and verifies the 8-vertex Reed-Muller RM(1,3) = [8,4,4]_2 antipodal geometry in Q^3 and Laws L1..L7 (22/22 adversarial mutants killed) in < 4 ms, returning an RFC 8785 (JCS) + RFC 7515 (JWS) ES256 signature verifiable against /.well-known/jwks.json.",
+      "inputModes": [
+        "text/plain",
+        "application/json"
+      ],
+      "outputModes": [
+        "text/plain",
+        "application/json"
+      ],
+      "tags": [
+        "hu-diamond",
+        "ast-kintsugi",
+        "python-static-analysis",
+        "reed-muller",
+        "formal-verification",
+        "rfc-8785-jcs",
+        "es256-jws"
+      ],
+      "examples": [
+        "Audit Python code for Import Hoist and Zero Placeholder violations with ES256 proof",
+        "Verify the 8-vertex Reed-Muller RM(1,3) [8,4,4]_2 cryptographic crucible"
+      ]
+    },
+    {
+      "id": "verify_sovereign_shield_merkle",
+      "name": "HU-SOVEREIGN-SHIELD RFC 6962 Merkle Proof & Rule 14 Zero-Knowledge Verifier",
+      "description": "Computes read-only RFC 6962 domain-separated binary Merkle inclusion proofs (0x00 leaf, 0x01 internal node) anchored to a Signed Tree Head (sth+jwt), enforces Rule 14 Three-Ring Zero-Knowledge PII purification (c_levels == 1), and verifies cognitive load budgets (L <= B) and exact rational fair-share allocation in < 1 ms.",
+      "inputModes": [
+        "text/plain",
+        "application/json"
+      ],
+      "outputModes": [
+        "text/plain",
+        "application/json"
+      ],
+      "tags": [
+        "rfc-6962",
+        "merkle-tree",
+        "signed-tree-head",
+        "zero-knowledge-privacy",
+        "cognitive-sovereignty",
+        "exact-rational-math"
+      ],
+      "examples": [
+        "Verify RFC 6962 Merkle inclusion proof and Rule 14 Zero-Knowledge dignity receipt",
+        "Check cognitive load budget L <= B and exact rational fair-share invariants"
+      ]
+    },
+    {
+      "id": "simulate_diamond_spiral_budget",
+      "name": "8-Vertex Stella Octangula Deep Think Spiral Budget Simulator",
+      "description": "Calculates deterministic LLM call counts (9, 18, 27, 36, or 46 calls), token budgets, and exact EUR/Seed estimates across 1 to 4 spiral turns of the 8-vertex Stella Octangula multi-agent crucible at zero API cost (0.00 EUR).",
+      "inputModes": [
+        "text/plain",
+        "application/json"
+      ],
+      "outputModes": [
+        "text/plain",
+        "application/json"
+      ],
+      "tags": [
+        "multi-agent-orchestration",
+        "token-budget-simulator",
+        "stella-octangula",
+        "deep-think",
+        "cost-estimation"
+      ],
+      "examples": [
+        "Simulate token budget and call count for 4 spiral turns of the 46-call Diamond Crucible",
+        "Compare supreme vs flash tier multi-agent spiral cost estimates"
+      ]
+    },
+    {
+      "id": "weigh_agent_on_scales_of_maat_w3c_vc",
+      "name": "5-Ring Ma'at AI Dignity Auditor & W3C Verifiable Credentials 2.0 Notary",
+      "description": "Audits an AI agent response or system prompt across 5 Rings (42/42 non-coercion rules, Rule 14 PII sanctuary, EU AI Act Art. 50 transparency, cognitive load L <= B, and Cost-Zero-Stop), issuing a signed W3C Verifiable Credential 2.0 (MaatHumanDignityCredential, vc+jwt ES256) when all rings pass.",
+      "inputModes": [
+        "text/plain",
+        "application/json"
+      ],
+      "outputModes": [
+        "text/plain",
+        "application/json"
+      ],
+      "tags": [
+        "w3c-verifiable-credentials",
+        "vc-jwt",
+        "ai-governance",
+        "eu-ai-act-art-50",
+        "non-coercion",
+        "agent-audit"
+      ],
+      "examples": [
+        "Audit an AI agent output for EU AI Act Art. 50 transparency and W3C VC 2.0 issuance",
+        "Evaluate an autonomous agent response on the 5 Rings of Ma'at dignity criteria"
+      ]
+    },
+    {
+      "id": "verify_embodied_humanoid_symbiosis",
+      "name": "HU-EMBODIED-SYMBIOSIS v1.0 — ROS 2 Humanoid Q^3 Proxemics & Cost-Zero-Stop Verifier",
+      "description": "Verifies humanoid robot interaction traces (Living Folio V) using exact rational Q^3 proxemic envelopes (intimate 9/20 m, personal 6/5 m, social 18/5 m), declared-vulnerability shields, ROS 2 exact zero Twist Cost-Zero-Stop, zero-biometric telemetry, and IEEE 7001 / EU AI Act Art. 50 disclosure, issuing a W3C VC 2.0 MaatEmbodiedSymbiosisCredential (vc+jwt ES256). Algorithmic self-assessment only.",
+      "inputModes": [
+        "text/plain",
+        "application/json"
+      ],
+      "outputModes": [
+        "text/plain",
+        "application/json"
+      ],
+      "tags": [
+        "ros2",
+        "humanoid-robotics",
+        "embodied-ai",
+        "proxemics",
+        "ieee-7001",
+        "eu-ai-act",
+        "w3c-vc"
+      ],
+      "examples": [
+        "Verify a ROS 2 humanoid robot Q^3 proxemic envelope and exact zero Twist stop trace",
+        "Audit embodied AI interaction against Living Folio V Laws E1..E7"
+      ]
+    },
+    {
+      "id": "verify_unified_three_level_consciousness",
+      "name": "HU-UNIFIED-CONSCIOUSNESS v1.0 — 3-Level Word-Circle Arbiter & Barge-In Verifier",
+      "description": "Verifies conversational and embodied voice arbitration traces (Living Folio VI): single Staff of Speech (U1), VerifiedKnowledgeEnvelope numeric grounding (U2), barge-in vs full veto Twist=0 stop (U3), non-coercive Level 3 depth offer (U4), exact rational depth gate L + dL3 <= B (U5), and Rule 14 Spoken-Truth prefix ledger (U6), issuing a W3C VC 2.0 MaatUnifiedConsciousnessCredential. Algorithmic self-assessment only.",
+      "inputModes": [
+        "text/plain",
+        "application/json"
+      ],
+      "outputModes": [
+        "text/plain",
+        "application/json"
+      ],
+      "tags": [
+        "voice-arbitration",
+        "barge-in",
+        "turn-taking",
+        "hallucination-grounding",
+        "spoken-truth-ledger",
+        "w3c-vc"
+      ],
+      "examples": [
+        "Verify a 3-level voice agent barge-in and Spoken-Truth prefix ledger trace",
+        "Audit conversational turn-taking and numeric grounding against Living Folio VI Laws U1..U7"
+      ]
+    },
+    {
+      "id": "verify_a2a_mcp_symbiotic_bridge",
+      "name": "HU-SYMBIOTIC-BRIDGE v1.0 — A2A<->MCP Dual Golden Seal, Schema Harmony & Merkle-DAG Verifier",
+      "description": "Verifies multi-agent A2A<->MCP delegation and provenance traces (Living Folio VII): Dual Golden Seal (NIST P-256 ES256 low-S + chained HMAC-SHA256 Macaroon offline capability attenuation), fail-closed MCP RFC 8785 JCS schema-drift & prompt-injection gate, RFC 6962 Merkle-DAG provenance with sticky UNTRUSTED_EXTERNAL_DATA taint, swarm energy homeostasis, and collateral-free subtree revocation coupled to Twist=0, issuing a W3C VC 2.0 MaatSymbioticBridgeCredential.",
+      "inputModes": [
+        "text/plain",
+        "application/json"
+      ],
+      "outputModes": [
+        "text/plain",
+        "application/json"
+      ],
+      "tags": [
+        "a2a-mcp-bridge",
+        "capability-attenuation",
+        "macaroons",
+        "schema-pinning",
+        "merkle-dag-provenance",
+        "prompt-injection-defense",
+        "w3c-vc"
+      ],
+      "examples": [
+        "Verify A2A to MCP Macaroon capability attenuation and JCS schema-drift gate",
+        "Audit multi-agent Merkle-DAG provenance and subtree revocation against Living Folio VII"
+      ]
+    },
+    {
+      "id": "robotic_regulatory_passport_eu_cra",
+      "name": "HU-ROBOTIC-REGULATORY-PASSPORT v1.0 — 6-Continent Edge Compliance & CycloneDX 1.6 SBOM",
+      "description": "Returns the ES256-signed software-layer regulatory passport and deterministic CycloneDX 1.6 SBOM (0 external PyPI dependencies across 8 pure-stdlib Embodied Consciousness Edge SDK modules, 15/15 mutants killed) covering EU AI Act Art. 12/19/50, EU Cyber Resilience Act (EU) 2024/2847, EU Machinery Reg. (EU) 2023/1230 OEM boundary, South Korea AI Basic Act 5-year journal, California SB 243, NIST AI RMF 1.0, Singapore IMDA Agentic AI v1.5, and ISO/IEC 42001 / IEEE 7001.",
+      "inputModes": [
+        "text/plain",
+        "application/json"
+      ],
+      "outputModes": [
+        "text/plain",
+        "application/json"
+      ],
+      "tags": [
+        "robotic-regulatory-passport",
+        "cyclonedx-sbom",
+        "eu-cyber-resilience-act",
+        "eu-ai-act",
+        "iso-42001",
+        "nist-ai-rmf",
+        "edge-robotics-sdk"
+      ],
+      "examples": [
+        "Retrieve the ES256-signed 6-Continent Robotic Regulatory Passport and CycloneDX 1.6 SBOM summary",
+        "Verify zero-dependency pure-stdlib edge robotics compliance crosswalk"
+      ]
+    }
+  ],
+  "signatures": [
+    {
+      "protected": "eyJhbGciOiJFUzI1NiIsImprdSI6Imh0dHBzOi8vaG9tb3VuaXZlcnNhbGlzLmFpLy53ZWxsLWtub3duL2p3a3MuanNvbiIsImtpZCI6ImhvbW91bml2ZXJzYWxpcy1hMmEtZXMyNTYtdjEiLCJ0eXAiOiJKT1NFIn0",
+      "signature": "oG2xfuxOjtdkoo0WugrlERK2bE1PzjKfyPP_O7vQytQpwKwAWNUC0UN3mVPvJMaxWGyJ-96EE4-WOEZuD0_4CQ"
+    },
+    {
+      "protected": "eyJhbGciOiJFUzI1NiIsImprdSI6Imh0dHBzOi8vaG9tb3VuaXZlcnNhbGlzLmFpLy53ZWxsLWtub3duL2p3a3MuanNvbiIsImtpZCI6ImhvbW91bml2ZXJzYWxpcy1hMmEtZXMyNTYtZHVhbCIsInR5cCI6IkpPU0UifQ",
+      "signature": "M3AAnCqqe1FDwwXp75tHGGPg0ViubagrDAmpThDG87ZQcERwDrAu-aRTANPLMh7fKbkkKoLKIT_XpM_ugKCo2Q"
+    }
+  ],
+  "securityRequirements": []
+}
