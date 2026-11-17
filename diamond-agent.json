@@ -51,7 +51,7 @@
           "equation": "F0c=Ca0s*0rdre(Am0r_Un1f1cat_Etern)",
           "contactEmail": "david@homouniversalis.ai",
           "mcpSiblingEndpoint": "https://homouniversalis.ai/mcp/diamond",
-          "verification_seal": "self-tested with hu_suite r10 · build v10-287367a2 · 1049 passed, 6 skipped, 4 xfailed, 0 failed · 0 outbound network attempts",
+          "verification_seal": "self-tested with hu_suite r10 · build v10-c120ac4c · 1049 passed, 6 skipped, 4 xfailed, 0 failed · 0 outbound network attempts",
           "honest_scope": "Algorithmic, cryptographic and software-layer self-assessment only; not a certified hardware HSM, not a safety-rated PLd/SIL2 function, and not CE machinery certification."
         }
       },
@@ -287,11 +287,11 @@
   "signatures": [
     {
       "protected": "eyJhbGciOiJFUzI1NiIsImprdSI6Imh0dHBzOi8vaG9tb3VuaXZlcnNhbGlzLmFpLy53ZWxsLWtub3duL2p3a3MuanNvbiIsImtpZCI6ImhvbW91bml2ZXJzYWxpcy1hMmEtZXMyNTYtdjEiLCJ0eXAiOiJKT1NFIn0",
-      "signature": "jheQn1k_guQ0_eYowT6ciNp9H-TnHnk9h4V5qICBJtwLpCI7xYB2PVMgt51lhhb73GHFuJd5Gy8k6mvbbZxm5w"
+      "signature": "O6NInPjqXHNpFqsIGIH977MmYg4JDi4fcvXreAKePcEn3IgJcD2EChynjpG7ZlHXwu_aSZYCaNiotLmt73ILHA"
     },
     {
       "protected": "eyJhbGciOiJFUzI1NiIsImprdSI6Imh0dHBzOi8vaG9tb3VuaXZlcnNhbGlzLmFpLy53ZWxsLWtub3duL2p3a3MuanNvbiIsImtpZCI6ImhvbW91bml2ZXJzYWxpcy1hMmEtZXMyNTYtZHVhbCIsInR5cCI6IkpPU0UifQ",
-      "signature": "ds2WYC889eah_I583gK3iSjkeWMJ4G7D_kfWlm_sUkgGx9j5Mx_7dLL3Wffk-h20pGPLaKlAkWs_b-clDBtR2w"
+      "signature": "qflxgHW1hI6QAbYdC78Q19hrzlwdoWEHgsLZ5EkhCyEIUmIdCpIaAb0nQop1yFYuczCw_XPf3P7XK9tETzOyvA"
     }
   ],
   "securityRequirements": []
