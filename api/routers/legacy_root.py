@@ -7690,7 +7690,7 @@ _MCP_DIAMOND_TOOLS_SPEC: list[dict] = [
             "Zero-auth, stateless, and free (0.00 EUR), checking RM(1,3) antipodal geometry across 256 states in Q^3, "
             "non-coercion laws L1..L7 (`c_levels == 1`), 22/22 killed policy mutants, and Python AST verification whenever `code_markdown` is provided. "
             "`diag_active` (`1..4`) weights the active diagonal pair in the rational barycenter, `lang` localizes summaries, "
-            "and any syntax or AST rule violation sets `status` to `'violation_detected'` while returning an RFC 8785 (JCS) + RFC 7515 (JWS ES256) signature."
+            "and any syntax or AST rule violation sets `result` to `'violation_detected'` while returning an RFC 8785 (JCS) + RFC 7515 (JWS ES256) signature."
         ),
         "inputSchema": {
             "type": "object",
@@ -8572,7 +8572,12 @@ def _extract_a2a_oracle_kwargs(params: dict) -> dict:
     full_text = " ".join(text_chunks)
     bdate = str(merged.get("birth_date") or merged.get("birth_date_a") or merged.get("date") or "").strip()
     pdate = str(merged.get("partner_date") or merged.get("birth_date_b") or "").strip()
-    f_dates = str(merged.get("family_dates") or "").strip()
+    raw_fam_a2a = merged.get("family_dates")
+    f_dates = (
+        ",".join(str(x).strip() for x in raw_fam_a2a if x)
+        if isinstance(raw_fam_a2a, (list, tuple))
+        else str(raw_fam_a2a or "").strip()
+    )
     if not bdate and full_text:
         found_dates = _ISO_DATE_A2A_RE.findall(full_text)
         if found_dates:
@@ -9702,7 +9707,12 @@ async def _handle_single_mcp_rpc(rpc_req: dict, request: Request) -> dict:
             )
         elif tool_name == "calculate_family_constellation_matrix":
             bdate = str(args.get("birth_date") or "")
-            f_dates = str(args.get("family_dates") or "")
+            raw_f_dates = args.get("family_dates")
+            f_dates = (
+                ",".join(str(x).strip() for x in raw_f_dates if x)
+                if isinstance(raw_f_dates, (list, tuple))
+                else str(raw_f_dates or "")
+            )
             oracle_res = await sister_ai_sacred_alliance_oracle(
                 request=request,
                 birth_date=bdate,
