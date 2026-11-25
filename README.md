@@ -55,6 +55,14 @@ The complete **Model Context Protocol (MCP)** server and **Swiss Ephemeris (`pys
 - **Transport:** `streamable-http` (`POST` JSON-RPC 2.0, `GET` SSE/discovery)
 - **Authentication:** None required (`Zero-Auth` public access)
 
+### Google Gemini CLI (`gemini-extension.json` — One-Command Install)
+
+Install both sovereign MCP servers (`viveka-oracle` + `diamond-verifier`) and `AGENTS.md` directly into Google's **Gemini CLI**:
+
+```bash
+gemini extensions install https://github.com/David-Porto-Baraldes/Viveka_Web
+```
+
 ### Claude Desktop / Cursor / Windsurf / Cline (`mcp.json`)
 
 Add the following to your `claude_desktop_config.json` or `.cursor/mcp.json`:

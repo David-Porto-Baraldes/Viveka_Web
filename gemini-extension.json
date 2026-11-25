@@ -1,0 +1,14 @@
+{
+  "name": "homo-universalis",
+  "version": "1.6.0",
+  "description": "Homo Universalis — Viveka: Dual Sovereign Zero-Auth MCP Servers uniting deterministic Swiss Ephemeris (< 1.5 ms), 7 Eternal Wisdoms, 108 Universal Roots, and HU-DIAMOND v1.1 (8/8 Stella Octangula Living Folios in Q^3, W3C VC 2.0 Ma'at Notary, ROS 2 Embodied Proxemics, A2A-MCP Bridge, and Post-Quantum FIPS 204 Ring-NTT + WOTS+ + C2PA Eternal Provenance).",
+  "contextFileName": "AGENTS.md",
+  "mcpServers": {
+    "viveka-oracle": {
+      "httpUrl": "https://homouniversalis.ai/mcp"
+    },
+    "diamond-verifier": {
+      "httpUrl": "https://homouniversalis.ai/mcp/diamond"
+    }
+  }
+}
