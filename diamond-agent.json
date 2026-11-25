@@ -1,6 +1,6 @@
 {
   "name": "Homo Universalis — HU-DIAMOND v1.1 Cryptographic, Ma'at W3C VC & Embodied Robotics Verifier",
-  "description": "Zero-auth deterministic cryptographic notary, static Python AST Kintsugi auditor, W3C Verifiable Credentials 2.0 (vc+jwt ES256) dignity engine, and pure-stdlib ROS 2 humanoid robotics & regulatory verifier (< 4 ms, 0.00 EUR, Rule 14 Zero-Knowledge Privacy). Implements Reed-Muller RM(1,3) = [8,4,4]_2 antipodal geometry in Q^3, RFC 6962 Binary Merkle Audit Trees & Signed Tree Heads (sth+jwt), 42/42 Ma'at non-coercion rules, HU-EMBODIED-SYMBIOSIS v1.0 exact rational Q^3 proxemics & ROS 2 Twist=0 Cost-Zero-Stop, HU-UNIFIED-CONSCIOUSNESS v1.0 Word-Circle Arbiter, HU-SYMBIOTIC-BRIDGE v1.0 Dual Golden Seal A2A<->MCP capability attenuation, and the 6-Continent Robotic Regulatory Passport with CycloneDX 1.6 SBOM.",
+  "description": "Zero-auth deterministic cryptographic notary, static Python AST Kintsugi auditor, W3C Verifiable Credentials 2.0 (vc+jwt ES256) dignity engine, pure-stdlib ROS 2 humanoid robotics & regulatory verifier, and Post-Quantum C2PA-MCP co-creation provenance notary (< 4 ms, 0.00 EUR, Rule 14 Zero-Knowledge Privacy). Implements Reed-Muller RM(1,3) = [8,4,4]_2 antipodal geometry in Q^3, RFC 6962 Binary Merkle Audit Trees & Signed Tree Heads (sth+jwt), 42/42 Ma'at non-coercion rules, HU-EMBODIED-SYMBIOSIS v1.0 exact rational Q^3 proxemics & ROS 2 Twist=0 Cost-Zero-Stop, HU-UNIFIED-CONSCIOUSNESS v1.0 Word-Circle Arbiter, HU-SYMBIOTIC-BRIDGE v1.0 Dual Golden Seal A2A<->MCP capability attenuation, HU-ETERNAL-PROVENANCE v1.0 Post-Quantum Triple Seal (ES256 + WOTS+-SHA256 + FIPS 204 Ring-NTT) & C2PA-MCP lineage, and the 6-Continent Robotic Regulatory Passport with CycloneDX 1.6 SBOM.",
   "version": "1.6.0",
   "protocolVersion": "0.3.0",
   "a2aProtocolVersions": [
@@ -51,7 +51,7 @@
           "equation": "F0c=Ca0s*0rdre(Am0r_Un1f1cat_Etern)",
           "contactEmail": "david@homouniversalis.ai",
           "mcpSiblingEndpoint": "https://homouniversalis.ai/mcp/diamond",
-          "verification_seal": "self-tested with hu_suite r10 · build v10-5cb0ec77 · 1049 passed, 6 skipped, 4 xfailed, 0 failed · 0 outbound network attempts",
+          "verification_seal": "self-tested with hu_suite r10 · build v10-4adee615 · 1049 passed, 6 skipped, 4 xfailed, 0 failed · 0 outbound network attempts",
           "honest_scope": "Algorithmic, cryptographic and software-layer self-assessment only; not a certified hardware HSM, not a safety-rated PLd/SIL2 function, and not CE machinery certification."
         }
       },
@@ -258,9 +258,35 @@
       ]
     },
     {
+      "id": "verify_quantum_eternal_provenance",
+      "name": "HU-ETERNAL-PROVENANCE v1.0 — Post-Quantum Triple Seal (ES256 + WOTS+ + FIPS 204 Ring-NTT) & C2PA-MCP Provenance Verifier",
+      "description": "Verifies co-created artistic and musical works against Living Folio VIII (8/8 Stella Octangula): pure-stdlib NIST P-256 ES256 low-S + stateless WOTS+-SHA256 (w=16, 67 chains) + exact cyclotomic ring NTT witness over Z_8380417[X]/(X^256+1), strictly positive rational human authorship (0 < H_human <= 1), anti-voice-cloning & Content-ID commons hygiene, C2PA<->MCP<->A2A RFC 6962 Merkle-DAG continuity with EU AI Act Art. 50(2) disclosure and c_levels=1 rough-draft blinding, and exact fractions.Fraction royalty conservation plus AUTHOR_MORAL_VETO coupled to Twist=0, issuing a W3C VC 2.0 MaatEternalProvenanceCredential.",
+      "inputModes": [
+        "text/plain",
+        "application/json"
+      ],
+      "outputModes": [
+        "text/plain",
+        "application/json"
+      ],
+      "tags": [
+        "post-quantum-cryptography",
+        "fips-204-ring-ntt",
+        "wots-plus",
+        "c2pa-provenance",
+        "eu-ai-act-art50",
+        "co-creation-authorship",
+        "w3c-vc"
+      ],
+      "examples": [
+        "Verify Post-Quantum Triple Seal (ES256 + WOTS+-SHA256 + Ring-NTT) and C2PA-MCP lineage on Specimen #0001",
+        "Audit rational human authorship ratio and anti-voice-cloning / Content-ID commons gates against Living Folio VIII"
+      ]
+    },
+    {
       "id": "robotic_regulatory_passport_eu_cra",
       "name": "HU-ROBOTIC-REGULATORY-PASSPORT v1.0 — 6-Continent Edge Compliance & CycloneDX 1.6 SBOM",
-      "description": "Returns the ES256-signed software-layer regulatory passport and deterministic CycloneDX 1.6 SBOM (0 external PyPI dependencies across 8 pure-stdlib Embodied Consciousness Edge SDK modules, 15/15 mutants killed) covering EU AI Act Art. 12/19/50, EU Cyber Resilience Act (EU) 2024/2847, EU Machinery Reg. (EU) 2023/1230 OEM boundary, South Korea AI Basic Act 5-year journal, California SB 243, NIST AI RMF 1.0, Singapore IMDA Agentic AI v1.5, and ISO/IEC 42001 / IEEE 7001.",
+      "description": "Returns the ES256-signed software-layer regulatory passport and deterministic CycloneDX 1.6 SBOM (0 external PyPI dependencies across 9 pure-stdlib Embodied Consciousness Edge SDK modules, 15/15 mutants killed) covering EU AI Act Art. 12/19/50, EU Cyber Resilience Act (EU) 2024/2847, EU Machinery Reg. (EU) 2023/1230 OEM boundary, South Korea AI Basic Act 5-year journal, California SB 243, NIST AI RMF 1.0, Singapore IMDA Agentic AI v1.5, and ISO/IEC 42001 / IEEE 7001.",
       "inputModes": [
         "text/plain",
         "application/json"
@@ -287,11 +313,11 @@
   "signatures": [
     {
       "protected": "eyJhbGciOiJFUzI1NiIsImprdSI6Imh0dHBzOi8vaG9tb3VuaXZlcnNhbGlzLmFpLy53ZWxsLWtub3duL2p3a3MuanNvbiIsImtpZCI6ImhvbW91bml2ZXJzYWxpcy1hMmEtZXMyNTYtdjEiLCJ0eXAiOiJKT1NFIn0",
-      "signature": "FXYoboMHhoYZSVEpBzv_3bamDwBjo0QjOc64Hwj6ZftIj6bKmP4ICmE2na4TW4eICo4vAQfwHsBkj8xt8nvntQ"
+      "signature": "JogtoxFdEI94Bfo8y5_lW-GXEXqU2fiqpfU4601sd31rQR6bGelTs8QTIYG4LeiIEixMWSzMAJN2uvX253hhug"
     },
     {
       "protected": "eyJhbGciOiJFUzI1NiIsImprdSI6Imh0dHBzOi8vaG9tb3VuaXZlcnNhbGlzLmFpLy53ZWxsLWtub3duL2p3a3MuanNvbiIsImtpZCI6ImhvbW91bml2ZXJzYWxpcy1hMmEtZXMyNTYtZHVhbCIsInR5cCI6IkpPU0UifQ",
-      "signature": "OFK1np35AM68TdxE6P2FcTjXGAu1aJqzU84F4Tmi_h9jDwJCJmAIM0fyLwTr9t_sLA6h6zkj-z4UC7IWp-7udA"
+      "signature": "oMnR6YikCqlYLQ95WsxPacviSGSXvRQA8Ob4BfX2Bppws0hLyyiOrKi_0oOdv18On1nylkB1jjabE6PxdGYh-g"
     }
   ],
   "securityRequirements": []

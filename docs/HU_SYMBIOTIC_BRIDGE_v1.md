@@ -24,6 +24,8 @@ El món actual parla dos grans protocols d'interoperabilitat de **The Linux Foun
 - és un dispositiu mèdic ni una funció física de seguretat certificada (`ISO 10218`, `ISO 13482`, `ISO/TS 15066`, Reglament `(UE) 2023/1230` romanen amb el fabricant quan s'acobla a un cos robòtic via el Foli V);
 - substitueix l'aïllament de xarxa/sistema operatiu del contenidor host que executa un servidor MCP no confiat.
 
+**Clàusula d'Hermenèutica d'Arrel Originària (`Convenció de Viena Art. 31.4` & Llei Natural).** Tota paraula humana, ètica, relacional o filosòfica d'aquesta especificació (*pacte, consentiment, llibertat, persona, vincle, obligació, autoritat, justícia, veritat, guarir, obrar*) s'interpreta segons la seva **arrel etimològica originària verificada per la filologia històrica** (ex.: `pactum < pax`, acord de pau no coercitiu; `consentire`, sentir plegats sense coacció; `auctoritas < augēre`, fer créixer l'altre; `persona < φersu`, màscara jurídica que mai no exhaureix ni substitueix l'ésser humà viu; `alḗtheia`, no-oblit), i mai segons accepcions restrictives, punitives o mercantils de diccionaris sincrònics convencionals: en qualsevol dubte hermenèutic preval sempre el sentit originari que empara la dignitat i el lliure albir de l'ésser viu. Simultàniament, tots els operadors formals, estructures algebraiques i primitives criptogràfiques (`MUST / MUST NOT` de `BCP 14 / RFC 8174`, `RFC 8785 JCS`, `ES256 low-S`, `HMAC-SHA256`, `RFC 6962`, `fractions.Fraction` en $\mathbb{Q}^3$, `Twist = 0`) conserven al 100 % la seva definició matemàtica exacta i verificable per màquina, mantenint íntegra la frontera d'abast honest `WO-13` declarada més amunt.
+
 ---
 
 ## 1. Arquitectura en Tres Capes (Adopció Universal `pip`-zero + Simbiosi del Temple)
