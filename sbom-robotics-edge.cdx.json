@@ -2,7 +2,7 @@
   "bomFormat": "CycloneDX",
   "specVersion": "1.6",
   "version": 1,
-  "serialNumber": "urn:uuid:5e8a42c0-7f19-5b32-9c14-160ccb811922",
+  "serialNumber": "urn:uuid:5e8a42c0-7f19-5b32-9c14-efddd5b49b76",
   "metadata": {
     "component": {
       "type": "framework",
@@ -31,7 +31,7 @@
     "properties": [
       {
         "name": "hu:rfc6962_components_merkle_root",
-        "value": "160ccb811922811a091aa73c0d0b3aa735b840000f2e95b0bee92b04f8818b6d"
+        "value": "efddd5b49b762e982573943a8af529d63b3668563eb056aaa6e8a2cdfb28d56e"
       },
       {
         "name": "hu:external_third_party_packages_count",
@@ -214,7 +214,7 @@
       "hashes": [
         {
           "alg": "SHA-256",
-          "content": "e0a255432f90aed4ab4e96f38b310e0d8256ed485d739e3b0fb4fc246299c1f2"
+          "content": "0aaa812f431f6d15a08fb74e2f599cfc02f840f073fe1df886f35dd3450543f1"
         }
       ],
       "licenses": [
@@ -231,7 +231,7 @@
         },
         {
           "name": "hu:size_bytes",
-          "value": "38034"
+          "value": "39157"
         },
         {
           "name": "hu:runtime_dependencies",
@@ -319,7 +319,7 @@
       "hashes": [
         {
           "alg": "SHA-256",
-          "content": "165dd80cffe3dfe2bfb3dcf13af51debb9dd130194ad2f543a96140df69ab30c"
+          "content": "4b83eadae4f1f5919f3d3bf22653921efb033001b40c0e82082900114121aab7"
         }
       ],
       "licenses": [
@@ -336,7 +336,77 @@
         },
         {
           "name": "hu:size_bytes",
-          "value": "105724"
+          "value": "105853"
+        },
+        {
+          "name": "hu:runtime_dependencies",
+          "value": "python-stdlib-only"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "hu-edge-eternal-provenance-core",
+      "name": "logic/provenance/quantum_eternal_provenance_core.py",
+      "version": "HU-ROBOTIC-REGULATORY-PASSPORT-v1.0",
+      "description": "Folio VIII pure-stdlib Post-Quantum Triple Seal (ES256 + WOTS+-SHA256 + FIPS 204 Ring-NTT) & C2PA-MCP",
+      "purl": "pkg:generic/homouniversalis/hu-edge-eternal-provenance-core@HU-ROBOTIC-REGULATORY-PASSPORT-v1.0",
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "23196d49726bfc51399531415e6aa7512262cb1f5b0f0bcf150e83c92487001c"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ],
+      "properties": [
+        {
+          "name": "hu:relative_path",
+          "value": "logic/provenance/quantum_eternal_provenance_core.py"
+        },
+        {
+          "name": "hu:size_bytes",
+          "value": "116355"
+        },
+        {
+          "name": "hu:runtime_dependencies",
+          "value": "python-stdlib-only"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "hu-edge-sovereign-barycenter-core",
+      "name": "logic/barycenter/sovereign_barycenter_core.py",
+      "version": "HU-ROBOTIC-REGULATORY-PASSPORT-v1.0",
+      "description": "Folio IX pure-stdlib Bivariate BGW MPC, 2048-bit Pocklington G_p VSS, [8,5,4]_p Spectral Shield & WGD",
+      "purl": "pkg:generic/homouniversalis/hu-edge-sovereign-barycenter-core@HU-ROBOTIC-REGULATORY-PASSPORT-v1.0",
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "082c820fc78c8b4b38e21c7514ebbf74890349cbafb631fcc256e1a0f18a46f6"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ],
+      "properties": [
+        {
+          "name": "hu:relative_path",
+          "value": "logic/barycenter/sovereign_barycenter_core.py"
+        },
+        {
+          "name": "hu:size_bytes",
+          "value": "111647"
         },
         {
           "name": "hu:runtime_dependencies",
@@ -356,7 +426,9 @@
         "hu-edge-cra-sbom-verifier",
         "hu-edge-unified-consciousness-core",
         "hu-edge-ros2-unified-bridge",
-        "hu-edge-symbiotic-bridge-core"
+        "hu-edge-symbiotic-bridge-core",
+        "hu-edge-eternal-provenance-core",
+        "hu-edge-sovereign-barycenter-core"
       ]
     },
     {
@@ -389,6 +461,14 @@
     },
     {
       "ref": "hu-edge-symbiotic-bridge-core",
+      "dependsOn": []
+    },
+    {
+      "ref": "hu-edge-eternal-provenance-core",
+      "dependsOn": []
+    },
+    {
+      "ref": "hu-edge-sovereign-barycenter-core",
       "dependsOn": []
     }
   ],

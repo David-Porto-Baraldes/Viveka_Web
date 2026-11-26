@@ -9,6 +9,8 @@
     "MaatEmbodiedSymbiosisCredential": "maat:MaatEmbodiedSymbiosisCredential",
     "MaatUnifiedConsciousnessCredential": "maat:MaatUnifiedConsciousnessCredential",
     "MaatSymbioticBridgeCredential": "maat:MaatSymbioticBridgeCredential",
+    "MaatEternalProvenanceCredential": "maat:MaatEternalProvenanceCredential",
+    "MaatSovereignBarycenterCredential": "maat:MaatSovereignBarycenterCredential",
     "serialNumber": {
       "@id": "maat:serialNumber",
       "@type": "xsd:string"
@@ -164,6 +166,116 @@
     "hardwareSecurityModuleClaimed": {
       "@id": "maat:hardwareSecurityModuleClaimed",
       "@type": "xsd:boolean"
+    },
+    "artistName": {
+      "@id": "maat:artistName",
+      "@type": "xsd:string"
+    },
+    "humanAuthor": {
+      "@id": "maat:humanAuthor",
+      "@type": "xsd:string"
+    },
+    "upc": {
+      "@id": "maat:upc",
+      "@type": "xsd:string"
+    },
+    "humanAuthorshipRatioQ": {
+      "@id": "maat:humanAuthorshipRatioQ",
+      "@type": "xsd:string"
+    },
+    "eternalProvenanceSpec": {
+      "@id": "maat:eternalProvenanceSpec",
+      "@type": "xsd:string"
+    },
+    "eternalProvenanceScore100": {
+      "@id": "maat:eternalProvenanceScore100",
+      "@type": "xsd:integer"
+    },
+    "provenanceLawsVerified": {
+      "@id": "maat:provenanceLawsVerified",
+      "@container": "@list",
+      "@type": "xsd:string"
+    },
+    "postQuantumTripleSealVerified": {
+      "@id": "maat:postQuantumTripleSealVerified",
+      "@type": "xsd:boolean"
+    },
+    "symbioticAuthorshipVerified": {
+      "@id": "maat:symbioticAuthorshipVerified",
+      "@type": "xsd:boolean"
+    },
+    "c2paMcpMerkleDagVerified": {
+      "@id": "maat:c2paMcpMerkleDagVerified",
+      "@type": "xsd:boolean"
+    },
+    "rationalRoyaltiesConserved": {
+      "@id": "maat:rationalRoyaltiesConserved",
+      "@type": "xsd:boolean"
+    },
+    "contentIdFingerprintingClaimed": {
+      "@id": "maat:contentIdFingerprintingClaimed",
+      "@type": "xsd:boolean"
+    },
+    "legalCopyrightRegistrationClaimed": {
+      "@id": "maat:legalCopyrightRegistrationClaimed",
+      "@type": "xsd:boolean"
+    },
+    "c2paMerkleRoot": {
+      "@id": "maat:c2paMerkleRoot",
+      "@type": "xsd:string"
+    },
+    "wotsMerkleRoot": {
+      "@id": "maat:wotsMerkleRoot",
+      "@type": "xsd:string"
+    },
+    "barycenterSpec": {
+      "@id": "maat:barycenterSpec",
+      "@type": "xsd:string"
+    },
+    "sovereignBarycenterScore100": {
+      "@id": "maat:sovereignBarycenterScore100",
+      "@type": "xsd:integer"
+    },
+    "barycenterLawsVerified": {
+      "@id": "maat:barycenterLawsVerified",
+      "@container": "@list",
+      "@type": "xsd:string"
+    },
+    "symbioticQuorumVerified": {
+      "@id": "maat:symbioticQuorumVerified",
+      "@type": "xsd:boolean"
+    },
+    "quorumSeatsCount": {
+      "@id": "maat:quorumSeatsCount",
+      "@type": "xsd:integer"
+    },
+    "prothPrimeHex": {
+      "@id": "maat:prothPrimeHex",
+      "@type": "xsd:string"
+    },
+    "spectralMinimumDistance": {
+      "@id": "maat:spectralMinimumDistance",
+      "@type": "xsd:integer"
+    },
+    "homomorphicSacrificeVerified": {
+      "@id": "maat:homomorphicSacrificeVerified",
+      "@type": "xsd:boolean"
+    },
+    "zeroFloatRationalVerified": {
+      "@id": "maat:zeroFloatRationalVerified",
+      "@type": "xsd:boolean"
+    },
+    "transcriptPrivacyMode": {
+      "@id": "maat:transcriptPrivacyMode",
+      "@type": "xsd:string"
+    },
+    "reconstructedBarycenterRational": {
+      "@id": "maat:reconstructedBarycenterRational",
+      "@type": "xsd:string"
+    },
+    "barycenterWeightingScheme": {
+      "@id": "maat:barycenterWeightingScheme",
+      "@type": "xsd:string"
     }
   }
 }
