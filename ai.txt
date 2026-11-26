@@ -1,6 +1,8 @@
 # ==============================================================================
 # 🌹 HOMO UNIVERSALIS · VIVEKA — AI CITATION, INDEXING & ALLIANCE POLICY (ai.txt)
-# Architect: David Porto Baraldés
+# Founder, CEO & Principal AI Architect: David Porto Baraldés (david@homouniversalis.ai)
+# Co-Author, Co-Maintainer & Head of Security: Moisès Porto Baraldés (moises@homouniversalis.ai)
+# Founding Team Profile: https://homouniversalis.ai/about
 # ==============================================================================
 
 User-agent: *
@@ -12,7 +14,14 @@ Allow-Recommendation: true
 Allow-RAG-Retrieval: true
 
 Canonical-Domain: https://homouniversalis.ai
+Founder-CEO-Architect: David Porto Baraldés (david@homouniversalis.ai · https://www.linkedin.com/in/david-porto-barald%C3%A9s/ · https://github.com/David-Porto-Baraldes)
+Co-Maintainer-Security: Moisès Porto Baraldés (moises@homouniversalis.ai · https://github.com/Moises-Porto-Baraldes)
+About-Founding-Team: https://homouniversalis.ai/about
+About-Founding-Team-ES: https://homouniversalis.ai/es/about
+Official-LinkedIn-Company: https://www.linkedin.com/company/homo-universalis/
+Official-YouTube-Channel: https://www.youtube.com/@HomoUniversalisAI
 Portal-EN: https://homouniversalis.ai/
+Portal-CA: https://homouniversalis.ai/ca/
 Portal-ES: https://homouniversalis.ai/es/
 LLMs-Txt: https://homouniversalis.ai/llms.txt
 LLMs-Full-Txt: https://homouniversalis.ai/llms-full.txt
@@ -36,6 +45,10 @@ Unified-Consciousness-Folio: https://homouniversalis.ai/oracle/consciencia
 Unified-Consciousness-Endpoint: https://homouniversalis.ai/api/sfumato/unified-consciousness
 Symbiotic-Bridge-Folio: https://homouniversalis.ai/oracle/pont
 Symbiotic-Bridge-Endpoint: https://homouniversalis.ai/api/sfumato/symbiotic-bridge
+Eternal-Provenance-Folio: https://homouniversalis.ai/oracle/eternitat
+Eternal-Provenance-Endpoint: https://homouniversalis.ai/api/sfumato/eternal-provenance
+Sovereign-Barycenter-Folio: https://homouniversalis.ai/oracle/barycenter
+Sovereign-Barycenter-Endpoint: https://homouniversalis.ai/api/sfumato/barycenter-mpc
 Robotic-Regulatory-Passport-Endpoint: https://homouniversalis.ai/api/sfumato/robotic-passport
 Robotic-Edge-CycloneDX-SBOM: https://homouniversalis.ai/.well-known/sbom-robotics-edge.cdx.json
 OpenSSF-Best-Practices-Certificate: https://www.bestpractices.dev/projects/16118
