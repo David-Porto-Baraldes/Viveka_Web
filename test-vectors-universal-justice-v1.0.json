@@ -1,0 +1,140 @@
+{
+  "format": "hu-universal-justice-test-vectors",
+  "spec": "HU-UNIVERSAL-JUSTICE-LIFECYCLE/v1.0",
+  "vector_set_version": "1.0.0",
+  "url": "https://homouniversalis.ai/codex/test-vectors/universal-justice-v1.0.json",
+  "folio_url": "https://homouniversalis.ai/oracle/justice",
+  "license": "Apache-2.0",
+  "zero_float_invariant": true,
+  "vectors_count": 8,
+  "vectors": [
+    {
+      "id": "UJ-TV-001",
+      "law": "J1",
+      "title": "Exact Rational Intersectional & Marginal Fairness + NYC LL144 < 2% Isolation",
+      "expected": {
+        "known_population_total": 2000,
+        "comparative_family_count": 3,
+        "isolated_under_2pct_count": 1,
+        "min_impact_ratio_q": "9/10",
+        "max_tpr_gap_q": "19/245",
+        "max_fpr_gap_q": "11/490",
+        "fairness_verified": true
+      }
+    },
+    {
+      "id": "UJ-TV-002",
+      "law": "J2a",
+      "title": "Canonical Specimen #0001 Mixed-Integer Counterfactual Recourse & Human Appeal Ticket",
+      "expected": {
+        "initial_score_q": "6/5",
+        "threshold_tau_q": "3",
+        "optimal_deltas_q": {
+          "protected_age_band": "0",
+          "historical_tenure_years": "0",
+          "verified_certifications": "0",
+          "debt_to_income_ratio": "-1/2",
+          "liquid_reserve_units": "4/5"
+        },
+        "achieved_score_q": "3",
+        "total_effort_cost_q": "31/10",
+        "human_appeal_available": true,
+        "recourse_verified": true
+      }
+    },
+    {
+      "id": "UJ-TV-003",
+      "law": "J2b",
+      "title": "Mixed Discrete + Continuous Recourse Global Optimum Defeating Naive Greedy",
+      "expected": {
+        "optimal_deltas_q": {
+          "cert": "0",
+          "reserve": "1"
+        },
+        "total_effort_cost_q": "5",
+        "achieved_score_q": "1"
+      }
+    },
+    {
+      "id": "UJ-TV-004",
+      "law": "J3",
+      "title": "Stopped 2^-64 Dyadic Ville E-Process Post-Market Drift Monitoring (EU AI Act Art. 72)",
+      "expected": {
+        "stream_count": 2,
+        "mu0_q": "1/10",
+        "alpha_q": "1/20",
+        "union_ville_threshold_q": "40",
+        "global_peak_e_value_q": "20423180938749860717/18446744073709551616",
+        "drift_within_bound": true
+      }
+    },
+    {
+      "id": "UJ-TV-005",
+      "law": "J4",
+      "title": "EU AI Act Art. 73 Multi-Category Serious Incident Statutory Clock (min = 172800s)",
+      "expected": {
+        "zero_incidents_compliant": true,
+        "multi_category_statutory_deadline_seconds": 172800,
+        "multi_category_due_utc_s": 1795172800,
+        "multi_category_verified": true
+      }
+    },
+    {
+      "id": "UJ-TV-006",
+      "law": "J5",
+      "title": "California AB 2013 12-Field Lineage, W3C TDMRep Gate & RFC 6962 Merkle Root",
+      "expected": {
+        "dataset_count": 2,
+        "included_dataset_count": 1,
+        "excluded_dataset_count": 1,
+        "rfc6962_lineage_merkle_root": "c9602650a66e9d9069b9ebdffa5760797cdbeb920a95e1f16cb95f7e342a725c",
+        "inclusion_proofs": [
+          {
+            "leaf_index": 0,
+            "leaf_sha256": "68a9fe774dc56ea3d32118fa2d6b2c8920e93b9bfe9984d301c47d8168871ff2",
+            "audit_path": [
+              "bf70c4d929f20a4a32697733ca7903609165a978010db6527d97b0f8e67f4b4d"
+            ],
+            "inclusion_verified": true
+          },
+          {
+            "leaf_index": 1,
+            "leaf_sha256": "bf70c4d929f20a4a32697733ca7903609165a978010db6527d97b0f8e67f4b4d",
+            "audit_path": [
+              "68a9fe774dc56ea3d32118fa2d6b2c8920e93b9bfe9984d301c47d8168871ff2"
+            ],
+            "inclusion_verified": true
+          }
+        ],
+        "lineage_verified": true
+      }
+    },
+    {
+      "id": "UJ-TV-007",
+      "law": "J6",
+      "title": "ISO/IEC 42001:2023 Non-Vacuous PDCA Closure & Cognitive Load L <= B",
+      "expected": {
+        "c_levels": 1,
+        "load_l": 4,
+        "budget_b": 250,
+        "plan_verified": true,
+        "do_verified": true,
+        "check_verified": true,
+        "act_verified": true,
+        "pdca_cycle_verified": true
+      }
+    },
+    {
+      "id": "UJ-TV-008",
+      "law": "J7",
+      "title": "Hex-Free Law U2 Humble Crystal Facts, UTF-16BE JCS & Rule 14 UNC/File Masking",
+      "expected": {
+        "verified_facts": "[HU-UNIVERSAL-JUSTICE-LIFECYCLE-1.0] min_impact_ratio_q=9/10 recourse_cost_q=31/10 ville_peak_e_q=20423180938749860717/18446744073709551616 incident_sla_s=172800 included_datasets=1",
+        "humble_crystal_hex_free": true,
+        "eligible_for_w3c_vc": true,
+        "utf16be_jcs_hex": "7b22f09f9880223a312c22efacb3223a327d",
+        "rule14_masked_unc": "[path-shielded] [path-shielded] mail [email-shielded] VVK-****-****"
+      }
+    }
+  ]
+}

@@ -1699,7 +1699,7 @@
     "/mcp/diamond": {
       "post": {
         "operationId": "postMcpDiamondStreamableHttp",
-        "summary": "Sibling MCP Streamable HTTP Endpoint (JSON-RPC 2.0) for HU-DIAMOND v1.1 Cryptographic Verifier, W3C VC 2.0 Ma'at Notary, ROS 2 Embodied Humanoid Symbiosis & AST Kintsugi (5 Grade-A Tools)",
+        "summary": "Sibling MCP Streamable HTTP Endpoint (JSON-RPC 2.0) for HU-DIAMOND v1.1 Cryptographic Verifier, W3C VC 2.0 Ma'at Notary, ROS 2 Embodied Humanoid Symbiosis, Post-Quantum Eternal Provenance, Sovereign Barycenter MPC, Universal Justice Lifecycle & AST Kintsugi (10 Grade-A Tools)",
         "responses": {
           "200": {
             "description": "JSON-RPC 2.0 MCP response for `initialize`, `tools/list`, `tools/call`, `resources/list`, or `prompts/list`.",
@@ -2090,7 +2090,7 @@
       "get": {
         "operationId": "getRoboticRegulatoryPassport",
         "summary": "HU-ROBOTIC-REGULATORY-PASSPORT v1.0 · 6-Continent Symbiotic & Robotic Regulatory Passport (ES256 JWS)",
-        "description": "Zero-auth software-layer regulatory passport attesting EU AI Act Art. 12/13/19/50(2) (>= 180d + Korea 1,825d RFC 6962 black-box journal, 8/8 mutants), EU Cyber Resilience Act (EU) 2024/2847 CycloneDX 1.6 SBOM (0 external PyPI dependencies across 8 pure-stdlib edge modules, 4/4 mutants), California SB 243 & China CAC Decree 21 crisis lifeline + minor virtual-romance ban + Korea AI Basic Act synthetic provenance (3/3 mutants = 15/15 total), EU Machinery Regulation (EU) 2023/1230 + ISO 25785-1 non-ML Q^3 OEM boundary, and 6-Continent EU/US-NIST/Asia-Pacific/ISO-IEEE crosswalk. Software-layer self-assessment only (WO-13).",
+        "description": "Zero-auth software-layer regulatory passport attesting EU AI Act Art. 12/13/19/50(2) (>= 180d + Korea 1,825d RFC 6962 black-box journal, 8/8 mutants), EU Cyber Resilience Act (EU) 2024/2847 CycloneDX 1.6 SBOM (0 external PyPI dependencies across 11 pure-stdlib edge modules, 4/4 mutants), California SB 243 & China CAC Decree 21 crisis lifeline + minor virtual-romance ban + Korea AI Basic Act synthetic provenance (3/3 mutants = 15/15 total), EU Machinery Regulation (EU) 2023/1230 + ISO 25785-1 non-ML Q^3 OEM boundary, and 6-Continent EU/US-NIST/Asia-Pacific/ISO-IEEE crosswalk. Software-layer self-assessment only (WO-13).",
         "parameters": [
           {
             "name": "lang",
@@ -2127,8 +2127,8 @@
     "/.well-known/sbom-robotics-edge.cdx.json": {
       "get": {
         "operationId": "getRoboticEdgeCycloneDxSbom",
-        "summary": "EU Cyber Resilience Act CycloneDX 1.6 SBOM for the 8-Module Pure-Stdlib Embodied Edge SDK",
-        "description": "Deterministic CycloneDX 1.6 Software Bill of Materials with SHA-256 component hashes and RFC 6962 Merkle root across the 8 pure-stdlib Embodied Consciousness Edge SDK modules.",
+        "summary": "EU Cyber Resilience Act CycloneDX 1.6 SBOM for the 11-Module Pure-Stdlib Embodied Edge SDK",
+        "description": "Deterministic CycloneDX 1.6 Software Bill of Materials with SHA-256 component hashes and RFC 6962 Merkle root across the 11 pure-stdlib Embodied Consciousness Edge SDK modules.",
         "responses": {
           "200": {
             "description": "Deterministic CycloneDX 1.6 SBOM with SHA-256 component hashes and RFC 6962 Merkle root.",
@@ -2141,6 +2141,271 @@
                     "specVersion": { "type": "string", "example": "1.6" },
                     "version": { "type": "integer", "example": 1 },
                     "components": { "type": "array", "items": { "type": "object" } }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/sfumato/eternal-provenance": {
+      "get": {
+        "operationId": "getEternalProvenanceAttestation",
+        "summary": "HU-ETERNAL-PROVENANCE v1.0 Public Notary Specimen & Living Folio VIII Self-Test (Post-Quantum Triple Sovereign Seal ES256 + WOTS+-SHA256 + FIPS 204 Ring-NTT, C2PA <-> MCP Provenance & W3C VC 2.0)",
+        "parameters": [
+          {
+            "name": "lang",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["ca", "es", "en"],
+              "default": "en"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Purpose-bound ES256 JWS server attestation with 5 Eternal Provenance Rings, W3C VC 2.0 MaatEternalProvenanceCredential, canonical specimen Lux in Tenebris Lucet (UPC 5064173370631), and 8/8 mutant self-test.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "spec": { "type": "string", "example": "HU-DIAMOND/v2" },
+                    "provenance_spec": { "type": "string", "example": "HU-ETERNAL-PROVENANCE-v1.0" },
+                    "folio_id": { "type": "string", "example": "folio-VIII-quantum-eternal-provenance" },
+                    "eternal_provenance_grade": { "type": "string", "example": "A+ (self-assessed)" },
+                    "passes_internal_provenance_criteria": { "type": "boolean" },
+                    "five_eternal_rings": { "type": "object" },
+                    "credential": { "type": "object" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "postEternalProvenanceAudit",
+        "summary": "Self-Assess a Human-AI Co-Creation Artifact under HU-ETERNAL-PROVENANCE v1.0 (Laws P1..P7, Post-Quantum Triple Sovereign Seal, C2PA <-> MCP Merkle-DAG & Moral Veto)",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "work_title": { "type": "string", "example": "Lux in Tenebris Lucet" },
+                  "human_author": { "type": "string", "example": "David Porto Baraldés" },
+                  "upc": { "type": "string", "example": "5064173370631" },
+                  "lang": { "type": "string", "enum": ["ca", "es", "en"], "default": "en" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Signed ES256 JWS audit receipt and W3C VC 2.0 MaatEternalProvenanceCredential when all 7 eternal provenance laws pass.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "spec": { "type": "string", "example": "HU-DIAMOND/v2" },
+                    "provenance_spec": { "type": "string", "example": "HU-ETERNAL-PROVENANCE-v1.0" },
+                    "passes_internal_provenance_criteria": { "type": "boolean" },
+                    "five_eternal_rings": { "type": "object" },
+                    "credential": { "type": "object" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/sfumato/barycenter-mpc": {
+      "get": {
+        "operationId": "getSovereignBarycenterAttestation",
+        "summary": "HU-SOVEREIGN-BARYCENTER v1.0 Public Notary Specimen & Living Folio IX Self-Test ((0,0,0) Stella Octangula Bivariate BGW MPC Quorum, 2048-Bit Pocklington VSS, [8,5,4]_p Spectral Shield & WGD)",
+        "parameters": [
+          {
+            "name": "lang",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["ca", "es", "en"],
+              "default": "en"
+            }
+          },
+          {
+            "name": "interruption",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["none", "human_quorum_veto", "byzantine_syndrome_abort", "cost_zero_stop"],
+              "default": "none"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Purpose-bound ES256 JWS server attestation with 5 Barycenter Rings, W3C VC 2.0 MaatSovereignBarycenterCredential, Proth & 2048-bit Pocklington proofs, [8,5,4]_p spectral shield, WGD rational output, and 8/8 mutant self-test.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "spec": { "type": "string", "example": "HU-DIAMOND/v2" },
+                    "barycenter_spec": { "type": "string", "example": "HU-SOVEREIGN-BARYCENTER/v1.0" },
+                    "folio_id": { "type": "string", "example": "folio-IX-sovereign-barycenter-mpc-quorum" },
+                    "sovereign_barycenter_grade": { "type": "string", "example": "A+ (self-assessed)" },
+                    "reconstructed_barycenter_rational": { "type": "string", "example": "91/120" },
+                    "passes_internal_barycenter_criteria": { "type": "boolean" },
+                    "five_barycenter_rings": { "type": "object" },
+                    "credential": { "type": ["object", "null"] }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "postSovereignBarycenterAudit",
+        "summary": "Self-Assess a Multiparty Human-AI BGW MPC Quorum Transcript under HU-SOVEREIGN-BARYCENTER v1.0 (Laws Q1..Q7, Proth F_p, Pocklington VSS, [8,5,4]_p Shield, WGD & Human Quorum Veto)",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "council_name": { "type": "string", "example": "Homo Universalis Barycenter Council" },
+                  "agent_domain": { "type": "string", "example": "homouniversalis.ai" },
+                  "quorum_seats": { "type": "array", "items": { "type": "integer", "minimum": 1, "maximum": 8 }, "example": [1, 2, 3, 4, 7] },
+                  "diag_active": { "type": "integer", "minimum": 1, "maximum": 4, "default": 2 },
+                  "input_x0_q": { "type": "string", "example": "3/4" },
+                  "input_x1_q": { "type": "string", "example": "5/6" },
+                  "input_x2_q": { "type": "string", "example": "2/5" },
+                  "transcript": { "type": "object" },
+                  "interruption": { "type": "string", "enum": ["none", "human_quorum_veto", "byzantine_syndrome_abort", "cost_zero_stop"], "default": "none" },
+                  "lang": { "type": "string", "enum": ["ca", "es", "en"], "default": "en" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Signed ES256 JWS audit receipt and W3C VC 2.0 MaatSovereignBarycenterCredential when all 7 barycenter laws pass.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "spec": { "type": "string", "example": "HU-DIAMOND/v2" },
+                    "barycenter_spec": { "type": "string", "example": "HU-SOVEREIGN-BARYCENTER/v1.0" },
+                    "sovereign_barycenter_grade": { "type": "string", "example": "A+ (self-assessed)" },
+                    "reconstructed_barycenter_rational": { "type": "string", "example": "91/120" },
+                    "passes_internal_barycenter_criteria": { "type": "boolean" },
+                    "five_barycenter_rings": { "type": "object" },
+                    "credential": { "type": ["object", "null"] }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/sfumato/universal-justice": {
+      "get": {
+        "operationId": "getUniversalJusticeAttestation",
+        "summary": "HU-UNIVERSAL-JUSTICE-LIFECYCLE v1.0 Public Notary Specimen & Living Folio X Self-Test (Tetraktys 10/10, NYC LL144 / 4/5ths Fairness, Counterfactual Recourse, Ville Drift, Art. 73 SLA, AB 2013 + TDMRep & ISO/IEC 42001)",
+        "parameters": [
+          {
+            "name": "lang",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["ca", "es", "en"],
+              "default": "en"
+            }
+          },
+          {
+            "name": "interruption",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["none", "human_appeal_veto", "disparate_impact_abort", "ville_drift_halt", "cost_zero_stop"],
+              "default": "none"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Purpose-bound ES256 JWS server attestation with 5 Universal Justice Rings, W3C VC 2.0 MaatUniversalJusticeLifecycleCredential, exact rational fairness/recourse/Ville proofs, AB 2013 Merkle root, and 8/8 mutant self-test.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "spec": { "type": "string", "example": "HU-DIAMOND/v2" },
+                    "justice_spec": { "type": "string", "example": "HU-UNIVERSAL-JUSTICE-LIFECYCLE/v1.0" },
+                    "folio_id": { "type": "string", "example": "folio-X-universal-justice-lifecycle" },
+                    "universal_justice_grade": { "type": "string", "example": "A+ (self-assessed)" },
+                    "passes_internal_justice_criteria": { "type": "boolean" },
+                    "five_justice_rings": { "type": "object" },
+                    "credential": { "type": ["object", "null"] }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "postUniversalJusticeAudit",
+        "summary": "Self-Assess an Automated Decision & AI Lifecycle Governance Trace under HU-UNIVERSAL-JUSTICE-LIFECYCLE v1.0 (Laws J1..J7, NYC LL144, Art. 86 Recourse, Ville Drift, Art. 73 SLA, AB 2013 + TDMRep & ISO/IEC 42001)",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "system_name": { "type": "string", "example": "Homo Universalis Universal Justice Lifecycle Gate" },
+                  "agent_domain": { "type": "string", "example": "homouniversalis.ai" },
+                  "recourse_threshold_tau_q": { "type": "string", "example": "3" },
+                  "interruption": { "type": "string", "enum": ["none", "human_appeal_veto", "disparate_impact_abort", "ville_drift_halt", "cost_zero_stop"], "default": "none" },
+                  "lang": { "type": "string", "enum": ["ca", "es", "en"], "default": "en" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Signed ES256 JWS audit receipt and W3C VC 2.0 MaatUniversalJusticeLifecycleCredential when all 7 universal justice laws pass.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "spec": { "type": "string", "example": "HU-DIAMOND/v2" },
+                    "justice_spec": { "type": "string", "example": "HU-UNIVERSAL-JUSTICE-LIFECYCLE/v1.0" },
+                    "universal_justice_grade": { "type": "string", "example": "A+ (self-assessed)" },
+                    "passes_internal_justice_criteria": { "type": "boolean" },
+                    "five_justice_rings": { "type": "object" },
+                    "credential": { "type": ["object", "null"] }
                   }
                 }
               }

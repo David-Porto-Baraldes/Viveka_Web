@@ -144,6 +144,21 @@
       "serviceEndpoint": "https://homouniversalis.ai/oracle/pont"
     },
     {
+      "id": "did:web:homouniversalis.ai#eternal-provenance",
+      "type": "MaatEternalProvenanceNotaryService",
+      "serviceEndpoint": "https://homouniversalis.ai/oracle/eternitat"
+    },
+    {
+      "id": "did:web:homouniversalis.ai#sovereign-barycenter",
+      "type": "MaatSovereignBarycenterNotaryService",
+      "serviceEndpoint": "https://homouniversalis.ai/oracle/barycenter"
+    },
+    {
+      "id": "did:web:homouniversalis.ai#universal-justice",
+      "type": "UniversalJusticeLifecycleNotaryService",
+      "serviceEndpoint": "https://homouniversalis.ai/oracle/justice"
+    },
+    {
       "id": "did:web:homouniversalis.ai#robotic-passport",
       "type": "RoboticRegulatoryPassportService",
       "serviceEndpoint": "https://homouniversalis.ai/api/sfumato/robotic-passport"
