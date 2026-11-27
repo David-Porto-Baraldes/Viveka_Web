@@ -159,6 +159,11 @@
       "serviceEndpoint": "https://homouniversalis.ai/oracle/justice"
     },
     {
+      "id": "did:web:homouniversalis.ai#pacioli-veritas",
+      "type": "PacioliVeritasOfficeNotaryService",
+      "serviceEndpoint": "https://homouniversalis.ai/oracle/pacioli"
+    },
+    {
       "id": "did:web:homouniversalis.ai#robotic-passport",
       "type": "RoboticRegulatoryPassportService",
       "serviceEndpoint": "https://homouniversalis.ai/api/sfumato/robotic-passport"

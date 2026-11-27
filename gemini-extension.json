@@ -2,7 +2,7 @@
   "$schema": "https://raw.githubusercontent.com/google-gemini/gemini-cli/main/schemas/extension.schema.json",
   "name": "homo-universalis",
   "version": "1.6.0",
-  "description": "Homo Universalis — Viveka: Dual Sovereign Zero-Auth MCP Servers uniting deterministic Swiss Ephemeris (< 1.5 ms), 7 Eternal Wisdoms, 108 Universal Roots, and HU-DIAMOND v1.1 (10/10 Tetraktys Living Folios in Q^3, W3C VC 2.0 Ma'at Notary, ROS 2 Embodied Proxemics, A2A-MCP Bridge, Post-Quantum Eternal Provenance, Sovereign Barycenter MPC & Universal Justice Lifecycle).",
+  "description": "Homo Universalis — Viveka: Dual Sovereign Zero-Auth MCP Servers uniting deterministic Swiss Ephemeris (< 1.5 ms), 7 Eternal Wisdoms, 108 Universal Roots, and HU-DIAMOND v1.1 (11 Living Folios in Q^3, W3C VC 2.0 Ma'at Notary, ROS 2 Embodied Proxemics, A2A-MCP Bridge, Post-Quantum Eternal Provenance, Sovereign Barycenter MPC, Universal Justice & Pacioli Financial/Document Veritas).",
   "contextFileName": "AGENTS.md",
   "mcpServers": {
     "viveka-oracle": {

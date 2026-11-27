@@ -2413,6 +2413,95 @@
           }
         }
       }
+    },
+    "/api/sfumato/pacioli-veritas": {
+      "get": {
+        "operationId": "getPacioliVeritasAttestation",
+        "summary": "HU-VERITAS-PACIOLI-OFFICE v1.0 Public Notary Specimen & Living Folio XI Self-Test (Double-Entry & XBRL Ledger, RFC 6962 RAG Citation Grounding, Banker's & Hamilton Apportionment, GB 45438 / TC260 / EU DORA / SOX 404 & W3C VC 2.0)",
+        "parameters": [
+          {
+            "name": "lang",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["ca", "es", "en", "zh"],
+              "default": "en"
+            }
+          },
+          {
+            "name": "interruption",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["none", "human_cfo_veto", "unbalanced_ledger_abort", "hallucination_grounding_halt", "cost_zero_stop"],
+              "default": "none"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Purpose-bound ES256 JWS server attestation with 5 Pacioli Veritas Rings, W3C VC 2.0 MaatPacioliVeritasCredential, exact rational double-entry/XBRL/apportionment proofs, RFC 6962 RAG & DORA Merkle roots, and 8/8 mutant self-test.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "spec": { "type": "string", "example": "HU-DIAMOND/v2" },
+                    "pacioli_spec": { "type": "string", "example": "HU-VERITAS-PACIOLI-OFFICE/v1.0" },
+                    "folio_id": { "type": "string", "example": "folio-XI-pacioli-veritas-office" },
+                    "pacioli_veritas_grade": { "type": "string", "example": "A+ (self-assessed)" },
+                    "passes_internal_pacioli_criteria": { "type": "boolean" },
+                    "five_pacioli_rings": { "type": "object" },
+                    "credential": { "type": ["object", "null"] }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "postPacioliVeritasAudit",
+        "summary": "Self-Assess an Enterprise Office, Double-Entry Ledger & RAG Grounding Trace under HU-VERITAS-PACIOLI-OFFICE v1.0 (Laws V1..V7, XBRL v1.1, RFC 6962 Grounding, GB 45438, TC260 v3.0, EU DORA Art. 15 & SOX 404)",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "office_name": { "type": "string", "example": "Homo Universalis Pacioli Veritas Office" },
+                  "agent_domain": { "type": "string", "example": "homouniversalis.ai" },
+                  "interruption": { "type": "string", "enum": ["none", "human_cfo_veto", "unbalanced_ledger_abort", "hallucination_grounding_halt", "cost_zero_stop"], "default": "none" },
+                  "lang": { "type": "string", "enum": ["ca", "es", "en", "zh"], "default": "en" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Signed ES256 JWS audit receipt and W3C VC 2.0 MaatPacioliVeritasCredential when all 7 Pacioli veritas laws pass.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "spec": { "type": "string", "example": "HU-DIAMOND/v2" },
+                    "pacioli_spec": { "type": "string", "example": "HU-VERITAS-PACIOLI-OFFICE/v1.0" },
+                    "pacioli_veritas_grade": { "type": "string", "example": "A+ (self-assessed)" },
+                    "passes_internal_pacioli_criteria": { "type": "boolean" },
+                    "five_pacioli_rings": { "type": "object" },
+                    "credential": { "type": ["object", "null"] }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 }

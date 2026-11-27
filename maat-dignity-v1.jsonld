@@ -12,6 +12,7 @@
     "MaatEternalProvenanceCredential": "maat:MaatEternalProvenanceCredential",
     "MaatSovereignBarycenterCredential": "maat:MaatSovereignBarycenterCredential",
     "MaatUniversalJusticeLifecycleCredential": "maat:MaatUniversalJusticeLifecycleCredential",
+    "MaatPacioliVeritasCredential": "maat:MaatPacioliVeritasCredential",
     "serialNumber": {
       "@id": "maat:serialNumber",
       "@type": "xsd:string"
@@ -325,6 +326,75 @@
     },
     "legalBiasOpinionClaimed": {
       "@id": "maat:legalBiasOpinionClaimed",
+      "@type": "xsd:boolean"
+    },
+    "pacioliVeritasSpec": {
+      "@id": "maat:pacioliVeritasSpec",
+      "@type": "xsd:string"
+    },
+    "pacioliVeritasScore100": {
+      "@id": "maat:pacioliVeritasScore100",
+      "@type": "xsd:integer"
+    },
+    "pacioliLawsVerified": {
+      "@id": "maat:pacioliLawsVerified",
+      "@container": "@list",
+      "@type": "xsd:string"
+    },
+    "baseCurrency": {
+      "@id": "maat:baseCurrency",
+      "@type": "xsd:string"
+    },
+    "assetsRational": {
+      "@id": "maat:assetsRational",
+      "@type": "xsd:string"
+    },
+    "liabilitiesRational": {
+      "@id": "maat:liabilitiesRational",
+      "@type": "xsd:string"
+    },
+    "closingEquityRational": {
+      "@id": "maat:closingEquityRational",
+      "@type": "xsd:string"
+    },
+    "netIncomeRational": {
+      "@id": "maat:netIncomeRational",
+      "@type": "xsd:string"
+    },
+    "groundedClaimsCount": {
+      "@id": "maat:groundedClaimsCount",
+      "@type": "xsd:integer"
+    },
+    "allocatedTotalScaledUnits": {
+      "@id": "maat:allocatedTotalScaledUnits",
+      "@type": "xsd:integer"
+    },
+    "evidenceMerkleRoot": {
+      "@id": "maat:evidenceMerkleRoot",
+      "@type": "xsd:string"
+    },
+    "implicitMetadataSha256": {
+      "@id": "maat:implicitMetadataSha256",
+      "@type": "xsd:string"
+    },
+    "doraEventsMerkleRoot": {
+      "@id": "maat:doraEventsMerkleRoot",
+      "@type": "xsd:string"
+    },
+    "sox404SegregationVerified": {
+      "@id": "maat:sox404SegregationVerified",
+      "@type": "xsd:boolean"
+    },
+    "gb45438AigcLabeled": {
+      "@id": "maat:gb45438AigcLabeled",
+      "@type": "xsd:boolean"
+    },
+    "statutoryCpaAuditClaimed": {
+      "@id": "maat:statutoryCpaAuditClaimed",
+      "@type": "xsd:boolean"
+    },
+    "cacFilingClaimed": {
+      "@id": "maat:cacFilingClaimed",
       "@type": "xsd:boolean"
     }
   }
