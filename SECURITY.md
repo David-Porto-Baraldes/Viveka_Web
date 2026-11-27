@@ -76,10 +76,10 @@ We argue that the security requirements above are continuously satisfied because
 
 ## 6. EU Cyber Resilience Act (`Regulation (EU) 2024/2847`) & Embodied Robot Edge SDK Policy
 
-For robotics manufacturers and integrators embedding the **Homo Universalis Embodied Consciousness Edge SDK** (`logic/robotics/`, `logic/consciousness/`, `logic/symbiosis/`, `logic/provenance/`, `logic/barycenter/` — specification: `docs/HU_ROBOTIC_REGULATORY_PASSPORT_v1.md`):
+For robotics manufacturers and integrators embedding the **Homo Universalis Embodied Consciousness Edge SDK** (`logic/robotics/`, `logic/consciousness/`, `logic/symbiosis/`, `logic/provenance/`, `logic/barycenter/`, `logic/justice/` — specification: `docs/HU_ROBOTIC_REGULATORY_PASSPORT_v1.md`):
 
 1. **Zero-Dependency Edge Supply Chain & Machine-Readable SBOM (CRA Annex I Part II §1):**
-   - All 10 on-board robot edge modules depend **exclusively on the Python standard library** (`external_pypi_dependencies_count == 0`, verified continuously by AST inspection in `logic/robotics/cra_sbom_manifest.py`), eliminating third-party transitive PyPI supply-chain attack vectors on the robot.
+   - All 11 on-board robot edge modules depend **exclusively on the Python standard library** (`external_pypi_dependencies_count == 0`, verified continuously by AST inspection in `logic/robotics/cra_sbom_manifest.py`), eliminating third-party transitive PyPI supply-chain attack vectors on the robot.
    - A deterministic **CycloneDX `1.6` Software Bill of Materials (SBOM)** with `SHA-256` component digests and an `RFC 6962` Merkle root is published at `https://homouniversalis.ai/.well-known/sbom-robotics-edge.cdx.json` and attested (`ES256` JWS) at `https://homouniversalis.ai/api/sfumato/robotic-passport`.
 2. **CRA Article 14 Active Vulnerability Notification Commitments:**
    - **Early Warning (`< 24 hours`):** In the event of an actively exploited vulnerability or severe incident affecting the Embodied Edge SDK, we commit to issuing an early warning advisory (and notifying relevant CSIRTs / ENISA where applicable) within **24 hours** of awareness.

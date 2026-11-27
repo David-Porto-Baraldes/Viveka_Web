@@ -11,6 +11,7 @@
     "MaatSymbioticBridgeCredential": "maat:MaatSymbioticBridgeCredential",
     "MaatEternalProvenanceCredential": "maat:MaatEternalProvenanceCredential",
     "MaatSovereignBarycenterCredential": "maat:MaatSovereignBarycenterCredential",
+    "MaatUniversalJusticeLifecycleCredential": "maat:MaatUniversalJusticeLifecycleCredential",
     "serialNumber": {
       "@id": "maat:serialNumber",
       "@type": "xsd:string"
@@ -276,6 +277,55 @@
     "barycenterWeightingScheme": {
       "@id": "maat:barycenterWeightingScheme",
       "@type": "xsd:string"
+    },
+    "universalJusticeSpec": {
+      "@id": "maat:universalJusticeSpec",
+      "@type": "xsd:string"
+    },
+    "universalJusticeScore100": {
+      "@id": "maat:universalJusticeScore100",
+      "@type": "xsd:integer"
+    },
+    "universalJusticeLawsVerified": {
+      "@id": "maat:universalJusticeLawsVerified",
+      "@container": "@list",
+      "@type": "xsd:string"
+    },
+    "minImpactRatioRational": {
+      "@id": "maat:minImpactRatioRational",
+      "@type": "xsd:string"
+    },
+    "counterfactualEffortCostRational": {
+      "@id": "maat:counterfactualEffortCostRational",
+      "@type": "xsd:string"
+    },
+    "villeGlobalPeakERational": {
+      "@id": "maat:villeGlobalPeakERational",
+      "@type": "xsd:string"
+    },
+    "incidentStatutoryDeadlineSeconds": {
+      "@id": "maat:incidentStatutoryDeadlineSeconds",
+      "@type": "xsd:integer"
+    },
+    "includedTrainingDatasetsCount": {
+      "@id": "maat:includedTrainingDatasetsCount",
+      "@type": "xsd:integer"
+    },
+    "trainingLineageMerkleRoot": {
+      "@id": "maat:trainingLineageMerkleRoot",
+      "@type": "xsd:string"
+    },
+    "iso42001PdcaVerified": {
+      "@id": "maat:iso42001PdcaVerified",
+      "@type": "xsd:boolean"
+    },
+    "accreditedCertificationClaimed": {
+      "@id": "maat:accreditedCertificationClaimed",
+      "@type": "xsd:boolean"
+    },
+    "legalBiasOpinionClaimed": {
+      "@id": "maat:legalBiasOpinionClaimed",
+      "@type": "xsd:boolean"
     }
   }
 }
