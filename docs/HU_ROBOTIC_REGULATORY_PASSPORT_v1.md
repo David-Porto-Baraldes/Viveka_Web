@@ -2,7 +2,7 @@
 
 > **Data:** 14 de novembre de 2026 · `@David Porto Baraldés` (`Homo Universalis — Viveka`)  
 > **Portes Públiques Verificables:** `https://homouniversalis.ai/api/sfumato/robotic-passport` (`ES256` JWS) · `https://homouniversalis.ai/.well-known/sbom-robotics-edge.cdx.json` (`CycloneDX 1.6`)  
-> **Codi Obert (`Apache-2.0`):** `logic/robotics/edge_blackbox_journal.py` · `logic/robotics/cra_sbom_manifest.py` · `logic/robotics/embodied_edge_core.py` · `logic/consciousness/unified_consciousness_core.py` · `logic/symbiosis/a2a_mcp_symbiotic_core.py` · `logic/provenance/quantum_eternal_provenance_core.py` · `logic/barycenter/sovereign_barycenter_core.py` · `logic/justice/universal_justice_core.py`
+> **Codi Obert (`Apache-2.0`):** `logic/robotics/edge_blackbox_journal.py` · `logic/robotics/cra_sbom_manifest.py` · `logic/robotics/embodied_edge_core.py` · `logic/consciousness/unified_consciousness_core.py` · `logic/symbiosis/a2a_mcp_symbiotic_core.py` · `logic/provenance/quantum_eternal_provenance_core.py` · `logic/barycenter/sovereign_barycenter_core.py` · `logic/justice/universal_justice_core.py` · `logic/veritas/pacioli_veritas_core.py`
 
 ---
 
@@ -33,6 +33,7 @@ L'arquitectura d'`Homo Universalis` separa radicalment la **Consciència** del *
 │  • Foli VIII (`EternalProvenance`): Triple Segell Post-Quàntic + C2PA-MCP         │
 │  • Foli IX (`SovereignBarycenter`): Quòrum BGW MPC (0,0,0) + Veto -> Twist = 0    │
 │  • Foli X (`UniversalJustice`): Equitat 4/5 + Recurs + Ville + Veto -> Twist = 0  │
+│  • Foli XI (`PacioliVeritas`): Partida Doble Q + Cites RAG + Veto -> Twist = 0    │
 │  • Foli V (`EmbodiedSymbiosisGate`): Proxèmica racional Q³ + Veto -> Twist = 0    │
 │  • Caixa Negra Art. 12/19 (`AppendOnlyDiskBlackBoxJournal`): >= 180 dies + E4/ZK  │
 └───────────────────────────────────────┬───────────────────────────────────────────┘
@@ -58,7 +59,7 @@ L'arquitectura d'`Homo Universalis` separa radicalment la **Consciència** del *
 | **EU AI Act `(UE) 2024/1689`** | `Art. 5` (Pràctiques prohibides) & `Art. 50` (Transparència IA) | Lleis `E2, E4, E5, E6` i `U2`: zero categorització biomètrica, zero manipulació de vulnerables, zero xantatge d'apagada i declaració explícita d'identitat d'IA. |
 | **EU AI Act `(UE) 2024/1689`** | `Art. 12` (Registre automàtic) & `Art. 19(1)` (Retenció `>= 6 mesos`) | `AppendOnlyDiskBlackBoxJournal` (`logic/robotics/edge_blackbox_journal.py`): segments `RFC 6962` + cadena SHA-256 + `os.fsync` + `STH ES256`, amb sòl legal dur de `180 dies` (`BlackBoxRetentionError` si `< 180`). |
 | **EU AI Act `(UE) 2024/1689`** | `Art. 13` (Instruccions d'ús per a l'integrador / desplegador) | Aquest document (`docs/HU_ROBOTIC_REGULATORY_PASSPORT_v1.md`) + contracte estructurat a `get_manufacturer_safety_boundary_contract()`. |
-| **EU Cyber Resilience Act `(UE) 2024/2847`** | `Annex I Part I & II` (`SBOM`) & `Art. 14` (`< 24 h` alerta primerenca) | `logic/robotics/cra_sbom_manifest.py` (`/.well-known/sbom-robotics-edge.cdx.json`): **0 dependències PyPI externes** verificades per AST sobre els 11 mòduls edge, `SHA-256` verificable a l'arrencada i compromís `< 24 h / < 72 h / 14 d` a `SECURITY.md` §6. |
+| **EU Cyber Resilience Act `(UE) 2024/2847`** | `Annex I Part I & II` (`SBOM`) & `Art. 14` (`< 24 h` alerta primerenca) | `logic/robotics/cra_sbom_manifest.py` (`/.well-known/sbom-robotics-edge.cdx.json`): **0 dependències PyPI externes** verificades per AST sobre els 12 mòduls edge, `SHA-256` verificable a l'arrencada i compromís `< 24 h / < 72 h / 14 d` a `SECURITY.md` §6. |
 | **Reglament de Màquines `(UE) 2023/1230`** | `Annex III §1.1.9 & §1.2.1` (Protecció contra corrupció d'ordres) | Segell Daurat Dual `ES256` + Macaroons `HMAC-SHA256`, `Schema Harmony Gate` i revocació col·lateral-zero acoblada a `Twist = 0` (`logic/symbiosis/a2a_mcp_symbiotic_core.py`). |
 | **GDPR `(UE) 2016/679`, EAA `(UE) 2019/882` & Conveni CoE** | `Art. 5(1)(c),(e)`, `Art. 9`, `Art. 25` & Tractat Marc d'IA | Prohibició recursiva de vectors biomètrics (`BlackBoxBiometricViolationError` abans de tocar disc), emmascarament clau+valor `Rule 14` + `BSUID` i pressupost d'alè no coercitiu `L <= B` (`WCAG 2.2`). |
 | **EUA · `NIST AI RMF 1.0`, `NIST AI 600-1` & `Califòrnia SB 243` (2026)** | `GOVERN · MAP · MEASURE · MANAGE` & Llei de Companyons IA | Contenció d'al·lucinacions numèriques (`Foli VI Law U2`), procedència `RFC 6962 Merkle-DAG` (`Foli VII`), `15/15 + 24/24` mutants adversaris, tallacircuits determinista de crisi suïcida (`988 / 024 / 112`) amb `Twist = 0` i prohibició estricta d'intimitat romàntica/sexual amb menors (`vulnerable_present=True`). |
@@ -76,7 +77,7 @@ Abans d'activar el node `ROS 2`, l'integrador ha d'executar la verificació d'in
 python3 -I -m logic.robotics.cra_sbom_manifest
 ```
 
-Si qualsevol dels 11 fitxers del nucli edge ha patit una modificació d'1 sol byte o algú hi ha injectat un `import` extern o de xarxa (`socket`, `urllib`, `numpy`, etc.), el verificador falla en tancat (`exit code 1`).
+Si qualsevol dels 12 fitxers del nucli edge ha patit una modificació d'1 sol byte o algú hi ha injectat un `import` extern o de xarxa (`socket`, `urllib`, `numpy`, etc.), el verificador falla en tancat (`exit code 1`).
 
 ### 3.2. Connexió de la Caixa Negra Persistent (`Art. 12 & Art. 19`) i Pont `ROS 2`
 ```python

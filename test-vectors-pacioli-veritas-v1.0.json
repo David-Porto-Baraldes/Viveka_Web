@@ -1,0 +1,208 @@
+{
+  "format": "hu-pacioli-veritas-test-vectors",
+  "spec": "HU-VERITAS-PACIOLI-OFFICE/v1.0",
+  "vector_set_version": "1.0.0",
+  "url": "https://homouniversalis.ai/codex/test-vectors/pacioli-veritas-v1.0.json",
+  "folio_url": "https://homouniversalis.ai/oracle/pacioli",
+  "license": "Apache-2.0",
+  "zero_float_invariant": true,
+  "vectors_count": 8,
+  "vectors": [
+    {
+      "id": "PV-TV-001",
+      "law": "V1a",
+      "title": "Exact Rational Multi-Currency Double-Entry Ledger & Arbitrage-Free FX Cocycle",
+      "expected": {
+        "base_currency": "EUR",
+        "journal_entries_count": 3,
+        "assets_q": "12600",
+        "liabilities_q": "1060",
+        "opening_equity_q": "10000",
+        "revenues_q": "2000",
+        "expenses_q": "460",
+        "net_income_q": "1540",
+        "closing_equity_q": "11540",
+        "verified": true
+      }
+    },
+    {
+      "id": "PV-TV-002",
+      "law": "V1b",
+      "title": "Weighted XBRL Calculation Linkbase v1.1 ({-1, +1}) Disjoint DAG Roll-Up",
+      "expected": {
+        "xbrl_totals": {
+          "ifrs-full:Assets": "12600",
+          "ifrs-full:Revenues": "2000",
+          "ifrs-full:Expenses": "460",
+          "ifrs-full:ProfitLoss": "1540"
+        }
+      }
+    },
+    {
+      "id": "PV-TV-003",
+      "law": "V2",
+      "title": "RFC 6962 Verifiable RAG Citation Spans & Acyclic Symbolic Formula Grounding in Q",
+      "expected": {
+        "evidence_merkle_root": "a64aaeb3b8cade86cc5047394fb61cd134dc98693cea2f2002b98bf29b79d255",
+        "grounded_claims_count": 12,
+        "verified_claims": [
+          {
+            "claim_id": "CLM-CN-AMT",
+            "claim_type": "LITERAL_SPAN",
+            "value_q": "20000"
+          },
+          {
+            "claim_id": "CLM-CN-FX",
+            "claim_type": "LITERAL_SPAN",
+            "value_q": "13/100"
+          },
+          {
+            "claim_id": "CLM-DEF-EUR",
+            "claim_type": "LITERAL_SPAN",
+            "value_q": "600"
+          },
+          {
+            "claim_id": "CLM-CAP-EUR",
+            "claim_type": "LITERAL_SPAN",
+            "value_q": "10000"
+          },
+          {
+            "claim_id": "CLM-US-AMT",
+            "claim_type": "LITERAL_SPAN",
+            "value_q": "500"
+          },
+          {
+            "claim_id": "CLM-US-FX",
+            "claim_type": "LITERAL_SPAN",
+            "value_q": "23/25"
+          },
+          {
+            "claim_id": "CLM-CN-EUR",
+            "claim_type": "SYMBOLIC_DERIVED",
+            "value_q": "2600"
+          },
+          {
+            "claim_id": "CLM-REV-EUR",
+            "claim_type": "SYMBOLIC_DERIVED",
+            "value_q": "2000"
+          },
+          {
+            "claim_id": "CLM-EXP-EUR",
+            "claim_type": "SYMBOLIC_DERIVED",
+            "value_q": "460"
+          },
+          {
+            "claim_id": "CLM-NI-EUR",
+            "claim_type": "SYMBOLIC_DERIVED",
+            "value_q": "1540"
+          },
+          {
+            "claim_id": "CLM-CEQ-EUR",
+            "claim_type": "SYMBOLIC_DERIVED",
+            "value_q": "11540"
+          },
+          {
+            "claim_id": "CLM-EQ-GROWTH",
+            "claim_type": "SYMBOLIC_DERIVED",
+            "value_q": "77/500"
+          }
+        ],
+        "verified": true
+      }
+    },
+    {
+      "id": "PV-TV-004",
+      "law": "V3",
+      "title": "Signed Banker's Half-to-Even Rounding & Zero-Cent-Leak Hamilton Apportionment",
+      "expected": {
+        "scale_per_unit": 100,
+        "allocated_total_scaled_units": 154000,
+        "tables": [
+          {
+            "table_id": "TBL-RESERVE-2026-Q4",
+            "total_scaled_units": 154000,
+            "allocated_units": {
+              "Granary_Reserve": 51334,
+              "R&D_Core": 51333,
+              "Security_Audit": 51333
+            }
+          }
+        ],
+        "signed_half_even_ties": [
+          12,
+          14,
+          -12,
+          -14
+        ]
+      }
+    },
+    {
+      "id": "PV-TV-005",
+      "law": "V4",
+      "title": "East-West GB 45438-2025 + EU AI Act Art. 50(2) JCS Metadata & TC260 v3.0 Agentic HITL",
+      "expected": {
+        "explicit_user_label": "AI-assisted Pacioli financial statement verified by deterministic rational notary.",
+        "implicit_metadata_sha256": "eed07a19d0958892d90a7be8ad03b8c5e327a3e63bbdac5152d7426140c9d3ac",
+        "agent_id": "agent-kuku-fin-01",
+        "eval_utc_s": 1795750000,
+        "high_impact_financial_action": true,
+        "human_hitl_approved": true
+      }
+    },
+    {
+      "id": "PV-TV-006",
+      "law": "V5",
+      "title": "Stateless PIPL / GDPR Zero-Retention Sanctuary, ISO 13616 IBAN & GB 11643 CN-ID Masking",
+      "expected": {
+        "transfer_mechanism": "READ_ONLY_EPHEMERAL_COMPUTE",
+        "word_count": 14,
+        "budget_b": 32,
+        "c_levels": 1,
+        "masked_iban_cnid_specimen": "IBAN [iban-shielded], CNID [cnid-shielded], VVK-****-****"
+      }
+    },
+    {
+      "id": "PV-TV-007",
+      "law": "V6",
+      "title": "EU DORA Art. 15 Hash-Chained ICT Reconstruction & SOX Section 404 Duty Disjointness",
+      "expected": {
+        "events_count": 3,
+        "preparer_actors": [
+          "agent-kuku-fin-01"
+        ],
+        "approver_actors": [
+          "cfo-guardian-eu-01"
+        ],
+        "dora_events_merkle_root": "7cd1a056a01cc151b380f0c7b9816534d10f866bf674d0c0942afe015e56c7eb",
+        "verified": true
+      }
+    },
+    {
+      "id": "PV-TV-008",
+      "law": "V7",
+      "title": "Hex-Free Law U2 Humble Crystal Verified Facts & Cryptographic Commitments Isolation",
+      "expected": {
+        "evaluation_id": "EVAL-PACIOLI-2026-Q4",
+        "verified_facts": {
+          "evaluation_id": "EVAL-PACIOLI-2026-Q4",
+          "base_currency": "EUR",
+          "assets_q": "12600",
+          "liabilities_q": "1060",
+          "closing_equity_q": "11540",
+          "net_income_q": "1540",
+          "grounded_claims_count": 12,
+          "allocated_total_scaled_units": 154000,
+          "explicit_user_label": "AI-assisted Pacioli financial statement verified by deterministic rational notary.",
+          "office_summary": "Quarterly Pacioli ledger reconciled in EUR with grounded evidence and zero retained personal data."
+        },
+        "humble_crystal_hex_free": true,
+        "cryptographic_commitments": {
+          "evidence_merkle_root": "a64aaeb3b8cade86cc5047394fb61cd134dc98693cea2f2002b98bf29b79d255",
+          "implicit_metadata_sha256": "eed07a19d0958892d90a7be8ad03b8c5e327a3e63bbdac5152d7426140c9d3ac",
+          "dora_events_merkle_root": "7cd1a056a01cc151b380f0c7b9816534d10f866bf674d0c0942afe015e56c7eb"
+        },
+        "eligible_for_w3c_vc": true
+      }
+    }
+  ]
+}
