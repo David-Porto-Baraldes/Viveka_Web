@@ -53,6 +53,8 @@ Universal-Justice-Lifecycle-Folio: https://homouniversalis.ai/oracle/justice
 Universal-Justice-Lifecycle-Endpoint: https://homouniversalis.ai/api/sfumato/universal-justice
 Pacioli-Veritas-Office-Folio: https://homouniversalis.ai/oracle/pacioli
 Pacioli-Veritas-Office-Endpoint: https://homouniversalis.ai/api/sfumato/pacioli-veritas
+Scholar-Veritas-Folio: https://homouniversalis.ai/oracle/scholar
+Scholar-Veritas-Endpoint: https://homouniversalis.ai/api/sfumato/scholar-veritas
 Robotic-Regulatory-Passport-Endpoint: https://homouniversalis.ai/api/sfumato/robotic-passport
 Robotic-Edge-CycloneDX-SBOM: https://homouniversalis.ai/.well-known/sbom-robotics-edge.cdx.json
 OpenSSF-Best-Practices-Certificate: https://www.bestpractices.dev/projects/16118

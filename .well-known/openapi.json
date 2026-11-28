@@ -2502,6 +2502,95 @@
           }
         }
       }
+    },
+    "/api/sfumato/scholar-veritas": {
+      "get": {
+        "operationId": "getScholarVeritasAttestation",
+        "summary": "HU-CANGZHOU-LEONARDO-SCHOLAR v1.0 Public Notary Specimen & Living Folio XII Self-Test (GB/T 7714-2025 + ORCID/ISSN/ISBN-13, Exact Rational Meta-Analysis in Q, Acyclic Mind-Map DAG, Bell-LaPadula Vault Isolation & MOST/NSFC + CRediT + TC260 PI HITL)",
+        "parameters": [
+          {
+            "name": "lang",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["ca", "es", "en", "zh"],
+              "default": "en"
+            }
+          },
+          {
+            "name": "interruption",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["none", "human_pi_veto", "retracted_citation_halt", "meta_contradiction_abort", "cost_zero_stop"],
+              "default": "none"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Purpose-bound ES256 JWS server attestation with 5 Scholarly Veritas Rings, W3C VC 2.0 MaatScholarlyVeritasCredential, exact rational inverse-variance meta-analysis proofs, RFC 6962 bibliography & corpus Merkle roots, and 8/8 mutant self-test.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "spec": { "type": "string", "example": "HU-DIAMOND/v2" },
+                    "scholar_spec": { "type": "string", "example": "HU-CANGZHOU-LEONARDO-SCHOLAR/v1.0" },
+                    "folio_id": { "type": "string", "example": "folio-XII-cangzhou-leonardo-scholar" },
+                    "scholarly_veritas_grade": { "type": "string", "example": "A+ (self-assessed)" },
+                    "passes_internal_scholar_criteria": { "type": "boolean" },
+                    "five_scholar_rings": { "type": "object" },
+                    "credential": { "type": ["object", "null"] }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "postScholarVeritasAudit",
+        "summary": "Self-Assess a Scholarly Synthesis, Rational Meta-Analysis & Mind-Map Knowledge-Graph Trace under HU-CANGZHOU-LEONARDO-SCHOLAR v1.0 (Laws S1..S7, GB/T 7714-2025, ORCID/ISSN/ISBN-13, Bell-LaPadula Vault Isolation & CRediT / TC260 PI HITL)",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "workspace_name": { "type": "string", "example": "Homo Universalis Cangzhou-Leonardo Scholarly Veritas & Knowledge-Graph Gate" },
+                  "agent_domain": { "type": "string", "example": "homouniversalis.ai" },
+                  "interruption": { "type": "string", "enum": ["none", "human_pi_veto", "retracted_citation_halt", "meta_contradiction_abort", "cost_zero_stop"], "default": "none" },
+                  "lang": { "type": "string", "enum": ["ca", "es", "en", "zh"], "default": "en" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Signed ES256 JWS audit receipt and W3C VC 2.0 MaatScholarlyVeritasCredential when all 7 scholarly veritas laws pass.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "spec": { "type": "string", "example": "HU-DIAMOND/v2" },
+                    "scholar_spec": { "type": "string", "example": "HU-CANGZHOU-LEONARDO-SCHOLAR/v1.0" },
+                    "scholarly_veritas_grade": { "type": "string", "example": "A+ (self-assessed)" },
+                    "passes_internal_scholar_criteria": { "type": "boolean" },
+                    "five_scholar_rings": { "type": "object" },
+                    "credential": { "type": ["object", "null"] }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 }

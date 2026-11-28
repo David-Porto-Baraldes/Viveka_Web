@@ -24,6 +24,8 @@ from typing import Any
 
 IJSON_MAX_SAFE_INT: int = (1 << 53) - 1  # +9007199254740991
 IJSON_MIN_SAFE_INT: int = -((1 << 53) - 1)  # -9007199254740991
+JCS_MAX_NESTING_DEPTH: int = 64
+JCS_MAX_CONTAINER_VISITS: int = 262_144
 
 
 def _assert_no_lone_surrogates(text: str, path: str = "$") -> None:
@@ -144,7 +146,14 @@ def _format_jcs_number(value: int | float, path: str = "$") -> str:
     raise TypeError(f"Unsupported numeric type {type(value).__name__} at {path}.")
 
 
-def assert_signable(obj: Any, path: str = "$") -> None:
+def assert_signable(
+    obj: Any,
+    path: str = "$",
+    *,
+    _depth: int = 0,
+    _active: set[int] | None = None,
+    _visits: list[int] | None = None,
+) -> None:
     """
     Strictly validate that `obj` is safe for cryptographic signing (WO-08).
 
@@ -153,8 +162,11 @@ def assert_signable(obj: Any, path: str = "$") -> None:
     - Any `int` outside I-JSON safe bounds `[-(2^53 - 1), +(2^53 - 1)]` (`ValueError`).
     - Any non-string dict key (`TypeError`).
     - Any lone UTF-16 surrogate in strings or keys (`ValueError`).
+    - Any cyclic container reference, nesting depth > 64, or diamond-DAG expansion > 262,144 (`ValueError`).
     - Any unsupported Python object type (`TypeError`).
     """
+    if _depth > JCS_MAX_NESTING_DEPTH:
+        raise ValueError(f"JCS maximum nesting depth ({JCS_MAX_NESTING_DEPTH}) exceeded at {path}.")
     if obj is None or isinstance(obj, bool):
         return
     if isinstance(obj, float):
@@ -173,21 +185,66 @@ def assert_signable(obj: Any, path: str = "$") -> None:
         _assert_no_lone_surrogates(obj, path)
         return
     if isinstance(obj, (list, tuple)):
-        for idx, item in enumerate(obj):
-            assert_signable(item, f"{path}[{idx}]")
+        active = set() if _active is None else _active
+        visits = [0] if _visits is None else _visits
+        oid = id(obj)
+        if oid in active:
+            raise ValueError(f"Cyclic container reference is forbidden in JCS at {path}.")
+        visits[0] += 1 + len(obj)
+        if visits[0] > JCS_MAX_CONTAINER_VISITS:
+            raise ValueError(f"JCS container visit budget ({JCS_MAX_CONTAINER_VISITS}) exceeded at {path}.")
+        active.add(oid)
+        try:
+            for idx, item in enumerate(obj):
+                assert_signable(
+                    item,
+                    f"{path}[{idx}]",
+                    _depth=_depth + 1,
+                    _active=active,
+                    _visits=visits,
+                )
+        finally:
+            active.discard(oid)
         return
     if isinstance(obj, Mapping):
-        for k, v in obj.items():
-            if not isinstance(k, str):
-                raise TypeError(f"JSON object keys must be strings at {path}, got {type(k).__name__}.")
-            _assert_no_lone_surrogates(k, f"{path}.<key>")
-            assert_signable(v, f"{path}.{k}")
+        active = set() if _active is None else _active
+        visits = [0] if _visits is None else _visits
+        oid = id(obj)
+        if oid in active:
+            raise ValueError(f"Cyclic container reference is forbidden in JCS at {path}.")
+        visits[0] += 1 + len(obj)
+        if visits[0] > JCS_MAX_CONTAINER_VISITS:
+            raise ValueError(f"JCS container visit budget ({JCS_MAX_CONTAINER_VISITS}) exceeded at {path}.")
+        active.add(oid)
+        try:
+            for k, v in obj.items():
+                if not isinstance(k, str):
+                    raise TypeError(f"JSON object keys must be strings at {path}, got {type(k).__name__}.")
+                _assert_no_lone_surrogates(k, f"{path}.<key>")
+                assert_signable(
+                    v,
+                    f"{path}.{k}",
+                    _depth=_depth + 1,
+                    _active=active,
+                    _visits=visits,
+                )
+        finally:
+            active.discard(oid)
         return
     raise TypeError(f"Unsupported type {type(obj).__name__} in signed payload at {path}.")
 
 
-def jcs_dumps(obj: Any, *, _path: str = "$") -> str:
+def jcs_dumps(
+    obj: Any,
+    *,
+    _path: str = "$",
+    _depth: int = 0,
+    _active: set[int] | None = None,
+    _visits: list[int] | None = None,
+) -> str:
     """Serialize any JSON-compatible value into its canonical RFC 8785 string."""
+    if _depth > JCS_MAX_NESTING_DEPTH:
+        raise ValueError(f"JCS maximum nesting depth ({JCS_MAX_NESTING_DEPTH}) exceeded at {_path}.")
     if obj is None:
         return "null"
     if obj is True:
@@ -199,17 +256,54 @@ def jcs_dumps(obj: Any, *, _path: str = "$") -> str:
     if isinstance(obj, str):
         return _escape_jcs_string(obj, _path)
     if isinstance(obj, (list, tuple)):
-        return "[" + ",".join(jcs_dumps(item, _path=f"{_path}[{idx}]") for idx, item in enumerate(obj)) + "]"
+        active = set() if _active is None else _active
+        visits = [0] if _visits is None else _visits
+        oid = id(obj)
+        if oid in active:
+            raise ValueError(f"Cyclic container reference is forbidden in JCS at {_path}.")
+        visits[0] += 1 + len(obj)
+        if visits[0] > JCS_MAX_CONTAINER_VISITS:
+            raise ValueError(f"JCS container visit budget ({JCS_MAX_CONTAINER_VISITS}) exceeded at {_path}.")
+        active.add(oid)
+        try:
+            return (
+                "["
+                + ",".join(
+                    jcs_dumps(
+                        item,
+                        _path=f"{_path}[{idx}]",
+                        _depth=_depth + 1,
+                        _active=active,
+                        _visits=visits,
+                    )
+                    for idx, item in enumerate(obj)
+                )
+                + "]"
+            )
+        finally:
+            active.discard(oid)
     if isinstance(obj, Mapping):
-        for k in obj.keys():
-            if not isinstance(k, str):
-                raise TypeError(f"JSON object keys must be strings at {_path}, got {type(k).__name__}.")
-        sorted_keys = sorted(obj.keys(), key=utf16_sort_key)
-        members = [
-            f"{_escape_jcs_string(k, f'{_path}.<key>')}:{jcs_dumps(obj[k], _path=f'{_path}.{k}')}"
-            for k in sorted_keys
-        ]
-        return "{" + ",".join(members) + "}"
+        active = set() if _active is None else _active
+        visits = [0] if _visits is None else _visits
+        oid = id(obj)
+        if oid in active:
+            raise ValueError(f"Cyclic container reference is forbidden in JCS at {_path}.")
+        visits[0] += 1 + len(obj)
+        if visits[0] > JCS_MAX_CONTAINER_VISITS:
+            raise ValueError(f"JCS container visit budget ({JCS_MAX_CONTAINER_VISITS}) exceeded at {_path}.")
+        active.add(oid)
+        try:
+            for k in obj.keys():
+                if not isinstance(k, str):
+                    raise TypeError(f"JSON object keys must be strings at {_path}, got {type(k).__name__}.")
+            sorted_keys = sorted(obj.keys(), key=utf16_sort_key)
+            members = [
+                f"{_escape_jcs_string(k, f'{_path}.<key>')}:{jcs_dumps(obj[k], _path=f'{_path}.{k}', _depth=_depth + 1, _active=active, _visits=visits)}"
+                for k in sorted_keys
+            ]
+            return "{" + ",".join(members) + "}"
+        finally:
+            active.discard(oid)
     raise TypeError(f"Unsupported type {type(obj).__name__} in JCS serialization at {_path}.")
 
 

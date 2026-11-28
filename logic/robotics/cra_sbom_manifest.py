@@ -5,7 +5,7 @@ HU-ROBOTIC-REGULATORY-PASSPORT v1.0 — EU Cyber Resilience Act (CRA) Determinis
 Zero-Dependency Supply-Chain Auditor & Boot-Time Integrity Verifier
 (`logic/robotics/cra_sbom_manifest.py`).
 
-Covers the complete 8-module Pure-Stdlib On-Board Embodied Consciousness Edge SDK:
+Covers the complete 13-module Pure-Stdlib On-Board Embodied Consciousness Edge SDK:
   1. `logic/crypto/jcs.py` — RFC 8785 JSON Canonicalization Scheme (I-JSON, zero floats)
   2. `logic/robotics/embodied_edge_core.py` — Folio V Q^3 proxemics, cost-zero-stop & Rule 14
   3. `logic/robotics/ros2_embodied_symbiosis_bridge.py` — ROS 2 DDS boundary & watchdog gate
@@ -14,6 +14,11 @@ Covers the complete 8-module Pure-Stdlib On-Board Embodied Consciousness Edge SD
   6. `logic/consciousness/unified_consciousness_core.py` — Folio VI 3-Level Word-Circle Arbiter
   7. `logic/robotics/ros2_unified_consciousness_bridge.py` — Folio V + VI embodied voice/motion bridge
   8. `logic/symbiosis/a2a_mcp_symbiotic_core.py` — Folio VII pure-stdlib P-256 ES256, Macaroons & DAG
+  9. `logic/provenance/quantum_eternal_provenance_core.py` — Folio VIII Post-Quantum Triple Seal & C2PA-MCP
+ 10. `logic/barycenter/sovereign_barycenter_core.py` — Folio IX (0,0,0) Bivariate BGW MPC, Pocklington 2048b VSS, [8,5,4]_p & WGD
+ 11. `logic/justice/universal_justice_core.py` — Folio X Tetraktys 10/10 Universal Justice, Fairness, Recourse, Ville Drift, Art. 73 & AB 2013
+ 12. `logic/veritas/pacioli_veritas_core.py` — Folio XI Pacioli Double-Entry Q, Verifiable RAG Citations, GB 45438 / TC260 & DORA Art. 15
+ 13. `logic/scholar/scholar_veritas_core.py` — Folio XII GB/T 7714-2025 Citations, Rational Meta-Analysis, Kahn DAG & Vault Non-Interference
 
 Regulatory alignment (software/cognitive supervisory layer only — honest scope `WO-13`):
   - EU Cyber Resilience Act (Regulation (EU) 2024/2847) Annex I Part I & Part II (§1 machine-readable
@@ -110,6 +115,31 @@ EDGE_SDK_MODULES: Final[tuple[tuple[str, str, str], ...]] = (
         "hu-edge-symbiotic-bridge-core",
         "Folio VII pure-stdlib NIST P-256 ES256, HMAC Macaroons, MCP Schema Harmony Gate & RFC 6962 DAG",
     ),
+    (
+        "logic/provenance/quantum_eternal_provenance_core.py",
+        "hu-edge-eternal-provenance-core",
+        "Folio VIII pure-stdlib Post-Quantum Triple Seal (ES256 + WOTS+-SHA256 + FIPS 204 Ring-NTT) & C2PA-MCP",
+    ),
+    (
+        "logic/barycenter/sovereign_barycenter_core.py",
+        "hu-edge-sovereign-barycenter-core",
+        "Folio IX pure-stdlib Bivariate BGW MPC, 2048-bit Pocklington G_p VSS, [8,5,4]_p Spectral Shield & WGD",
+    ),
+    (
+        "logic/justice/universal_justice_core.py",
+        "hu-edge-universal-justice-core",
+        "Folio X pure-stdlib Intersectional Fairness, Counterfactual Recourse, Stopped Ville Drift & AB 2013 Lineage",
+    ),
+    (
+        "logic/veritas/pacioli_veritas_core.py",
+        "hu-edge-pacioli-veritas-core",
+        "Folio XI pure-stdlib Pacioli Double-Entry Q, RAG Citation Grounding, GB 45438 / TC260 & DORA Art. 15",
+    ),
+    (
+        "logic/scholar/scholar_veritas_core.py",
+        "hu-edge-scholar-veritas-core",
+        "Folio XII pure-stdlib GB/T 7714-2025 Citations, Rational Meta-Analysis, Kahn DAG & Vault Non-Interference",
+    ),
 )
 
 _ALLOWED_INTERNAL_PREFIXES: Final[frozenset[str]] = frozenset(
@@ -122,6 +152,11 @@ _ALLOWED_INTERNAL_PREFIXES: Final[frozenset[str]] = frozenset(
         "logic.consciousness.unified_consciousness_core",
         "logic.robotics.ros2_unified_consciousness_bridge",
         "logic.symbiosis.a2a_mcp_symbiotic_core",
+        "logic.provenance.quantum_eternal_provenance_core",
+        "logic.barycenter.sovereign_barycenter_core",
+        "logic.justice.universal_justice_core",
+        "logic.veritas.pacioli_veritas_core",
+        "logic.scholar.scholar_veritas_core",
     }
 )
 
@@ -156,7 +191,7 @@ def default_repo_root() -> Path:
 
 def audit_edge_sdk_zero_external_deps(repo_root: str | Path | None = None) -> dict[str, Any]:
     """
-    Walk the Python AST of all 8 edge SDK modules and verify:
+    Walk the Python AST of all 13 edge SDK modules and verify:
       1. Zero external PyPI / C-extension imports (`external_imports == []`),
       2. Zero cloud engine imports (`logic.engines` never imported),
       3. Zero outbound network stdlib modules (`socket`, `urllib`, `http`, `ssl`, etc. never imported),
@@ -237,7 +272,7 @@ def _component_leaf_record(rel_path: str, bom_ref: str, sha256_hex: str, size_by
 
 def build_edge_sdk_cyclonedx_sbom(repo_root: str | Path | None = None) -> dict[str, Any]:
     """
-    Build a deterministic CycloneDX 1.6 Software Bill of Materials (SBOM) for the 8-module
+    Build a deterministic CycloneDX 1.6 Software Bill of Materials (SBOM) for the 13-module
     Homo Universalis Embodied Consciousness Edge SDK (EU Cyber Resilience Act Annex I Part II §1).
     """
     root = Path(repo_root) if repo_root is not None else default_repo_root()
@@ -428,7 +463,7 @@ def run_cra_sbom_self_test(repo_root: str | Path | None = None) -> dict[str, Any
     if not r2["sbom_integrity_verified"] and "sbom_rfc6962_merkle_root_mismatch" in r2["violations"]:
         killed.append("S2_sbom_merkle_root_tamper_detected")
 
-    # S3 & S4 in isolated temporary mirror of the 8 edge files
+    # S3 & S4 in isolated temporary mirror of the 13 edge files
     with tempfile.TemporaryDirectory() as tmpdir:
         tmp_root = Path(tmpdir)
         for rel_path, _, _ in EDGE_SDK_MODULES:
@@ -576,6 +611,11 @@ def get_manufacturer_safety_boundary_contract() -> dict[str, Any]:
                 EMBODIED_SPEC_VERSION,
                 "HU-UNIFIED-CONSCIOUSNESS-v1.0",
                 "HU-SYMBIOTIC-BRIDGE-v1.0",
+                "HU-ETERNAL-PROVENANCE-v1.0",
+                "HU-SOVEREIGN-BARYCENTER-v1.0",
+                "HU-UNIVERSAL-JUSTICE-LIFECYCLE-v1.0",
+                "HU-VERITAS-PACIOLI-OFFICE-v1.0",
+                "HU-CANGZHOU-LEONARDO-SCHOLAR-v1.0",
                 BLACKBOX_SPEC_VERSION,
                 PASSPORT_SPEC_VERSION,
             ],
@@ -630,7 +670,7 @@ def get_international_symbiotic_standards_crosswalk() -> dict[str, Any]:
             ),
             "eu_cyber_resilience_act_2024_2847": (
                 "Annex I Part I & II (deterministic CycloneDX 1.6 SBOM, 0 external PyPI dependencies "
-                "across all 8 edge modules) & Art. 14 (< 24h early warning, < 72h notification, <= 14d fix)."
+                "across all 13 edge modules) & Art. 14 (< 24h early warning, < 72h notification, <= 14d fix)."
             ),
             "eu_machinery_regulation_2023_1230": (
                 "Annex III §1.1.9 & §1.2.1 command-corruption protection via Dual Golden Seal (ES256 + "
@@ -753,6 +793,11 @@ def build_robotic_regulatory_passport_core(repo_root: str | Path | None = None) 
             "folio_v_embodied_symbiosis": "https://homouniversalis.ai/api/sfumato/embodied-symbiosis",
             "folio_vi_unified_consciousness": "https://homouniversalis.ai/api/sfumato/unified-consciousness",
             "folio_vii_symbiotic_bridge": "https://homouniversalis.ai/api/sfumato/symbiotic-bridge",
+            "folio_viii_eternal_provenance": "https://homouniversalis.ai/api/sfumato/eternal-provenance",
+            "folio_ix_sovereign_barycenter": "https://homouniversalis.ai/api/sfumato/barycenter-mpc",
+            "folio_x_universal_justice": "https://homouniversalis.ai/api/sfumato/universal-justice",
+            "folio_xi_pacioli_veritas": "https://homouniversalis.ai/api/sfumato/pacioli-veritas",
+            "folio_xii_scholar_veritas": "https://homouniversalis.ai/api/sfumato/scholar-veritas",
             "manufacturer_manual_doc": "docs/HU_ROBOTIC_REGULATORY_PASSPORT_v1.md",
         },
     }

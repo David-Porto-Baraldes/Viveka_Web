@@ -21,11 +21,15 @@ abstract: >-
   and Pythagorean Numerology. Includes the HU-DIAMOND · Fil d'Or v1.1 non-coercion
   protocol (7 Hard Laws L1..L7, c_levels == 1), The Diamond Forge (/oracle/diamond &
   /api/sfumato/diamond-budget: Stella Octangula in Q^3, Reed-Muller RM(1,3) antipodal
-  code, 1..4 Spiral Turns -> 9..36 Deep Think calls & AST Kintsugi verifier), and the
+  code, 4 Spiral Turns + 10 Supreme Tribunals -> 9..46 Deep Think calls & AST Kintsugi verifier), and the
   HU-SOVEREIGN-SHIELD v1.0
   & HU-SOVEREIGN-BEACON engine (/api/sfumato/sovereign-shield: RFC 6962 Certificate
   Transparency Merkle Audit Trees, Three-Ring Zero-Knowledge Dignity Receipts, and
-  Persephone & Demeter Exact Rational Solidarity Algebra). Speaks the Linux Foundation
+  Persephone & Demeter Exact Rational Solidarity Algebra), and the 12 Living Leonardo
+  Folios (Folios I..XII on /mcp/diamond: 12 Grade-A tools spanning W3C VC 2.0 Ma'at,
+  ROS 2 Embodied Symbiosis, Unified Consciousness, A2A-MCP Symbiotic Bridge, Post-Quantum
+  Provenance, BGW MPC Barycenter, Universal Justice, Pacioli Double-Entry & RAG Veritas,
+  and Cangzhou Leonardo Scholarly Bibliography & Knowledge Graph). Speaks the Linux Foundation
   / AAIF Agent2Agent (lf.a2a.v1 v1.0.0 & v0.3.0 with RFC 8785 JCS + RFC 7515 ES256 JWS
   signatures) and Model Context Protocol (MCP 2026-07-28). Awarded Linux Foundation
   OpenSSF Best Practices Gold Badge (#16118 — 300% tiered) and Glama TDQS Grade A.
@@ -59,4 +63,4 @@ identifiers:
   - type: swh
     value: "swh:1:snp:e3fb7d94dfe1fa61308567357599cbbb7738e4bf"
     description: "UNESCO Software Heritage Persistent Archival Snapshot"
-date-released: "2026-11-07"
+date-released: "2026-11-28"

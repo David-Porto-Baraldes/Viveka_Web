@@ -164,6 +164,11 @@
       "serviceEndpoint": "https://homouniversalis.ai/oracle/pacioli"
     },
     {
+      "id": "did:web:homouniversalis.ai#scholar-veritas",
+      "type": "CangzhouLeonardoScholarNotaryService",
+      "serviceEndpoint": "https://homouniversalis.ai/oracle/scholar"
+    },
+    {
       "id": "did:web:homouniversalis.ai#robotic-passport",
       "type": "RoboticRegulatoryPassportService",
       "serviceEndpoint": "https://homouniversalis.ai/api/sfumato/robotic-passport"

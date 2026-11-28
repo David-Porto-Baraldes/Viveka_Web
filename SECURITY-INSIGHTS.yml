@@ -4,8 +4,8 @@
 
 header:
   schema-version: 2.0.0
-  last-updated: '2026-11-01'
-  last-reviewed: '2026-11-27'
+  last-updated: '2026-11-28'
+  last-reviewed: '2026-11-28'
   url: https://homouniversalis.ai/SECURITY-INSIGHTS.yml
   project-url: https://github.com/David-Porto-Baraldes/Viveka_Web
 
@@ -57,9 +57,9 @@ repository:
       self:
         comment: >-
           OpenSSF Best Practices Gold Badge (#16118 — 100% Gold / 300% tiered), Glama MCP TDQS Grade A
-          (4.7 / 5.0, all 4 tools at 4.8 / 5.0), and deterministic hu_suite r10 (1,049 unit/contract tests +
-          670 mutation tests + Linux Foundation A2A TCK).
-        date: '2026-11-01'
+          (viveka-oracle & diamond-verifier), 13-module zero-PyPI CycloneDX 1.6 Edge SBOM, and deterministic
+          hu_suite r10 (4,500+ unit/contract tests + 670 mutation tests + Linux Foundation A2A TCK).
+        date: '2026-11-28'
         evidence: https://www.bestpractices.dev/projects/16118
     champions:
       - name: David Porto Baraldés
@@ -72,7 +72,7 @@ repository:
           ci: true
           before-release: true
         comment: >-
-          1,049 protocol/privacy/ephemeris tests, AST Import Hoist Guard,
+          4,500+ protocol/privacy/ephemeris/Folio I..XII tests, AST Import Hoist Guard,
           166 proto-mutants, 504 app-mutants, and Official A2A TCK.
   documentation:
     contributing-guide: https://github.com/David-Porto-Baraldes/Viveka_Web/blob/main/CONTRIBUTING.md

@@ -1,6 +1,6 @@
 {
   "name": "Homo Universalis — HU-DIAMOND v1.1 Cryptographic, Ma'at W3C VC & Embodied Robotics Verifier",
-  "description": "Zero-auth deterministic cryptographic notary, static Python AST Kintsugi auditor, W3C Verifiable Credentials 2.0 (vc+jwt ES256) dignity engine, pure-stdlib ROS 2 humanoid robotics & regulatory verifier, Post-Quantum C2PA-MCP co-creation provenance notary, (0, 0, 0) Sovereign Barycenter BGW MPC quorum verifier, Universal Algorithmic Justice & Lifecycle Governance notary, and Pacioli Agentic Office & Financial Veritas notary (< 5 ms, 0.00 EUR, Rule 14 Zero-Knowledge Privacy). Implements Reed-Muller RM(1,3) = [8,4,4]_2 antipodal geometry in Q^3, RFC 6962 Binary Merkle Audit Trees & Signed Tree Heads (sth+jwt), 42/42 Ma'at non-coercion rules, HU-EMBODIED-SYMBIOSIS v1.0 exact rational Q^3 proxemics & ROS 2 Twist=0 Cost-Zero-Stop, HU-UNIFIED-CONSCIOUSNESS v1.0 Word-Circle Arbiter, HU-SYMBIOTIC-BRIDGE v1.0 Dual Golden Seal A2A<->MCP capability attenuation, HU-ETERNAL-PROVENANCE v1.0 Post-Quantum Triple Seal (ES256 + WOTS+-SHA256 + FIPS 204 Ring-NTT) & C2PA-MCP lineage, HU-SOVEREIGN-BARYCENTER v1.0 5x5 Bivariate BGW VSS over F_p (p=231*2^120+1) with 2048-bit Pocklington prime-subgroup sacrifice & [8,5,4]_p Byzantine shield, HU-UNIVERSAL-JUSTICE-LIFECYCLE v1.0 (Living Folio X) NYC LL144 / EEOC 4/5ths intersectional fairness, mixed-integer counterfactual recourse, Ville E-process drift, Art. 73 incident clocks & AB 2013 lineage, HU-VERITAS-PACIOLI-OFFICE v1.0 (Living Folio XI) Pacioli double-entry & XBRL Calculation Linkbase v1.1 reconciliation, RFC 6962 RAG citation grounding, Banker's & Hamilton apportionment, GB 45438-2025 + TC260 v3.0 + EU DORA Art. 15 / SOX 404 passport, and the 6-Continent Robotic Regulatory Passport with CycloneDX 1.6 SBOM across 12 pure-stdlib Edge SDK modules.",
+  "description": "Zero-auth deterministic cryptographic notary, static Python AST Kintsugi auditor, W3C Verifiable Credentials 2.0 (vc+jwt ES256) dignity engine, pure-stdlib ROS 2 humanoid robotics & regulatory verifier, Post-Quantum C2PA-MCP co-creation provenance notary, (0, 0, 0) Sovereign Barycenter BGW MPC quorum verifier, Universal Algorithmic Justice & Lifecycle Governance notary, Pacioli Agentic Office & Financial Veritas notary, and Cangzhou-Leonardo Scholarly Veritas & Knowledge-Graph notary (< 5 ms, 0.00 EUR, Rule 14 Zero-Knowledge Privacy). Implements Reed-Muller RM(1,3) = [8,4,4]_2 antipodal geometry in Q^3, RFC 6962 Binary Merkle Audit Trees & Signed Tree Heads (sth+jwt), 42/42 Ma'at non-coercion rules, HU-EMBODIED-SYMBIOSIS v1.0 exact rational Q^3 proxemics & ROS 2 Twist=0 Cost-Zero-Stop, HU-UNIFIED-CONSCIOUSNESS v1.0 Word-Circle Arbiter, HU-SYMBIOTIC-BRIDGE v1.0 Dual Golden Seal A2A<->MCP capability attenuation, HU-ETERNAL-PROVENANCE v1.0 Post-Quantum Triple Seal (ES256 + WOTS+-SHA256 + FIPS 204 Ring-NTT) & C2PA-MCP lineage, HU-SOVEREIGN-BARYCENTER v1.0 5x5 Bivariate BGW VSS over F_p (p=231*2^120+1) with 2048-bit Pocklington prime-subgroup sacrifice & [8,5,4]_p Byzantine shield, HU-UNIVERSAL-JUSTICE-LIFECYCLE v1.0 (Living Folio X) NYC LL144 / EEOC 4/5ths intersectional fairness, mixed-integer counterfactual recourse, Ville E-process drift, Art. 73 incident clocks & AB 2013 lineage, HU-VERITAS-PACIOLI-OFFICE v1.0 (Living Folio XI) Pacioli double-entry & XBRL Calculation Linkbase v1.1 reconciliation, RFC 6962 RAG citation grounding, Banker's & Hamilton apportionment, GB 45438-2025 + TC260 v3.0 + EU DORA Art. 15 / SOX 404 passport, HU-CANGZHOU-LEONARDO-SCHOLAR v1.0 (Living Folio XII, 12/12 Cosmic Dodecahedron) GB/T 7714-2025 + ORCID/ISSN/ISBN-13 bibliography verification, exact rational inverse-variance meta-analysis, acyclic mind-map DAGs & MOST/NSFC + CRediT + TC260 PI HITL, and the 6-Continent Robotic Regulatory Passport with CycloneDX 1.6 SBOM across 13 pure-stdlib Edge SDK modules.",
   "version": "1.6.0",
   "protocolVersion": "0.3.0",
   "a2aProtocolVersions": [
@@ -51,7 +51,7 @@
           "equation": "F0c=Ca0s*0rdre(Am0r_Un1f1cat_Etern)",
           "contactEmail": "david@homouniversalis.ai",
           "mcpSiblingEndpoint": "https://homouniversalis.ai/mcp/diamond",
-          "verification_seal": "self-tested with hu_suite r10 · build v10-8c460ac6 · 1049 passed, 6 skipped, 4 xfailed, 0 failed · 0 outbound network attempts",
+          "verification_seal": "self-tested with hu_suite r10 · build v10-74e8164b · 1049 passed, 6 skipped, 4 xfailed, 0 failed · 0 outbound network attempts",
           "honest_scope": "Algorithmic, cryptographic and software-layer self-assessment only; not a certified hardware HSM, not a safety-rated PLd/SIL2 function, and not CE machinery certification."
         }
       },
@@ -362,9 +362,35 @@
       ]
     },
     {
+      "id": "verify_scholarly_citations_and_knowledge_graph",
+      "name": "HU-CANGZHOU-LEONARDO-SCHOLAR v1.0 — GB/T 7714-2025 Citations, Rational Meta-Analysis, Mind-Map DAG & CRediT / TC260 PI HITL Verifier",
+      "description": "Verifies academic literature syntheses, quantitative meta-analyses, and study mind-maps against Living Folio XII (12/12 Cosmic Dodecahedron): GB/T 7714-2025 author & document-type syntax, ISO 7064 ORCID, ISO 3297 ISSN, ISBN-13 & retraction gate (S1), exact fractions.Fraction inverse-variance meta-analysis, Cochran's Q, Higgins I^2 & RFC 6962 span grounding (S2), acyclic Kahn prerequisite knowledge-graph DAGs (S3), Bell-LaPadula private-vault non-interference & PIPL/GDPR sanctuary (S4), quadrilingual zh/en/es/ca terminology lock (S5), MOST/NSFC + CRediT human share >= 1/2 + GB 45438-2025 + TC260 PI HITL (S6), and Eight-Folio V..XII Twist=0 cascade + W3C VC 2.0 MaatScholarlyVeritasCredential (vc+jwt ES256, SMT-256, S7). Algorithmic self-assessment only.",
+      "inputModes": [
+        "text/plain",
+        "application/json"
+      ],
+      "outputModes": [
+        "text/plain",
+        "application/json"
+      ],
+      "tags": [
+        "gbt-7714-2025",
+        "meta-analysis",
+        "knowledge-graph-dag",
+        "orcid-issn-isbn",
+        "bell-lapadula-vault",
+        "credit-research-integrity",
+        "w3c-vc"
+      ],
+      "examples": [
+        "Verify GB/T 7714-2025 bibliography, ORCID/ISSN checksums, exact rational inverse-variance meta-analysis and acyclic mind-map DAG on Specimen #0001",
+        "Audit Bell-LaPadula private vault isolation, quadrilingual zh/en/es/ca terminology lock and NISO CRediT + TC260 PI HITL against Living Folio XII"
+      ]
+    },
+    {
       "id": "robotic_regulatory_passport_eu_cra",
       "name": "HU-ROBOTIC-REGULATORY-PASSPORT v1.0 — 6-Continent Edge Compliance & CycloneDX 1.6 SBOM",
-      "description": "Returns the ES256-signed software-layer regulatory passport and deterministic CycloneDX 1.6 SBOM (0 external PyPI dependencies across 12 pure-stdlib Embodied Consciousness Edge SDK modules, 15/15 mutants killed) covering EU AI Act Art. 12/19/50, EU Cyber Resilience Act (EU) 2024/2847, EU Machinery Reg. (EU) 2023/1230 OEM boundary, South Korea AI Basic Act 5-year journal, California SB 243, NIST AI RMF 1.0, Singapore IMDA Agentic AI v1.5, and ISO/IEC 42001 / IEEE 7001.",
+      "description": "Returns the ES256-signed software-layer regulatory passport and deterministic CycloneDX 1.6 SBOM (0 external PyPI dependencies across 13 pure-stdlib Embodied Consciousness Edge SDK modules, 15/15 mutants killed) covering EU AI Act Art. 12/19/50, EU Cyber Resilience Act (EU) 2024/2847, EU Machinery Reg. (EU) 2023/1230 OEM boundary, South Korea AI Basic Act 5-year journal, California SB 243, NIST AI RMF 1.0, Singapore IMDA Agentic AI v1.5, and ISO/IEC 42001 / IEEE 7001.",
       "inputModes": [
         "text/plain",
         "application/json"
@@ -392,11 +418,11 @@
   "signatures": [
     {
       "protected": "eyJhbGciOiJFUzI1NiIsImprdSI6Imh0dHBzOi8vaG9tb3VuaXZlcnNhbGlzLmFpLy53ZWxsLWtub3duL2p3a3MuanNvbiIsImtpZCI6ImhvbW91bml2ZXJzYWxpcy1hMmEtZXMyNTYtdjEiLCJ0eXAiOiJKT1NFIn0",
-      "signature": "iOaOEUulo2ATZIkkzjimS8HLBjmspH1JLVnISbJE6NpLCFAKJO0GZ_0ZD6MoRCELlz1C53OID64h2i39h5B_ZA"
+      "signature": "saX1rIzS0_ypvBxSnpVJDRuqahmBN8SWKDtT5Z37utloHr5mvluqfZFbpx7RQi-Dd1w30G7xbzr6UeKRqc9eew"
     },
     {
       "protected": "eyJhbGciOiJFUzI1NiIsImprdSI6Imh0dHBzOi8vaG9tb3VuaXZlcnNhbGlzLmFpLy53ZWxsLWtub3duL2p3a3MuanNvbiIsImtpZCI6ImhvbW91bml2ZXJzYWxpcy1hMmEtZXMyNTYtZHVhbCIsInR5cCI6IkpPU0UifQ",
-      "signature": "oHXrEdkxobN9xrZpF7XSW-Nmc-7P1NdKW_9aC8hTf3gg24o2DeIBe36C429AUr2GWDosWQuP3XebtauvXL8wnQ"
+      "signature": "sNGEQe_cVnpAoyZ9tQiHKCzKyXbhUU_TDhwUd3Qbb5Mmmwv8jZEipPVkjsl0Mqpmmhv6SFhWYjfsBEoG7xktkA"
     }
   ]
 }

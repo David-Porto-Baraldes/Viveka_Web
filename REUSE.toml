@@ -13,7 +13,11 @@ SPDX-License-Identifier = "Apache-2.0 OR MulanPSL-2.0 OR EUPL-1.2"
 path = [
     "docs/**",
     "static/homo/*.html",
+    "static/homo/ca/*.html",
     "static/homo/es/*.html",
+    "static/homo/zh/*.html",
+    "static/homo/ja/*.html",
+    "static/homo/ko/*.html",
     "static/homo/llms*.txt",
     "static/homo/codex/**",
     "AGENTS.md",

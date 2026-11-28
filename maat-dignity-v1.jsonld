@@ -13,6 +13,7 @@
     "MaatSovereignBarycenterCredential": "maat:MaatSovereignBarycenterCredential",
     "MaatUniversalJusticeLifecycleCredential": "maat:MaatUniversalJusticeLifecycleCredential",
     "MaatPacioliVeritasCredential": "maat:MaatPacioliVeritasCredential",
+    "MaatScholarlyVeritasCredential": "maat:MaatScholarlyVeritasCredential",
     "serialNumber": {
       "@id": "maat:serialNumber",
       "@type": "xsd:string"
@@ -395,6 +396,67 @@
     },
     "cacFilingClaimed": {
       "@id": "maat:cacFilingClaimed",
+      "@type": "xsd:boolean"
+    },
+    "scholarSpec": {
+      "@id": "maat:scholarSpec",
+      "@type": "xsd:string"
+    },
+    "scholarlyVeritasScore100": {
+      "@id": "maat:scholarlyVeritasScore100",
+      "@type": "xsd:integer"
+    },
+    "scholarLawsVerified": {
+      "@id": "maat:scholarLawsVerified",
+      "@container": "@list",
+      "@type": "xsd:string"
+    },
+    "verifiedCitationsCount": {
+      "@id": "maat:verifiedCitationsCount",
+      "@type": "xsd:integer"
+    },
+    "totalSampleN": {
+      "@id": "maat:totalSampleN",
+      "@type": "xsd:integer"
+    },
+    "pooledEffectQ": {
+      "@id": "maat:pooledEffectQ",
+      "@type": "xsd:string"
+    },
+    "cochranQ": {
+      "@id": "maat:cochranQ",
+      "@type": "xsd:string"
+    },
+    "higginsI2Q": {
+      "@id": "maat:higginsI2Q",
+      "@type": "xsd:string"
+    },
+    "groundedConceptNodesCount": {
+      "@id": "maat:groundedConceptNodesCount",
+      "@type": "xsd:integer"
+    },
+    "humanCreditShareQ": {
+      "@id": "maat:humanCreditShareQ",
+      "@type": "xsd:string"
+    },
+    "corpusMerkleRoot": {
+      "@id": "maat:corpusMerkleRoot",
+      "@type": "xsd:string"
+    },
+    "bibliographyMerkleRoot": {
+      "@id": "maat:bibliographyMerkleRoot",
+      "@type": "xsd:string"
+    },
+    "piHitlVerified": {
+      "@id": "maat:piHitlVerified",
+      "@type": "xsd:boolean"
+    },
+    "editorialPeerReviewClaimed": {
+      "@id": "maat:editorialPeerReviewClaimed",
+      "@type": "xsd:boolean"
+    },
+    "mostNsfcGovernmentAuditClaimed": {
+      "@id": "maat:mostNsfcGovernmentAuditClaimed",
       "@type": "xsd:boolean"
     }
   }
