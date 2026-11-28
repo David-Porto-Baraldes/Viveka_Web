@@ -15,7 +15,7 @@ Autonomous academic copilot, literature-review, mind-map, and multi-document kno
 
 1. **Pure-Stdlib Kernel (`logic/scholar/scholar_veritas_core.py`):** 1-file zero-dependency Python standard-library kernel (`python3 -I logic/scholar/scholar_veritas_core.py`, `< 10,000` AST nodes, `0` external PyPI dependencies, `8/8` adversarial mutants killed in `< 35 ms`).
 2. **Eight-Folio Temple Coordinator (`logic/scholar/temple_folio_xii_adapter.py`):** Pure-stdlib bridge (`python3 -I logic/scholar/temple_folio_xii_adapter.py`) coupling Folio XII's `HumbleCrystal` verified facts and revocation forest with Folios `V..XI` (`Twist = 0` in $\mathbb{Q}^3$, `WordCircleArbiter`, `Macaroon` subtree revocation, `C2PA` provenance, `(0,0,0)` Barycenter MPC, `UniversalJustice` lifecycle, and `PacioliVeritas` office).
-3. **Public W3C VC 2.0 Notary (`logic/engines/scholar_veritas_crucible.py`):** Scores 5 Scholarly Veritas Rings with exact rational weights (`1/5, 1/4, 1/5, 1/5, 3/20`), appends a read-only `RFC 6962` decision commitment, and issues a canonical low-S `ES256` **W3C Verifiable Credential 2.0 (`MaatScholarlyVeritasCredential`, `vc+jwt`, `SMT-256`)** when all 7 Hard Laws (`S1..S7`) pass.
+3. **Public W3C VC 2.0 Notary (`logic/engines/scholar_veritas_crucible.py`):** Scores 5 Scholarly Veritas Rings with exact rational weights (`1/4, 1/4, 3/20, 1/5, 3/20`), appends a read-only `RFC 6962` decision commitment, and issues a canonical low-S `ES256` **W3C Verifiable Credential 2.0 (`MaatScholarlyVeritasCredential`, `vc+jwt`, `SMT-256`)** when all 7 Hard Laws (`S1..S7`) pass.
 
 ---
 
@@ -23,7 +23,7 @@ Autonomous academic copilot, literature-review, mind-map, and multi-document kno
 
 ### Law `S1` — `GB/T 7714-2025` Bibliography Syntax, `ISO 7064` `ORCID` / `ISO 3297` `ISSN` / `ISBN-13` Checksums & Retraction Gate
 - Validates China's national bibliographic standard `GB/T 7714-2025` author formatting (uppercase Pinyin surnames or Western capitalized surnames + space-separated uppercase initials without periods) and document-type codes (`J`, `M`, `C`, `D`, `R`, `S`, `P`, `EB/OL`, `PP`, `PP/OL`, `DS`, `DS/OL`, `AH`, `MAP`).
-- Verifies exact mathematical check digits for `ISO 7064:2003` Mod 11-2 `ORCID`s, `ISO 3297` Mod 11 `ISSN`s, and `GS1` Mod 10 `ISBN-13`s, blocks any `RETRACTED` / `WITHDRAWN` / `CONCERN_UNRESOLVED` citation (`RetractedCitationError`), rejects uncited or phantom `cited_bib_ids` (`HallucinatedCitationError`), and commits the sorted bibliography into an `RFC 6962` binary Merkle tree (`bibliography_merkle_root`).
+- Verifies exact mathematical check digits for `ISO 7064:2003` Mod 11-2 `ORCID`s, `ISO 3297` Mod 11 `ISSN`s, and `GS1` Mod 10 `ISBN-13`s, blocks any `RETRACTED` / `WITHDRAWN` / `CONCERN_UNRESOLVED` citation (`RetractedCitationError`), rejects unregistered or phantom `cited_bib_ids` (`HallucinatedCitationError`), and commits the input-ordered bibliography into an `RFC 6962` binary Merkle tree (`bibliography_merkle_root`).
 
 ### Law `S2` — Exact Rational Multi-Study Inverse-Variance Meta-Synthesis in $\mathbb{Q}$ & `RFC 6962` Span Grounding
 - Masks source chunks under `Rule 14` (`masked_text_sha256`), rejects unauthorized chunks (`authorized_source != True`), and commits the corpus into an `RFC 6962` Merkle tree (`corpus_merkle_root`).
