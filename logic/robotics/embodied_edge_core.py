@@ -356,7 +356,15 @@ def to_fraction(value: Any, *, field: str = "value") -> Fraction:
     if isinstance(value, bool) or isinstance(value, float):
         raise TypeError(f"{field} must be int, Fraction or a rational string, never {type(value).__name__}.")
     if isinstance(value, Fraction):
-        result = value
+        if type(value) is Fraction:
+            result = value
+        else:
+            num, den = value.numerator, value.denominator
+            if isinstance(num, bool) or isinstance(den, bool) or not isinstance(num, int) or not isinstance(den, int):
+                raise TypeError(f"{field} Fraction subclass numerator/denominator must be exact int.")
+            if den <= 0:
+                raise ValueError(f"{field} Fraction subclass denominator must be strictly positive.")
+            result = Fraction(int(num), int(den))
     elif isinstance(value, int):
         result = Fraction(value)
     elif isinstance(value, str):
