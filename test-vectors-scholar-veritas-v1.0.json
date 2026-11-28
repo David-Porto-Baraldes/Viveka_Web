@@ -1,0 +1,146 @@
+{
+  "format": "hu-scholar-veritas-test-vectors",
+  "spec": "HU-CANGZHOU-LEONARDO-SCHOLAR/v1.0",
+  "vector_set_version": "1.0.0",
+  "url": "https://homouniversalis.ai/codex/test-vectors/scholar-veritas-v1.0.json",
+  "folio_url": "https://homouniversalis.ai/oracle/scholar",
+  "license": "Apache-2.0",
+  "zero_float_invariant": true,
+  "vectors_count": 8,
+  "vectors": [
+    {
+      "id": "SV-TV-001",
+      "law": "S1",
+      "title": "China GB/T 7714-2025 Bibliography, [PP/OL] & [DS/OL] Codes, Author Casing & PID Checksums",
+      "expected": {
+        "verified_citations_count": 3,
+        "bibliography_merkle_root": "d99125eff96f3a5c27b5ea5a0963587cd79d747a71948765a7dff1d00d01cda9",
+        "doc_type_codes": [
+          "J",
+          "PP/OL",
+          "DS/OL"
+        ],
+        "orcid_valid": true,
+        "issn_valid": true,
+        "isbn13_valid": true,
+        "verified": true
+      }
+    },
+    {
+      "id": "SV-TV-002",
+      "law": "S2",
+      "title": "Exact Rational Inverse-Variance Multi-Study Meta-Analysis & RFC 6962 Corpus Grounding",
+      "expected": {
+        "corpus_merkle_root": "2e11fcfe822a5b2dc1319b0ec4e57c2feb222e978c496fa06206825557ebc34d",
+        "studies_count": 3,
+        "total_sample_n": 500,
+        "pooled_effect_q": "13/20",
+        "cochran_q": "1/8",
+        "higgins_i2_q": "0",
+        "verified": true
+      }
+    },
+    {
+      "id": "SV-TV-003",
+      "law": "S3",
+      "title": "Iterative Kahn Acyclic Mind-Map / Knowledge-Graph DAG & Monotone Lattice Taint",
+      "expected": {
+        "grounded_nodes_count": 4,
+        "edges_count": 3,
+        "dag_depth": 3,
+        "topological_order": [
+          "N1_COHORT_DESIGN",
+          "N2_REPLICATION_PREPRINT",
+          "N3_POOLED_META_EFFECT",
+          "N4_INTERNAL_AUDIT_NOTE"
+        ],
+        "node_lattice_levels": {
+          "N1_COHORT_DESIGN": "PUBLIC_COMMONS",
+          "N2_REPLICATION_PREPRINT": "PUBLIC_COMMONS",
+          "N3_POOLED_META_EFFECT": "PUBLIC_COMMONS",
+          "N4_INTERNAL_AUDIT_NOTE": "PRIVATE_VAULT"
+        },
+        "verified": true
+      }
+    },
+    {
+      "id": "SV-TV-004",
+      "law": "S4a",
+      "title": "Bell-LaPadula PRIVATE_VAULT vs PUBLIC_COMMONS Non-Interference & Cognitive Budget L <= B",
+      "expected": {
+        "outputs_verified_count": 2,
+        "transfer_mechanism": "READ_ONLY_EPHEMERAL_COMPUTE",
+        "word_count": 18,
+        "budget_b": 64,
+        "c_levels": 1,
+        "verified": true
+      }
+    },
+    {
+      "id": "SV-TV-005",
+      "law": "S4b",
+      "title": "Rule 14 IBAN / CN-ID Masking with Zero False Positives on DOI, ORCID, ISSN & ISBN-13",
+      "expected": {
+        "masked_specimen": "IBAN [iban-shielded], CNID [cnid-shielded], DOI 10.1038/s41586-026-00001-1, ORCID 0000-0002-1825-0097"
+      }
+    },
+    {
+      "id": "SV-TV-006",
+      "law": "S5",
+      "title": "Quadrilingual ZH / EN / ES / CA Canonical Terminology Diapason",
+      "expected": {
+        "terms_locked_count": 1,
+        "languages_verified": [
+          "ca",
+          "en",
+          "es",
+          "zh"
+        ],
+        "verified": true
+      }
+    },
+    {
+      "id": "SV-TV-007",
+      "law": "S6",
+      "title": "MOST / NSFC 2026 Research Integrity, Rational CRediT, GB 45438-2025 & TC260 v3.0 PI HITL",
+      "expected": {
+        "implicit_metadata_sha256": "31c7b1fee2b2963f9ef253767c5178ffc1a0bf1e94b493f0c1ffa8353eca2c31",
+        "agent_id": "agent-kuku-scholar-01",
+        "principal_investigator_id": "pi-guardian-cangzhou-01",
+        "human_hitl_approved": true,
+        "human_credit_share_q": "4/5",
+        "verified": true
+      }
+    },
+    {
+      "id": "SV-TV-008",
+      "law": "S7",
+      "title": "Hex-Free Law U2 Humble Crystal Verified Facts & Cryptographic Commitments Isolation",
+      "expected": {
+        "evaluation_id": "EVAL-SCHOLAR-2026-Q4",
+        "verified_facts": {
+          "evaluation_id": "EVAL-SCHOLAR-2026-Q4",
+          "verified_citations_count": 3,
+          "studies_count": 3,
+          "total_sample_n": 500,
+          "pooled_effect_q": "13/20",
+          "cochran_q": "1/8",
+          "higgins_i2_q": "0",
+          "grounded_nodes_count": 4,
+          "dag_depth": 3,
+          "terms_locked_count": 1,
+          "human_credit_share_q": "4/5",
+          "explicit_user_label": "AI-assisted scholarly synthesis verified under human Principal Investigator oversight.",
+          "scholar_summary": "Three grounded studies totaling 500 participants establish pooled efficacy 13/20 with Cochran Q 1/8 under strict vault isolation."
+        },
+        "humble_crystal_hex_free": true,
+        "cryptographic_commitments": {
+          "corpus_merkle_root": "2e11fcfe822a5b2dc1319b0ec4e57c2feb222e978c496fa06206825557ebc34d",
+          "bibliography_merkle_root": "d99125eff96f3a5c27b5ea5a0963587cd79d747a71948765a7dff1d00d01cda9",
+          "implicit_metadata_sha256": "31c7b1fee2b2963f9ef253767c5178ffc1a0bf1e94b493f0c1ffa8353eca2c31"
+        },
+        "eligible_for_w3c_vc": true
+      }
+    }
+  ]
+}
